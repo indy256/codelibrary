@@ -5,17 +5,18 @@ const int maxn = 200000;
 int t[maxn];
 
 void add(int i, int value) {
-    for (; i < maxn; i |= i + 1)
+    for (; i < maxn; i |= i + 1 /* i += (i + 1) & -(i + 1) */)
         t[i] += value;
 }
 
 int sum(int i) {
     int res = 0;
-    for (; i >= 0; i -= -~i & ~i)
+    for (; i >= 0; i -= -~i & ~i /* i -= (i + 1) & -(i + 1) */)
         res += t[i];
     return res;
 }
 
+// sum[a,b]
 int sum(int a, int b) {
     return sum(b) - sum(a - 1);
 }

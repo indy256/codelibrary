@@ -3,7 +3,7 @@ public class BinarySearch {
 	/**
 	 * Returns min(p|a[p]==true)
 	 * 
-	 * invariant: a[lo]==false, a[hi]==true, hence can't use mid+1 or mid-1
+	 * invariant: a[lo]==false, a[hi]==true, hence can't set lo = mid+1 or hi = mid-1
 	 * 
 	 * boundary case: lo1=p,hi1=p+1,lo2=(lo1+hi1)/2=p,hi2=p+1
 	 */
@@ -24,7 +24,7 @@ public class BinarySearch {
 	/**
 	 * Returns max(p|a[p]==false)
 	 * 
-	 * invariant: a[lo]==false, a[hi]==true, hence can't use mid+1 or mid-1
+	 * invariant: a[lo]==false, a[hi]==true, hence can't set lo=mid+1 or hi=mid-1
 	 * 
 	 * boundary case: lo1=p,hi1=p+1,lo2=(lo1+hi1)/2=p,hi2=p+1
 	 */
@@ -45,7 +45,7 @@ public class BinarySearch {
 	/**
 	 * Returns min(p|a[p]==true)
 	 * 
-	 * invariant: lo<=min(p|a[p]=true), a[hi]==true, hence can use mid+1
+	 * invariant: lo<=min(p|a[p]=true), a[hi]==true, hence can set lo = mid+1
 	 * 
 	 * boundary case: lo1=p,hi1=p,lo2=p,hi2=(lo1+hi1)/2=p
 	 */
@@ -66,7 +66,7 @@ public class BinarySearch {
 	/**
 	 * Returns max(p|a[p]==false)
 	 * 
-	 * invariant: a[lo]=false, hi>=max(p|a[p]=false), hence can use mid-1
+	 * invariant: a[lo]=false, hi>=max(p|a[p]=false), hence can set hi=mid-1
 	 * 
 	 * boundary case: lo1=p,hi1=p,lo2=p,hi2=(lo1+hi1+1)/2=p
 	 */
@@ -87,7 +87,7 @@ public class BinarySearch {
 	/**
 	 * Returns (p|a[p]==key), if it is contained in the array; otherwise, -(insertion point+1).
 	 * 
-	 * invariant: lo<=min(p|a[p]>=key), hi>=max(p|a[p]<=key), hence can use mid+1 or mid-1
+	 * invariant: lo<=min(p|a[p]>=key), hi>=max(p|a[p]<=key), hence can set lo=mid+1 and hi=mid-1
 	 * 
 	 * boundary case: lo1=p+1,hi1=p,lo2=(lo1+hi1)/2+1=p+1,hi2=p
 	 */
@@ -111,7 +111,7 @@ public class BinarySearch {
 	/**
 	 * Returns min(p|a[p]>=key)
 	 * 
-	 * invariant: a[lo]<key, a[hi]>=key, hence can't use mid+1 or mid-1
+	 * invariant: a[lo]<key, a[hi]>=key, hence can't set lo=mid+1 or hi=mid-1
 	 * 
 	 * boundary case: lo1=p,hi1=p+1,lo2=(lo1+hi1)/2=p,hi2=p+1
 	 */
@@ -133,7 +133,7 @@ public class BinarySearch {
 	/**
 	 * Returns min(p|a[p]>key)
 	 * 
-	 * invariant: a[lo]<=key, a[hi]>key, hence can't use mid+1 or mid-1
+	 * invariant: a[lo]<=key, a[hi]>key, hence can't set lo=mid+1 or hi=mid-1
 	 * 
 	 * boundary case: lo1=p,hi1=p+1,lo2=(lo1+hi1)/2=p,hi2=p+1
 	 */

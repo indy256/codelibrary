@@ -1,12 +1,13 @@
 #include <iostream>
 using namespace std;
 
-int pow(long long a, int n, int MOD) {
+int pow(int x, int n, int MOD) {
+	long long y = x;
     int res = 1;
     for (; n > 0; n >>= 1) {
         if (n & 1)
-            res = res * a % MOD;
-        a = a * a % MOD;
+            res = res * y % MOD;
+        y = y * y % MOD;
     }
     return res;
 }

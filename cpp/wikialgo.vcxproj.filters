@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="bigint.cpp">
+    <ClCompile Include="SuffixArrayLcp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
