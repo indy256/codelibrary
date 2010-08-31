@@ -2,7 +2,7 @@
 using namespace std;
 
 int pow(int x, int n, int MOD) {
-	long long y = x;
+    long long y = x;
     int res = 1;
     for (; n > 0; n >>= 1) {
         if (n & 1)

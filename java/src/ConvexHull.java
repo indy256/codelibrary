@@ -11,10 +11,8 @@ public class ConvexHull {
 		}
 
 		public int compareTo(Point o) {
-			int comp = Long.signum(x - o.x);
-			if (comp != 0)
-				return comp;
-			return Long.signum(y - o.y);
+			int sx = Long.signum(x - o.x);
+			return sx != 0 ? sx : Long.signum(y - o.y);
 		}
 	}
 
@@ -26,16 +24,16 @@ public class ConvexHull {
 		int n = p.length;
 		if (n <= 1)
 			return p;
-		int k = 0;
 		Arrays.sort(p);
 		Point[] q = new Point[n * 2];
-		for (int i = 0; i < n; q[k++] = p[i++])
-			for (; k > 1 && !cw(q[k - 2], q[k - 1], p[i]); --k)
+		int cnt = 0;
+		for (int i = 0; i < n; q[cnt++] = p[i++])
+			for (; cnt > 1 && !cw(q[cnt - 2], q[cnt - 1], p[i]); --cnt)
 				;
-		for (int i = n - 2, t = k; i >= 0; q[k++] = p[i--])
-			for (; k > t && !cw(q[k - 2], q[k - 1], p[i]); --k)
+		for (int i = n - 2, t = cnt; i >= 0; q[cnt++] = p[i--])
+			for (; cnt > t && !cw(q[cnt - 2], q[cnt - 1], p[i]); --cnt)
 				;
-		Point[] res = new Point[k - 1 - (q[0].compareTo(q[1]) == 0 ? 1 : 0)];
+		Point[] res = new Point[cnt - 1 - (q[0].compareTo(q[1]) == 0 ? 1 : 0)];
 		System.arraycopy(q, 0, res, 0, res.length);
 		return res;
 	}
