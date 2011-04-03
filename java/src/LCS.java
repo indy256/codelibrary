@@ -35,7 +35,7 @@ public class LCS {
 	public static void main(String[] args) {
 		int[] x = { 1, 5, 4, 2, 3, 7, 6 };
 		int[] y = { 2, 7, 1, 3, 5, 4, 6 };
-		int[] lñs = getLCS(x, y);
-		System.out.println(Arrays.toString(lñs));
+		int[] lcs = getLCS(x, y);
+		System.out.println(Arrays.toString(lcs));
 	}
 }

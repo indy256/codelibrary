@@ -64,6 +64,7 @@ public class TestAlgo extends TestCase {
 		}
 	}
 
+    /*
 	public void testBinaryHeapWithDecreaseKey() {
 		Queue<Integer> ref = new PriorityQueue<Integer>();
 		int maxSize = 20000;
@@ -96,6 +97,7 @@ public class TestAlgo extends TestCase {
 			}
 		}
 	}
+	*/
 
 	public void testSuffixArrayBuilder() throws Exception {
 		for (int steps = 0; steps < 1000; steps++) {
@@ -244,7 +246,7 @@ public class TestAlgo extends TestCase {
 			// assertEquals(res1, res2);
 		}
 	}
-
+    /*
 	public void testSegmentTree() {
 		for (int step = 0; step < 100; step++) {
 			int n = rnd.nextInt(1000) + 1;
@@ -317,5 +319,6 @@ public class TestAlgo extends TestCase {
 			}
 		}
 	}
+    */
 
 }
