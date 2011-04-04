@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="PrimesGenerator.cpp" />
+    <ClCompile Include="BellmanFord.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{6A16EEBB-DC2F-42D8-AE43-CFEFFB99EE21}</ProjectGuid>
