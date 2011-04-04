@@ -2,81 +2,67 @@ import java.util.*;
 
 public class BellmanFord {
 
-	static class Edge {
-		int t, cost;
+	static final int INF = Integer.MAX_VALUE / 3;
 
-		public Edge(int t, int cost) {
-			this.t = t;
+	static class Edge {
+		int u, v;
+		int cost;
+
+		public Edge(int u, int v, int cost) {
+			this.u = u;
+			this.v = v;
 			this.cost = cost;
 		}
 	}
 
-	public static boolean bellmanFord(List<Edge>[] edges, int s, int[] prio, int[] pred) {
+	public static boolean bellmanFord(int n, List<Edge> edges, int s, int[] prio, int[] pred) {
 		Arrays.fill(pred, -1);
-		Arrays.fill(prio, Integer.MAX_VALUE);
+		Arrays.fill(prio, INF);
 		prio[s] = 0;
-		int n = edges.length;
 		boolean wasChanged = true;
-		for (int k = 0; k < n && wasChanged; k++) {
+		for (int k = 0; k < n; k++) {
 			wasChanged = false;
-			for (int u = 0; u < n; u++) {
-				if (prio[u] == Integer.MAX_VALUE) {
-					continue;
+			for (Edge e : edges)
+				if (prio[e.v] > prio[e.u] + e.cost) {
+					prio[e.v] = prio[e.u] + e.cost;
+					pred[e.v] = e.u;
+					wasChanged = true;
 				}
-				for (Edge e : edges[u]) {
-					int nprio = prio[u] + e.cost;
-					if (prio[e.t] > nprio) {
-						prio[e.t] = nprio;
-						pred[e.t] = u;
-						wasChanged = true;
-					}
-				}
-			}
+			if (!wasChanged)
+				break;
 		}
 		// wasChanged is true iff graph has a negative cycle
 		return wasChanged;
 	}
 
-	public static int[] findNegativeCycle(List<Edge>[] edges) {
-		int n = edges.length;
+	public static int[] findNegativeCycle(int n, List<Edge> edges) {
 		int[] pred = new int[n];
 		Arrays.fill(pred, -1);
 		int[] prio = new int[n];
-		Arrays.fill(prio, Integer.MAX_VALUE);
+		Arrays.fill(prio, INF);
 		prio[0] = 0;
 		int last = 0;
-		for (int k = 0; k < n && last != -1; k++) {
+		for (int k = 0; k < n; k++) {
 			last = -1;
-			for (int u = 0; u < n; u++) {
-				if (prio[u] == Integer.MAX_VALUE) {
-					continue;
+			for (Edge e : edges)
+				if (prio[e.v] > prio[e.u] + e.cost) {
+					prio[e.v] = prio[e.u] + e.cost;
+					pred[e.v] = e.u;
+					last = e.v;
 				}
-				for (Edge e : edges[u]) {
-					int v = e.t;
-					int nprio = prio[u] + e.cost;
-					if (prio[v] > nprio) {
-						prio[v] = nprio;
-						pred[v] = u;
-						if (last == -1)
-							last = v;
-					}
-				}
-			}
+			if (last == -1)
+				return null;
 		}
-		if (last == -1)
-			return null;
-		int[] path = new int[n + 1];
-		int[] pos = new int[n + 1];
-		for (int i = 0;; i++) {
-			path[i] = last;
+		int[] path = new int[n];
+		int[] pos = new int[n];
+		for (int i = 0; ; i++) {
 			if (pos[last] != 0) {
-				int len = i + 1 - pos[last];
-				int[] cycle = new int[len];
-				for (int j = 0; j < len; j++) {
-					cycle[j] = path[i - j];
-				}
+				int[] cycle = new int[i + 1 - pos[last]];
+				for (int j = 0; j < cycle.length; j++)
+					cycle[j] = path[i - 1 - j];
 				return cycle;
 			}
+			path[i] = last;
 			pos[last] = i + 1;
 			last = pred[last];
 		}
@@ -84,16 +70,13 @@ public class BellmanFord {
 
 	// Usage example
 	public static void main(String[] args) {
-		List<Edge>[] edges = new List[4];
-		for (int i = 0; i < edges.length; i++) {
-			edges[i] = new ArrayList<Edge>();
-		}
-		edges[0].add(new Edge(1, 1));
-		edges[1].add(new Edge(0, 1));
-		edges[1].add(new Edge(2, 1));
-		edges[2].add(new Edge(3, -10));
-		edges[3].add(new Edge(1, 1));
-		int[] cycle = findNegativeCycle(edges);
+		List<Edge> edges = new ArrayList<Edge>();
+		edges.add(new Edge(0, 1, 1));
+		edges.add(new Edge(1, 0, 1));
+		edges.add(new Edge(1, 2, 1));
+		edges.add(new Edge(2, 3, -10));
+		edges.add(new Edge(3, 1, 1));
+		int[] cycle = findNegativeCycle(4, edges);
 		System.out.println(Arrays.toString(cycle));
 	}
 }
