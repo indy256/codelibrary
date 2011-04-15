@@ -30,14 +30,13 @@ public class BinaryHeapWithIncreasePriority<E extends Comparable<E>> {
 		int t = pos2Id[i];
 		pos2Id[i] = pos2Id[j];
 		pos2Id[j] = t;
-		t = id2Pos[pos2Id[i]];
-		id2Pos[pos2Id[i]] = id2Pos[pos2Id[j]];
-		id2Pos[pos2Id[j]] = t;
+		id2Pos[pos2Id[i]] = i;
+		id2Pos[pos2Id[j]] = j;
 	}
 
 	void moveUp(int pos) {
 		while (pos > 0) {
-			int parent = (pos - 1) / 2;
+			int parent = (pos - 1) >> 1;
 			if (h[pos].compareTo(h[parent]) >= 0) {
 				break;
 			}
