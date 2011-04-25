@@ -97,7 +97,7 @@ public class SuffixTree {
 	static int lcsBeginIndex;
 
 	// traverse suffix tree to find longest common substring
-	static int dfsTree(Node node, int i1, int i2) {
+	public static int findLCS(Node node, int i1, int i2) {
 		if (node.begin <= i1 && i1 < node.end) {
 			return 1;
 		}
@@ -107,7 +107,7 @@ public class SuffixTree {
 		int mask = 0;
 		for (char f = 0; f < alphabetSize; f++) {
 			if (node.children[f] != null) {
-				mask |= dfsTree(node.children[f], i1, i2);
+				mask |= findLCS(node.children[f], i1, i2);
 			}
 		}
 		if (mask == 3) {
@@ -120,7 +120,7 @@ public class SuffixTree {
 		return mask;
 	}
 
-	
+	// Usage example
 	public static void main(String[] args) {
 		String s1 = "12345";
 		String s2 = "124234";
@@ -130,8 +130,8 @@ public class SuffixTree {
 		lcsLength = 0;
 		lcsBeginIndex = 0;
 		// find longest common substring
-		dfsTree(root, s1.length(), s1.length() + s2.length() + 1);
+		findLCS(root, s1.length(), s1.length() + s2.length() + 1);
 		System.out.println(3 == lcsLength);
-		System.out.println(s.subSequence(lcsBeginIndex, lcsBeginIndex + lcsLength));
+		System.out.println(s.substring(lcsBeginIndex - 1, lcsBeginIndex + lcsLength - 1));
 	}
 }
