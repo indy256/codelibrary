@@ -54,27 +54,29 @@ public class FenwickTree {
 		add(i, -get(i) + value);
 	}
 
+	// interval update trick
 	public void rev_add(int a, int b, int value) {
 		add(a, value);
 		add(b + 1, -value);
 	}
 
+	// get for interval update
 	public int rev_get(int i) {
 		return sum(i);
 	}
 
-	// Returns the largest b such that sum(0,b) >= sum and has minimal value
-	// TODO: not very useful - reimplement
-	public int search(int sum) {
+	// Returns min(p|sum[0,p]>=sum)
+	public int lower_bound(int sum) {
+		--sum;
 		int pos = -1;
 		for (int blockSize = Integer.highestOneBit(n); blockSize != 0; blockSize >>= 1) {
 			int nextPos = pos + blockSize;
 			if (nextPos < n && sum >= t[nextPos]) {
-				pos = nextPos;
 				sum -= t[nextPos];
+				pos = nextPos;
 			}
 		}
-		return pos;
+		return pos + 1;
 	}
 
 	// number of free places in [0, x]
@@ -119,5 +121,7 @@ public class FenwickTree {
 		for (int i = 0; i < t.n; i++)
 			System.out.print(t.get(i) + " ");
 		System.out.println();
+		t = new FenwickTree(new int[] { 0, 0, 1, 0, 0, 1, 0, 0 });
+		System.out.println(5 == t.lower_bound(2));
 	}
 }

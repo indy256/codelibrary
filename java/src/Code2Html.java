@@ -22,7 +22,8 @@ public class Code2Html {
 			macros.add(s);
 		}
 
-		BufferedReader br = new BufferedReader(new FileReader(new File("D://projects//olymp//wikialgo//java//input.txt")));
+		BufferedReader br = new BufferedReader(new FileReader(
+				new File("D://projects//olymp//wikialgo//java//input.txt")));
 		PrintWriter pw = new PrintWriter(new File("D://projects//olymp//wikialgo//java//output.txt"));
 
 		pw.println("<code>");
@@ -33,6 +34,12 @@ public class Code2Html {
 				break;
 
 			boolean semicolon = s.endsWith(";");
+			boolean comment = s.trim().startsWith("//");
+			if (comment) {
+				print(pw, s, "3F5FBF");
+				pw.println("<br/>");
+				continue;
+			}
 			char[] a = s.toCharArray();
 			int prev = -1;
 			for (int i = 0; i < a.length; i++) {

@@ -30,7 +30,7 @@ public class SegmentTree {
 		init(v.length);
 	}
 
-	// Returns the smallest pos <= b such that sum(a,pos) >= sum
+	// Returns the smallest pos <= b such that sum[a,pos] >= sum
 	public int search(int a, int b, int sum) {
 		return search(1, 0, n - 1, a, b, sum);
 	}
@@ -97,8 +97,9 @@ public class SegmentTree {
 	public static void main(String[] args) {
 		int[] a = { 1, 5, 2, 3 };
 		SegmentTree tree = new SegmentTree(a);
-		System.out.println(tree.search(1, 3, 5));
+		System.out.println(1 == tree.search(1, 3, 5));
 		tree.set(1, 3);
-		System.out.println(tree.search(1, 3, 5));
+		System.out.println(3 == tree.get(1));
+		System.out.println(2 == tree.search(1, 3, 5));
 	}
 }
