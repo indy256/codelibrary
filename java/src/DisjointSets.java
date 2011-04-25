@@ -11,15 +11,16 @@ public class DisjointSets {
 	}
 
 	public int root(int x) {
-		if (p[x] != x) {
-			p[x] = root(p[x]);
-		}
-		return p[x];
+		if (x == p[x])
+			return x;
+		return p[x] = root(p[x]);
 	}
 
 	public void unite(int a, int b) {
 		a = root(a);
 		b = root(b);
+		if (a == b)
+			return;
 		if (rank[a] < rank[b]) {
 			p[a] = b;
 		} else {

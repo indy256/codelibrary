@@ -1,11 +1,11 @@
-public class RSQSegmentTreeFast {
+public class SegmentTreeRSQFast {
 	final int n = 1 << 18;
 	int[] t = new int[n + n];
 
-	public RSQSegmentTreeFast() {
+	public SegmentTreeRSQFast() {
 	}
 
-	public RSQSegmentTreeFast(int[] a) {
+	public SegmentTreeRSQFast(int[] a) {
 		System.arraycopy(a, 0, t, n, a.length);
 		for (int i = n - 1; i > 0; i--)
 			t[i] = t[i + i] + t[i + i + 1];
@@ -15,40 +15,33 @@ public class RSQSegmentTreeFast {
 		return t[i + n];
 	}
 
-	// Sets value to the i-th element
 	public void set(int i, int value) {
-		int x = value - get(i);
-		for (i += n; i > 0; i >>= 1)
-			t[i] += x;
+		add(i, value - t[i + n]);
 	}
 
-	// Adds value to the i-th element
 	public void add(int i, int value) {
 		for (i += n; i > 0; i >>= 1)
 			t[i] += value;
 	}
 
-	// Returns sum of elements in range [a, b]
+	// sum[a, b]
 	public int sum(int a, int b) {
 		int res = 0;
-		for (a += n, b += n; a <= b;) {
+		for (a += n, b += n; a <= b; a = (a + 1) >> 1, b = (b - 1) >> 1) {
 			if ((a & 1) != 0)
 				res += t[a];
 			if ((b & 1) == 0)
 				res += t[b];
-			a = (a + 1) >> 1;
-			b = (b - 1) >> 1;
 		}
 		return res;
 	}
 
-	// Returns sum of elements in range [0, b]
+	// sum[0, b]
 	public int sum(int b) {
-		b += n;
 		if (b == n - 1)
 			return t[1];
 		int res = 0;
-		for (; b > 0; b = (b - 1) >> 1)
+		for (b += n; b > 0; b = (b - 1) >> 1)
 			if ((b & 1) == 0)
 				res += t[b];
 		return res;
@@ -73,7 +66,7 @@ public class RSQSegmentTreeFast {
 
 	// Usage example
 	public static void main(String[] args) {
-		RSQSegmentTreeFast rsq1 = new RSQSegmentTreeFast(new int[] { 1, 2, 3, 4 });
+		SegmentTreeRSQFast rsq1 = new SegmentTreeRSQFast(new int[] { 1, 2, 3, 4 });
 		rsq1.set(0, 2);
 		rsq1.set(1, 1);
 		rsq1.set(2, 3);
@@ -82,7 +75,7 @@ public class RSQSegmentTreeFast {
 		System.out.println(6 == rsq1.get(1));
 		System.out.println(rsq1.sum(0, 3) == rsq1.sum(3));
 
-		RSQSegmentTreeFast rsq2 = new RSQSegmentTreeFast();
+		SegmentTreeRSQFast rsq2 = new SegmentTreeRSQFast();
 		rsq2.set(2, 1);
 		rsq2.set(3, 1);
 		System.out.println(-1 == rsq2.getPrevZero(0));

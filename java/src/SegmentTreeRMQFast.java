@@ -1,11 +1,11 @@
-public class RMQSegmentTreeFast {
+public class SegmentTreeRMQFast {
 	final int n = 1 << 18;
 	int[] t = new int[n + n];
 
-	public RMQSegmentTreeFast() {
+	public SegmentTreeRMQFast() {
 	}
 
-	public RMQSegmentTreeFast(int[] a) {
+	public SegmentTreeRMQFast(int[] a) {
 		System.arraycopy(a, 0, t, n, a.length);
 		for (int i = n - 1; i > 0; i--)
 			t[i] = Math.max(t[i + i], t[i + i + 1]);
@@ -15,15 +15,10 @@ public class RMQSegmentTreeFast {
 		return t[i + n];
 	}
 
-	// Sets value to the i-th element
 	public void set(int i, int value) {
-		i += n;
-		t[i] = value;
-		for (i >>= 1; i > 0; i >>= 1)
-			t[i] = Math.max(t[i + i], t[i + i + 1]);
+		add(i, value - t[i + n]);
 	}
 
-	// Adds value to the i-th element
 	public void add(int i, int value) {
 		i += n;
 		t[i] += value;
@@ -31,21 +26,19 @@ public class RMQSegmentTreeFast {
 			t[i] = Math.max(t[i + i], t[i + i + 1]);
 	}
 
-	// Returns maximum of elements in range [a, b]
+	// max[a, b]
 	public int max(int a, int b) {
 		int res = Integer.MIN_VALUE;
-		for (a += n, b += n; a <= b;) {
+		for (a += n, b += n; a <= b; a = (a + 1) >> 1, b = (b - 1) >> 1) {
 			res = Math.max(res, t[a]);
 			res = Math.max(res, t[b]);
-			a = (a + 1) >> 1;
-			b = (b - 1) >> 1;
 		}
 		return res;
 	}
 
 	// Usage example
 	public static void main(String[] args) {
-		RMQSegmentTreeFast rmq = new RMQSegmentTreeFast(new int[] { 1, 2, 3, 4 });
+		SegmentTreeRMQFast rmq = new SegmentTreeRMQFast(new int[] { 1, 2, 3, 4 });
 		rmq.set(0, 2);
 		rmq.set(1, 1);
 		rmq.set(2, 3);

@@ -22,8 +22,8 @@ public class Code2Html {
 			macros.add(s);
 		}
 
-		BufferedReader br = new BufferedReader(new FileReader(new File("D://projects//cpp//wikialgo//input.txt")));
-		PrintWriter pw = new PrintWriter(new File("D://projects//cpp//wikialgo//output.txt"));
+		BufferedReader br = new BufferedReader(new FileReader(new File("D://projects//olymp//wikialgo//java//input.txt")));
+		PrintWriter pw = new PrintWriter(new File("D://projects//olymp//wikialgo//java//output.txt"));
 
 		pw.println("<code>");
 
