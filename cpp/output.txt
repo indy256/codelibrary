@@ -1,164 +1,46 @@
 <code>
-<font color="#7f0055"><b>#include</b></font>&nbsp;&lt;cstdlib&gt;<br/>
-<font color="#7f0055"><b>#include</b></font>&nbsp;&lt;string&gt;<br/>
 <font color="#7f0055"><b>#include</b></font>&nbsp;&lt;iostream&gt;<br/>
+<font color="#7f0055"><b>#include</b></font>&nbsp;&lt;map&gt;<br/>
 <font color="#7f0055"><b>using</b></font>&nbsp;<font color="#7f0055"><b>namespace</b></font>&nbsp;std;<br/>
 <br/>
-unsigned&nbsp;<font color="#7f0055"><b>char</b></font>&nbsp;mask[]&nbsp;=&nbsp;{&nbsp;0x80,&nbsp;0x40,&nbsp;0x20,&nbsp;0x10,&nbsp;0x08,&nbsp;0x04,&nbsp;0x02,&nbsp;0x01&nbsp;};<br/>
-#define&nbsp;<font color="#000000"><b>tget</b></font>(i)&nbsp;(&nbsp;(<font color="#000000"><b>t[</b></font>(i)/<font color="#000000"><b>8]&mask[</b></font>(i)%8])&nbsp;?&nbsp;<font color="#990000"><b>1</b></font>&nbsp;:&nbsp;<font color="#990000"><b>0</b></font>&nbsp;)<br/>
-#define&nbsp;<font color="#000000"><b>tset</b></font>(i,&nbsp;b)&nbsp;<font color="#000000"><b>t[</b></font>(i)/8]=(b)&nbsp;?&nbsp;(<font color="#000000"><b>mask[</b></font>(i)<font color="#000000"><b>%8]|t[</b></font>(i)/8])&nbsp;:&nbsp;((<font color="#000000"><b>~mask[</b></font>(i)%8])<font color="#000000"><b>&t[</b></font>(i)/8])<br/>
-#define&nbsp;<font color="#000000"><b>chr</b></font>(i)&nbsp;(cs==<font color="#000000"><b>sizeof</b></font>(<font color="#7f0055"><b>int</b></font>)<font color="#000000"><b>?</b></font>((<font color="#7f0055"><b>int</b></font>*)s)<font color="#000000"><b>[i]:</b></font>((unsigned&nbsp;<font color="#7f0055"><b>char</b></font>&nbsp;*)s)[i])<br/>
-#define&nbsp;<font color="#000000"><b>isLMS</b></font>(i)&nbsp;(i&gt;<font color="#990000"><b>0</b></font>&nbsp;&&&nbsp;<font color="#000000"><b>tget</b></font>(i)&nbsp;&&&nbsp;<font color="#000000"><b>!tget</b></font>(i-<font color="#990000"><b>1</b></font>))<br/>
-<br/>
-//&nbsp;find&nbsp;the&nbsp;start&nbsp;or&nbsp;end&nbsp;of&nbsp;each&nbsp;bucket<br/>
-<font color="#7f0055"><b>void</b></font>&nbsp;<font color="#000000"><b>getBuckets</b></font>(unsigned&nbsp;<font color="#7f0055"><b>char</b></font>&nbsp;*s,&nbsp;<font color="#7f0055"><b>int</b></font>&nbsp;*bkt,&nbsp;<font color="#7f0055"><b>int</b></font>&nbsp;n,&nbsp;<font color="#7f0055"><b>int</b></font>&nbsp;K,&nbsp;<font color="#7f0055"><b>int</b></font>&nbsp;cs,&nbsp;<font color="#7f0055"><b>bool</b></font>&nbsp;end)&nbsp;{<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;<font color="#7f0055"><b>int</b></font>&nbsp;i,&nbsp;sum&nbsp;=&nbsp;<font color="#990000"><b>0</b></font>;<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;<font color="#7f0055"><b>for</b></font>&nbsp;(i&nbsp;=&nbsp;<font color="#990000"><b>0</b></font>;&nbsp;i&nbsp;&lt;=&nbsp;K;&nbsp;i++)<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bkt[i]&nbsp;=&nbsp;<font color="#990000"><b>0</b></font>;&nbsp;//&nbsp;clear&nbsp;all&nbsp;buckets<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;<font color="#7f0055"><b>for</b></font>&nbsp;(i&nbsp;=&nbsp;<font color="#990000"><b>0</b></font>;&nbsp;i&nbsp;&lt;&nbsp;n;&nbsp;i++)<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000"><b>bkt[chr</b></font>(i)]++;&nbsp;//&nbsp;compute&nbsp;the&nbsp;size&nbsp;of&nbsp;each&nbsp;bucket<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;<font color="#7f0055"><b>for</b></font>&nbsp;(i&nbsp;=&nbsp;<font color="#990000"><b>0</b></font>;&nbsp;i&nbsp;&lt;=&nbsp;K;&nbsp;i++)&nbsp;{<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sum&nbsp;+=&nbsp;bkt[i];<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bkt[i]&nbsp;=&nbsp;end&nbsp;?&nbsp;sum&nbsp;:&nbsp;sum&nbsp;-&nbsp;bkt[i];<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;}<br/>
-}<br/>
-//&nbsp;compute&nbsp;SAl<br/>
-<font color="#7f0055"><b>void</b></font>&nbsp;<font color="#000000"><b>induceSAl</b></font>(unsigned&nbsp;<font color="#7f0055"><b>char</b></font>&nbsp;*t,&nbsp;<font color="#7f0055"><b>int</b></font>&nbsp;*SA,&nbsp;unsigned&nbsp;<font color="#7f0055"><b>char</b></font>&nbsp;*s,&nbsp;<font color="#7f0055"><b>int</b></font>&nbsp;*bkt,&nbsp;<font color="#7f0055"><b>int</b></font>&nbsp;n,&nbsp;<font color="#7f0055"><b>int</b></font>&nbsp;K,&nbsp;<font color="#7f0055"><b>int</b></font>&nbsp;cs,&nbsp;<font color="#7f0055"><b>bool</b></font>&nbsp;end)&nbsp;{<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;<font color="#7f0055"><b>int</b></font>&nbsp;i,&nbsp;j;<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000"><b>getBuckets</b></font>(s,&nbsp;bkt,&nbsp;n,&nbsp;K,&nbsp;cs,&nbsp;end);&nbsp;//&nbsp;find&nbsp;starts&nbsp;of&nbsp;buckets<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;<font color="#7f0055"><b>for</b></font>&nbsp;(i&nbsp;=&nbsp;<font color="#990000"><b>0</b></font>;&nbsp;i&nbsp;&lt;&nbsp;n;&nbsp;i++)&nbsp;{<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;j&nbsp;=&nbsp;SA[i]&nbsp;-&nbsp;<font color="#990000"><b>1</b></font>;<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#7f0055"><b>if</b></font>&nbsp;(j&nbsp;&gt;=&nbsp;<font color="#990000"><b>0</b></font>&nbsp;&&&nbsp;<font color="#000000"><b>!tget</b></font>(j))<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SA[bkt[chr(j)]++]&nbsp;=&nbsp;j;<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;}<br/>
-}<br/>
-//&nbsp;compute&nbsp;SAs<br/>
-<font color="#7f0055"><b>void</b></font>&nbsp;<font color="#000000"><b>induceSAs</b></font>(unsigned&nbsp;<font color="#7f0055"><b>char</b></font>&nbsp;*t,&nbsp;<font color="#7f0055"><b>int</b></font>&nbsp;*SA,&nbsp;unsigned&nbsp;<font color="#7f0055"><b>char</b></font>&nbsp;*s,&nbsp;<font color="#7f0055"><b>int</b></font>&nbsp;*bkt,&nbsp;<font color="#7f0055"><b>int</b></font>&nbsp;n,&nbsp;<font color="#7f0055"><b>int</b></font>&nbsp;K,&nbsp;<font color="#7f0055"><b>int</b></font>&nbsp;cs,&nbsp;<font color="#7f0055"><b>bool</b></font>&nbsp;end)&nbsp;{<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;<font color="#7f0055"><b>int</b></font>&nbsp;i,&nbsp;j;<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000"><b>getBuckets</b></font>(s,&nbsp;bkt,&nbsp;n,&nbsp;K,&nbsp;cs,&nbsp;end);&nbsp;//&nbsp;find&nbsp;ends&nbsp;of&nbsp;buckets<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;<font color="#7f0055"><b>for</b></font>&nbsp;(i&nbsp;=&nbsp;n&nbsp;-&nbsp;<font color="#990000"><b>1</b></font>;&nbsp;i&nbsp;&gt;=&nbsp;<font color="#990000"><b>0</b></font>;&nbsp;i--)&nbsp;{<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;j&nbsp;=&nbsp;SA[i]&nbsp;-&nbsp;<font color="#990000"><b>1</b></font>;<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#7f0055"><b>if</b></font>&nbsp;(j&nbsp;&gt;=&nbsp;<font color="#990000"><b>0</b></font>&nbsp;&&&nbsp;<font color="#000000"><b>tget</b></font>(j))<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SA[--bkt[chr(j)]]&nbsp;=&nbsp;j;<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;}<br/>
-}<br/>
-<br/>
-//&nbsp;find&nbsp;the&nbsp;suffix&nbsp;array&nbsp;SA&nbsp;of&nbsp;s[0..n-1]&nbsp;in&nbsp;{1..K}^n<br/>
-//&nbsp;require&nbsp;s[n-1]=<font color="#990000"><b>0</b></font>&nbsp;(the&nbsp;sentinel!),&nbsp;n&gt;=2<br/>
-//&nbsp;use&nbsp;a&nbsp;working&nbsp;space&nbsp;(excluding&nbsp;s&nbsp;and&nbsp;SA)&nbsp;of&nbsp;at&nbsp;most&nbsp;<font color="#990000"><b>2</b></font>.25n+<font color="#000000"><b>O</b></font>(<font color="#990000"><b>1</b></font>)&nbsp;<font color="#7f0055"><b>for</b></font>&nbsp;a&nbsp;constant&nbsp;alphabet<br/>
-<font color="#7f0055"><b>void</b></font>&nbsp;<font color="#000000"><b>SA_IS</b></font>(unsigned&nbsp;<font color="#7f0055"><b>char</b></font>&nbsp;*s,&nbsp;<font color="#7f0055"><b>int</b></font>&nbsp;*SA,&nbsp;<font color="#7f0055"><b>int</b></font>&nbsp;n,&nbsp;<font color="#7f0055"><b>int</b></font>&nbsp;K,&nbsp;<font color="#7f0055"><b>int</b></font>&nbsp;cs)&nbsp;{<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;<font color="#7f0055"><b>int</b></font>&nbsp;i,&nbsp;j;<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;unsigned&nbsp;<font color="#7f0055"><b>char</b></font>&nbsp;*t&nbsp;=&nbsp;(unsigned&nbsp;<font color="#7f0055"><b>char</b></font>&nbsp;*)&nbsp;<font color="#000000"><b>malloc</b></font>(n&nbsp;/&nbsp;<font color="#990000"><b>8</b></font>&nbsp;+&nbsp;<font color="#990000"><b>1</b></font>);&nbsp;//&nbsp;LS-type&nbsp;array&nbsp;in&nbsp;bits<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;Classify&nbsp;the&nbsp;type&nbsp;of&nbsp;each&nbsp;character<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;tset(n-<font color="#990000"><b>2</b></font>,&nbsp;<font color="#990000"><b>0</b></font>);<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000"><b>tset</b></font>(n-<font color="#990000"><b>1</b></font>,&nbsp;<font color="#990000"><b>1</b></font>);&nbsp;//&nbsp;the&nbsp;sentinel&nbsp;must&nbsp;be&nbsp;in&nbsp;s1,&nbsp;important!!!<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;<font color="#7f0055"><b>for</b></font>&nbsp;(i&nbsp;=&nbsp;n&nbsp;-&nbsp;<font color="#990000"><b>3</b></font>;&nbsp;i&nbsp;&gt;=&nbsp;<font color="#990000"><b>0</b></font>;&nbsp;i--)<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tset(i,&nbsp;(chr(i)&lt;chr(i+<font color="#990000"><b>1</b></font>)&nbsp;||&nbsp;(chr(i)==chr(i+<font color="#990000"><b>1</b></font>)&nbsp;&&&nbsp;tget(i+<font color="#990000"><b>1</b></font>)==<font color="#990000"><b>1</b></font>))?1:0);<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;stage&nbsp;1:&nbsp;reduce&nbsp;the&nbsp;problem&nbsp;by&nbsp;at&nbsp;least&nbsp;<font color="#990000"><b>1</b></font>/2<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;sort&nbsp;all&nbsp;the&nbsp;S-substrings<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;<font color="#7f0055"><b>int</b></font>&nbsp;*bkt&nbsp;=&nbsp;(<font color="#7f0055"><b>int</b></font>&nbsp;*)&nbsp;<font color="#000000"><b>malloc</b></font>(<font color="#000000"><b>sizeof</b></font>(<font color="#7f0055"><b>int</b></font>)&nbsp;*&nbsp;(K&nbsp;+&nbsp;<font color="#990000"><b>1</b></font>));&nbsp;//&nbsp;bucket&nbsp;array<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000"><b>getBuckets</b></font>(s,&nbsp;bkt,&nbsp;n,&nbsp;K,&nbsp;cs,&nbsp;<font color="#7f0055"><b>true</b></font>);&nbsp;//&nbsp;find&nbsp;ends&nbsp;of&nbsp;buckets<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;<font color="#7f0055"><b>for</b></font>&nbsp;(i&nbsp;=&nbsp;<font color="#990000"><b>0</b></font>;&nbsp;i&nbsp;&lt;&nbsp;n;&nbsp;i++)<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SA[i]&nbsp;=&nbsp;-<font color="#990000"><b>1</b></font>;<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;<font color="#7f0055"><b>for</b></font>&nbsp;(i&nbsp;=&nbsp;<font color="#990000"><b>1</b></font>;&nbsp;i&nbsp;&lt;&nbsp;n;&nbsp;i++)<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#7f0055"><b>if</b></font>&nbsp;(<font color="#000000"><b>isLMS</b></font>(i))<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SA[--bkt[chr(i)]]&nbsp;=&nbsp;i;<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;induceSAl(t,&nbsp;SA,&nbsp;s,&nbsp;bkt,&nbsp;n,&nbsp;K,&nbsp;cs,&nbsp;<font color="#7f0055"><b>false</b></font>);<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;induceSAs(t,&nbsp;SA,&nbsp;s,&nbsp;bkt,&nbsp;n,&nbsp;K,&nbsp;cs,&nbsp;<font color="#7f0055"><b>true</b></font>);<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;free(bkt);<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;compact&nbsp;all&nbsp;the&nbsp;sorted&nbsp;substrings&nbsp;into&nbsp;the&nbsp;first&nbsp;n1&nbsp;items&nbsp;of&nbsp;SA<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;<font color="#990000"><b>2</b></font>*n1&nbsp;must&nbsp;be&nbsp;not&nbsp;larger&nbsp;than&nbsp;n&nbsp;(proveable)<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;<font color="#7f0055"><b>int</b></font>&nbsp;n1&nbsp;=&nbsp;<font color="#990000"><b>0</b></font>;<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;<font color="#7f0055"><b>for</b></font>&nbsp;(i&nbsp;=&nbsp;<font color="#990000"><b>0</b></font>;&nbsp;i&nbsp;&lt;&nbsp;n;&nbsp;i++)<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#7f0055"><b>if</b></font>&nbsp;(<font color="#000000"><b>isLMS</b></font>(SA[i]))<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SA[n1++]&nbsp;=&nbsp;SA[i];<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;find&nbsp;the&nbsp;lexicographic&nbsp;names&nbsp;of&nbsp;all&nbsp;substrings<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;<font color="#7f0055"><b>for</b></font>&nbsp;(i&nbsp;=&nbsp;n1;&nbsp;i&nbsp;&lt;&nbsp;n;&nbsp;i++)<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SA[i]&nbsp;=&nbsp;-<font color="#990000"><b>1</b></font>;&nbsp;//&nbsp;init&nbsp;the&nbsp;name&nbsp;array&nbsp;buffer<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;<font color="#7f0055"><b>int</b></font>&nbsp;name&nbsp;=&nbsp;<font color="#990000"><b>0</b></font>,&nbsp;prev&nbsp;=&nbsp;-<font color="#990000"><b>1</b></font>;<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;<font color="#7f0055"><b>for</b></font>&nbsp;(i&nbsp;=&nbsp;<font color="#990000"><b>0</b></font>;&nbsp;i&nbsp;&lt;&nbsp;n1;&nbsp;i++)&nbsp;{<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#7f0055"><b>int</b></font>&nbsp;pos&nbsp;=&nbsp;SA[i];<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#7f0055"><b>bool</b></font>&nbsp;diff&nbsp;=&nbsp;<font color="#7f0055"><b>false</b></font>;<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#7f0055"><b>for</b></font>&nbsp;(<font color="#7f0055"><b>int</b></font>&nbsp;d&nbsp;=&nbsp;<font color="#990000"><b>0</b></font>;&nbsp;d&nbsp;&lt;&nbsp;n;&nbsp;d++)<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#7f0055"><b>if</b></font>&nbsp;(prev&nbsp;==&nbsp;-<font color="#990000"><b>1</b></font>&nbsp;||&nbsp;<font color="#000000"><b>chr</b></font>(pos+d)&nbsp;!=&nbsp;<font color="#000000"><b>chr</b></font>(prev+d)&nbsp;||&nbsp;<font color="#000000"><b>tget</b></font>(pos+d)&nbsp;!=&nbsp;<font color="#000000"><b>tget</b></font>(prev+d))&nbsp;{<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;diff&nbsp;=&nbsp;<font color="#7f0055"><b>true</b></font>;<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#7f0055"><b>break</b></font>;<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;else&nbsp;<font color="#7f0055"><b>if</b></font>&nbsp;(d&nbsp;&gt;&nbsp;<font color="#990000"><b>0</b></font>&nbsp;&&&nbsp;(<font color="#000000"><b>isLMS</b></font>(pos+d)&nbsp;||&nbsp;<font color="#000000"><b>isLMS</b></font>(prev+d)))<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#7f0055"><b>break</b></font>;<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#7f0055"><b>if</b></font>&nbsp;(diff)&nbsp;{<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name++;<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prev&nbsp;=&nbsp;pos;<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pos&nbsp;=&nbsp;(pos&nbsp;%&nbsp;<font color="#990000"><b>2</b></font>&nbsp;==&nbsp;<font color="#990000"><b>0</b></font>)&nbsp;?&nbsp;pos&nbsp;/&nbsp;<font color="#990000"><b>2</b></font>&nbsp;:&nbsp;(pos&nbsp;-&nbsp;<font color="#990000"><b>1</b></font>)&nbsp;/&nbsp;<font color="#990000"><b>2</b></font>;<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SA[n1&nbsp;+&nbsp;pos]&nbsp;=&nbsp;name&nbsp;-&nbsp;<font color="#990000"><b>1</b></font>;<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;}<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;<font color="#7f0055"><b>for</b></font>&nbsp;(i&nbsp;=&nbsp;n&nbsp;-&nbsp;<font color="#990000"><b>1</b></font>,&nbsp;j&nbsp;=&nbsp;n&nbsp;-&nbsp;<font color="#990000"><b>1</b></font>;&nbsp;i&nbsp;&gt;=&nbsp;n1;&nbsp;i--)<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#7f0055"><b>if</b></font>&nbsp;(SA[i]&nbsp;&gt;=&nbsp;<font color="#990000"><b>0</b></font>)<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SA[j--]&nbsp;=&nbsp;SA[i];<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;stage&nbsp;2:&nbsp;solve&nbsp;the&nbsp;reduced&nbsp;problem<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;recurse&nbsp;<font color="#7f0055"><b>if</b></font>&nbsp;names&nbsp;are&nbsp;not&nbsp;yet&nbsp;unique<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;<font color="#7f0055"><b>int</b></font>&nbsp;*SA1&nbsp;=&nbsp;SA,&nbsp;*s1&nbsp;=&nbsp;SA&nbsp;+&nbsp;n&nbsp;-&nbsp;n1;<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;<font color="#7f0055"><b>if</b></font>&nbsp;(name&nbsp;&lt;&nbsp;n1)<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SA_IS((unsigned&nbsp;<font color="#7f0055"><b>char</b></font>*)&nbsp;s1,&nbsp;SA1,&nbsp;n1,&nbsp;name&nbsp;-&nbsp;<font color="#990000"><b>1</b></font>,&nbsp;sizeof(<font color="#7f0055"><b>int</b></font>));<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;else<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;generate&nbsp;the&nbsp;suffix&nbsp;array&nbsp;of&nbsp;s1&nbsp;directly<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#7f0055"><b>for</b></font>&nbsp;(i&nbsp;=&nbsp;<font color="#990000"><b>0</b></font>;&nbsp;i&nbsp;&lt;&nbsp;n1;&nbsp;i++)<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SA1[s1[i]]&nbsp;=&nbsp;i;<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;stage&nbsp;3:&nbsp;induce&nbsp;the&nbsp;result&nbsp;<font color="#7f0055"><b>for</b></font>&nbsp;the&nbsp;original&nbsp;problem<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;bkt&nbsp;=&nbsp;(<font color="#7f0055"><b>int</b></font>&nbsp;*)&nbsp;<font color="#000000"><b>malloc</b></font>(<font color="#000000"><b>sizeof</b></font>(<font color="#7f0055"><b>int</b></font>)&nbsp;*&nbsp;(K&nbsp;+&nbsp;<font color="#990000"><b>1</b></font>));&nbsp;//&nbsp;bucket&nbsp;array<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;put&nbsp;all&nbsp;left-most&nbsp;S&nbsp;characters&nbsp;into&nbsp;their&nbsp;buckets<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000"><b>getBuckets</b></font>(s,&nbsp;bkt,&nbsp;n,&nbsp;K,&nbsp;cs,&nbsp;<font color="#7f0055"><b>true</b></font>);&nbsp;//&nbsp;find&nbsp;ends&nbsp;of&nbsp;buckets<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;<font color="#7f0055"><b>for</b></font>&nbsp;(i&nbsp;=&nbsp;<font color="#990000"><b>1</b></font>,&nbsp;j&nbsp;=&nbsp;<font color="#990000"><b>0</b></font>;&nbsp;i&nbsp;&lt;&nbsp;n;&nbsp;i++)<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#7f0055"><b>if</b></font>&nbsp;(<font color="#000000"><b>isLMS</b></font>(i))<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;s1[j++]&nbsp;=&nbsp;i;&nbsp;//&nbsp;get&nbsp;p1<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;<font color="#7f0055"><b>for</b></font>&nbsp;(i&nbsp;=&nbsp;<font color="#990000"><b>0</b></font>;&nbsp;i&nbsp;&lt;&nbsp;n1;&nbsp;i++)<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SA1[i]&nbsp;=&nbsp;s1[SA1[i]];&nbsp;//&nbsp;get&nbsp;index&nbsp;in&nbsp;s<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;<font color="#7f0055"><b>for</b></font>&nbsp;(i&nbsp;=&nbsp;n1;&nbsp;i&nbsp;&lt;&nbsp;n;&nbsp;i++)<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SA[i]&nbsp;=&nbsp;-<font color="#990000"><b>1</b></font>;&nbsp;//&nbsp;init&nbsp;SA[n1..n-<font color="#990000"><b>1</b></font>]<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;<font color="#7f0055"><b>for</b></font>&nbsp;(i&nbsp;=&nbsp;n1&nbsp;-&nbsp;<font color="#990000"><b>1</b></font>;&nbsp;i&nbsp;&gt;=&nbsp;<font color="#990000"><b>0</b></font>;&nbsp;i--)&nbsp;{<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;j&nbsp;=&nbsp;SA[i];<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SA[i]&nbsp;=&nbsp;-<font color="#990000"><b>1</b></font>;<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SA[--bkt[chr(j)]]&nbsp;=&nbsp;j;<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;}<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;induceSAl(t,&nbsp;SA,&nbsp;s,&nbsp;bkt,&nbsp;n,&nbsp;K,&nbsp;cs,&nbsp;<font color="#7f0055"><b>false</b></font>);<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;induceSAs(t,&nbsp;SA,&nbsp;s,&nbsp;bkt,&nbsp;n,&nbsp;K,&nbsp;cs,&nbsp;<font color="#7f0055"><b>true</b></font>);<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;free(bkt);<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;free(t);<br/>
-}<br/>
-<br/>
-<font color="#7f0055"><b>const</b></font>&nbsp;<font color="#7f0055"><b>int</b></font>&nbsp;maxn&nbsp;=&nbsp;<font color="#990000"><b>200000</b></font>;<br/>
-<font color="#7f0055"><b>int</b></font>&nbsp;sa[maxn];<br/>
-<font color="#7f0055"><b>int</b></font>&nbsp;lcp[maxn];<br/>
-<font color="#7f0055"><b>int</b></font>&nbsp;rank[maxn];<br/>
-unsigned&nbsp;<font color="#7f0055"><b>char</b></font>&nbsp;*s;<br/>
+map&lt;<font color="#7f0055"><b>int</b></font>,&nbsp;<font color="#7f0055"><b>int</b></font>&gt;&nbsp;t;<br/>
 <font color="#7f0055"><b>int</b></font>&nbsp;n;<br/>
 <br/>
-<font color="#7f0055"><b>void</b></font>&nbsp;<font color="#000000"><b>calc_lcp</b></font>()&nbsp;{<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;<font color="#7f0055"><b>for</b></font>&nbsp;(<font color="#7f0055"><b>int</b></font>&nbsp;i&nbsp;=&nbsp;<font color="#990000"><b>0</b></font>;&nbsp;i&nbsp;&lt;&nbsp;n;&nbsp;i++)<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rank[sa[i]]&nbsp;=&nbsp;i;<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;<font color="#7f0055"><b>for</b></font>&nbsp;(<font color="#7f0055"><b>int</b></font>&nbsp;i&nbsp;=&nbsp;<font color="#990000"><b>0</b></font>,&nbsp;h&nbsp;=&nbsp;<font color="#990000"><b>0</b></font>;&nbsp;i&nbsp;&lt;&nbsp;n;&nbsp;i++)&nbsp;{<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#7f0055"><b>if</b></font>&nbsp;(rank[i]&nbsp;&lt;&nbsp;n&nbsp;-&nbsp;<font color="#990000"><b>1</b></font>)&nbsp;{<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#7f0055"><b>for</b></font>&nbsp;(<font color="#7f0055"><b>int</b></font>&nbsp;j&nbsp;=&nbsp;sa[rank[i]&nbsp;+&nbsp;1];&nbsp;s[i&nbsp;+&nbsp;h]&nbsp;==&nbsp;s[j&nbsp;+&nbsp;h];&nbsp;++h)<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lcp[rank[i]]&nbsp;=&nbsp;h;<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#7f0055"><b>if</b></font>&nbsp;(h&nbsp;&gt;&nbsp;<font color="#990000"><b>0</b></font>)<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--h;<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;}<br/>
+<font color="#7f0055"><b>void</b></font>&nbsp;<font color="#000000"><b>add</b></font>(<font color="#7f0055"><b>int</b></font>&nbsp;i,&nbsp;<font color="#7f0055"><b>int</b></font>&nbsp;value)&nbsp;{<br/>
+&nbsp;&nbsp;<font color="#7f0055"><b>for</b></font>&nbsp;(;&nbsp;i&nbsp;&lt;&nbsp;n;&nbsp;i&nbsp;|=&nbsp;i&nbsp;+&nbsp;<font color="#990000"><b>1</b></font>)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;t[i]&nbsp;+=&nbsp;value;<br/>
 }<br/>
 <br/>
-<font color="#7f0055"><b>int</b></font>&nbsp;<font color="#000000"><b>main</b></font>()&nbsp;{<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;string&nbsp;str&nbsp;=&nbsp;"abcab";<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;n&nbsp;=&nbsp;str.size();<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;s&nbsp;=&nbsp;(unsigned&nbsp;<font color="#7f0055"><b>char</b></font>*)&nbsp;str.c_str();<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;SA_IS(s,&nbsp;sa,&nbsp;n&nbsp;+&nbsp;<font color="#990000"><b>1</b></font>,&nbsp;<font color="#990000"><b>256</b></font>,&nbsp;<font color="#990000"><b>1</b></font>);<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;calc_lcp();<br/>
+<font color="#7f0055"><b>int</b></font>&nbsp;<font color="#000000"><b>sum</b></font>(<font color="#7f0055"><b>int</b></font>&nbsp;i)&nbsp;{<br/>
+&nbsp;&nbsp;<font color="#7f0055"><b>int</b></font>&nbsp;res&nbsp;=&nbsp;<font color="#990000"><b>0</b></font>;<br/>
+&nbsp;&nbsp;<font color="#7f0055"><b>for</b></font>&nbsp;(;&nbsp;i&nbsp;&gt;=&nbsp;<font color="#990000"><b>0</b></font>;&nbsp;i&nbsp;-=&nbsp;-~i&nbsp;&&nbsp;~i)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#7f0055"><b>if</b></font>&nbsp;(t.count(i))&nbsp;res&nbsp;+=&nbsp;t[i];<br/>
+&nbsp;&nbsp;<font color="#7f0055"><b>return</b></font>&nbsp;res;<br/>
+}<br/>
 <br/>
-&nbsp;&nbsp;&nbsp;&nbsp;<font color="#7f0055"><b>for</b></font>&nbsp;(<font color="#7f0055"><b>int</b></font>&nbsp;i&nbsp;=&nbsp;<font color="#990000"><b>0</b></font>;&nbsp;i&nbsp;&lt;&nbsp;n;&nbsp;i++)&nbsp;{<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cout&nbsp;&lt;&lt;&nbsp;str.substr(sa[i&nbsp;+&nbsp;1]);<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#7f0055"><b>if</b></font>&nbsp;(i&nbsp;&lt;&nbsp;n&nbsp;-&nbsp;<font color="#990000"><b>1</b></font>)<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cout&nbsp;&lt;&lt;&nbsp;"&nbsp;"&nbsp;&lt;&lt;&nbsp;lcp[i&nbsp;+&nbsp;1];<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cout&nbsp;&lt;&lt;&nbsp;endl;<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;}<br/>
+<font color="#3F5FBF"><b>// sum[a,b]</b></font><br/>
+<font color="#7f0055"><b>int</b></font>&nbsp;<font color="#000000"><b>sum</b></font>(<font color="#7f0055"><b>int</b></font>&nbsp;a,&nbsp;<font color="#7f0055"><b>int</b></font>&nbsp;b)&nbsp;{<br/>
+&nbsp;&nbsp;<font color="#7f0055"><b>return</b></font>&nbsp;sum(b)&nbsp;-&nbsp;sum(a&nbsp;-&nbsp;<font color="#990000"><b>1</b></font>);<br/>
+}<br/>
+<br/>
+<font color="#7f0055"><b>int</b></font>&nbsp;<font color="#000000"><b>get</b></font>(<font color="#7f0055"><b>int</b></font>&nbsp;i)&nbsp;{<br/>
+&nbsp;&nbsp;<font color="#7f0055"><b>return</b></font>&nbsp;sum(i,&nbsp;i);<br/>
+}<br/>
+<br/>
+<font color="#7f0055"><b>void</b></font>&nbsp;<font color="#000000"><b>set</b></font>(<font color="#7f0055"><b>int</b></font>&nbsp;i,&nbsp;<font color="#7f0055"><b>int</b></font>&nbsp;value)&nbsp;{<br/>
+&nbsp;&nbsp;add(i,&nbsp;-get(i)&nbsp;+&nbsp;value);<br/>
+}<br/>
+<br/>
+<font color="#3F5FBF"><b>// Usage example</b></font><br/>
+<font color="#7f0055"><b>int</b></font>&nbsp;<font color="#000000"><b>main</b></font>()&nbsp;{<br/>
+&nbsp;&nbsp;n&nbsp;=&nbsp;<font color="#990000"><b>4</b></font>;<br/>
+&nbsp;&nbsp;set(<font color="#990000"><b>0</b></font>,&nbsp;<font color="#990000"><b>4</b></font>);<br/>
+&nbsp;&nbsp;set(<font color="#990000"><b>1</b></font>,&nbsp;<font color="#990000"><b>5</b></font>);<br/>
+&nbsp;&nbsp;set(<font color="#990000"><b>2</b></font>,&nbsp;<font color="#990000"><b>5</b></font>);<br/>
+&nbsp;&nbsp;add(<font color="#990000"><b>2</b></font>,&nbsp;<font color="#990000"><b>5</b></font>);<br/>
+<br/>
+&nbsp;&nbsp;cout&nbsp;&lt;&lt;&nbsp;(<font color="#990000"><b>4</b></font>&nbsp;==&nbsp;get(<font color="#990000"><b>0</b></font>))&nbsp;&lt;&lt;&nbsp;endl;<br/>
+&nbsp;&nbsp;cout&nbsp;&lt;&lt;&nbsp;(<font color="#990000"><b>19</b></font>&nbsp;==&nbsp;sum(<font color="#990000"><b>0</b></font>,&nbsp;<font color="#990000"><b>2</b></font>))&nbsp;&lt;&lt;&nbsp;endl;<br/>
+&nbsp;&nbsp;cout&nbsp;&lt;&lt;&nbsp;(<font color="#990000"><b>15</b></font>&nbsp;==&nbsp;sum(<font color="#990000"><b>1</b></font>,&nbsp;<font color="#990000"><b>2</b></font>))&nbsp;&lt;&lt;&nbsp;endl;<br/>
 }<br/>
 </code>
