@@ -23,8 +23,8 @@ public class Code2Html {
 		}
 
 		BufferedReader br = new BufferedReader(new FileReader(
-				new File("D://projects//olymp//wikialgo//java//input.txt")));
-		PrintWriter pw = new PrintWriter(new File("D://projects//olymp//wikialgo//java//output.txt"));
+				new File("D://projects//olymp//wikialgo//cpp//input.txt")));
+		PrintWriter pw = new PrintWriter(new File("D://projects//olymp//wikialgo//cpp//output.txt"));
 
 		pw.println("<code>");
 
