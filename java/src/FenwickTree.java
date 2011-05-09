@@ -19,14 +19,14 @@ public class FenwickTree {
 	}
 
 	public void add(int i, int value) {
-		for (; i < n; i |= i + 1 /* i += (i + 1) & -(i + 1) */)
+		for (; i < n; i += (i + 1) & -(i + 1))
 			t[i] += value;
 	}
 
 	// sum[0,i]
 	public int sum(int i) {
 		int res = 0;
-		for (; i >= 0; i -= -~i & ~i /* i -= (i + 1) & -(i + 1) */)
+		for (; i >= 0; i -= (i + 1) & -(i + 1))
 			res += t[i];
 		return res;
 	}
@@ -40,11 +40,11 @@ public class FenwickTree {
 		// return sum(i) - sum(i - 1);
 		int res = t[i];
 		if (i > 0) {
-			int lca = i - (-~i & ~i);
+			int lca = i - ((i + 1) & -(i + 1));
 			--i;
 			while (i != lca) {
 				res -= t[i];
-				i -= -~i & ~i;
+				i -= (i + 1) & -(i + 1);
 			}
 		}
 		return res;
@@ -91,7 +91,8 @@ public class FenwickTree {
 	}
 
 	// position of the k'th free element starting from x1
-	// assumption: k > 0
+	// precondition: k > 0
+	// warn: log^2(n) complexity
 	public int getKthZeroCyclic(int x1, int k) {
 		int totZeros = getZeros(n - 1);
 		k = (k + totZeros - 1) % totZeros + 1;

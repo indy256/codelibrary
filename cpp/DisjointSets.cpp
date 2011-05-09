@@ -14,27 +14,23 @@ void init(int _n) {
 }
 
 int root(int x) {
-	if (x == p[x]) return x;
-	return p[x] = root(p[x]);
+	while (x != p[x]) x = p[x];
+	return x;
 }
 
 void unite(int a, int b) {
 	a = root(a);
 	b = root(b);
-	if (a == b)return;
-	if (Rank[a] < Rank[b]) {
-		p[a] = b;
-	} else {
-		p[b] = a;
-		if (Rank[a] == Rank[b])
-			++Rank[a];
-	}
+	if (a == b) return;
+	if (Rank[a] < Rank[b]) swap(a, b);
+	if (Rank[a] == Rank[b]) ++Rank[a];
+	p[b] = a;
 }
 
 int main() {
 	init(3);
 	unite(0, 2);
-	cout << root(0) << endl;
-	cout << root(1) << endl;
-	cout << root(2) << endl;
+	cout << (0 == root(0)) << endl;
+	cout << (1 == root(1)) << endl;
+	cout << (0 == root(2)) << endl;
 }
