@@ -103,9 +103,9 @@ public class CharacterRecognition {
 		final int textColor = 255;
 		Random rnd = new Random(1);
 
-		for (int step = 0; step < 100; step++) {
-			int sR = rnd.nextInt(30) + 1;
-			int sC = rnd.nextInt(30) + 1;
+		for (int step = 0; step < 1000; step++) {
+			int sR = rnd.nextInt(10) + 1;
+			int sC = rnd.nextInt(10) + 1;
 			boolean[][] s = new boolean[sR][sC];
 			for (int r = 0; r < sR; r++) {
 				for (int c = 0; c < sC; c++) {
@@ -113,8 +113,8 @@ public class CharacterRecognition {
 				}
 			}
 
-			int pR = rnd.nextInt(300) + sR;
-			int pC = rnd.nextInt(300) + sC;
+			int pR = rnd.nextInt(100) + sR;
+			int pC = rnd.nextInt(100) + sC;
 			int[][] p = new int[pR][pC];
 			for (int r = 0; r < sR; r++) {
 				for (int c = 0; c < sC; c++) {
