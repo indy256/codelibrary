@@ -4,7 +4,7 @@ import java.util.*;
 // Based on http://web.cecs.pdx.edu/~mperkows/temp/HOM1/findMaxClique.pdf
 public class BronKerbosh {
 
-	public static void maximumIndependentSet(List<Integer> cur, List<Integer> result, boolean[][] graph, int[] oldSet,
+	static void maximumIndependentSet0(List<Integer> cur, List<Integer> result, boolean[][] graph, int[] oldSet,
 			int ne, int ce) {
 		int nod = 0;
 		int minnod = ce;
@@ -60,7 +60,7 @@ public class BronKerbosh {
 				}
 			} else if (newne < newce) {
 				if (cur.size() + newce - newne > result.size())
-					maximumIndependentSet(cur, result, graph, newSet, newne, newce);
+					maximumIndependentSet0(cur, result, graph, newSet, newne, newce);
 			}
 
 			cur.remove(cur.size() - 1);
@@ -68,6 +68,16 @@ public class BronKerbosh {
 				for (s = ++ne; !graph[fixp][oldSet[s]]; s++)
 					;
 		}
+	}
+
+	public static List<Integer> maximumIndependentSet(boolean[][] graph) {
+		int n = graph.length;
+		int[] all = new int[n];
+		for (int i = 0; i < n; i++)
+			all[i] = i;
+		List<Integer> res = new ArrayList<Integer>();
+		maximumIndependentSet0(new ArrayList<Integer>(), res, graph, all, 0, n);
+		return res;
 	}
 
 	// Usage example
@@ -81,12 +91,7 @@ public class BronKerbosh {
 		g[2][3] = g[3][2] = true;
 		g[3][0] = g[0][3] = true;
 
-		int[] all = new int[n];
-		for (int i = 0; i < n; i++)
-			all[i] = i;
-
-		List<Integer> res = new ArrayList<Integer>();
-		maximumIndependentSet(new ArrayList<Integer>(), res, g, all, 0, n);
+		List<Integer> res = maximumIndependentSet(g);
 
 		List<Integer> expectedResult = new ArrayList<Integer>();
 		Collections.addAll(expectedResult, 0, 2);
