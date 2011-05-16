@@ -35,7 +35,7 @@ public class TreeIsoCheck {
 	static void genCase(int id, List<Integer> list, PrintStream ps) throws FileNotFoundException {
 		ps.println(list.size());
 		for (int n : list) {
-			n = rnd.nextInt(20) + 2;
+			n = rnd.nextInt(30) + 2;
 //			 n=5;
 			ps.println(n);
 			List[][] t = { TreeGenerator.generateRandomTree(n, rnd), TreeGenerator.generateRandomTree(n, rnd) };

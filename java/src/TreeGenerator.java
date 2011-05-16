@@ -53,12 +53,80 @@ public class TreeGenerator {
 	}
 
 	// precondition: n >= 2
-	public static List<Integer>[] generateRandomTree(int n, Random rnd) {
-		int[] a = new int[n - 2];
+	public static List<Integer>[] getRandomTree(int V, Random rnd) {
+		int[] a = new int[V - 2];
 		for (int i = 0; i < a.length; i++) {
-			a[i] = rnd.nextInt(n);
+			a[i] = rnd.nextInt(V);
 		}
 		return prufer2Tree(a);
+	}
+
+	static class Edge {
+		int u;
+		int v;
+
+		public Edge(int u, int v) {
+			this.u = u;
+			this.v = v;
+		}
+
+		@Override
+		public int hashCode() {
+			return u * 31 + v;
+		}
+
+		@Override
+		public boolean equals(Object o) {
+			Edge e = (Edge) o;
+			return u == e.u && v == e.v;
+		}
+	}
+
+	static int[] getRandomCombination(int n, int m, Random rnd) {
+		int[] res = new int[n];
+		for (int i = 0; i < n; i++) {
+			res[i] = i;
+		}
+		for (int i = 0; i < m; i++) {
+			int j = n - 1 - rnd.nextInt(n - i);
+			int t = res[i];
+			res[i] = res[j];
+			res[j] = t;
+		}
+		return Arrays.copyOf(res, m);
+	}
+
+	// precondition: V >= 2, V-1 <= E <= V*(V-1)/2
+	public static List<Integer>[] getRandomConnectedGraph(int V, int E, Random rnd) {
+		List<Integer>[] g = getRandomTree(V, rnd);
+		Set<Edge> edges = new LinkedHashSet<Edge>();
+		for (int i = 0; i < V; i++) {
+			for (int j = i + 1; j < V; j++) {
+				edges.add(new Edge(i, j));
+			}
+		}
+		for (int i = 0; i < V; i++) {
+			for (int j : g[i]) {
+				edges.remove(new Edge(i, j));
+			}
+		}
+		List<Edge> edgesList = new ArrayList<Edge>(edges);
+		boolean[] used = new boolean[edgesList.size()];
+		for (int x : getRandomCombination(edgesList.size(), E - (V - 1), rnd)) {
+			used[x] = true;
+		}
+		for (int i = 0; i < edgesList.size(); i++) {
+			if (used[i]) {
+				int a = edgesList.get(i).u;
+				int b = edgesList.get(i).v;
+				g[a].add(b);
+				g[b].add(a);
+			}
+		}
+		for (int i = 0; i < V; i++) {
+			Collections.sort(g[i]);
+		}
+		return g;
 	}
 
 	public static void main(String[] args) {
