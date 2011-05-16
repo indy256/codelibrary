@@ -38,7 +38,7 @@ public class TreeIsoCheck {
 			n = rnd.nextInt(30) + 2;
 //			 n=5;
 			ps.println(n);
-			List[][] t = { TreeGenerator.generateRandomTree(n, rnd), TreeGenerator.generateRandomTree(n, rnd) };
+			List[][] t = { RandomGraph.generateRandomTree(n, rnd), RandomGraph.generateRandomTree(n, rnd) };
 			for (int i = 0; i < t.length; i++) {
 				for (int u = 0; u < n; u++) {
 					for (int v : (List<Integer>) t[i][u]) {

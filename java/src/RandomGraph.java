@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class TreeGenerator {
+public class RandomGraph {
 
 	static class Node implements Comparable<Node> {
 		int degree;
@@ -11,6 +11,7 @@ public class TreeGenerator {
 			this.num = num;
 		}
 
+		@Override
 		public int compareTo(Node o) {
 			if (degree != o.degree)
 				return degree < o.degree ? -1 : 1;
@@ -99,33 +100,31 @@ public class TreeGenerator {
 	// precondition: V >= 2, V-1 <= E <= V*(V-1)/2
 	public static List<Integer>[] getRandomConnectedGraph(int V, int E, Random rnd) {
 		List<Integer>[] g = getRandomTree(V, rnd);
-		Set<Edge> edges = new LinkedHashSet<Edge>();
+		Set<Edge> edgeSet = new LinkedHashSet<Edge>();
 		for (int i = 0; i < V; i++) {
 			for (int j = i + 1; j < V; j++) {
-				edges.add(new Edge(i, j));
+				edgeSet.add(new Edge(i, j));
 			}
 		}
 		for (int i = 0; i < V; i++) {
 			for (int j : g[i]) {
-				edges.remove(new Edge(i, j));
+				edgeSet.remove(new Edge(i, j));
 			}
 		}
-		List<Edge> edgesList = new ArrayList<Edge>(edges);
-		boolean[] used = new boolean[edgesList.size()];
-		for (int x : getRandomCombination(edgesList.size(), E - (V - 1), rnd)) {
+		List<Edge> edges = new ArrayList<Edge>(edgeSet);
+		boolean[] used = new boolean[edges.size()];
+		for (int x : getRandomCombination(edges.size(), E - (V - 1), rnd)) {
 			used[x] = true;
 		}
-		for (int i = 0; i < edgesList.size(); i++) {
+		for (int i = 0; i < edges.size(); i++) {
 			if (used[i]) {
-				int a = edgesList.get(i).u;
-				int b = edgesList.get(i).v;
-				g[a].add(b);
-				g[b].add(a);
+				Edge e = edges.get(i);
+				g[e.u].add(e.v);
+				g[e.v].add(e.u);
 			}
 		}
-		for (int i = 0; i < V; i++) {
+		for (int i = 0; i < V; i++)
 			Collections.sort(g[i]);
-		}
 		return g;
 	}
 
