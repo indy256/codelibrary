@@ -131,5 +131,42 @@ public class RandomGraph {
 	public static void main(String[] args) {
 		System.out.println(Arrays.toString(prufer2Tree(new int[] { 3, 3, 3, 4 })));
 		System.out.println(Arrays.toString(prufer2Tree(new int[] { 0, 0 })));
+
+		Random rnd = new Random(1);
+		for (int step = 0; step < 1000; step++) {
+			int V = rnd.nextInt(50) + 2;
+			checkGraph(V, V - 1, rnd);
+			checkGraph(V, V * (V - 1) / 2, rnd);
+			checkGraph(V, rnd.nextInt(V * (V - 1) / 2 - (V - 1) + 1) + V - 1, rnd);
+		}
+	}
+
+	static void checkGraph(int V, int E, Random rnd) {
+		List<Integer>[] g = getRandomConnectedGraph(V, E, rnd);
+		int n = g.length;
+		int[][] a = new int[n][n];
+		int edges = 0;
+		for (int i = 0; i < n; i++) {
+			for (int j : g[i]) {
+				++a[i][j];
+				++edges;
+			}
+		}
+		if (edges != 2 * E) {
+			throw new RuntimeException();
+		}
+		for (int i = 0; i < n; i++) {
+			if (a[i][i] != 0) {
+				throw new RuntimeException();
+			}
+			for (int j = 0; j < n; j++) {
+				if (a[i][j] != a[j][i]) {
+					throw new RuntimeException();
+				}
+				if (a[i][j] != 0 && a[i][j] != 1) {
+					throw new RuntimeException();
+				}
+			}
+		}
 	}
 }

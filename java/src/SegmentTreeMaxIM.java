@@ -49,17 +49,17 @@ public class SegmentTreeMaxIM {
 	
 	void add(int i, int j, int v)
 	{
-		update(i-1);
-		update(j);
-		for (i += maxn-1, j += maxn; i+1 < j; i >>= 1, j >>= 1)
-		{
-			if (!(i & 1))
-				a[i+1] += v;
-			if (j & 1)
-				a[j-1] += v;
+//		update(i-1);
+//		update(j);
+//		for (i += maxn-1, j += maxn; i+1 < j; i >>= 1, j >>= 1)
+//		{
+//			if (!(i & 1))
+//				a[i+1] += v;
+//			if (j & 1)
+//				a[j-1] += v;
 			//a[i/2] = min(a[i/2*2], a[i/2*2+1]);
 			//a[j/2] = min(a[j/2*2], a[j/2*2+1]);
-		}
+//		}
 	}
 
 

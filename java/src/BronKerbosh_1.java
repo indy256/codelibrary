@@ -2,13 +2,13 @@ import java.util.*;
 
 // Search for maximum independent set
 // Based on http://web.cecs.pdx.edu/~mperkows/temp/HOM1/findMaxClique.pdf
-public class BronKerbosh {
+public class BronKerbosh_1 {
 
 	static void maximumIndependentSet0(List<Integer> cur, List<Integer> result, boolean[][] graph, int[] oldSet,
 			int ne, int ce) {
 		int nod = 0;
 		int minnod = ce;
- 		int fixp = -1;
+		int fixp = -1;
 		int s = -1;
 
 		for (int i = 0; i < ce && minnod != 0; i++) {
@@ -26,9 +26,9 @@ public class BronKerbosh {
 			if (minnod > cnt) {
 				minnod = cnt;
 				fixp = p;
-				if (i < ne) {
+				if (i < ne)
 					s = pos;
-				} else {
+				else {
 					s = i;
 					nod = 1;
 				}
@@ -89,8 +89,9 @@ public class BronKerbosh {
 		List<Integer>[] graph = RandomGraph.getRandomConnectedGraph(V, E, rnd);
 		long time = System.currentTimeMillis();
 		List<Integer> mis = maximumIndependentSet(convert(graph));
-		System.out.println(System.currentTimeMillis() - time);
-		System.out.println(mis.size() + " " + mis);
+		System.out.println(System.currentTimeMillis()-time);
+		System.out.println(mis.size());
+		System.out.println(mis);
 	}
 
 	static boolean[][] convert(List<Integer>[] graph) {
