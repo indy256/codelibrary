@@ -4,11 +4,14 @@ import java.util.*;
 // Based on http://web.cecs.pdx.edu/~mperkows/temp/HOM1/findMaxClique.pdf
 public class BronKerbosh {
 
-	static void maximumIndependentSet0(List<Integer> cur, List<Integer> result, boolean[][] graph, int[] oldSet,
+	static long time;
+
+	static void findMaximumIndependentSet(List<Integer> cur, List<Integer> result, boolean[][] graph, int[] oldSet,
 			int ne, int ce) {
+		// if(System.currentTimeMillis()-time>1000)return;
 		int nod = 0;
 		int minnod = ce;
- 		int fixp = -1;
+		int fixp = -1;
 		int s = -1;
 
 		for (int i = 0; i < ce && minnod != 0; i++) {
@@ -60,7 +63,7 @@ public class BronKerbosh {
 				}
 			} else if (newne < newce) {
 				if (cur.size() + newce - newne > result.size())
-					maximumIndependentSet0(cur, result, graph, newSet, newne, newce);
+					findMaximumIndependentSet(cur, result, graph, newSet, newne, newce);
 			}
 
 			cur.remove(cur.size() - 1);
@@ -76,14 +79,15 @@ public class BronKerbosh {
 		for (int i = 0; i < n; i++)
 			all[i] = i;
 		List<Integer> res = new ArrayList<Integer>();
-		maximumIndependentSet0(new ArrayList<Integer>(), res, graph, all, 0, n);
+		findMaximumIndependentSet(new ArrayList<Integer>(), res, graph, all, 0, n);
 		return res;
 	}
 
 	// Usage example
 	public static void main(String[] args) {
+		time = System.currentTimeMillis();
 		Random rnd = new Random(1);
-		int V = 120;
+		int V = 250;
 		int E = V * (V - 1) / 2 / 5;
 		System.out.println(V + " " + E);
 		List<Integer>[] graph = RandomGraph.getRandomConnectedGraph(V, E, rnd);

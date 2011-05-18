@@ -2,7 +2,7 @@ import java.util.*;
 
 // Search for maximum independent set
 // See Christofides "Graph Theory" 2.3 for the description of the algorithm
-public class BronKerbosh1 {
+public class BronKerbosh3 {
 
 	// input:
 	// cur - current independent state (initially empty)
@@ -20,21 +20,31 @@ public class BronKerbosh1 {
 			return;
 		}
 
-		while (!notUsed.isEmpty()) {
-			int v = notUsed.iterator().next();
-			if (!used.isEmpty()) {
-				int min = Integer.MAX_VALUE;
-				for (int u : used) {
-					Set<Integer> t = new HashSet<Integer>(edges[u]);
-					t.retainAll(notUsed);
-					if (t.isEmpty())
-						return;
-					if (min > t.size()) {
-						min = t.size();
-						v = t.iterator().next();
-					}
-				}
+		if (notUsed.isEmpty()) {
+			return;
+		}
+
+		Set<Integer> workingSet = null;
+		for (int u : notUsed) {
+			Set<Integer> t = new HashSet<Integer>(edges[u]);
+			t.retainAll(notUsed);
+			t.add(u);
+			if (workingSet == null || workingSet.size() > t.size()) {
+				workingSet = t;
 			}
+		}
+
+		for (int u : used) {
+			Set<Integer> t = new HashSet<Integer>(edges[u]);
+			t.retainAll(notUsed);
+			if (t.isEmpty())
+				return;
+			if (workingSet == null || workingSet.size() > t.size()) {
+				workingSet = t;
+			}
+		}
+
+		for (int v : workingSet) {
 			Set<Integer> next_used = new HashSet<Integer>(used);
 			Set<Integer> next_notUsed = new HashSet<Integer>(notUsed);
 			next_used.removeAll(edges[v]);
