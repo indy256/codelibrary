@@ -2,10 +2,13 @@ import java.util.*;
 
 // Search for maximum independent set
 // Based on http://web.cecs.pdx.edu/~mperkows/temp/HOM1/findMaxClique.pdf
-public class BronKerbosh_1 {
+public class BronKerboshSort {
 
-	static void maximumIndependentSet0(List<Integer> cur, List<Integer> result, boolean[][] graph, int[] oldSet,
+	static long time;
+
+	static void findMaximumIndependentSet(List<Integer> cur, List<Integer> result, boolean[][] graph, int[] oldSet,
 			int ne, int ce) {
+		// if(System.currentTimeMillis()-time>1000)return;
 		int nod = 0;
 		int minnod = ce;
 		int fixp = -1;
@@ -26,9 +29,9 @@ public class BronKerbosh_1 {
 			if (minnod > cnt) {
 				minnod = cnt;
 				fixp = p;
-				if (i < ne)
+				if (i < ne) {
 					s = pos;
-				else {
+				} else {
 					s = i;
 					nod = 1;
 				}
@@ -60,7 +63,7 @@ public class BronKerbosh_1 {
 				}
 			} else if (newne < newce) {
 				if (cur.size() + newce - newne > result.size())
-					maximumIndependentSet0(cur, result, graph, newSet, newne, newce);
+					findMaximumIndependentSet(cur, result, graph, newSet, newne, newce);
 			}
 
 			cur.remove(cur.size() - 1);
@@ -76,22 +79,65 @@ public class BronKerbosh_1 {
 		for (int i = 0; i < n; i++)
 			all[i] = i;
 		List<Integer> res = new ArrayList<Integer>();
-		maximumIndependentSet0(new ArrayList<Integer>(), res, graph, all, 0, n);
+		findMaximumIndependentSet(new ArrayList<Integer>(), res, graph, all, 0, n);
 		return res;
 	}
 
 	// Usage example
 	public static void main(String[] args) {
+		time = System.currentTimeMillis();
 		Random rnd = new Random(1);
-		int V = 120;
+		int V = 20;
 		int E = V * (V - 1) / 2 / 5;
 		System.out.println(V + " " + E);
 		List<Integer>[] graph = RandomGraph.getRandomConnectedGraph(V, E, rnd);
 		long time = System.currentTimeMillis();
+
+		graph = sortVertices(graph);
+		System.out.println(Arrays.toString(graph));
+
 		List<Integer> mis = maximumIndependentSet(convert(graph));
-		System.out.println(System.currentTimeMillis()-time);
-		System.out.println(mis.size());
-		System.out.println(mis);
+		System.out.println(System.currentTimeMillis() - time);
+		System.out.println(mis.size() + " " + mis);
+	}
+
+	static List<Integer>[] sortVertices(List<Integer>[] graph) {
+		int V = graph.length;
+		Graph g = new Graph();
+		Graph g1 = new Graph();
+		for (int i = 0; i < graph.length; i++) {
+			for (int j : graph[i]) {
+				g.addEdge(i, j);
+				g1.addEdge(i, j);
+			}
+		}
+		int[] p = new int[V];
+		for (int i = 0; i < V; i++) {
+			int max = Integer.MIN_VALUE;
+			int maxv = -1;
+			for (int v : g.edges.keySet()) {
+				if (max < g.edges.get(v).size()) {
+					max = g.edges.get(v).size();
+					maxv = v;
+				}
+			}
+			p[i] = maxv;
+			g.removeNode(maxv);
+		}
+		int[] rp = new int[V];
+		for (int i = 0; i < V; i++) {
+			rp[p[i]] = i;
+		}
+		graph = new List[V];
+		for (int i = 0; i < V; i++) {
+			graph[i] = new ArrayList<Integer>();
+		}
+		for (int i = 0; i < V; i++) {
+			for (int j : g1.edges.get(p[i])) {
+				graph[i].add(rp[j]);
+			}
+		}
+		return graph;
 	}
 
 	static boolean[][] convert(List<Integer>[] graph) {
