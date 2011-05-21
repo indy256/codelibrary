@@ -39,23 +39,23 @@ public class KdTree {
 		return node;
 	}
 
-	static double EPS = 1e-9;
-	double closestDist;
-	Node closestNode;
+	final static double EPS = 1e-9;
+	double bestDist;
+	Node bestNode;
 
-	public Node findNearestNeighbour(double x, double y) {
-		closestDist = Double.POSITIVE_INFINITY;
-		findNearestNeighbour(root, x, y, true);
-		return closestNode;
+	public Node findNearest(double x, double y) {
+		bestDist = Double.POSITIVE_INFINITY;
+		findNearest(root, x, y, true);
+		return bestNode;
 	}
 
-	void findNearestNeighbour(Node node, double x, double y, boolean divX) {
+	void findNearest(Node node, double x, double y, boolean divX) {
 		if (node == null)
 			return;
 		double d = Point2D.distanceSq(node.p.x, node.p.y, x, y);
-		if (closestDist > d) {
-			closestDist = d;
-			closestNode = node;
+		if (bestDist > d) {
+			bestDist = d;
+			bestNode = node;
 		}
 		double delta = divX ? x - node.p.x : y - node.p.y;
 		double delta2 = delta * delta;
@@ -63,9 +63,9 @@ public class KdTree {
 		Node node1 = delta < 0 ? node.left : node.right;
 		Node node2 = delta < 0 ? node.right : node.left;
 
-		findNearestNeighbour(node1, x, y, !divX);
-		if (delta2 < closestDist) {
-			findNearestNeighbour(node2, x, y, !divX);
+		findNearest(node1, x, y, !divX);
+		if (delta2 < bestDist) {
+			findNearest(node2, x, y, !divX);
 		}
 	}
 
@@ -78,7 +78,7 @@ public class KdTree {
 			points[i] = new Point2D.Double(x[i], y[i]);
 		}
 		KdTree kdTree = new KdTree(points);
-		KdTree.Node res = kdTree.findNearestNeighbour(6, 3);
+		KdTree.Node res = kdTree.findNearest(6, 3);
 		System.out.println(res.p == points[3]);
 	}
 }

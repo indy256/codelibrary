@@ -1,72 +1,120 @@
+import java.util.*;
+
 public class CoverTree {
-	int[] add;
-	int[] minCount;
-	int[] min;
-	int n;
 
-	void buildTree(int node, int left, int right) {
-		minCount[node] = right - left + 1;
-		if (left < right) {
-			int mid = (left + right) >> 1;
-			buildTree(node * 2, left, mid);
-			buildTree(node * 2 + 1, mid + 1, right);
+	static double dist(Node p1, Node p2) {
+		double dx = p1.x - p2.x;
+		double dy = p1.y - p2.y;
+		return Math.sqrt(dx * dx + dy * dy);
+	}
+
+	static class Node {
+		double x, y;
+		Map<Integer, List<Node>> children = new HashMap<Integer, List<Node>>();
+		int maxChildLevel = 0;
+
+		public void addChild(Node node, int level) {
+			if (!children.containsKey(level)) {
+				children.put(level, new ArrayList<Node>());
+			}
+			children.get(level).add(node);
+			maxChildLevel = Math.max(maxChildLevel, level);
+		}
+
+		public List<Node> getChildren(int level) {
+			if (!children.containsKey(level))
+				return new ArrayList<Node>();
+			return children.get(level);
+		}
+
+		public Node(double x, double y) {
+			this.x = x;
+			this.y = y;
 		}
 	}
 
-	public CoverTree(int n) {
-		this.n = n;
-		int len = 4 * n;
-		add = new int[len];
-		minCount = new int[len];
-		min = new int[len];
-		buildTree(1, 0, n - 1);
+	static final int levels = 64;
+	double[] layerRadius = new double[levels];
+
+	public CoverTree() {
+		layerRadius[0] = 1 << 30;
+		for (int i = 1; i < layerRadius.length; i++)
+			layerRadius[i] = layerRadius[i - 1] / 2;
 	}
 
-	// tree must not contain negative elements
-	public void add(int a, int b, int value) {
-		add(1, 0, n - 1, a, b, value);
+	Node root;
+
+	public void insert(Node p) {
+		if (root == null)
+			root = p;
+		else
+			insert(p, Arrays.asList(new Node[] { root }), 0);
 	}
 
-	void add(int node, int left, int right, int a, int b, int value) {
-		if (left > b || right < a)
-			return;
-		if (left >= a && right <= b) {
-			add[node] += value;
-			return;
+	boolean insert(Node p, List<Node> Qi, int level) {
+		Node parent = null;
+		List<Node> nQi = new ArrayList<Node>();
+		for (Node q : Qi) {
+			if (dist(p, q) <= layerRadius[level]) {
+				nQi.add(q);
+				parent = q;
+			}
 		}
-		int mid = (left + right) >> 1;
-		int n0 = node * 2;
-		int n1 = node * 2 + 1;
-		add(n0, left, mid, a, b, value);
-		add(n1, mid + 1, right, a, b, value);
 
-		min[node] = Math.min(min[n0] + add[n0], min[n1] + add[n1]);
-		minCount[node] = (min[node] == min[n0] + add[n0] ? minCount[n0] : 0)
-				+ (min[node] == min[n1] + add[n1] ? minCount[n1] : 0);
+		if (parent == null) // separation holds
+			return true;
+
+		for (Node q : Qi)
+			for (Node ch : q.getChildren(level))
+				if (dist(p, ch) <= layerRadius[level])
+					nQi.add(ch);
+
+		if (insert(p, nQi, level + 1))
+			parent.addChild(p, level);
+
+		return false;
 	}
 
-	// returns number of zeros in [a, b]
-	public int cover(int a, int b) {
-		return cover(1, 0, n - 1, a, b, 0);
+	double bestDist;
+	Node bestNode;
+
+	public Node findNearest(Node p) {
+		bestDist = p != root ? dist(p, root) : Double.POSITIVE_INFINITY;
+		bestNode = p != root ? root : null;
+		findNearest(p, Arrays.asList(new Node[] { root }), 0);
+		return bestNode;
 	}
 
-	int cover(int node, int left, int right, int a, int b, int sumAdd) {
-		if (left > b || right < a)
-			return 0;
-		sumAdd += add[node];
-		if (left >= a && right <= b)
-			return min[node] + sumAdd == 0 ? minCount[node] : 0;
-		int mid = (left + right) >> 1;
-		int l = cover(node * 2, left, mid, a, b, sumAdd);
-		int r = cover(node * 2 + 1, mid + 1, right, a, b, sumAdd);
-		return l + r;
+	void findNearest(Node p, List<Node> Qi, int level) {
+		for (; !Qi.isEmpty(); level++) {
+			List<Node> Q = new ArrayList<Node>();
+			for (Node q : Qi) {
+				Q.add(q);
+				for (Node ch : q.getChildren(level)) {
+					if (ch != p) {
+						double dist = dist(p, ch);
+						if (bestDist > dist) {
+							bestDist = dist;
+							bestNode = ch;
+						}
+					}
+					Q.add(ch);
+				}
+			}
+
+			Qi = new ArrayList<Node>();
+			for (Node q : Q)
+				if (q.maxChildLevel > level && dist(p, q) <= bestDist + layerRadius[level])
+					Qi.add(q);
+		}
 	}
 
 	// Usage example
 	public static void main(String[] args) {
-		CoverTree tree = new CoverTree(4);
-		tree.add(0, 0, 1);
-		tree.add(3, 3, 1);
-		System.out.println(tree.cover(0, 3));
+		CoverTree tree = new CoverTree();
+		tree.insert(new Node(1, 1));
+		tree.insert(new Node(2, 2));
+		Node p = tree.findNearest(new Node(1.6, 1.6));
+		System.out.println(2 == p.x && 2 == p.y);
 	}
 }

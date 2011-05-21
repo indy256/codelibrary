@@ -3,7 +3,5 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/3"/>
-	<classpathentry kind="lib" path="D:/install/java/collections-lib/trove-3.0.0rc1/lib/trove-3.0.0rc1.jar"/>
-	<classpathentry kind="lib" path="D:/install/java/collections-lib/fastutil-6.3/fastutil-6.3.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
