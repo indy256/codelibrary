@@ -96,5 +96,8 @@ public class BronKerbosh {
 		List<Integer> expectedResult = new ArrayList<Integer>();
 		Collections.addAll(expectedResult, 0, 2);
 		System.out.println(expectedResult.equals(res));
+		
+		String ip="122.2.3.411";
+		System.out.println(ip.matches("([0-9]{1,3}\\.){3}[0-9]{1,3}"));
 	}
 }

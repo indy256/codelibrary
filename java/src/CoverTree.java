@@ -10,21 +10,21 @@ public class CoverTree {
 
 	static class Node {
 		double x, y;
-		Map<Integer, List<Node>> children = new HashMap<Integer, List<Node>>();
+		List<Node>[] children = new List[levels];
 		int maxChildLevel = 0;
 
 		public void addChild(Node node, int level) {
-			if (!children.containsKey(level)) {
-				children.put(level, new ArrayList<Node>());
+			if (children[level] == null) {
+				children[level] = new ArrayList<Node>();
 			}
-			children.get(level).add(node);
+			children[level].add(node);
 			maxChildLevel = Math.max(maxChildLevel, level);
 		}
 
 		public List<Node> getChildren(int level) {
-			if (!children.containsKey(level))
-				return new ArrayList<Node>();
-			return children.get(level);
+			if (children[level] == null)
+				return Collections.emptyList();
+			return children[level];
 		}
 
 		public Node(double x, double y) {
