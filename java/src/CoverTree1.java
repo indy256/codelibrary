@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class CoverTree {
+public class CoverTree1 {
 
 	static double dist(Node p1, Node p2) {
 		double dx = p1.x - p2.x;
@@ -8,34 +8,23 @@ public class CoverTree {
 		return Math.sqrt(dx * dx + dy * dy);
 	}
 
-	static final int levels = 64;
-	double[] layerRadius = new double[levels];
-
-	public CoverTree() {
-		layerRadius[0] = 1 << 30;
-		for (int i = 1; i < layerRadius.length; i++)
-			layerRadius[i] = layerRadius[i - 1] / 2;
-	}
-
-	Node root;
-
 	static class Node {
-		static final List<Node> emptyList = new ArrayList<Node>();
 		double x, y;
-		List<Node>[] children = new List[levels];
+		Map<Integer, List<Node>> children = new HashMap<Integer, List<Node>>();
 		int maxChildLevel = 0;
 
 		public void addChild(Node node, int level) {
-			if (children[level] == null)
-				children[level] = new ArrayList<Node>(1);
-			children[level].add(node);
+			if (!children.containsKey(level)) {
+				children.put(level, new ArrayList<Node>());
+			}
+			children.get(level).add(node);
 			maxChildLevel = Math.max(maxChildLevel, level);
 		}
 
 		public List<Node> getChildren(int level) {
-			if (children[level] == null)
-				return emptyList;
-			return children[level];
+			if (!children.containsKey(level))
+				return new ArrayList<Node>();
+			return children.get(level);
 		}
 
 		public Node(double x, double y) {
@@ -43,6 +32,17 @@ public class CoverTree {
 			this.y = y;
 		}
 	}
+
+	static final int levels = 64;
+	double[] layerRadius = new double[levels];
+
+	public CoverTree1() {
+		layerRadius[0] = 1 << 30;
+		for (int i = 1; i < layerRadius.length; i++)
+			layerRadius[i] = layerRadius[i - 1] / 2;
+	}
+
+	Node root;
 
 	public void insert(Node p) {
 		if (root == null)
@@ -111,7 +111,7 @@ public class CoverTree {
 
 	// Usage example
 	public static void main(String[] args) {
-		CoverTree tree = new CoverTree();
+		CoverTree1 tree = new CoverTree1();
 		tree.insert(new Node(1, 1));
 		tree.insert(new Node(2, 2));
 		Node p = tree.findNearest(new Node(1.6, 1.6));
