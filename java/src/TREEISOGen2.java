@@ -35,10 +35,11 @@ public class TREEISOGen2 {
 	static void genCase(int id, List<Integer> list, PrintStream ps) throws FileNotFoundException {
 		ps.println(list.size());
 		for (int n : list) {
-			//n = rnd.nextInt(50) + 5;
-			n=5;
+			// n = rnd.nextInt(50) + 5;
+			n = 5;
 			ps.println(n);
-			List[][] t = { TreeGenerator.generateRandomTree(n, rnd), TreeGenerator.generateRandomTree(n, rnd) };
+			List[][] t = { RandomGraph.getRandomConnectedGraph(n, n - 1, rnd),
+					RandomGraph.getRandomConnectedGraph(n, n - 1, rnd) };
 			for (int i = 0; i < t.length; i++) {
 				for (int u = 0; u < n; u++) {
 					for (int v : (List<Integer>) t[i][u]) {

@@ -1,6 +1,4 @@
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class Partitions {
 
@@ -19,6 +17,17 @@ public class Partitions {
 			p.add(1);
 		}
 		return true;
+	}
+
+	public static void generateIncreasingPartitions(int[] p, int left, int last, int pos) {
+		if (left == 0) {
+			for (int i = 0; i < pos; i++)
+				System.out.print(p[i] + " ");
+			System.out.println();
+			return;
+		}
+		for (p[pos] = last + 1; p[pos] <= left; p[pos]++)
+			generateIncreasingPartitions(p, left - p[pos], p[pos], pos + 1);
 	}
 
 	public static long countPartitions(int n) {
@@ -63,7 +72,7 @@ public class Partitions {
 			System.out.println(p);
 		} while (nextPartition(p));
 
-		long[][] part = partitionFunction(250);
-		System.out.println(countPartitions(250));
+		int[] p1 = new int[8];
+		generateIncreasingPartitions(p1, p1.length, 0, 0);
 	}
 }
