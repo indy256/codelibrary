@@ -7,7 +7,7 @@ public class DijkstraHeap {
 		Arrays.fill(prio, Long.MAX_VALUE);
 		prio[s] = 0;
 		Queue<QItem> q = new PriorityQueue<QItem>();
-		q.add(new QItem(0, s));
+		q.add(new QItem(prio[s], s));
 		while (!q.isEmpty()) {
 			QItem cur = q.poll();
 			if (cur.prio != prio[cur.u])

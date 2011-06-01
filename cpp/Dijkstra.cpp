@@ -14,7 +14,7 @@ void dijkstra(Graph &g, int s, vector<int> &prio, vector<int> &pred) {
     prio[s] = 0;
     pred.assign(n, -1);
     priority_queue<pii, vector<pii> , greater<pii> > q;
-    q.push(make_pair(0, s));
+    q.push(make_pair(prio[s], s));
 
     while (!q.empty()) {
         int d = q.top().first;
@@ -40,7 +40,7 @@ void dijkstra2(Graph &g, int s, vector<int> &prio, vector<int> &pred) {
     prio[s] = 0;
     pred.assign(n, -1);
     set<pii> q;
-    q.insert(make_pair(0, s));
+    q.insert(make_pair(prio[s], s));
 
     while (!q.empty()) {
         int u = q.begin()->second;

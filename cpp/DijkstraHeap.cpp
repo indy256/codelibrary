@@ -91,7 +91,7 @@ void dijkstra(int s) {
     fill(prio, prio + maxnodes, INT_MAX);
     prio[s] = 0;
     hsize = 0;
-    add(s, 0);
+    add(s, prio[s]);
 
     while (hsize) {
         int u = removeMin();
