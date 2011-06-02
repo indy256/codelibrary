@@ -10,7 +10,7 @@ public class PrimHeap {
 		Arrays.fill(prio, Integer.MAX_VALUE);
 		prio[0] = 0;
 		Queue<QItem> q = new PriorityQueue<QItem>();
-		q.add(new QItem(0, 0));
+		q.add(new QItem(prio[0], 0));
 		long res = 0;
 
 		while (!q.isEmpty()) {
@@ -68,7 +68,8 @@ public class PrimHeap {
 				}
 			}
 		}
-		long res = mst(edges, new int[n]);
+		int[] pred = new int[n];
+		long res = mst(edges, pred);
 		System.out.println(res);
 	}
 }

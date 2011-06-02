@@ -74,5 +74,14 @@ public class Partitions {
 
 		int[] p1 = new int[8];
 		generateIncreasingPartitions(p1, p1.length, 0, 0);
+		
+		Set<Integer> set = new HashSet<Integer>();
+		for (int i = 0; i < 500; i++) {
+			
+			for (int j = 0; j < 500; j++) {
+				set.add(i*i+j*j);				
+			}
+		}
+		System.out.println(set.size());
 	}
 }

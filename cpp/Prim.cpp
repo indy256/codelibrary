@@ -14,7 +14,7 @@ long long prim(Graph &g, vector<int> &pred) {
     vector<int> prio(n, INT_MAX);
     prio[0] = 0;
     priority_queue<pii, vector<pii> , greater<pii> > q;
-    q.push(make_pair(0, 0));
+    q.push(make_pair(prio[0] , 0));
     long long res = 0;
 
     while (!q.empty()) {
@@ -49,7 +49,7 @@ int main() {
     g[2].push_back(make_pair(0, 5));
     g[0].push_back(make_pair(2, 5));
 
-    vector<int> prio;
-    long long res = prim(g, prio);
+    vector<int> pred;
+    long long res = prim(g, pred);
     cout << res << endl;
 }
