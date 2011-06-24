@@ -1,5 +1,5 @@
 public class SegmentTree2DRSQFast {
-	final int n = 1 << 10;
+	final int n = 1024;
 	int[][] t = new int[n + n][n + n];
 
 	public SegmentTree2DRSQFast() {

@@ -6,7 +6,7 @@ public class SegmentTreeRMQ {
 	int n;
 
 	void init() {
-		this.n = v.length;
+		n = v.length;
 		minPos = new int[4 * n];
 		buildTree(1, 0, n - 1);
 	}
