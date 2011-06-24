@@ -1,5 +1,6 @@
 import java.util.*;
 
+// Based on http://hunch.net/~jl/projects/cover_tree/paper/paper.pdf
 public class CoverTree {
 
 	static double dist(Node p1, Node p2) {
@@ -20,7 +21,6 @@ public class CoverTree {
 	Node root;
 
 	static class Node {
-		static final List<Node> emptyList = new ArrayList<Node>();
 		double x, y;
 		List<Node>[] children = new List[levels];
 		int maxChildLevel = 0;
