@@ -1,8 +1,8 @@
-public class SegmentTreeSumAddFast {
+public class SegmentTreeFastAddSum {
 	final int n;
 	final int[] t;
 
-	public SegmentTreeSumAddFast(int n) {
+	public SegmentTreeFastAddSum(int n) {
 		this.n = n;
 		t = new int[n + n];
 	}
@@ -62,7 +62,7 @@ public class SegmentTreeSumAddFast {
 
 	// Usage example
 	public static void main(String[] args) {
-		SegmentTreeSumAddFast t1 = new SegmentTreeSumAddFast(10);
+		SegmentTreeFastAddSum t1 = new SegmentTreeFastAddSum(10);
 		t1.set(0, 2);
 		t1.set(1, 1);
 		t1.set(2, 3);
@@ -72,7 +72,7 @@ public class SegmentTreeSumAddFast {
 		System.out.println(6 == t1.get(1));
 		System.out.println(t1.sum(0, 3) == t1.sum(3));
 
-		SegmentTreeSumAddFast t2 = new SegmentTreeSumAddFast(10);
+		SegmentTreeFastAddSum t2 = new SegmentTreeFastAddSum(10);
 		t2.set(2, 1);
 		t2.set(3, 1);
 		System.out.println(-1 == t2.getPrevZero(0));

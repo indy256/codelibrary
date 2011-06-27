@@ -1,8 +1,8 @@
-public class SegmentTreePositionSet {
+public class SegmentTreeSetPosition {
 	final int[] zeros;
 	final int n;
 
-	public SegmentTreePositionSet(int n) {
+	public SegmentTreeSetPosition(int n) {
 		this.n = n;
 		zeros = new int[4 * n];
 		buildTree(1, 0, n - 1);
@@ -105,7 +105,7 @@ public class SegmentTreePositionSet {
 
 	// Usage example
 	public static void main(String[] args) {
-		SegmentTreePositionSet t = new SegmentTreePositionSet(5);
+		SegmentTreeSetPosition t = new SegmentTreeSetPosition(5);
 		t.setUsed(1);
 		t.setUsed(3);
 		System.out.println(4 == t.kthUnused(3));

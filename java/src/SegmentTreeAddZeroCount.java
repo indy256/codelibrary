@@ -1,10 +1,10 @@
-public class SegmentTreeZeroCountAdd {
+public class SegmentTreeAddZeroCount {
 	final int[] add;
 	final int[] minCount;
 	final int[] min;
 	final int n;
 
-	public SegmentTreeZeroCountAdd(int n) {
+	public SegmentTreeAddZeroCount(int n) {
 		this.n = n;
 		add = new int[4 * n];
 		minCount = new int[4 * n];
@@ -62,7 +62,7 @@ public class SegmentTreeZeroCountAdd {
 
 	// Usage example
 	public static void main(String[] args) {
-		SegmentTreeZeroCountAdd t = new SegmentTreeZeroCountAdd(4);
+		SegmentTreeAddZeroCount t = new SegmentTreeAddZeroCount(4);
 		t.add(0, 0, 1);
 		t.add(3, 3, 1);
 		System.out.println(2 == t.zeroCount(0, 3));

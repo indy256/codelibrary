@@ -95,10 +95,16 @@ public class SegmentTreeTest {
 		for (int step = 0; step < 1000; step++) {
 			int n = rnd.nextInt(20) + 1;
 			SegmentTreeTest ref_t = new SegmentTreeTest(n);
-			SegmentTreeMaxAddFast max_t = new SegmentTreeMaxAddFast(n);
-			SegmentTreeSumAddFast sum_t = new SegmentTreeSumAddFast(n);
+			SegmentTreeFastAddMax max_t = new SegmentTreeFastAddMax(n);
+			SegmentTreeFastAddSum sum_t = new SegmentTreeFastAddSum(n);
 			SegmentTreeTest ref_t1 = new SegmentTreeTest(n);
-			SegmentTreeSumIntervalSetFast sum_set_t = new SegmentTreeSumIntervalSetFast(n);
+			SegmentTreeFastIntervalSetSum sum_set_t = new SegmentTreeFastIntervalSetSum(n);
+			SegmentTreeTest ref_t2 = new SegmentTreeTest(n);
+			SegmentTreeFastIntervalAddSum sum_add_t = new SegmentTreeFastIntervalAddSum(n);
+			SegmentTreeTest ref_t3 = new SegmentTreeTest(n);
+			SegmentTreeFastIntervalAddMax max_add_t = new SegmentTreeFastIntervalAddMax(n);
+			SegmentTreeTest ref_t4 = new SegmentTreeTest(n);
+			SegmentTreeFastIntervalSetMax max_set_t = new SegmentTreeFastIntervalSetMax(n);
 
 			for (int step1 = 0; step1 < 1000; step1++) {
 				int posa = rnd.nextInt(n);
@@ -119,7 +125,13 @@ public class SegmentTreeTest {
 					sum_t.set(posa, v);
 				}
 				ref_t1.set(posa, posb, v);
-				sum_set_t.set(posa, posb, v);
+				sum_set_t.modifySet(posa, posb, v);
+				ref_t2.add(posa, posb, v);
+				sum_add_t.modifyAdd(posa, posb, v);
+				ref_t3.add(posa, posb, v);
+				max_add_t.modifyAdd(posa, posb, v);
+				ref_t4.set(posa, posb, v);
+				max_set_t.modifySet(posa, posb, v);
 
 				int a = rnd.nextInt(n);
 				int b = rnd.nextInt(n);
@@ -130,7 +142,10 @@ public class SegmentTreeTest {
 				}
 				check(ref_t.max(a, b), max_t.max(a, b));
 				check(ref_t.sum(a, b), sum_t.sum(a, b));
-				check(ref_t1.sum(a, b), sum_set_t.sum(a, b));
+				check(ref_t1.sum(a, b), sum_set_t.querySum(a, b));
+				check(ref_t2.sum(a, b), sum_add_t.querySum(a, b));
+				check(ref_t3.max(a, b), max_add_t.queryMax(a, b));
+				check(ref_t4.max(a, b), max_set_t.queryMax(a, b));
 			}
 		}
 	}

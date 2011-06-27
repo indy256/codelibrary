@@ -1,8 +1,8 @@
-public class SegmentTreeSumAdd {
+public class SegmentTreeAddSum {
 	final int[] s;
 	final int n;
 
-	public SegmentTreeSumAdd(int n) {
+	public SegmentTreeAddSum(int n) {
 		this.n = n;
 		s = new int[4 * n];
 		buildTree(1, 0, n - 1);
@@ -82,7 +82,7 @@ public class SegmentTreeSumAdd {
 	}
 
 	public static void main(String[] args) {
-		SegmentTreeSumAdd t = new SegmentTreeSumAdd(4);
+		SegmentTreeAddSum t = new SegmentTreeAddSum(4);
 		t.set(0, 1);
 		t.set(1, 5);
 		t.set(2, 2);

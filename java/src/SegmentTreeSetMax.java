@@ -1,11 +1,11 @@
 import java.util.*;
 
-public class SegmentTreeMaxSet {
+public class SegmentTreeSetMax {
 	final int[] v;
 	final int[] maxPos;
 	final int n;
 
-	public SegmentTreeMaxSet(int n) {
+	public SegmentTreeSetMax(int n) {
 		this.n = n;
 		v = new int[n * 4];
 		Arrays.fill(v, Integer.MIN_VALUE);
@@ -66,7 +66,7 @@ public class SegmentTreeMaxSet {
 
 	// Usage example
 	public static void main(String[] args) {
-		SegmentTreeMaxSet t = new SegmentTreeMaxSet(4);
+		SegmentTreeSetMax t = new SegmentTreeSetMax(4);
 		t.set(0, -1);
 		t.set(1, -5);
 		t.set(2, 2);
