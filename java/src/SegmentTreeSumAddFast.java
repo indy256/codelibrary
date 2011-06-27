@@ -1,14 +1,10 @@
-public class SegmentTreeRSQFast {
-	final int n = 1 << 18;
-	int[] t = new int[n + n];
+public class SegmentTreeSumAddFast {
+	final int n;
+	final int[] t;
 
-	public SegmentTreeRSQFast() {
-	}
-
-	public SegmentTreeRSQFast(int[] a) {
-		System.arraycopy(a, 0, t, n, a.length);
-		for (int i = n - 1; i > 0; i--)
-			t[i] = t[i + i] + t[i + i + 1];
+	public SegmentTreeSumAddFast(int n) {
+		this.n = n;
+		t = new int[n + n];
 	}
 
 	public int get(int i) {
@@ -66,21 +62,22 @@ public class SegmentTreeRSQFast {
 
 	// Usage example
 	public static void main(String[] args) {
-		SegmentTreeRSQFast rsq1 = new SegmentTreeRSQFast(new int[] { 1, 2, 3, 4 });
-		rsq1.set(0, 2);
-		rsq1.set(1, 1);
-		rsq1.set(2, 3);
-		rsq1.add(1, 5);
-		System.out.println(15 == rsq1.sum(0, 3));
-		System.out.println(6 == rsq1.get(1));
-		System.out.println(rsq1.sum(0, 3) == rsq1.sum(3));
+		SegmentTreeSumAddFast t1 = new SegmentTreeSumAddFast(10);
+		t1.set(0, 2);
+		t1.set(1, 1);
+		t1.set(2, 3);
+		t1.set(3, 4);
+		t1.add(1, 5);
+		System.out.println(15 == t1.sum(0, 3));
+		System.out.println(6 == t1.get(1));
+		System.out.println(t1.sum(0, 3) == t1.sum(3));
 
-		SegmentTreeRSQFast rsq2 = new SegmentTreeRSQFast();
-		rsq2.set(2, 1);
-		rsq2.set(3, 1);
-		System.out.println(-1 == rsq2.getPrevZero(0));
-		System.out.println(0 == rsq2.getPrevZero(1));
-		System.out.println(1 == rsq2.getPrevZero(2));
-		System.out.println(1 == rsq2.getPrevZero(3));
+		SegmentTreeSumAddFast t2 = new SegmentTreeSumAddFast(10);
+		t2.set(2, 1);
+		t2.set(3, 1);
+		System.out.println(-1 == t2.getPrevZero(0));
+		System.out.println(0 == t2.getPrevZero(1));
+		System.out.println(1 == t2.getPrevZero(2));
+		System.out.println(1 == t2.getPrevZero(3));
 	}
 }

@@ -64,40 +64,25 @@ public class TestAlgo extends TestCase {
 		}
 	}
 
-    /*
-	public void testBinaryHeapWithDecreaseKey() {
-		Queue<Integer> ref = new PriorityQueue<Integer>();
-		int maxSize = 20000;
-		BinaryHeapWithDecreaseKey<Integer> heap = new BinaryHeapWithDecreaseKey<Integer>(maxSize);
-
-		for (int steps = 0; steps < maxSize / 2; steps++) {
-			int x = rnd.nextInt(1000);
-			heap.add(steps, x);
-			ref.add(x);
-		}
-
-		for (int steps = maxSize / 2; steps < maxSize; steps++) {
-			int x = rnd.nextInt(1000);
-			heap.add(steps, x);
-			ref.add(x);
-
-			int v1 = heap.remove();
-			int v2 = ref.poll();
-			if (v1 != v2) {
-				System.out.println("Error");
-			}
-		}
-
-		while (!heap.isEmpty()) {
-			int v1 = heap.remove();
-			int v2 = ref.poll();
-
-			if (v1 != v2) {
-				System.out.println("Error");
-			}
-		}
-	}
-	*/
+	/*
+	 * public void testBinaryHeapWithDecreaseKey() { Queue<Integer> ref = new
+	 * PriorityQueue<Integer>(); int maxSize = 20000;
+	 * BinaryHeapWithDecreaseKey<Integer> heap = new
+	 * BinaryHeapWithDecreaseKey<Integer>(maxSize);
+	 * 
+	 * for (int steps = 0; steps < maxSize / 2; steps++) { int x =
+	 * rnd.nextInt(1000); heap.add(steps, x); ref.add(x); }
+	 * 
+	 * for (int steps = maxSize / 2; steps < maxSize; steps++) { int x =
+	 * rnd.nextInt(1000); heap.add(steps, x); ref.add(x);
+	 * 
+	 * int v1 = heap.remove(); int v2 = ref.poll(); if (v1 != v2) {
+	 * System.out.println("Error"); } }
+	 * 
+	 * while (!heap.isEmpty()) { int v1 = heap.remove(); int v2 = ref.poll();
+	 * 
+	 * if (v1 != v2) { System.out.println("Error"); } } }
+	 */
 
 	public void testSuffixArrayBuilder() throws Exception {
 		for (int steps = 0; steps < 1000; steps++) {
@@ -246,79 +231,45 @@ public class TestAlgo extends TestCase {
 			// assertEquals(res1, res2);
 		}
 	}
-    /*
-	public void testSegmentTree() {
-		for (int step = 0; step < 100; step++) {
-			int n = rnd.nextInt(1000) + 1;
-			RSQSegmentTreeFast rsq = new RSQSegmentTreeFast(n);
-			RMQSegmentTreeFast rmq = new RMQSegmentTreeFast(n);
-			FenwickTreeFull ft = new FenwickTreeFull(n);
-			ReferenceSegmentTree refTree = new ReferenceSegmentTree(n);
-
-			for (int i = 0; i < 1000; i++) {
-				int p = rnd.nextInt(n);
-				int v = rnd.nextInt();
-				rsq.add(p, v);
-				rmq.add(p, v);
-				ft.add(p, v);
-				refTree.add(p, v);
-
-				p = rnd.nextInt(n);
-				v = rnd.nextInt();
-				rsq.set(p, v);
-				rmq.set(p, v);
-				ft.set(p, v);
-				refTree.set(p, v);
-
-				int a = rnd.nextInt(n);
-				int b = rnd.nextInt(n);
-				if (a > b) {
-					int t = a;
-					a = b;
-					b = t;
-				}
-
-				assertEquals(refTree.sum(a, b), rsq.sum(a, b));
-				assertEquals(refTree.sum(0, b), rsq.sum(b));
-				assertEquals(refTree.get(a), rsq.get(a));
-				assertEquals(refTree.max(a, b), rmq.max(a, b));
-				assertEquals(refTree.get(a), rmq.get(a));
-				assertEquals(refTree.sum(a, b), ft.sum(a, b));
-				assertEquals(refTree.sum(0, b), ft.sum(b));
-				assertEquals(refTree.get(a), ft.get(a));
-			}
-		}
-	}
-
-	public void testZeroOneTree() {
-		for (int step = 0; step < 100; step++) {
-			int n = rnd.nextInt(1000) + 1;
-			RSQSegmentTreeFast rsq = new RSQSegmentTreeFast(n);
-			FenwickTreeFull ft = new FenwickTreeFull(n);
-			ReferenceSegmentTree refTree = new ReferenceSegmentTree(n);
-
-			for (int i = 0; i < 1000; i++) {
-				int p = rnd.nextInt(n);
-				int v = rnd.nextInt(2);
-				rsq.set(p, v);
-				ft.set(p, v);
-				refTree.set(p, v);
-
-				int a = rnd.nextInt(n);
-				int b = rnd.nextInt(n);
-				if (a > b) {
-					int t = a;
-					a = b;
-					b = t;
-				}
-
-				int x1 = rnd.nextInt(n);
-				assertEquals(refTree.getPrevZero(x1), rsq.getPrevZero(x1));
-				int k = rnd.nextInt(n);
-				assertEquals(refTree.getKthZeroCyclic(x1, k), ft.getKthZeroCyclic(x1, k));
-			}
-		}
-	}
-    */
+	/*
+	 * public void testSegmentTree() { for (int step = 0; step < 100; step++) {
+	 * int n = rnd.nextInt(1000) + 1; RSQSegmentTreeFast rsq = new
+	 * RSQSegmentTreeFast(n); RMQSegmentTreeFast rmq = new
+	 * RMQSegmentTreeFast(n); FenwickTreeFull ft = new FenwickTreeFull(n);
+	 * ReferenceSegmentTree refTree = new ReferenceSegmentTree(n);
+	 * 
+	 * for (int i = 0; i < 1000; i++) { int p = rnd.nextInt(n); int v =
+	 * rnd.nextInt(); rsq.add(p, v); rmq.add(p, v); ft.add(p, v); refTree.add(p,
+	 * v);
+	 * 
+	 * p = rnd.nextInt(n); v = rnd.nextInt(); rsq.set(p, v); rmq.set(p, v);
+	 * ft.set(p, v); refTree.set(p, v);
+	 * 
+	 * int a = rnd.nextInt(n); int b = rnd.nextInt(n); if (a > b) { int t = a; a
+	 * = b; b = t; }
+	 * 
+	 * assertEquals(refTree.sum(a, b), rsq.sum(a, b));
+	 * assertEquals(refTree.sum(0, b), rsq.sum(b)); assertEquals(refTree.get(a),
+	 * rsq.get(a)); assertEquals(refTree.max(a, b), rmq.max(a, b));
+	 * assertEquals(refTree.get(a), rmq.get(a)); assertEquals(refTree.sum(a, b),
+	 * ft.sum(a, b)); assertEquals(refTree.sum(0, b), ft.sum(b));
+	 * assertEquals(refTree.get(a), ft.get(a)); } } }
+	 * 
+	 * public void testZeroOneTree() { for (int step = 0; step < 100; step++) {
+	 * int n = rnd.nextInt(1000) + 1; RSQSegmentTreeFast rsq = new
+	 * RSQSegmentTreeFast(n); FenwickTreeFull ft = new FenwickTreeFull(n);
+	 * ReferenceSegmentTree refTree = new ReferenceSegmentTree(n);
+	 * 
+	 * for (int i = 0; i < 1000; i++) { int p = rnd.nextInt(n); int v =
+	 * rnd.nextInt(2); rsq.set(p, v); ft.set(p, v); refTree.set(p, v);
+	 * 
+	 * int a = rnd.nextInt(n); int b = rnd.nextInt(n); if (a > b) { int t = a; a
+	 * = b; b = t; }
+	 * 
+	 * int x1 = rnd.nextInt(n); assertEquals(refTree.getPrevZero(x1),
+	 * rsq.getPrevZero(x1)); int k = rnd.nextInt(n);
+	 * assertEquals(refTree.getKthZeroCyclic(x1, k), ft.getKthZeroCyclic(x1,
+	 * k)); } } }
+	 */
 
 }
