@@ -70,9 +70,11 @@ public class SegmentTree2DTest {
 			// n = 2;
 			// m = 1;
 			SegmentTree2DTest ref_t = new SegmentTree2DTest(n, m);
+			SegmentTree2DTest ref_t1 = new SegmentTree2DTest(n, m);
 
 			SegmentTree2DFastAddSum add_sum = new SegmentTree2DFastAddSum(n, m);
 			SegmentTree2DFastAddMax add_max = new SegmentTree2DFastAddMax(n, m);
+			SegmentTree2DSetMax set_max = new SegmentTree2DSetMax(n, m);
 
 			for (int step1 = 0; step1 < 1000; step1++) {
 				int x = rnd.nextInt(n);
@@ -83,6 +85,9 @@ public class SegmentTree2DTest {
 				ref_t.add(x, y, v);
 				add_sum.add(x, y, v);
 				add_max.add(x, y, v);
+				
+				ref_t1.set(x, y, v);
+				set_max.set(x, y, v);
 
 				int x1 = rnd.nextInt(n);
 				int x2 = rnd.nextInt(n);
@@ -102,6 +107,7 @@ public class SegmentTree2DTest {
 				// System.out.println(step1 + ": " + x1 + " " + y1 + " " + x2 + " " + y2);
 				check(ref_t.sum(x1, y1, x2, y2), add_sum.sum(x1, y1, x2, y2));
 				check(ref_t.max(x1, y1, x2, y2), add_max.max(x1, y1, x2, y2));
+				check(ref_t1.max(x1, y1, x2, y2), set_max.max(x1, y1, x2, y2));
 			}
 		}
 	}
