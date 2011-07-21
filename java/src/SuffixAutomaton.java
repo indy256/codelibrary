@@ -6,8 +6,11 @@ public class SuffixAutomaton {
 		int length;
 		int link;
 		int endpos;
-		Map<Character, Integer> next = new HashMap<Character, Integer>(8);
-		List<Integer> ilink = new ArrayList<Integer>(1);
+		int[] next = new int[256];
+		{
+			Arrays.fill(next, -1);
+		}
+		List<Integer> ilink = new ArrayList<Integer>(0);
 	};
 
 	State[] st;
@@ -21,22 +24,23 @@ public class SuffixAutomaton {
 		st[nlast].length = st[last].length + 1;
 		st[nlast].endpos = st[last].length;
 		int p;
-		for (p = last; p != -1 && !st[p].next.containsKey(c); p = st[p].link)
-			st[p].next.put(c, nlast);
-		if (p == -1)
+		for (p = last; p != -1 && st[p].next[c] == -1; p = st[p].link) {
+			st[p].next[c] = nlast;
+		}
+		if (p == -1) {
 			st[nlast].link = 0;
-		else {
-			int q = st[p].next.get(c);
+		} else {
+			int q = st[p].next[c];
 			if (st[p].length + 1 == st[q].length)
 				st[nlast].link = q;
 			else {
 				int clone = size++;
 				st[clone] = new State();
 				st[clone].length = st[p].length + 1;
-				st[clone].next.putAll(st[q].next);
+				st[clone].next = st[q].next.clone();
 				st[clone].link = st[q].link;
-				for (; p != -1 && st[p].next.containsKey(c) && st[p].next.get(c) == q; p = st[p].link)
-					st[p].next.put(c, clone);
+				for (; p != -1 && st[p].next[c] != -1 && st[p].next[c] == q; p = st[p].link)
+					st[p].next[c] = clone;
 				st[q].link = clone;
 				st[nlast].link = clone;
 				st[clone].endpos = -1;
@@ -70,8 +74,8 @@ public class SuffixAutomaton {
 		int bestpos = -1;
 		for (int i = 0; i < b.length(); ++i) {
 			char cur = b.charAt(i);
-			if (!st[p].next.containsKey(cur)) {
-				for (; p != -1 && !st[p].next.containsKey(cur); p = st[p].link) {
+			if (st[p].next[cur] == -1) {
+				for (; p != -1 && st[p].next[cur] == -1; p = st[p].link) {
 				}
 				if (p == -1) {
 					p = 0;
@@ -81,7 +85,7 @@ public class SuffixAutomaton {
 				len = st[p].length;
 			}
 			++len;
-			p = st[p].next.get(cur);
+			p = st[p].next[cur];
 			if (best < len) {
 				best = len;
 				bestpos = i;
