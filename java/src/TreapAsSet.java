@@ -87,12 +87,20 @@ public class TreapAsSet {
 		return root.x;
 	}
 
+	static void print(Treap root) {
+		if (root == null)
+			return;
+		print(root.left);
+		System.out.println(root.x);
+		print(root.right);
+	}
+
 	// Usage example
 	public static void main(String[] args) {
 		Treap treap = null;
 		Set<Integer> set = new TreeSet<Integer>();
 		for (int i = 0; i < 100000; i++) {
-			int x = random.nextInt(100) - 50;
+			int x = random.nextInt();
 			if (random.nextBoolean()) {
 				treap = remove(treap, x);
 				set.remove(x);
@@ -105,6 +113,6 @@ public class TreapAsSet {
 				break;
 			}
 		}
-		print(treap);
+		// print(treap);
 	}
 }
