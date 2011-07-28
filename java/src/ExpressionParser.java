@@ -63,7 +63,7 @@ public class ExpressionParser {
 					processOperator(st, op.removeLast());
 				op.removeLast();
 			} else if (isOperator(c)) {
-				while (!op.isEmpty() && priority(op.getLast()) >= priority(c))
+				while (!op.isEmpty() && priority(c) <= priority(op.getLast()))
 					processOperator(st, op.removeLast());
 				op.add(c);
 			} else {
