@@ -1,7 +1,6 @@
 import java.util.*;
 
-public class TreapTest {
-
+public class TreapAsSet {
 	static Random random = new Random();
 
 	static class Treap {
@@ -93,18 +92,19 @@ public class TreapTest {
 		Treap treap = null;
 		Set<Integer> set = new TreeSet<Integer>();
 		for (int i = 0; i < 100000; i++) {
-			int x = random.nextInt();
-			if (random.nextBoolean() && !set.contains(x)) {
-				treap = insert(treap, x);
-				set.add(x);
-			} else {
+			int x = random.nextInt(100) - 50;
+			if (random.nextBoolean()) {
 				treap = remove(treap, x);
 				set.remove(x);
+			} else if (!set.contains(x)) {
+				treap = insert(treap, x);
+				set.add(x);
 			}
 			if (set.size() != getCount(treap)) {
-				System.out.println(set.size() + " " + getCount(treap));
-				return;
+				System.err.println(set.size() + " " + getCount(treap));
+				break;
 			}
 		}
+		print(treap);
 	}
 }
