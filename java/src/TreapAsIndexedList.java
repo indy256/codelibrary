@@ -1,7 +1,7 @@
 import java.util.*;
 
 public class TreapAsIndexedList {
-	static Random random = new Random(1);
+	static Random random = new Random();
 
 	static class Treap {
 		long y;
