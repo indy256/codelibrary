@@ -1,11 +1,12 @@
 import java.util.*;
 
-public class Treap {
+public class TreapWithPush {
 
 	static class Node {
 		int cnt;
 		int prio;
 		int value;
+		int addv;
 		Node l;
 		Node r;
 	}
@@ -21,14 +22,29 @@ public class Treap {
 		return p == null ? 0 : p.cnt;
 	}
 
+	int addv(Node p) {
+		return p == null ? 0 : p.addv;
+	}
+
 	void update(Node p) {
 		if (p != null)
-			p.cnt = 1 + cnt(p.l) + cnt(p.r);
+			p.cnt = 1 + cnt(p.l) + cnt(p.r) + addv(p.l) + addv(p.r);
+	}
+
+	void push(Node p) {
+		if (p != null && p.addv != 0) {
+			if (p.l != null)
+				p.l.addv += p.addv;
+			if (p.r != null)
+				p.r.addv += p.addv;
+			p.addv = 0;
+		}
 	}
 
 	Node[] split(Node t, int index) {
 		if (t == null)
 			return new Node[2];
+		push(t);
 		Node[] res;
 		if (index <= cnt(t.l)) {
 			Node[] r = split(t.l, index);
@@ -45,6 +61,8 @@ public class Treap {
 
 	Node merge(Node l, Node r) {
 		Node res;
+		push(l);
+		push(r);
 		if (l == null)
 			res = r;
 		else if (r == null)
@@ -61,6 +79,7 @@ public class Treap {
 	}
 
 	int get(Node t, int index) {
+		push(t);
 		if (index < cnt(t.l))
 			return get(t.l, index);
 		else if (index > cnt(t.l))
@@ -73,6 +92,7 @@ public class Treap {
 	}
 
 	Node add(Node t, Node it, int index) {
+		push(t);
 		Node res;
 		if (t == null)
 			res = it;
@@ -100,6 +120,7 @@ public class Treap {
 	}
 
 	Node remove(Node t, int index) {
+		push(t);
 		Node res;
 		if (index == cnt(t.l))
 			res = merge(t.l, t.r);
@@ -120,6 +141,7 @@ public class Treap {
 
 	void print(Node t) {
 		if (t != null) {
+			push(t);
 			print(t.l);
 			System.out.print(t.value + " ");
 			print(t.r);
@@ -133,7 +155,7 @@ public class Treap {
 
 	// Usage example
 	public static void main(String[] args) {
-		Treap treap = new Treap();
+		TreapWithPush treap = new TreapWithPush();
 		treap.add(0, 1);
 		treap.add(0, 2);
 		treap.add(0, 3);

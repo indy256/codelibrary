@@ -1,50 +1,28 @@
 import java.util.*;
 
-public class TreapTest {
+public class TreapAsSet {
 	static Random random = new Random();
 
 	static class Treap {
-		long x;
+		int x;
 		long y;
-		long sum;
 		int count;
 		Treap left = null;
 		Treap right = null;
 
-		Treap(long x) {
+		Treap(int x) {
 			this.x = x;
 			y = random.nextLong();
-			sum = x;
 			count = 1;
 		}
 
 		void update() {
-			sum = x + getSum(left) + getSum(right);
 			count = 1 + getCount(left) + getCount(right);
 		}
 	}
 
-	static long getMin(Treap root) {
-		if (root == null)
-			return Long.MAX_VALUE;
-		while (root.left != null) {
-			root = root.left;
-		}
-		return root.x;
-	}
-
 	static int getCount(Treap root) {
-		if (root == null)
-			return 0;
-		else
-			return root.count;
-	}
-
-	static long getSum(Treap root) {
-		if (root == null)
-			return 0;
-		else
-			return root.sum;
+		return root == null ? 0 : root.count;
 	}
 
 	static class TreapPair {
@@ -57,7 +35,7 @@ public class TreapTest {
 		}
 	}
 
-	static TreapPair split(Treap root, long minRight) {
+	static TreapPair split(Treap root, int minRight) {
 		if (root == null)
 			return new TreapPair(null, null);
 		if (root.x >= minRight) {
@@ -91,22 +69,17 @@ public class TreapTest {
 		}
 	}
 
-	static Treap insert(Treap root, long x) {
+	static Treap insert(Treap root, int x) {
 		TreapPair t = split(root, x);
-		Treap cur = merge(t.left, new Treap(x));
-		return merge(cur, t.right);
+		return merge(merge(t.left, new Treap(x)), t.right);
 	}
 
 	static Treap remove(Treap root, int x) {
 		TreapPair t = split(root, x);
-		if (getMin(t.right) == x) {
-			TreapPair tmp = split(t.right, x + 1);
-			t.right = tmp.right;
-		}
-		return merge(t.left, t.right);
+		return merge(t.left, split(t.right, x + 1).right);
 	}
 
-	static long kth(Treap root, int k) {
+	static int kth(Treap root, int k) {
 		if (k < getCount(root.left))
 			return kth(root.left, k);
 		else if (k > getCount(root.left))
@@ -118,17 +91,28 @@ public class TreapTest {
 		if (root == null)
 			return;
 		print(root.left);
-		System.out.println(root.x);
+		System.out.print(root.x + " ");
 		print(root.right);
 	}
 
+	// Usage example
 	public static void main(String[] args) {
-		Treap t = new Treap(5);
-		t = insert(t, 6);
-		t = insert(t, 1);
-		t = insert(t, 2);
-		t = remove(t, 5);
-		print(t);
-		System.out.println(2 == kth(t, 1));
+		Treap treap = null;
+		Set<Integer> set = new TreeSet<Integer>();
+		for (int i = 0; i < 100000; i++) {
+			int x = random.nextInt(100) - 50;
+			if (random.nextBoolean()) {
+				treap = remove(treap, x);
+				set.remove(x);
+			} else if (!set.contains(x)) {
+				treap = insert(treap, x);
+				set.add(x);
+			}
+			if (set.size() != getCount(treap)) {
+				System.err.println(set.size() + " " + getCount(treap));
+				break;
+			}
+		}
+		print(treap);
 	}
 }
