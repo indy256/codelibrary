@@ -91,7 +91,7 @@ public class TreapAsSet {
 		if (root == null)
 			return;
 		print(root.left);
-		System.out.print(root.x + " ");
+		System.out.println(root.x);
 		print(root.right);
 	}
 
@@ -100,7 +100,7 @@ public class TreapAsSet {
 		Treap treap = null;
 		Set<Integer> set = new TreeSet<Integer>();
 		for (int i = 0; i < 100000; i++) {
-			int x = random.nextInt(100) - 50;
+			int x = random.nextInt();
 			if (random.nextBoolean()) {
 				treap = remove(treap, x);
 				set.remove(x);
@@ -113,6 +113,6 @@ public class TreapAsSet {
 				break;
 			}
 		}
-		print(treap);
+		// print(treap);
 	}
 }
