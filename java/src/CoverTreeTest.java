@@ -43,8 +43,8 @@ public class CoverTreeTest {
 		}
 		System.out.println("brute force time: " + (System.currentTimeMillis() - time));
 		System.out.println(Arrays.equals(dist1, dist2));
-		System.out.println(Arrays.toString(dist1));
-		System.out.println(Arrays.toString(dist2));
+		//System.out.println(Arrays.toString(dist1));
+		//System.out.println(Arrays.toString(dist2));
 	}
 
 	static void test() {

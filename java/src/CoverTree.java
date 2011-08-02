@@ -46,7 +46,7 @@ public class CoverTree {
 		if (root == null)
 			root = p;
 		else
-			insert(p, Arrays.asList(new Node[] { root }), 0);
+			insert(p, Arrays.asList(root), 0);
 	}
 
 	boolean insert(Node p, List<Node> Qi, int level) {
@@ -79,7 +79,7 @@ public class CoverTree {
 	public Node findNearest(Node p) {
 		bestDist = p != root ? dist(p, root) : Double.POSITIVE_INFINITY;
 		bestNode = p != root ? root : null;
-		findNearest(p, Arrays.asList(new Node[] { root }), 0);
+		findNearest(p, Arrays.asList(root), 0);
 		return bestNode;
 	}
 
