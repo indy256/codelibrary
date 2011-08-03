@@ -1,6 +1,8 @@
 import java.awt.*;
 import java.io.PrintWriter;
 import java.util.*;
+import java.util.List;
+
 import javax.swing.*;
 
 public class GeneticProgramming extends JFrame {
@@ -9,20 +11,7 @@ public class GeneticProgramming extends JFrame {
 	int[] x;
 	int[] y;
 	int[] p;
-
-	static int[] getRandomCombination(int n, int m) {
-		int[] res = new int[n];
-		for (int i = 0; i < n; i++) {
-			res[i] = i;
-		}
-		for (int i = 0; i < m; i++) {
-			int j = n - 1 - rnd.nextInt(n - i);
-			int t = res[i];
-			res[i] = res[j];
-			res[j] = t;
-		}
-		return Arrays.copyOf(res, m);
-	}
+	int generationsEvolved = 0;
 
 	static int[] getRandomPermutation(int n) {
 		int[] res = new int[n];
@@ -38,66 +27,192 @@ public class GeneticProgramming extends JFrame {
 		return res;
 	}
 
-	int[] neighbour(int[] state, int changes) {
-		int[] p = getRandomCombination(state.length, changes);
-		int[] r = getRandomPermutation(changes);
-		int[] res = state.clone();
-		for (int i = 0; i < changes; i++) {
-			res[p[i]] = state[p[r[i]]];
-		}
-		return res;
-	}
-
-	double eval(int[] state) {
+	double eval(int[] p) {
 		double res = 0;
-		for (int i = 0, j = state.length - 1; i < state.length; j = i++) {
-			int dx = x[state[i]] - x[state[j]];
-			int dy = y[state[i]] - y[state[j]];
+		for (int i = 0, j = p.length - 1; i < p.length; j = i++) {
+			int dx = x[p[i]] - x[p[j]];
+			int dy = y[p[i]] - y[p[j]];
 			res += Math.sqrt(dx * dx + dy * dy);
 		}
 		return res;
 	}
 
-	static double Prob(double curEnergy, double newEnergy, double curTemp) {
-		double diff = newEnergy - curEnergy;
-		if (diff < 0) {
-			return 1;
-		} else {
-			return 0 * Math.exp(-diff / curTemp);
+	class Chromosome implements Comparable<Chromosome> {
+		final int[] p;
+		private double cost = Double.NaN;
+
+		public Chromosome(int[] p) {
+			this.p = p;
+		}
+
+		public double getCost() {
+			if (Double.isNaN(cost)) {
+				cost = eval(p);
+			}
+			return cost;
+		}
+
+		@Override
+		public int compareTo(Chromosome other) {
+			return Double.compare(getCost(), other.getCost());
 		}
 	}
 
-	public void anneal() {
-		int[] curState = new int[p.length];
-		for (int i = 0; i < p.length; i++) {
-			curState[i] = i;
+	static class Population {
+		List<Chromosome> chromosomes = new ArrayList<Chromosome>();
+		final int populationLimit;
+
+		public Population(int populationLimit) {
+			this.populationLimit = populationLimit;
 		}
-		double curEnergy = eval(curState);
-		int[] bestState = curState;
-		double bestEnergy = curEnergy;
-		double maxTemp = 10000;
-		for (double curTemp = maxTemp; curTemp > 0; curTemp -= 0.01) {
-			int changes = Math.max(2, (int) (curTemp / maxTemp * p.length));
-			int[] newState = neighbour(curState, changes);
-			double newEnergy = eval(newState);
 
-			if (Prob(curEnergy, newEnergy, curTemp) > rnd.nextDouble()) {
-				curState = newState;
-				curEnergy = newEnergy;
+		public void nextGeneration() {
+			Collections.sort(chromosomes);
+			List<Chromosome> nextChromosomes = new ArrayList<Chromosome>();
+			for (int i = 0; i < (chromosomes.size() + 1) / 2; i++) {
+				nextChromosomes.add(chromosomes.get(i));
 			}
+			chromosomes = nextChromosomes;
+		}
+	}
 
-			if (bestEnergy > newEnergy) {
-				bestEnergy = newEnergy;
-				bestState = newState;
+	int[][] crossOver(int[] p1, int[] p2) {
+		int n = p1.length;
+		int i1 = rnd.nextInt(n);
+		int i2;
+		do {
+			i2 = rnd.nextInt(n);
+		} while (i2 == i1);
 
-				p = bestState;
-				panel.repaint();
+		int[] n1 = p1.clone();
+		int[] n2 = p2.clone();
+
+		boolean[] used1 = new boolean[n];
+		boolean[] used2 = new boolean[n];
+
+		for (int i = i1;; i = (i + 1) % n) {
+			n1[i] = p2[i];
+			used1[n1[i]] = true;
+			n2[i] = p1[i];
+			used2[n2[i]] = true;
+			if (i == i2) {
+				break;
 			}
+		}
+
+		for (int i = (i2 + 1) % n; i != i1; i = (i + 1) % n) {
+			if (used1[n1[i]]) {
+				n1[i] = -1;
+			} else {
+				used1[n1[i]] = true;
+			}
+			if (used2[n2[i]]) {
+				n2[i] = -1;
+			} else {
+				used2[n2[i]] = true;
+			}
+		}
+
+		List<Integer> free1 = new ArrayList<Integer>();
+		List<Integer> free2 = new ArrayList<Integer>();
+		for (int i = 0; i < n; i++) {
+			if (!used1[i]) {
+				free1.add(i);
+			}
+			if (!used2[i]) {
+				free2.add(i);
+			}
+		}
+
+		int pos1 = 0;
+		int pos2 = 0;
+		for (int i = 0; i < n; i++) {
+			if (n1[i] == -1) {
+				n1[i] = free1.get(pos1++);
+			}
+			if (n2[i] == -1) {
+				n2[i] = free2.get(pos2++);
+			}
+		}
+		return new int[][] { n1, n2 };
+	}
+
+	void mutate(int[] p) {
+		int n = p.length;
+		int i1 = rnd.nextInt(n);
+		int i2;
+		do {
+			i2 = rnd.nextInt(n);
+		} while (i2 == i1);
+		if (rnd.nextBoolean()) {
+			// swap
+			int t = p[i1];
+			p[i1] = p[i2];
+			p[i2] = t;
+		} else {
+			// rotate
+			while (true) {
+				int t = p[i1];
+				p[i1] = p[i2];
+				p[i2] = t;
+				i1 = (i1 + 1) % n;
+				if (i1 == i2) {
+					break;
+				}
+				i2 = (i2 + n - 1) % n;
+				if (i1 == i2) {
+					break;
+				}
+			}
+		}
+	}
+
+	public void geneticAlgorithm() {
+		final int populationLimit = 1000;
+		final Population population = new Population(populationLimit);
+		final int n = x.length;
+		for (int i = 0; i < populationLimit; i++) {
+			population.chromosomes.add(new Chromosome(getRandomPermutation(n)));
+		}
+
+		final double mutationRate = 0.3;
+		final int generations = 10000;
+
+		for (int g = 0; g < generations; g++) {
+			while (population.chromosomes.size() < population.populationLimit) {
+				int i1 = rnd.nextInt(population.chromosomes.size());
+				int i2;
+				do {
+					i2 = rnd.nextInt(population.chromosomes.size());
+				} while (i2 == i1);
+
+				Chromosome ch1 = population.chromosomes.get(i1);
+				Chromosome ch2 = population.chromosomes.get(i2);
+
+				int[][] pair = crossOver(ch1.p, ch2.p);
+				ch1 = new Chromosome(pair[0]);
+				ch2 = new Chromosome(pair[1]);
+
+				if (rnd.nextDouble() < mutationRate) {
+					mutate(ch1.p);
+					mutate(ch2.p);
+				}
+
+				population.chromosomes.add(ch1);
+				if (population.chromosomes.size() < population.populationLimit) {
+					population.chromosomes.add(ch2);
+				}
+			}
+			population.nextGeneration();
+			p = population.chromosomes.get(0).p;
+			generationsEvolved = g + 1;
+			panel.repaint();
 		}
 	}
 
 	public GeneticProgramming() {
-		final int n = rnd.nextInt(20) + 50;
+		final int n = rnd.nextInt(20) + 200;
+		// final int n = 5;
 		x = new int[n];
 		y = new int[n];
 		p = new int[n];
@@ -134,14 +249,14 @@ public class GeneticProgramming extends JFrame {
 					g.drawOval(x[i], max - y[i], 3, 3);
 				}
 				g.setColor(Color.BLACK);
-				String s = String.format("%6.1f", eval(p));
-				g.drawString(s, 2, 410);
+				g.drawString(String.format("%6.1f", eval(p)), 2, 410);
+				g.drawString(String.format("Generation %d", generationsEvolved), 2, 425);
 			}
 		};
 		setContentPane(panel);
 		new Thread() {
 			public void run() {
-				anneal();
+				geneticAlgorithm();
 			}
 		}.start();
 	}
