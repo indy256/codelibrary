@@ -38,6 +38,35 @@ public class LinkCutTree {
 		return v;
 	}
 
+	static void expose(Node v) {
+		splay(v);
+
+		if (v.right != null) {
+			v.right.path_parent = v;
+			v.right.parent = null;
+			v.right = null;
+		}
+
+		for (Node t = v; t.path_parent != null;) {
+			Node w = t.path_parent;
+			splay(w);
+
+			// switch
+			if (w.right != null) {
+				w.right.path_parent = w;
+				w.right.parent = null;
+			}
+
+			w.right = t;
+			t.parent = w;
+			t.path_parent = null;
+
+			t = w;
+		}
+
+		splay(v);
+	}
+
 	public static Node lca(Node u, Node v) {
 		if (findRoot(u) != findRoot(v))
 			return null;
@@ -75,35 +104,6 @@ public class LinkCutTree {
 
 		splay(v);
 		return lca;
-	}
-
-	static void expose(Node v) {
-		splay(v);
-
-		if (v.right != null) {
-			v.right.path_parent = v;
-			v.right.parent = null;
-			v.right = null;
-		}
-
-		for (Node t = v; t.path_parent != null;) {
-			Node w = t.path_parent;
-			splay(w);
-
-			// switch
-			if (w.right != null) {
-				w.right.path_parent = w;
-				w.right.parent = null;
-			}
-
-			w.right = t;
-			t.parent = w;
-			t.path_parent = null;
-
-			t = w;
-		}
-
-		splay(v);
 	}
 
 	static void rotate(Node v) {
