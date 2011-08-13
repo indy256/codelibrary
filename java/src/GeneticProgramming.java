@@ -246,10 +246,10 @@ public class GeneticProgramming extends JFrame {
 				}
 				g.setColor(Color.RED);
 				for (int i = 0; i < n; i++) {
-					g.drawOval(x[i], max - y[i], 3, 3);
+					g.drawOval(x[i]-1, max - y[i]-1, 3, 3);
 				}
 				g.setColor(Color.BLACK);
-				g.drawString(String.format("%6.1f", eval(p)), 2, 410);
+				g.drawString(String.format("%1.1f", eval(p)), 2, 410);
 				g.drawString(String.format("Generation %d", generationsEvolved), 2, 425);
 			}
 		};
