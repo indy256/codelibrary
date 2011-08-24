@@ -173,33 +173,65 @@ public class Sort {
 
 	// Usage example
 	public static void main(String[] args) {
-		int[] p = { 4, 1, 3, 2 };
-		int[] s = p.clone();
-		qSort(s, 0, s.length - 1);
-		System.out.println(Arrays.toString(s));
+		Random rnd = new Random(1);
+		for (int step = 0; step < 1000; step++) {
+			int n = rnd.nextInt(100) + 1;
+			int[] a = new int[n];
+			int[] s = new int[n];
+			for (int i = 0; i < n; i++) {
+				s[i] = a[i] = rnd.nextInt(1000);
+			}
+			Arrays.sort(s);
 
-		s = p.clone();
-		qSort2(s, 0, s.length);
-		System.out.println(Arrays.toString(s));
+			int[] b = a.clone();
+			bubbleSort(b);
+			if (!Arrays.equals(s, b))
+				throw new RuntimeException();
 
-		s = p.clone();
-		mergeSort(s, 0, s.length);
-		System.out.println(Arrays.toString(s));
+			b = a.clone();
+			selectionSort(b);
+			if (!Arrays.equals(s, b))
+				throw new RuntimeException();
 
-		s = p.clone();
-		bubbleSort(s);
-		System.out.println(Arrays.toString(s));
+			b = a.clone();
+			insertionSort(b);
+			if (!Arrays.equals(s, b))
+				throw new RuntimeException();
 
-		s = p.clone();
-		selectionSort(s);
-		System.out.println(Arrays.toString(s));
+			b = a.clone();
+			countingSort(b);
+			if (!Arrays.equals(s, b))
+				throw new RuntimeException();
+		}
 
-		s = p.clone();
-		insertionSort(s);
-		System.out.println(Arrays.toString(s));
+		for (int step = 0; step < 10; step++) {
+			int n = rnd.nextInt(50000) + 100000;
+			int[] a = new int[n];
+			int[] s = new int[n];
+			for (int i = 0; i < n; i++) {
+				s[i] = a[i] = rnd.nextInt();
+			}
+			Arrays.sort(s);
 
-		s = p.clone();
-		countingSort(s);
-		System.out.println(Arrays.toString(s));
+			int[] b = a.clone();
+			qSort(b, 0, b.length - 1);
+			if (!Arrays.equals(s, b))
+				throw new RuntimeException();
+
+			b = a.clone();
+			qSort2(b, 0, b.length);
+			if (!Arrays.equals(s, b))
+				throw new RuntimeException();
+
+			b = a.clone();
+			mergeSort(b, 0, b.length);
+			if (!Arrays.equals(s, b))
+				throw new RuntimeException();
+
+			b = a.clone();
+			radixSort(b, 0, b.length);
+			if (!Arrays.equals(s, b))
+				throw new RuntimeException();
+		}
 	}
 }
