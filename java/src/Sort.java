@@ -37,10 +37,6 @@ public class Sort {
 
 	static int randomizedPartition(int[] a, int low, int high) {
 		swap(a, low + rnd.nextInt(high - low), high - 1);
-		return partition(a, low, high);
-	}
-
-	static int partition(int[] a, int low, int high) {
 		int x = a[high - 1];
 		int i = low - 1;
 		for (int j = low; j < high; j++) {
