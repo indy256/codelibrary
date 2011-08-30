@@ -1,13 +1,20 @@
 import java.util.*;
 
-public class SelectKthElement {
+public class NthElement {
 
 	static Random rnd = new Random(1);
 
-	static void swap(int[] a, int i, int j) {
-		int t = a[i];
-		a[i] = a[j];
-		a[j] = t;
+	// analog of C++ nth_element()
+	public static int nth_element(int[] a, int low, int high, int n) {
+		if (low == high - 1)
+			return low;
+		int q = randomizedPartition(a, low, high);
+		int k = q - low;
+		if (n < k)
+			return nth_element(a, low, q, n);
+		if (n > k)
+			return nth_element(a, q + 1, high, n - k - 1);
+		return q;
 	}
 
 	static int randomizedPartition(int[] a, int low, int high) {
@@ -23,16 +30,10 @@ public class SelectKthElement {
 		return i;
 	}
 
-	public static int randomizedSelect(int[] a, int low, int high, int i) {
-		if (low == high - 1)
-			return low;
-		int q = randomizedPartition(a, low, high);
-		int k = q - low;
-		if (i < k)
-			return randomizedSelect(a, low, q, i);
-		if (i > k)
-			return randomizedSelect(a, q + 1, high, i - k - 1);
-		return q;
+	static void swap(int[] a, int i, int j) {
+		int t = a[i];
+		a[i] = a[j];
+		a[j] = t;
 	}
 
 	static int[] getRandomPermutation(int n, Random rnd) {
@@ -50,7 +51,7 @@ public class SelectKthElement {
 			int n = rnd.nextInt(10) + 1;
 			int[] p = getRandomPermutation(n, rnd);
 			int k = rnd.nextInt(n);
-			int res = randomizedSelect(p, 0, n, k);
+			int res = nth_element(p, 0, n, k);
 			if (res != k) {
 				System.err.println(res + " " + k);
 			}
