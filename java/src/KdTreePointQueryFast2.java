@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class KdTreePointQueryFast {
+public class KdTreePointQueryFast2 {
 
 	public static class Point {
 		int x, y;
@@ -11,6 +11,29 @@ public class KdTreePointQueryFast {
 		}
 	}
 
+	static void qSort(int[] a, int[] p, int low, int high) {
+		int i = low;
+		int j = high;
+		int x = a[p[low + rnd.nextInt(high - low + 1)]];
+		do {
+			while (a[p[i]] < x)
+				++i;
+			while (x < a[p[j]])
+				--j;
+			if (i <= j) {
+				int t = p[i];
+				p[i] = p[j];
+				p[j] = t;
+				++i;
+				--j;
+			}
+		} while (i <= j);
+		if (low < j)
+			qSort(a, p, low, j);
+		if (i < high)
+			qSort(a, p, i, high);
+	}
+
 	static final Random rnd = new Random(1);
 	int n;
 	int[] tx;
@@ -19,26 +42,67 @@ public class KdTreePointQueryFast {
 	long bestDist;
 	int bestNode;
 
-	public KdTreePointQueryFast(Point[] points) {
+	public KdTreePointQueryFast2(Point[] points) {
 		n = points.length;
 		tx = new int[4 * n];
 		ty = new int[4 * n];
 		index = new int[4 * n];
-		build(1, 0, points.length, true, points);
+		int[] px = new int[n];
+		int[] py = new int[n];
+		int[] x = new int[n];
+		int[] y = new int[n];
+		for (int i = 0; i < n; i++) {
+			px[i] = i;
+			py[i] = i;
+			x[i] = points[i].x;
+			y[i] = points[i].y;
+		}
+		qSort(x, px, 0, n - 1);
+		qSort(y, py, 0, n - 1);
+		type = new boolean[n];
+		tmp = new int[n];
+		build(1, 0, points.length, true, points, px, py);
 	}
 
-	void build(int node, int low, int high, boolean divX, Point[] points) {
+	void build(int node, int low, int high, boolean divX, Point[] points, int[] px, int[] py) {
 		if (low >= high)
 			return;
 		int mid = (low + high) >> 1;
-		nth_element(points, low, high, mid - low, divX);
+		// nth_element(points, low, high, mid - low, divX);
+		separate(divX ? px : py, divX ? py : px, low, high);
 
-		tx[node] = points[mid].x;
-		ty[node] = points[mid].y;
-		index[node] = mid;
+		int ind = divX ? px[mid] : py[mid];
+		index[node] = ind;
+		tx[node] = points[ind].x;
+		ty[node] = points[ind].y;
 
-		build(node * 2, low, mid, !divX, points);
-		build(node * 2 + 1, mid + 1, high, !divX, points);
+		build(node * 2, low, mid, !divX, points, px, py);
+		build(node * 2 + 1, mid + 1, high, !divX, points, px, py);
+	}
+
+	boolean[] type;
+	int[] tmp;
+
+	void separate(int[] px, int[] py, int left, int right) {
+		int middle = (right + left) >> 1;
+		for (int i = left; i < middle; i++)
+			type[px[i]] = false;
+		for (int i = middle + 1; i < right; i++)
+			type[px[i]] = true;
+
+		int i = left;
+		int j = middle + 1;
+		int pxmid = px[middle];
+		for (int k = left; k < right; k++) {
+			int cur = py[k];
+			if (cur != pxmid) {
+				if (type[cur])
+					tmp[j++] = cur;
+				else
+					tmp[i++] = cur;
+			}
+		}
+		System.arraycopy(tmp, left, py, left, right - left);
 	}
 
 	static void swap(Point[] a, int i, int j) {
@@ -122,7 +186,7 @@ public class KdTreePointQueryFast {
 		for (int i = 0; i < points.length; i++) {
 			points[i] = new Point(x[i], y[i]);
 		}
-		KdTreePointQueryFast kdTree = new KdTreePointQueryFast(points);
+		KdTreePointQueryFast2 kdTree = new KdTreePointQueryFast2(points);
 		int res = kdTree.findNearestNeighbour(6, 3);
 		System.out.println(res);
 	}

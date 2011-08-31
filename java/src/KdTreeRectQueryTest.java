@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class KdTreeTest {
+public class KdTreeRectQueryTest {
 	public static void main(String[] args) {
 		test();
 		perfomance();
