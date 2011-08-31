@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class KdTreeRectQuery {
+public class KdTreePointQueryFast {
 
 	public static class Point {
 		int x, y;
@@ -13,17 +13,16 @@ public class KdTreeRectQuery {
 
 	public static class Node {
 		int x, y;
-		int minx, miny, maxx, maxy;
-		int count;
 		Node left;
 		Node right;
 	}
 
 	static final Random rnd = new Random(1);
 	Node root;
-	int count;
+	long bestDist;
+	Node bestNode;
 
-	public KdTreeRectQuery(Point[] points) {
+	public KdTreePointQueryFast(Point[] points) {
 		root = build(0, points.length, true, points);
 	}
 
@@ -34,21 +33,10 @@ public class KdTreeRectQuery {
 		nth_element(points, low, high, mid - low, divX);
 
 		Node node = new Node();
-		node.minx = Integer.MAX_VALUE;
-		node.miny = Integer.MAX_VALUE;
-		node.maxx = Integer.MIN_VALUE;
-		node.maxy = Integer.MIN_VALUE;
-		for (int i = low; i < high; i++) {
-			node.minx = Math.min(node.minx, points[i].x);
-			node.miny = Math.min(node.miny, points[i].y);
-			node.maxx = Math.max(node.maxx, points[i].x);
-			node.maxy = Math.max(node.maxy, points[i].y);
-		}
 		node.x = points[mid].x;
 		node.y = points[mid].y;
 		node.left = build(low, mid, !divX, points);
 		node.right = build(mid + 1, high, !divX, points);
-		node.count = high - low;
 		return node;
 	}
 
@@ -83,31 +71,32 @@ public class KdTreeRectQuery {
 		return i;
 	}
 
-	// number of points in [x1,x2] x [y1,y2]
-	public int count(int x1, int y1, int x2, int y2) {
-		return count(root, x1, y1, x2, y2);
+	public Node findNearestNeighbour(int x, int y) {
+		bestDist = Long.MAX_VALUE;
+		findNearestNeighbour(root, x, y, true);
+		return bestNode;
 	}
 
-	int count(Node node, int x1, int y1, int x2, int y2) {
+	void findNearestNeighbour(Node node, int x, int y, boolean divX) {
 		if (node == null)
-			return 0;
+			return;
+		long dx = x - node.x;
+		long dy = y - node.y;
+		long d = dx * dx + dy * dy;
+		if (bestDist > d) {
+			bestDist = d;
+			bestNode = node;
+		}
+		long delta = divX ? dx : dy;
+		long delta2 = delta * delta;
 
-		int ax = node.minx;
-		int ay = node.miny;
-		int bx = node.maxx;
-		int by = node.maxy;
+		Node node1 = delta < 0 ? node.left : node.right;
+		Node node2 = delta < 0 ? node.right : node.left;
 
-		if (ax > x2 || x1 > bx || ay > y2 || y1 > by)
-			return 0;
-		if (x1 <= ax && bx <= x2 && y1 <= ay && by <= y2)
-			return node.count;
-
-		int res = 0;
-		res += count(node.left, x1, y1, x2, y2);
-		res += count(node.right, x1, y1, x2, y2);
-		if (x1 <= node.x && node.x <= x2 && y1 <= node.y && node.y <= y2)
-			++res;
-		return res;
+		findNearestNeighbour(node1, x, y, !divX);
+		if (delta2 < bestDist) {
+			findNearestNeighbour(node2, x, y, !divX);
+		}
 	}
 
 	// Usage example
@@ -118,8 +107,8 @@ public class KdTreeRectQuery {
 		for (int i = 0; i < points.length; i++) {
 			points[i] = new Point(x[i], y[i]);
 		}
-		KdTreeRectQuery kdTree = new KdTreeRectQuery(points);
-		int count = kdTree.count(0, 0, 10, 10);
-		System.out.println(count);
+		KdTreePointQueryFast kdTree = new KdTreePointQueryFast(points);
+		KdTreePointQueryFast.Node res = kdTree.findNearestNeighbour(6, 3);
+		System.out.println(res.x == points[3].x && res.y == points[3].y);
 	}
 }
