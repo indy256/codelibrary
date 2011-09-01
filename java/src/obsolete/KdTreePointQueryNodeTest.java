@@ -1,6 +1,7 @@
+package obsolete;
 import java.util.*;
 
-public class KdTreePointQueryFastTest {
+public class KdTreePointQueryNodeTest {
 	public static void main(String[] args) {
 		test();
 		perfomance();
@@ -19,16 +20,16 @@ public class KdTreePointQueryFastTest {
 			}
 			int[] x = new int[n];
 			int[] y = new int[n];
-			KdTreePointQueryFast.Point[] points = new KdTreePointQueryFast.Point[n];
+			KdTreePointQueryNode.Point[] points = new KdTreePointQueryNode.Point[n];
 			Set<Long> set = new HashSet<Long>();
 			for (int i = 0; i < n; i++) {
 				do {
 					x[i] = rnd.nextInt(1000);
 					y[i] = rnd.nextInt(1000);
 				} while (!set.add(((long) x[i] << 30) + y[i]));
-				points[i] = new KdTreePointQueryFast.Point(x[i], y[i]);
+				points[i] = new KdTreePointQueryNode.Point(x[i], y[i]);
 			}
-			KdTreePointQueryFast tree = new KdTreePointQueryFast(points);
+			KdTreePointQueryNode tree = new KdTreePointQueryNode(points);
 			long[] dist2 = new long[n];
 			for (int i = 0; i < n; i++) {
 				tree.findNearestNeighbour(qx[i], qy[i]);
@@ -69,17 +70,17 @@ public class KdTreePointQueryFastTest {
 
 		int[] x = new int[n];
 		int[] y = new int[n];
-		KdTreePointQueryFast.Point[] points = new KdTreePointQueryFast.Point[n];
+		KdTreePointQueryNode.Point[] points = new KdTreePointQueryNode.Point[n];
 		Set<Long> set = new HashSet<Long>();
 		for (int i = 0; i < n; i++) {
 			do {
 				x[i] = rnd.nextInt(1000000);
 				y[i] = rnd.nextInt(1000000);
 			} while (!set.add(((long) x[i] << 30) + y[i]));
-			points[i] = new KdTreePointQueryFast.Point(x[i], y[i]);
+			points[i] = new KdTreePointQueryNode.Point(x[i], y[i]);
 		}
 		long time = System.currentTimeMillis();
-		KdTreePointQueryFast tree = new KdTreePointQueryFast(points);
+		KdTreePointQueryNode tree = new KdTreePointQueryNode(points);
 		System.out.println("build time: " + (System.currentTimeMillis() - time));
 
 		time = System.currentTimeMillis();

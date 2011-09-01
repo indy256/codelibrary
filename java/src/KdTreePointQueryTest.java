@@ -8,7 +8,7 @@ public class KdTreePointQueryTest {
 
 	static void test() {
 		Random rnd = new Random(1);
-		for (int step = 0; step < 10000; step++) {
+		for (int step = 0; step < 100000; step++) {
 			int n = rnd.nextInt(100) + 2;
 
 			int[] qx = new int[n];
@@ -58,7 +58,7 @@ public class KdTreePointQueryTest {
 
 	static void perfomance() {
 		Random rnd = new Random(1);
-		int n = 10000;
+		int n = 1000000;
 
 		int[] qx = new int[n];
 		int[] qy = new int[n];
@@ -89,6 +89,9 @@ public class KdTreePointQueryTest {
 			dist2[i] = tree.bestDist;
 		}
 		System.out.println("search time:" + (System.currentTimeMillis() - time));
+
+		if (n > 10000)
+			return;
 
 		long[] dist1 = new long[n];
 		Arrays.fill(dist1, Long.MAX_VALUE);

@@ -11,51 +11,46 @@ public class KdTreeRectQuery {
 		}
 	}
 
-	public static class Node {
-		int x, y;
-		int minx, miny, maxx, maxy;
-		int count;
-		Node left;
-		Node right;
-	}
-
-	static final Random rnd = new Random(1);
-	Node root;
-	int count;
+	int[] tx;
+	int[] ty;
+	int[] minx, miny, maxx, maxy;
+	int[] count;
 
 	public KdTreeRectQuery(Point[] points) {
-		root = build(0, points.length, true, points);
+		int n = points.length;
+		tx = new int[n];
+		ty = new int[n];
+		minx = new int[n];
+		miny = new int[n];
+		maxx = new int[n];
+		maxy = new int[n];
+		count = new int[n];
+		build(0, n, true, points);
 	}
 
-	Node build(int low, int high, boolean divX, Point[] points) {
+	void build(int low, int high, boolean divX, Point[] points) {
 		if (low >= high)
-			return null;
+			return;
 		int mid = (low + high) >> 1;
 		nth_element(points, low, high, mid - low, divX);
 
-		Node node = new Node();
-		node.minx = Integer.MAX_VALUE;
-		node.miny = Integer.MAX_VALUE;
-		node.maxx = Integer.MIN_VALUE;
-		node.maxy = Integer.MIN_VALUE;
-		for (int i = low; i < high; i++) {
-			node.minx = Math.min(node.minx, points[i].x);
-			node.miny = Math.min(node.miny, points[i].y);
-			node.maxx = Math.max(node.maxx, points[i].x);
-			node.maxy = Math.max(node.maxy, points[i].y);
-		}
-		node.x = points[mid].x;
-		node.y = points[mid].y;
-		node.left = build(low, mid, !divX, points);
-		node.right = build(mid + 1, high, !divX, points);
-		node.count = high - low;
-		return node;
-	}
+		tx[mid] = points[mid].x;
+		ty[mid] = points[mid].y;
+		count[mid] = high - low;
 
-	static void swap(Point[] a, int i, int j) {
-		Point t = a[i];
-		a[i] = a[j];
-		a[j] = t;
+		minx[mid] = Integer.MAX_VALUE;
+		miny[mid] = Integer.MAX_VALUE;
+		maxx[mid] = Integer.MIN_VALUE;
+		maxy[mid] = Integer.MIN_VALUE;
+		for (int i = low; i < high; i++) {
+			minx[mid] = Math.min(minx[mid], points[i].x);
+			miny[mid] = Math.min(miny[mid], points[i].y);
+			maxx[mid] = Math.max(maxx[mid], points[i].x);
+			maxy[mid] = Math.max(maxy[mid], points[i].y);
+		}
+
+		build(low, mid, !divX, points);
+		build(mid + 1, high, !divX, points);
 	}
 
 	static int nth_element(Point[] a, int low, int high, int n, boolean divX) {
@@ -70,6 +65,8 @@ public class KdTreeRectQuery {
 		return q;
 	}
 
+	static final Random rnd = new Random(1);
+
 	static int randomizedPartition(Point[] a, int low, int high, boolean divX) {
 		swap(a, low + rnd.nextInt(high - low), high - 1);
 		int v = divX ? a[high - 1].x : a[high - 1].y;
@@ -83,29 +80,36 @@ public class KdTreeRectQuery {
 		return i;
 	}
 
-	// number of points in [x1,x2] x [y1,y2]
-	public int count(int x1, int y1, int x2, int y2) {
-		return count(root, x1, y1, x2, y2);
+	static void swap(Point[] a, int i, int j) {
+		Point t = a[i];
+		a[i] = a[j];
+		a[j] = t;
 	}
 
-	int count(Node node, int x1, int y1, int x2, int y2) {
-		if (node == null)
-			return 0;
+	// number of points in [x1,x2] x [y1,y2]
+	public int count(int x1, int y1, int x2, int y2) {
+		return count(0, tx.length, x1, y1, x2, y2);
+	}
 
-		int ax = node.minx;
-		int ay = node.miny;
-		int bx = node.maxx;
-		int by = node.maxy;
+	int count(int low, int high, int x1, int y1, int x2, int y2) {
+		if (low >= high)
+			return 0;
+		int mid = (low + high) >> 1;
+
+		int ax = minx[mid];
+		int ay = miny[mid];
+		int bx = maxx[mid];
+		int by = maxy[mid];
 
 		if (ax > x2 || x1 > bx || ay > y2 || y1 > by)
 			return 0;
 		if (x1 <= ax && bx <= x2 && y1 <= ay && by <= y2)
-			return node.count;
+			return count[mid];
 
 		int res = 0;
-		res += count(node.left, x1, y1, x2, y2);
-		res += count(node.right, x1, y1, x2, y2);
-		if (x1 <= node.x && node.x <= x2 && y1 <= node.y && node.y <= y2)
+		res += count(low, mid, x1, y1, x2, y2);
+		res += count(mid + 1, high, x1, y1, x2, y2);
+		if (x1 <= tx[mid] && tx[mid] <= x2 && y1 <= ty[mid] && ty[mid] <= y2)
 			++res;
 		return res;
 	}
@@ -114,12 +118,13 @@ public class KdTreeRectQuery {
 	public static void main(String[] args) {
 		int[] x = { 0, 10, 0, 10 };
 		int[] y = { 0, 10, 10, 0 };
+		
 		Point[] points = new Point[x.length];
-		for (int i = 0; i < points.length; i++) {
+		for (int i = 0; i < points.length; i++)
 			points[i] = new Point(x[i], y[i]);
-		}
+
 		KdTreeRectQuery kdTree = new KdTreeRectQuery(points);
 		int count = kdTree.count(0, 0, 10, 10);
-		System.out.println(count);
+		System.out.println(4 == count);
 	}
 }

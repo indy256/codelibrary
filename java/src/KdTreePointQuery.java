@@ -11,41 +11,30 @@ public class KdTreePointQuery {
 		}
 	}
 
-	public static class Node {
-		int x, y;
-		Node left;
-		Node right;
-	}
-
-	static final Random rnd = new Random(1);
-	Node root;
-	long bestDist;
-	Node bestNode;
+	int[] tx;
+	int[] ty;
 
 	public KdTreePointQuery(Point[] points) {
-		root = build(0, points.length, true, points);
+		int n = points.length;
+		tx = new int[n];
+		ty = new int[n];
+		build(0, n, true, points);
 	}
 
-	Node build(int low, int high, boolean divX, Point[] points) {
+	void build(int low, int high, boolean divX, Point[] points) {
 		if (low >= high)
-			return null;
+			return;
 		int mid = (low + high) >> 1;
 		nth_element(points, low, high, mid - low, divX);
 
-		Node node = new Node();
-		node.x = points[mid].x;
-		node.y = points[mid].y;
-		node.left = build(low, mid, !divX, points);
-		node.right = build(mid + 1, high, !divX, points);
-		return node;
+		tx[mid] = points[mid].x;
+		ty[mid] = points[mid].y;
+
+		build(low, mid, !divX, points);
+		build(mid + 1, high, !divX, points);
 	}
 
-	static void swap(Point[] a, int i, int j) {
-		Point t = a[i];
-		a[i] = a[j];
-		a[j] = t;
-	}
-
+	// analog of C++ nth_element()
 	static int nth_element(Point[] a, int low, int high, int n, boolean divX) {
 		if (low == high - 1)
 			return low;
@@ -57,6 +46,8 @@ public class KdTreePointQuery {
 			return nth_element(a, q + 1, high, n - k - 1, divX);
 		return q;
 	}
+
+	static final Random rnd = new Random(1);
 
 	static int randomizedPartition(Point[] a, int low, int high, boolean divX) {
 		swap(a, low + rnd.nextInt(high - low), high - 1);
@@ -71,32 +62,50 @@ public class KdTreePointQuery {
 		return i;
 	}
 
-	public Node findNearestNeighbour(int x, int y) {
+	static void swap(Point[] a, int i, int j) {
+		Point t = a[i];
+		a[i] = a[j];
+		a[j] = t;
+	}
+
+	long bestDist;
+	int bestNode;
+
+	public int findNearestNeighbour(int x, int y) {
 		bestDist = Long.MAX_VALUE;
-		findNearestNeighbour(root, x, y, true);
+		findNearestNeighbour(0, tx.length, x, y, true);
 		return bestNode;
 	}
 
-	void findNearestNeighbour(Node node, int x, int y, boolean divX) {
-		if (node == null)
+	void findNearestNeighbour(int low, int high, int x, int y, boolean divX) {
+		if (low >= high)
 			return;
-		long dx = x - node.x;
-		long dy = y - node.y;
+		int mid = (low + high) >> 1;
+		long dx = x - tx[mid];
+		long dy = y - ty[mid];
 		long d = dx * dx + dy * dy;
 		if (bestDist > d) {
 			bestDist = d;
-			bestNode = node;
+			bestNode = mid;
 		}
 		long delta = divX ? dx : dy;
 		long delta2 = delta * delta;
 
-		Node node1 = delta < 0 ? node.left : node.right;
-		Node node2 = delta < 0 ? node.right : node.left;
-
-		findNearestNeighbour(node1, x, y, !divX);
-		if (delta2 < bestDist) {
-			findNearestNeighbour(node2, x, y, !divX);
+		int l1 = low;
+		int h1 = mid;
+		int l2 = mid + 1;
+		int h2 = high;
+		if (delta > 0) {
+			int t = l1;
+			l1 = l2;
+			l2 = t;
+			t = h1;
+			h1 = h2;
+			h2 = t;
 		}
+		findNearestNeighbour(l1, h1, x, y, !divX);
+		if (delta2 < bestDist)
+			findNearestNeighbour(l2, h2, x, y, !divX);
 	}
 
 	// Usage example
@@ -108,7 +117,7 @@ public class KdTreePointQuery {
 			points[i] = new Point(x[i], y[i]);
 		}
 		KdTreePointQuery kdTree = new KdTreePointQuery(points);
-		KdTreePointQuery.Node res = kdTree.findNearestNeighbour(6, 3);
-		System.out.println(res.x == points[3].x && res.y == points[3].y);
+		int res = kdTree.findNearestNeighbour(6, 3);
+		System.out.println(points[3] == points[res]);
 	}
 }

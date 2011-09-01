@@ -1,6 +1,7 @@
+package obsolete;
 import java.util.*;
 
-public class KdTreePointQueryFast {
+public class KdTreePointQueryNode {
 
 	public static class Point {
 		int x, y;
@@ -11,34 +12,33 @@ public class KdTreePointQueryFast {
 		}
 	}
 
-	static final Random rnd = new Random(1);
-	int n;
-	int[] tx;
-	int[] ty;
-	int[] index;
-	long bestDist;
-	int bestNode;
-
-	public KdTreePointQueryFast(Point[] points) {
-		n = points.length;
-		tx = new int[4 * n];
-		ty = new int[4 * n];
-		index = new int[4 * n];
-		build(1, 0, points.length, true, points);
+	public static class Node {
+		int x, y;
+		Node left;
+		Node right;
 	}
 
-	void build(int node, int low, int high, boolean divX, Point[] points) {
+	static final Random rnd = new Random(1);
+	Node root;
+	long bestDist;
+	Node bestNode;
+
+	public KdTreePointQueryNode(Point[] points) {
+		root = build(0, points.length, true, points);
+	}
+
+	Node build(int low, int high, boolean divX, Point[] points) {
 		if (low >= high)
-			return;
+			return null;
 		int mid = (low + high) >> 1;
 		nth_element(points, low, high, mid - low, divX);
 
-		tx[node] = points[mid].x;
-		ty[node] = points[mid].y;
-		index[node] = mid;
-
-		build(node * 2, low, mid, !divX, points);
-		build(node * 2 + 1, mid + 1, high, !divX, points);
+		Node node = new Node();
+		node.x = points[mid].x;
+		node.y = points[mid].y;
+		node.left = build(low, mid, !divX, points);
+		node.right = build(mid + 1, high, !divX, points);
+		return node;
 	}
 
 	static void swap(Point[] a, int i, int j) {
@@ -72,17 +72,17 @@ public class KdTreePointQueryFast {
 		return i;
 	}
 
-	public int findNearestNeighbour(int x, int y) {
+	public Node findNearestNeighbour(int x, int y) {
 		bestDist = Long.MAX_VALUE;
-		findNearestNeighbour(1, 0, n, x, y, true);
-		return index[bestNode];
+		findNearestNeighbour(root, x, y, true);
+		return bestNode;
 	}
 
-	void findNearestNeighbour(int node, int low, int high, int x, int y, boolean divX) {
-		if (low >= high)
+	void findNearestNeighbour(Node node, int x, int y, boolean divX) {
+		if (node == null)
 			return;
-		long dx = x - tx[node];
-		long dy = y - ty[node];
+		long dx = x - node.x;
+		long dy = y - node.y;
 		long d = dx * dx + dy * dy;
 		if (bestDist > d) {
 			bestDist = d;
@@ -91,27 +91,13 @@ public class KdTreePointQueryFast {
 		long delta = divX ? dx : dy;
 		long delta2 = delta * delta;
 
-		int mid = (low + high) >> 1;
-		int n1 = node * 2;
-		int l1 = low;
-		int h1 = mid;
-		int n2 = node * 2 + 1;
-		int l2 = mid + 1;
-		int h2 = high;
-		if (delta > 0) {
-			int t = n1;
-			n1 = n2;
-			n2 = t;
-			t = l1;
-			l1 = l2;
-			l2 = t;
-			t = h1;
-			h1 = h2;
-			h2 = t;
+		Node node1 = delta < 0 ? node.left : node.right;
+		Node node2 = delta < 0 ? node.right : node.left;
+
+		findNearestNeighbour(node1, x, y, !divX);
+		if (delta2 < bestDist) {
+			findNearestNeighbour(node2, x, y, !divX);
 		}
-		findNearestNeighbour(n1, l1, h1, x, y, !divX);
-		if (delta2 < bestDist)
-			findNearestNeighbour(n2, l2, h2, x, y, !divX);
 	}
 
 	// Usage example
@@ -122,8 +108,8 @@ public class KdTreePointQueryFast {
 		for (int i = 0; i < points.length; i++) {
 			points[i] = new Point(x[i], y[i]);
 		}
-		KdTreePointQueryFast kdTree = new KdTreePointQueryFast(points);
-		int res = kdTree.findNearestNeighbour(6, 3);
-		System.out.println(res);
+		KdTreePointQueryNode kdTree = new KdTreePointQueryNode(points);
+		KdTreePointQueryNode.Node res = kdTree.findNearestNeighbour(6, 3);
+		System.out.println(res.x == points[3].x && res.y == points[3].y);
 	}
 }
