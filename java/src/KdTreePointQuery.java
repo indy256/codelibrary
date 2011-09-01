@@ -112,10 +112,11 @@ public class KdTreePointQuery {
 	public static void main(String[] args) {
 		int[] x = { 0, 10, 0, 10 };
 		int[] y = { 0, 10, 10, 0 };
+
 		Point[] points = new Point[x.length];
-		for (int i = 0; i < points.length; i++) {
+		for (int i = 0; i < points.length; i++)
 			points[i] = new Point(x[i], y[i]);
-		}
+
 		KdTreePointQuery kdTree = new KdTreePointQuery(points);
 		int res = kdTree.findNearestNeighbour(6, 3);
 		System.out.println(points[3] == points[res]);

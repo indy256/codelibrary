@@ -2,14 +2,15 @@ import java.util.*;
 
 public class KdTreePointQueryTest {
 	public static void main(String[] args) {
+		System.out.println(System.getProperty("java.version"));
 		test();
 		perfomance();
 	}
 
 	static void test() {
 		Random rnd = new Random(1);
-		for (int step = 0; step < 100000; step++) {
-			int n = rnd.nextInt(100) + 2;
+		for (int step = 0; step < 10000; step++) {
+			int n = rnd.nextInt(100);
 
 			int[] qx = new int[n];
 			int[] qy = new int[n];
