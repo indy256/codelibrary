@@ -1,3 +1,5 @@
+package obsolete;
+
 import java.util.*;
 
 public class SCCTarjanOld {
@@ -57,11 +59,9 @@ public class SCCTarjanOld {
 
 	// Usage example
 	public static void main(String[] args) {
-		int n = 3;
-		List<Integer>[] g = new List[n];
-		for (int i = 0; i < n; i++) {
+		List<Integer>[] g = new List[3];
+		for (int i = 0; i < g.length; i++)
 			g[i] = new ArrayList<Integer>();
-		}
 		g[2].add(0);
 		g[2].add(1);
 		g[0].add(1);

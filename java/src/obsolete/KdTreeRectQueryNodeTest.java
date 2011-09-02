@@ -1,9 +1,6 @@
 package obsolete;
-import KdTreeRectQuery;
 
 import java.util.*;
-
-import KdTreeRectQuery.Point;
 
 public class KdTreeRectQueryNodeTest {
 	public static void main(String[] args) {
@@ -18,13 +15,13 @@ public class KdTreeRectQueryNodeTest {
 
 			int[] x = new int[n];
 			int[] y = new int[n];
-			KdTreeRectQuery.Point[] points = new KdTreeRectQuery.Point[n];
+			KdTreeRectQueryNode.Point[] points = new KdTreeRectQueryNode.Point[n];
 			for (int i = 0; i < n; i++) {
 				x[i] = rnd.nextInt(1000);
 				y[i] = rnd.nextInt(1000);
-				points[i] = new KdTreeRectQuery.Point(x[i], y[i]);
+				points[i] = new KdTreeRectQueryNode.Point(x[i], y[i]);
 			}
-			KdTreeRectQuery tree = new KdTreeRectQuery(points);
+			KdTreeRectQueryNode tree = new KdTreeRectQueryNode(points);
 			for (int q = 0; q < 100; q++) {
 				int x1 = rnd.nextInt(1000);
 				int x2 = rnd.nextInt(1000);
@@ -94,11 +91,11 @@ public class KdTreeRectQueryNodeTest {
 		int[] expected = new int[n];
 
 		long time = System.currentTimeMillis();
-		KdTreeRectQuery.Point[] points = new KdTreeRectQuery.Point[n];
+		KdTreeRectQueryNode.Point[] points = new KdTreeRectQueryNode.Point[n];
 		for (int i = 0; i < n; i++) {
-			points[i] = new KdTreeRectQuery.Point(x[i], y[i]);
+			points[i] = new KdTreeRectQueryNode.Point(x[i], y[i]);
 		}
-		KdTreeRectQuery tree = new KdTreeRectQuery(points);
+		KdTreeRectQueryNode tree = new KdTreeRectQueryNode(points);
 		System.out.println("build time: " + (System.currentTimeMillis() - time));
 
 		time = System.currentTimeMillis();

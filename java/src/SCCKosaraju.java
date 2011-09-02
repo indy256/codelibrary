@@ -25,32 +25,30 @@ public class SCCKosaraju {
 				dfs(graph, used, order, i);
 
 		Collections.reverse(order);
-		List<List<Integer>> res = new ArrayList<List<Integer>>();
+		List<List<Integer>> components = new ArrayList<List<Integer>>();
 		Arrays.fill(used, false);
 
 		for (int u : order)
 			if (!used[u]) {
 				List<Integer> component = new ArrayList<Integer>();
 				dfs(reverseGraph, used, component, u);
-				res.add(component);
+				components.add(component);
 			}
 
-		return res;
+		return components;
 	}
 
 	// Usage example
 	public static void main(String[] args) {
-		int n = 3;
-		List<Integer>[] g = new List[n];
-		for (int i = 0; i < n; i++) {
+		List<Integer>[] g = new List[3];
+		for (int i = 0; i < g.length; i++)
 			g[i] = new ArrayList<Integer>();
-		}
 		g[2].add(0);
 		g[2].add(1);
 		g[0].add(1);
 		g[1].add(0);
 
-		List<List<Integer>> res = scc(g);
-		System.out.println(res);
+		List<List<Integer>> components = scc(g);
+		System.out.println(components);
 	}
 }
