@@ -81,9 +81,9 @@ public class SCCTarjanNoRecursion {
 	public static void main(String[] args) {
 		int n = 3;
 		List<Integer>[] g = new List[n];
-		for (int i = 0; i < n; i++) {
+		for (int i = 0; i < n; i++)
 			g[i] = new ArrayList<Integer>();
-		}
+		
 		g[2].add(0);
 		g[2].add(1);
 		g[0].add(1);
