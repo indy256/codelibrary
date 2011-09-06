@@ -15,11 +15,7 @@ public class SCCTarjanNoRecursion {
 		Arrays.fill(index, -1);
 		int[] lowlink = new int[n];
 		int time = 0;
-		int[] vertexColor = new int[n];
-		ArrayList<Integer> freq = new ArrayList<Integer>(80000);
-		int compCnt = 0;
-
-		List<List<Integer>> res = new ArrayList<List<Integer>>();
+		List<List<Integer>> components = new ArrayList<List<Integer>>();
 
 		for (int u = 0; u < n; u++) {
 			if (index[u] == -1) {
@@ -53,20 +49,15 @@ public class SCCTarjanNoRecursion {
 							lowlink[prev] = Math.min(lowlink[prev], lowlink[cur]);
 						}
 						if (lowlink[cur] == index[cur]) {
-							int cnt = 0;
 							List<Integer> component = new ArrayList<Integer>();
 							while (true) {
-								++cnt;
 								int v = stack[--st];
 								lowlink[v] = Integer.MAX_VALUE;
-								vertexColor[v] = compCnt;
 								component.add(v);
 								if (v == cur)
 									break;
 							}
-							res.add(component);
-							freq.add(cnt);
-							++compCnt;
+							components.add(component);
 						}
 						--top;
 					}
@@ -74,7 +65,7 @@ public class SCCTarjanNoRecursion {
 			}
 		}
 
-		return res;
+		return components;
 	}
 
 	// Usage example
@@ -84,6 +75,7 @@ public class SCCTarjanNoRecursion {
 		for (int i = 0; i < n; i++) {
 			g[i] = new ArrayList<Integer>();
 		}
+		
 		g[2].add(0);
 		g[2].add(1);
 		g[0].add(1);
