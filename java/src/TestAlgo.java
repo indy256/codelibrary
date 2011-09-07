@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
@@ -27,15 +28,6 @@ public class TestAlgo extends TestCase {
 	}
 
 	public void testSCC() {
-		class ComponentComparator implements Comparator<Set<Integer>> {
-			@Override
-			public int compare(Set<Integer> s1, Set<Integer> s2) {
-				int m1 = s1.iterator().next();
-				int m2 = s2.iterator().next();
-				return m1 < m2 ? -1 : m1 > m2 ? 1 : 0;
-			}
-		}
-
 		for (int step = 0; step < 1000; step++) {
 			int n = rnd.nextInt(20);
 			List<Integer>[] g = getRandomGraph(n);
@@ -45,18 +37,18 @@ public class TestAlgo extends TestCase {
 			List<List<Integer>> scc3 = new SCCTarjan().scc(g);
 			List<List<Integer>> scc4 = SCCTarjanNoRecursion.scc(g);
 
-			TreeSet<Set<Integer>> s1 = new TreeSet<Set<Integer>>(new ComponentComparator());
+			Set<Set<Integer>> s1 = new HashSet<Set<Integer>>();
 			for (List<Integer> cmp : scc1)
-				s1.add(new TreeSet(cmp));
-			TreeSet<Set<Integer>> s2 = new TreeSet<Set<Integer>>(new ComponentComparator());
+				s1.add(new HashSet(cmp));
+			Set<Set<Integer>> s2 = new HashSet<Set<Integer>>();
 			for (List<Integer> cmp : scc2)
-				s2.add(new TreeSet(cmp));
-			TreeSet<Set<Integer>> s3 = new TreeSet<Set<Integer>>(new ComponentComparator());
+				s2.add(new HashSet(cmp));
+			Set<Set<Integer>> s3 = new HashSet<Set<Integer>>();
 			for (List<Integer> cmp : scc3)
-				s3.add(new TreeSet(cmp));
-			TreeSet<Set<Integer>> s4 = new TreeSet<Set<Integer>>(new ComponentComparator());
+				s3.add(new HashSet(cmp));
+			Set<Set<Integer>> s4 = new HashSet<Set<Integer>>();
 			for (List<Integer> cmp : scc4)
-				s4.add(new TreeSet(cmp));
+				s4.add(new HashSet(cmp));
 
 			assertEquals(s1, s2);
 			assertEquals(s1, s3);
@@ -65,19 +57,15 @@ public class TestAlgo extends TestCase {
 	}
 
 	/*
-	 * public void testBinaryHeapWithDecreaseKey() { Queue<Integer> ref = new
-	 * PriorityQueue<Integer>(); int maxSize = 20000;
-	 * BinaryHeapWithDecreaseKey<Integer> heap = new
-	 * BinaryHeapWithDecreaseKey<Integer>(maxSize);
+	 * public void testBinaryHeapWithDecreaseKey() { Queue<Integer> ref = new PriorityQueue<Integer>(); int maxSize =
+	 * 20000; BinaryHeapWithDecreaseKey<Integer> heap = new BinaryHeapWithDecreaseKey<Integer>(maxSize);
 	 * 
-	 * for (int steps = 0; steps < maxSize / 2; steps++) { int x =
-	 * rnd.nextInt(1000); heap.add(steps, x); ref.add(x); }
+	 * for (int steps = 0; steps < maxSize / 2; steps++) { int x = rnd.nextInt(1000); heap.add(steps, x); ref.add(x); }
 	 * 
-	 * for (int steps = maxSize / 2; steps < maxSize; steps++) { int x =
-	 * rnd.nextInt(1000); heap.add(steps, x); ref.add(x);
+	 * for (int steps = maxSize / 2; steps < maxSize; steps++) { int x = rnd.nextInt(1000); heap.add(steps, x);
+	 * ref.add(x);
 	 * 
-	 * int v1 = heap.remove(); int v2 = ref.poll(); if (v1 != v2) {
-	 * System.out.println("Error"); } }
+	 * int v1 = heap.remove(); int v2 = ref.poll(); if (v1 != v2) { System.out.println("Error"); } }
 	 * 
 	 * while (!heap.isEmpty()) { int v1 = heap.remove(); int v2 = ref.poll();
 	 * 
@@ -171,7 +159,7 @@ public class TestAlgo extends TestCase {
 				res1 = Math.min(res1, s1);
 				res2 = Math.min(res2, s2);
 			} while (Permutations.nextPermutation(p));
-			//assertEquals(res1, ShortestHamiltonianCycle.getShortestHamiltonianCycle(d));
+			// assertEquals(res1, ShortestHamiltonianCycle.getShortestHamiltonianCycle(d));
 			assertEquals(res1, ShortestHamiltonianCycle2.getShortestHamiltonianCycle(d));
 			assertEquals(res2, ShortestHamiltonianPath.getShortestHamiltonianPath(d));
 		}
@@ -232,44 +220,33 @@ public class TestAlgo extends TestCase {
 		}
 	}
 	/*
-	 * public void testSegmentTree() { for (int step = 0; step < 100; step++) {
-	 * int n = rnd.nextInt(1000) + 1; RSQSegmentTreeFast rsq = new
-	 * RSQSegmentTreeFast(n); RMQSegmentTreeFast rmq = new
-	 * RMQSegmentTreeFast(n); FenwickTreeFull ft = new FenwickTreeFull(n);
+	 * public void testSegmentTree() { for (int step = 0; step < 100; step++) { int n = rnd.nextInt(1000) + 1;
+	 * RSQSegmentTreeFast rsq = new RSQSegmentTreeFast(n); RMQSegmentTreeFast rmq = new RMQSegmentTreeFast(n);
+	 * FenwickTreeFull ft = new FenwickTreeFull(n); ReferenceSegmentTree refTree = new ReferenceSegmentTree(n);
+	 * 
+	 * for (int i = 0; i < 1000; i++) { int p = rnd.nextInt(n); int v = rnd.nextInt(); rsq.add(p, v); rmq.add(p, v);
+	 * ft.add(p, v); refTree.add(p, v);
+	 * 
+	 * p = rnd.nextInt(n); v = rnd.nextInt(); rsq.set(p, v); rmq.set(p, v); ft.set(p, v); refTree.set(p, v);
+	 * 
+	 * int a = rnd.nextInt(n); int b = rnd.nextInt(n); if (a > b) { int t = a; a = b; b = t; }
+	 * 
+	 * assertEquals(refTree.sum(a, b), rsq.sum(a, b)); assertEquals(refTree.sum(0, b), rsq.sum(b));
+	 * assertEquals(refTree.get(a), rsq.get(a)); assertEquals(refTree.max(a, b), rmq.max(a, b));
+	 * assertEquals(refTree.get(a), rmq.get(a)); assertEquals(refTree.sum(a, b), ft.sum(a, b));
+	 * assertEquals(refTree.sum(0, b), ft.sum(b)); assertEquals(refTree.get(a), ft.get(a)); } } }
+	 * 
+	 * public void testZeroOneTree() { for (int step = 0; step < 100; step++) { int n = rnd.nextInt(1000) + 1;
+	 * RSQSegmentTreeFast rsq = new RSQSegmentTreeFast(n); FenwickTreeFull ft = new FenwickTreeFull(n);
 	 * ReferenceSegmentTree refTree = new ReferenceSegmentTree(n);
 	 * 
-	 * for (int i = 0; i < 1000; i++) { int p = rnd.nextInt(n); int v =
-	 * rnd.nextInt(); rsq.add(p, v); rmq.add(p, v); ft.add(p, v); refTree.add(p,
-	 * v);
+	 * for (int i = 0; i < 1000; i++) { int p = rnd.nextInt(n); int v = rnd.nextInt(2); rsq.set(p, v); ft.set(p, v);
+	 * refTree.set(p, v);
 	 * 
-	 * p = rnd.nextInt(n); v = rnd.nextInt(); rsq.set(p, v); rmq.set(p, v);
-	 * ft.set(p, v); refTree.set(p, v);
+	 * int a = rnd.nextInt(n); int b = rnd.nextInt(n); if (a > b) { int t = a; a = b; b = t; }
 	 * 
-	 * int a = rnd.nextInt(n); int b = rnd.nextInt(n); if (a > b) { int t = a; a
-	 * = b; b = t; }
-	 * 
-	 * assertEquals(refTree.sum(a, b), rsq.sum(a, b));
-	 * assertEquals(refTree.sum(0, b), rsq.sum(b)); assertEquals(refTree.get(a),
-	 * rsq.get(a)); assertEquals(refTree.max(a, b), rmq.max(a, b));
-	 * assertEquals(refTree.get(a), rmq.get(a)); assertEquals(refTree.sum(a, b),
-	 * ft.sum(a, b)); assertEquals(refTree.sum(0, b), ft.sum(b));
-	 * assertEquals(refTree.get(a), ft.get(a)); } } }
-	 * 
-	 * public void testZeroOneTree() { for (int step = 0; step < 100; step++) {
-	 * int n = rnd.nextInt(1000) + 1; RSQSegmentTreeFast rsq = new
-	 * RSQSegmentTreeFast(n); FenwickTreeFull ft = new FenwickTreeFull(n);
-	 * ReferenceSegmentTree refTree = new ReferenceSegmentTree(n);
-	 * 
-	 * for (int i = 0; i < 1000; i++) { int p = rnd.nextInt(n); int v =
-	 * rnd.nextInt(2); rsq.set(p, v); ft.set(p, v); refTree.set(p, v);
-	 * 
-	 * int a = rnd.nextInt(n); int b = rnd.nextInt(n); if (a > b) { int t = a; a
-	 * = b; b = t; }
-	 * 
-	 * int x1 = rnd.nextInt(n); assertEquals(refTree.getPrevZero(x1),
-	 * rsq.getPrevZero(x1)); int k = rnd.nextInt(n);
-	 * assertEquals(refTree.getKthZeroCyclic(x1, k), ft.getKthZeroCyclic(x1,
-	 * k)); } } }
+	 * int x1 = rnd.nextInt(n); assertEquals(refTree.getPrevZero(x1), rsq.getPrevZero(x1)); int k = rnd.nextInt(n);
+	 * assertEquals(refTree.getKthZeroCyclic(x1, k), ft.getKthZeroCyclic(x1, k)); } } }
 	 */
 
 }

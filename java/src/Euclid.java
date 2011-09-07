@@ -94,5 +94,6 @@ public class Euclid {
 		long b = 9;
 		long[] res = euclid(a, b);
 		System.out.println(res[1] + " * (" + a + ") " + " + " + res[2] + " * (" + b + ") = gcd(a,b) = " + res[0]);
+		
 	}
 }
