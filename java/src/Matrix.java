@@ -1,8 +1,8 @@
 public class Matrix {
-	public static long[][] matrixAdd(long[][] a, long[][] b) {
+	public static int[][] matrixAdd(int[][] a, int[][] b) {
 		int n = a.length;
 		int m = a[0].length;
-		long[][] res = new long[n][m];
+		int[][] res = new int[n][m];
 		for (int i = 0; i < n; i++) {
 			for (int j = 0; j < m; j++) {
 				res[i][j] = a[i][j] + b[i][j];
@@ -11,11 +11,11 @@ public class Matrix {
 		return res;
 	}
 
-	public static long[][] matrixMul(long[][] a, long[][] b) {
+	public static int[][] matrixMul(int[][] a, int[][] b) {
 		int n = a.length;
 		int m = a[0].length;
 		int k = b[0].length;
-		long[][] res = new long[n][k];
+		int[][] res = new int[n][k];
 		for (int i = 0; i < n; i++) {
 			for (int j = 0; j < k; j++) {
 				for (int p = 0; p < m; p++) {
@@ -26,7 +26,7 @@ public class Matrix {
 		return res;
 	}
 
-	public static long[][] matrixPow(long[][] a, long p) {
+	public static int[][] matrixPow(int[][] a, int p) {
 		if (p == 0) {
 			return matrixUnit(a.length);
 		} else if (p % 2 == 0) {
@@ -36,10 +36,10 @@ public class Matrix {
 		}
 	}
 
-	public static long[][] matrixPowSum(long[][] a, long p) {
+	public static int[][] matrixPowSum(int[][] a, int p) {
 		int n = a.length;
 		if (p == 0) {
-			return new long[n][n];
+			return new int[n][n];
 		}
 		if (p % 2 == 0) {
 			return matrixMul(matrixPowSum(a, p / 2), matrixAdd(matrixUnit(n), matrixPow(a, p / 2)));
@@ -48,8 +48,8 @@ public class Matrix {
 		}
 	}
 
-	public static long[][] matrixUnit(int n) {
-		long[][] res = new long[n][n];
+	public static int[][] matrixUnit(int n) {
+		int[][] res = new int[n][n];
 		for (int i = 0; i < n; ++i) {
 			res[i][i] = 1;
 		}
@@ -58,8 +58,8 @@ public class Matrix {
 
 	// Usage example
 	public static void main(String[] args) {
-		long[][] a = { { 1, 2 }, { 3, 4 } };
-		long[][] b = matrixUnit(2);
-		long[][] c = matrixMul(a, b);
+		int[][] a = { { 1, 2 }, { 3, 4 } };
+		int[][] b = matrixUnit(2);
+		int[][] c = matrixMul(a, b);
 	}
 }
