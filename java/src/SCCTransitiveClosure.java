@@ -11,7 +11,7 @@ public class SCCTransitiveClosure {
 
 		for (int k = 0; k < n; k++)
 			for (int i = 0; i < n; i++)
-				for (int j = 0; j < n; j++){
+				for (int j = 0; j < n; j++) {
 					res[i][j] |= res[i][k] && res[k][j];
 				}
 
@@ -42,11 +42,10 @@ public class SCCTransitiveClosure {
 
 	// Usage example
 	public static void main(String[] args) {
-		int n = 3;
-		List<Integer>[] g = new List[n];
-		for (int i = 0; i < n; i++) {
+		List<Integer>[] g = new List[3];
+		for (int i = 0; i < g.length; i++)
 			g[i] = new ArrayList<Integer>();
-		}
+
 		g[2].add(0);
 		g[2].add(1);
 		g[0].add(1);
