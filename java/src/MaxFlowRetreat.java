@@ -1,7 +1,5 @@
 import java.util.*;
 
-import MaxFlowEdmondKarp.Edge;
-
 public class MaxFlowRetreat {
 
 	static class Edge {
@@ -18,9 +16,11 @@ public class MaxFlowRetreat {
 	List<Edge>[] graph;
 	int maxnodes;
 	int[] prev;
+	int[] lim;
 	int[] dist;
 	int[] Q;
 	int[] qtd;
+	int[] work;
 
 	public void init(int maxnodes) {
 		this.maxnodes = maxnodes;
@@ -31,6 +31,7 @@ public class MaxFlowRetreat {
 		dist = new int[maxnodes];
 		Q = new int[maxnodes];
 		qtd = new int[maxnodes];
+		work = new int[maxnodes];
 	}
 
 	public void addEdge(int s, int t, int cap) {
@@ -44,68 +45,56 @@ public class MaxFlowRetreat {
 		int sizeQ = 0;
 		Q[sizeQ++] = t;
 		Arrays.fill(qtd, 0);
-		
-		
+
 		for (int i = 0; i < sizeQ; i++) {
 			int u = Q[i];
-			for (int e = last[u]; e >= 0; e = prev[e]) {
-				int v = head[e];
-				if (dist[v] < 0 && flow[e] < cap[e]) {
+
+			++qtd[dist[u]];
+			for (Edge e : graph[u]) {
+				int v = e.t;
+				if (e.cap == 0 && dist[v] == -1) {
 					dist[v] = dist[u] + 1;
 					Q[sizeQ++] = v;
 				}
 			}
 		}
-			
-		for (int i = 0; i < sizeQ; i++) {
-			int no = Q[i];
-						
-			++qtd[dist[no]];
-			for (Edge e : graph[no]) {
-				
-			}
-			for (i = 0; i < nadj[no]; i++) {
-				ar = adj[no][i];
-				viz = dest[ar];
-				if (cap[ar] == 0 && nivel[viz] == NULO) {
-					nivel[viz] = nivel[no] + 1;
-					fila.push(viz);
-				}
-			}
-		}
+	}
 
+	Edge advance(int no) {
+		for (; work[no] < graph[no].size(); ++work[no]) {
+			Edge e = graph[no].get(work[no]);
+			if (dist[no] == dist[e.t] + 1 && e.cap - e.f > 0)
+				return e;
+		}
+		return null;
+	}
+
+	int retreat(int no) {
+		return 0;
+	}
+
+	int augment(int s, int t) {
+		int f = lim[t];
+		
+		return 0;
 	}
 
 	public int maxFlow(int s, int t) {
-		int u = s;
+		revBfs(s, t);
+		Arrays.fill(work, 0);
 		int flow = 0;
+		lim[s] = Integer.MAX_VALUE;
+		prev[s] = -1;
+		int u = s;
 
-		revBfs();
-
-		int[] q = new int[maxnodes];
-		while (true) {
-			int qh = 0, qt = 0;
-			q[qt++] = s;
-			Edge[] path = new Edge[maxnodes];
-			while (qh < qt && path[t] == null) {
-				int cur = q[qh++];
-				for (Edge e : graph[cur]) {
-					if (path[e.t] == null && e.cap > e.f) {
-						path[e.t] = e;
-						q[qt++] = e.t;
-					}
-				}
+		while (dist[s] < maxnodes) {
+			Edge e = advance(u);
+			if (e == null) {
+				u = retreat(u);
+			} else {
+				flow += augment(s, t);
+				u = s;
 			}
-			if (path[t] == null)
-				break;
-			int df = Integer.MAX_VALUE;
-			for (int u = t; u != s; u = path[u].s)
-				df = Math.min(df, path[u].cap - path[u].f);
-			for (int u = t; u != s; u = path[u].s) {
-				path[u].f += df;
-				graph[path[u].t].get(path[u].rev).f -= df;
-			}
-			flow += df;
 		}
 		return flow;
 	}
