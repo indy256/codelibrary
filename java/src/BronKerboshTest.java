@@ -90,7 +90,7 @@ public class BronKerboshTest {
 		int V = 250;
 		int E = V * (V - 1) / 2 / 5;
 		System.out.println(V + " " + E);
-		List<Integer>[] graph = RandomGraph.getRandomConnectedGraph(V, E, rnd);
+		List<Integer>[] graph = RandomGraph.getRandomUndirectedConnectedGraph(V, E, rnd);
 		long time = System.currentTimeMillis();
 		List<Integer> mis = maximumIndependentSet(convert(graph));
 		System.out.println(System.currentTimeMillis() - time);

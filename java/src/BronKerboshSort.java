@@ -90,7 +90,7 @@ public class BronKerboshSort {
 		int V = 20;
 		int E = V * (V - 1) / 2 / 5;
 		System.out.println(V + " " + E);
-		List<Integer>[] graph = RandomGraph.getRandomConnectedGraph(V, E, rnd);
+		List<Integer>[] graph = RandomGraph.getRandomUndirectedConnectedGraph(V, E, rnd);
 		long time = System.currentTimeMillis();
 
 		graph = sortVertices(graph);

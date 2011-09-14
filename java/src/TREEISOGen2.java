@@ -38,8 +38,8 @@ public class TREEISOGen2 {
 			// n = rnd.nextInt(50) + 5;
 			n = 5;
 			ps.println(n);
-			List[][] t = { RandomGraph.getRandomConnectedGraph(n, n - 1, rnd),
-					RandomGraph.getRandomConnectedGraph(n, n - 1, rnd) };
+			List[][] t = { RandomGraph.getRandomUndirectedConnectedGraph(n, n - 1, rnd),
+					RandomGraph.getRandomUndirectedConnectedGraph(n, n - 1, rnd) };
 			for (int i = 0; i < t.length; i++) {
 				for (int u = 0; u < n; u++) {
 					for (int v : (List<Integer>) t[i][u]) {
