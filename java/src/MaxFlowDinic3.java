@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class MaxFlowDinic2 {
+public class MaxFlowDinic3 {
 
 	static class Edge {
 		int s, t, rev, cap, f;
@@ -14,6 +14,7 @@ public class MaxFlowDinic2 {
 	}
 
 	List<Edge>[] graph;
+	Edge[][] graph2;
 
 	static final int INF = 2000000000;
 	int src, dest;
@@ -41,7 +42,7 @@ public class MaxFlowDinic2 {
 		Q[sizeQ++] = src;
 		for (int i = 0; i < sizeQ; i++) {
 			int u = Q[i];
-			for (Edge e : graph[u]) {
+			for (Edge e : graph2[u]) {
 				if (dist[e.t] < 0 && e.f < e.cap) {
 					dist[e.t] = dist[u] + 1;
 					Q[sizeQ++] = e.t;
@@ -54,13 +55,13 @@ public class MaxFlowDinic2 {
 	int dinic_dfs(int u, int f) {
 		if (u == dest)
 			return f;
-		for (int i = work[u]; i < graph[u].size(); work[u] = ++i) {
-			Edge e = graph[u].get(i);
+		for (int i = work[u]; i < graph2[u].length; work[u] = ++i) {
+			Edge e = graph2[u][i];
 			if (dist[e.t] == dist[u] + 1 && e.f < e.cap) {
 				int df = dinic_dfs(e.t, Math.min(f, e.cap - e.f));
 				if (df > 0) {
 					e.f += df;
-					graph[e.t].get(e.rev).f -= df;
+					graph2[e.t][e.rev].f -= df;
 					return df;
 				}
 			}
@@ -69,6 +70,7 @@ public class MaxFlowDinic2 {
 	}
 
 	public int maxFlow(int src, int dest) {
+		graph2 = convert(graph);
 		this.src = src;
 		this.dest = dest;
 		int flow = 0;
@@ -88,12 +90,20 @@ public class MaxFlowDinic2 {
 	public static void main(String[] args) {
 		int[][] capacity = { { 0, 3, 2 }, { 0, 0, 2 }, { 0, 0, 0 } };
 		int n = capacity.length;
-		MaxFlowDinic2 dinic = new MaxFlowDinic2();
+		MaxFlowDinic3 dinic = new MaxFlowDinic3();
 		dinic.init(n);
 		for (int i = 0; i < n; i++)
 			for (int j = 0; j < n; j++)
 				if (capacity[i][j] != 0)
 					dinic.addEdge(i, j, capacity[i][j]);
 		System.out.println(4 == dinic.maxFlow(0, 2));
+	}
+
+	static Edge[][] convert(List<Edge>[] g) {
+		Edge[][] graph = new Edge[g.length][];
+		for (int i = 0; i < g.length; i++) {
+			graph[i] = g[i].toArray(new Edge[0]);
+		}
+		return graph;
 	}
 }

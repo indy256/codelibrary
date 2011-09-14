@@ -32,11 +32,11 @@ public class MaxFlowEdmondKarp {
 		int flow = 0;
 		int[] q = new int[maxnodes];
 		while (true) {
-			int qh = 0, qt = 0;
+			int qt = 0;
 			q[qt++] = s;
 			Edge[] path = new Edge[maxnodes];
-			while (qh < qt && path[t] == null) {
-				int cur = q[qh++];
+			for (int qh = 0; qh < qt && path[t] == null; qh++) {
+				int cur = q[qh];
 				for (Edge e : graph[cur]) {
 					if (path[e.t] == null && e.cap > e.f) {
 						path[e.t] = e;
@@ -60,14 +60,14 @@ public class MaxFlowEdmondKarp {
 
 	// Usage example
 	public static void main(String[] args) {
-		MaxFlowEdmondKarp flowSolver = new MaxFlowEdmondKarp();
+		MaxFlowEdmondKarp flow = new MaxFlowEdmondKarp();
 		int[][] capacity = { { 0, 3, 2 }, { 0, 0, 2 }, { 0, 0, 0 } };
 		int n = capacity.length;
-		flowSolver.init(n);
+		flow.init(n);
 		for (int i = 0; i < n; i++)
 			for (int j = 0; j < n; j++)
 				if (capacity[i][j] != 0)
-					flowSolver.addEdge(i, j, capacity[i][j]);
-		System.out.println(4 == flowSolver.maxFlow(0, 2));
+					flow.addEdge(i, j, capacity[i][j]);
+		System.out.println(4 == flow.maxFlow(0, 2));
 	}
 }
