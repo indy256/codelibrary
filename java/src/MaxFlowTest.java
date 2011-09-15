@@ -1,30 +1,32 @@
 import java.util.List;
 import java.util.Random;
 
+import obsolete.MaxFlowDinicMatrix;
+
 public class MaxFlowTest {
 
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		int V = 2000;
-		int E = 2000000;
+		int V = 1500;
+		int E = 1000000;
 		Random rnd = new Random(1);
 		List<Integer>[] g = RandomGraph.getRandomUndirectedConnectedGraph(V, E, rnd);
 		MaxFlowDinic f1 = new MaxFlowDinic();
-		MaxFlowDinic2 f2 = new MaxFlowDinic2();
-		MaxFlowDinic3 f3 = new MaxFlowDinic3();
+		MaxFlowDinicMatrix f2 = new MaxFlowDinicMatrix();
+		MaxFlowPreflow f3 = new MaxFlowPreflow();
 
 		System.out.println("starting");
 
-		f1.init(V, E * 4);
+		f1.init(V);
 		f2.init(V);
 		f3.init(V);
 
 		for (int i = 0; i < g.length; i++) {
 			for (int j : g[i]) {
 				int cap = rnd.nextInt(100) + 1;
-				f1.addEdge(i, j, cap, 0);
+				f1.addEdge(i, j, cap);
 				f2.addEdge(i, j, cap);
 				f3.addEdge(i, j, cap);
 			}

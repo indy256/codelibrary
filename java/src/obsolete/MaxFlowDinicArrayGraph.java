@@ -1,6 +1,7 @@
+package obsolete;
 import java.util.*;
 
-public class MaxFlowDinic3 {
+public class MaxFlowDinicArrayGraph {
 
 	static class Edge {
 		int s, t, rev, cap, f;
@@ -70,7 +71,9 @@ public class MaxFlowDinic3 {
 	}
 
 	public int maxFlow(int src, int dest) {
+		long time=System.currentTimeMillis();
 		graph2 = convert(graph);
+		System.err.println(System.currentTimeMillis()-time);
 		this.src = src;
 		this.dest = dest;
 		int flow = 0;
@@ -90,7 +93,7 @@ public class MaxFlowDinic3 {
 	public static void main(String[] args) {
 		int[][] capacity = { { 0, 3, 2 }, { 0, 0, 2 }, { 0, 0, 0 } };
 		int n = capacity.length;
-		MaxFlowDinic3 dinic = new MaxFlowDinic3();
+		MaxFlowDinicArrayGraph dinic = new MaxFlowDinicArrayGraph();
 		dinic.init(n);
 		for (int i = 0; i < n; i++)
 			for (int j = 0; j < n; j++)
