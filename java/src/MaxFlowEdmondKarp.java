@@ -14,12 +14,10 @@ public class MaxFlowEdmondKarp {
 	}
 
 	public List<Edge>[] graph;
-	public int maxnodes;
 
-	public void init(int maxnodes) {
-		this.maxnodes = maxnodes;
-		graph = new List[maxnodes];
-		for (int i = 0; i < maxnodes; i++)
+	public void init(int nodes) {
+		graph = new List[nodes];
+		for (int i = 0; i < nodes; i++)
 			graph[i] = new ArrayList<Edge>();
 	}
 
@@ -30,28 +28,28 @@ public class MaxFlowEdmondKarp {
 
 	public int maxFlow(int s, int t) {
 		int flow = 0;
-		int[] q = new int[maxnodes];
+		int[] q = new int[graph.length];
 		while (true) {
 			int qt = 0;
 			q[qt++] = s;
-			Edge[] path = new Edge[maxnodes];
-			for (int qh = 0; qh < qt && path[t] == null; qh++) {
+			Edge[] pred = new Edge[graph.length];
+			for (int qh = 0; qh < qt && pred[t] == null; qh++) {
 				int cur = q[qh];
 				for (Edge e : graph[cur]) {
-					if (path[e.t] == null && e.cap > e.f) {
-						path[e.t] = e;
+					if (pred[e.t] == null && e.cap > e.f) {
+						pred[e.t] = e;
 						q[qt++] = e.t;
 					}
 				}
 			}
-			if (path[t] == null)
+			if (pred[t] == null)
 				break;
 			int df = Integer.MAX_VALUE;
-			for (int u = t; u != s; u = path[u].s)
-				df = Math.min(df, path[u].cap - path[u].f);
-			for (int u = t; u != s; u = path[u].s) {
-				path[u].f += df;
-				graph[path[u].t].get(path[u].rev).f -= df;
+			for (int u = t; u != s; u = pred[u].s)
+				df = Math.min(df, pred[u].cap - pred[u].f);
+			for (int u = t; u != s; u = pred[u].s) {
+				pred[u].f += df;
+				graph[pred[u].t].get(pred[u].rev).f -= df;
 			}
 			flow += df;
 		}

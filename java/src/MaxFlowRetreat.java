@@ -14,24 +14,19 @@ public class MaxFlowRetreat {
 	}
 
 	List<Edge>[] graph;
-	int maxnodes;
-	int[] prev;
-	int[] lim;
-	int[] dist;
-	int[] Q;
-	int[] qtd;
-	int[] work;
+	int src, dest;
+	int[] ptr, Q, dist, qtd;
+	Edge[] pred;
 
-	public void init(int maxnodes) {
-		this.maxnodes = maxnodes;
-		graph = new List[maxnodes];
-		for (int i = 0; i < maxnodes; i++)
+	public void init(int nodes) {
+		graph = new List[nodes];
+		for (int i = 0; i < nodes; i++)
 			graph[i] = new ArrayList<Edge>();
-		prev = new int[maxnodes];
-		dist = new int[maxnodes];
-		Q = new int[maxnodes];
-		qtd = new int[maxnodes];
-		work = new int[maxnodes];
+		pred = new Edge[nodes];
+		dist = new int[nodes];
+		Q = new int[nodes];
+		qtd = new int[nodes];
+		ptr = new int[nodes];
 	}
 
 	public void addEdge(int s, int t, int cap) {
@@ -48,8 +43,8 @@ public class MaxFlowRetreat {
 
 		for (int i = 0; i < sizeQ; i++) {
 			int u = Q[i];
-
 			++qtd[dist[u]];
+
 			for (Edge e : graph[u]) {
 				int v = e.t;
 				if (e.cap == 0 && dist[v] == -1) {
@@ -60,40 +55,62 @@ public class MaxFlowRetreat {
 		}
 	}
 
-	Edge advance(int no) {
-		for (; work[no] < graph[no].size(); ++work[no]) {
-			Edge e = graph[no].get(work[no]);
-			if (dist[no] == dist[e.t] + 1 && e.cap - e.f > 0)
+	Edge advance(int u) {
+		for (; ptr[u] < graph[u].size(); ++ptr[u]) {
+			Edge e = graph[u].get(ptr[u]);
+			if (dist[u] == dist[e.t] + 1 && e.cap - e.f > 0)
 				return e;
 		}
+		ptr[u] = 0;
 		return null;
 	}
 
-	int retreat(int no) {
-		return 0;
+	int retreat(int u) {
+		if (--qtd[dist[u]] == 0)
+			return -1;
+
+		int minu = -1;
+
+		for (Edge e : graph[u]) {
+			if (e.cap - e.f > 0 && (minu == -1 || dist[minu] > dist[e.t]))
+				minu = e.t;
+		}
+
+		if (minu != -1)
+			dist[u] = dist[minu];
+		++qtd[++dist[u]];
+
+		return pred[u] == null ? u : pred[u].s;
 	}
 
 	int augment(int s, int t) {
-		int f = lim[t];
-		
-		return 0;
+		int df = Integer.MAX_VALUE;
+		for (int u = t; u != s; u = pred[u].s)
+			df = Math.min(df, pred[u].cap - pred[u].f);
+		for (int u = t; u != s; u = pred[u].s) {
+			pred[u].f += df;
+			graph[pred[u].t].get(pred[u].rev).f -= df;
+		}
+		return df;
 	}
 
 	public int maxFlow(int s, int t) {
 		revBfs(s, t);
-		Arrays.fill(work, 0);
+		Arrays.fill(ptr, 0);
 		int flow = 0;
-		lim[s] = Integer.MAX_VALUE;
-		prev[s] = -1;
-		int u = s;
+		pred[s] = null;
 
-		while (dist[s] < maxnodes) {
+		for (int u = s; dist[s] < graph.length && u != -1;) {
 			Edge e = advance(u);
 			if (e == null) {
 				u = retreat(u);
 			} else {
-				flow += augment(s, t);
-				u = s;
+				u = e.t;
+				pred[u] = e;
+				if (u == t) {
+					flow += augment(s, t);
+					u = s;
+				}
 			}
 		}
 		return flow;
