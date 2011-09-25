@@ -15,7 +15,7 @@ public class MaxFlowRetreat {
 
 	List<Edge>[] graph;
 	int src, dest;
-	int[] ptr, Q, dist, qtd;
+	int[] ptr, Q, dist, qtd, lim;
 	Edge[] pred;
 
 	public void init(int nodes) {
@@ -27,6 +27,7 @@ public class MaxFlowRetreat {
 		Q = new int[nodes];
 		qtd = new int[nodes];
 		ptr = new int[nodes];
+		lim = new int[nodes];
 	}
 
 	public void addEdge(int s, int t, int cap) {
@@ -84,9 +85,10 @@ public class MaxFlowRetreat {
 	}
 
 	int augment(int s, int t) {
-		int df = Integer.MAX_VALUE;
-		for (int u = t; u != s; u = pred[u].s)
-			df = Math.min(df, pred[u].cap - pred[u].f);
+//		int df = Integer.MAX_VALUE;
+//		for (int u = t; u != s; u = pred[u].s)
+//			df = Math.min(df, pred[u].cap - pred[u].f);
+		int df=lim[t];
 		for (int u = t; u != s; u = pred[u].s) {
 			pred[u].f += df;
 			graph[pred[u].t].get(pred[u].rev).f -= df;
@@ -97,6 +99,7 @@ public class MaxFlowRetreat {
 	public int maxFlow(int s, int t) {
 		revBfs(s, t);
 		Arrays.fill(ptr, 0);
+		lim[s]=Integer.MAX_VALUE;
 		int flow = 0;
 		pred[s] = null;
 
@@ -107,6 +110,7 @@ public class MaxFlowRetreat {
 			} else {
 				u = e.t;
 				pred[u] = e;
+				lim[u] = Math.min(lim[e.s], e.cap - e.f);
 				if (u == t) {
 					flow += augment(s, t);
 					u = s;

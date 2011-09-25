@@ -43,8 +43,8 @@ public class DYNACON1_TESTS {
 	// Usage example
 	public static void main(String[] args) throws Exception {
 		Random rnd = new Random(1);
-		PrintWriter pw = new PrintWriter("d:/dynacon1_input0.txt");
-		PrintWriter pw1 = new PrintWriter("d:/dynacon1_output0.txt");
+		PrintWriter pw = new PrintWriter("d:/projects/cpp/spoj-stuff/DYNACON/tests/dynacon1_input3.txt");
+		PrintWriter pw1 = new PrintWriter("d:/projects/cpp/spoj-stuff/DYNACON/tests/dynacon1_output3.txt");
 
 		int n = 100000;
 		Graph g = new Graph(n);
@@ -58,11 +58,11 @@ public class DYNACON1_TESTS {
 				a = rnd.nextInt(n);
 				b = rnd.nextInt(n);
 			} while (a >= b);
-			int t = rnd.nextInt(10);
-			if (t < 2) {
+			int t = rnd.nextInt(100);
+			if (t < 10) {
 				pw.println("conn " + (a + 1) + " " + (b + 1));
 				pw1.println(g.connected(a, b, new boolean[n]) ? "YES" : "NO");
-			} else if (t < 4) {
+			} else if (t < 90) {
 				if (!g.hasEdge(a, b)) {
 					--i;
 					continue;
