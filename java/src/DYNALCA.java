@@ -1,4 +1,12 @@
-public class LinkCutTree {
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.util.IdentityHashMap;
+import java.util.Map;
+import java.util.StringTokenizer;
+
+public class DYNALCA {
 
 	public static class Node {
 		Node left;
@@ -18,7 +26,7 @@ public class LinkCutTree {
 	}
 
 	// prerequisite: v is not a root node
-	public static void cut2(Node v) {
+	public static void cut(Node v) {
 		expose(v);
 
 		if (v.left != null) {
@@ -26,17 +34,6 @@ public class LinkCutTree {
 			v.left.path_parent = null;
 			v.left = null;
 		}
-	}
-
-	public static void cut(Node v) {
-		splay(v);
-		
-		if (v.left != null) {
-			v.left.parent = null;
-			v.left = null;
-		}
-
-		v.path_parent = null;
 	}
 
 	public static Node findRoot(Node v) {
@@ -47,35 +44,6 @@ public class LinkCutTree {
 
 		splay(v);
 		return v;
-	}
-
-	static void expose(Node v) {
-		splay(v);
-
-		if (v.right != null) {
-			v.right.path_parent = v;
-			v.right.parent = null;
-			v.right = null;
-		}
-
-		for (Node t = v; t.path_parent != null;) {
-			Node w = t.path_parent;
-			splay(w);
-
-			// switch
-			if (w.right != null) {
-				w.right.path_parent = w;
-				w.right.parent = null;
-			}
-
-			w.right = t;
-			t.parent = w;
-			t.path_parent = null;
-
-			t = w;
-		}
-
-		splay(v);
 	}
 
 	public static Node lca(Node u, Node v) {
@@ -115,6 +83,35 @@ public class LinkCutTree {
 
 		splay(v);
 		return lca;
+	}
+
+	static void expose(Node v) {
+		splay(v);
+
+		if (v.right != null) {
+			v.right.path_parent = v;
+			v.right.parent = null;
+			v.right = null;
+		}
+
+		for (Node t = v; t.path_parent != null;) {
+			Node w = t.path_parent;
+			splay(w);
+
+			// switch
+			if (w.right != null) {
+				w.right.path_parent = w;
+				w.right.parent = null;
+			}
+
+			w.right = t;
+			t.parent = w;
+			t.path_parent = null;
+
+			t = w;
+		}
+
+		splay(v);
 	}
 
 	static void rotate(Node v) {
@@ -164,20 +161,49 @@ public class LinkCutTree {
 	}
 
 	// Usage example
-	public static void main(String[] args) {
-		Node n1 = new Node();
-		Node n2 = new Node();
-		Node n3 = new Node();
-		Node n4 = new Node();
-		Node n5 = new Node();
+	public static void main(String[] args) throws Exception {
+		PrintWriter pw = new PrintWriter(System.out);
 
-		link(n1, n2);
-		link(n3, n2);
-		link(n4, n3);
-		System.out.println(n2 == lca(n1, n4));
-		cut(n4);
-		System.out.println(null == lca(n1, n4));
-		link(n5, n3);
-		System.out.println(n2 == lca(n1, n5));
+		int n = nextInt();
+		Map<Node, Integer> m = new IdentityHashMap<Node, Integer>();
+
+		Node[] nodes = new Node[n];
+		for (int i = 0; i < n; i++) {
+			nodes[i] = new Node();
+			m.put(nodes[i], i);
+		}
+
+		int q = nextInt();
+		for (int i = 0; i < q; i++) {
+			String type = nextToken();
+			if ("link".equals(type)) {
+				int u = nextInt() - 1;
+				int v = nextInt() - 1;
+				link(nodes[u], nodes[v]);
+			} else if ("cut".equals(type)) {
+				int u = nextInt() - 1;
+				cut(nodes[u]);
+			} else {
+				int u = nextInt() - 1;
+				int v = nextInt() - 1;
+				Node lca = lca(nodes[u], nodes[v]);
+				pw.println(m.get(lca) + 1);
+			}
+		}
+		pw.close();
+	}
+
+	static int nextInt() throws IOException {
+		return Integer.parseInt(nextToken());
+	}
+
+	static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+	static StringTokenizer tokenizer;
+
+	static String nextToken() throws IOException {
+		while (tokenizer == null || !tokenizer.hasMoreTokens()) {
+			tokenizer = new StringTokenizer(reader.readLine());
+		}
+		return tokenizer.nextToken();
 	}
 }

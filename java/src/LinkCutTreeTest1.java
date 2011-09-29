@@ -23,7 +23,7 @@ public class LinkCutTreeTest1 {
 		int cutCount = 0;
 		int lcaCount = 0;
 		ps.println(n);
-		for (int step = 0; step < 100000000; step++) {
+		for (int step = 0; step < 2000; step++) {
 			if (rnd.nextInt(10) < 9) {
 				if (linkCount < 50000) {
 					int u = rnd.nextInt(n);
