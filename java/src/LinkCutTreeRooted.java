@@ -12,6 +12,33 @@ public class LinkCutTreeRooted {
 		root = new boolean[n + 1];
 	}
 
+	void connect(int child[], int p, int v) {
+		child[p] = v;
+		parent[v] = p;
+	}
+
+	void rotate(int v) {
+		int p = parent[v];
+		int[] l = v == left[p] ? left : right;
+		int[] r = v == left[p] ? right : left;
+		connect(l, p, r[v]);
+		connect(l, parent[p], v);
+		root[v] |= root[p];
+		root[p] = false;
+	}
+
+	void splay(int v) {
+		while (parent[v] != 0) {
+			int p = parent[v];
+			int pp = parent[p];
+			if (pp != 0) {
+				// zig-zig or zig-zag
+				rotate((v == left[p]) == (p == left[pp]) ? p : v);
+			}
+			rotate(v);
+		}
+	}
+
 	// precondition: x is the root, x and y are not connected
 	public void link(int x, int y) {
 		access(x);
@@ -111,52 +138,6 @@ public class LinkCutTreeRooted {
 
 		splay(v);
 		return lca;
-	}
-
-	static void rotate(Node v) {
-		Node p = v.parent;
-		Node pp = p.parent;
-		if (v == p.left) {
-			p.left = v.right;
-			if (v.right != null)
-				v.right.parent = p;
-			v.right = p;
-			p.parent = v;
-		} else {
-			p.right = v.left;
-			if (v.left != null)
-				v.left.parent = p;
-			v.left = p;
-			p.parent = v;
-		}
-		v.parent = pp;
-		if (pp != null) {
-			if (p == pp.left)
-				pp.left = v;
-			else
-				pp.right = v;
-		}
-		v.path_parent = p.path_parent;
-		p.path_parent = null;
-	}
-
-	void splay(int x) {
-		while (x.parent != null) {
-			Node p = x.parent;
-			Node pp = p.parent;
-			if (pp == null) {
-				// zig
-				rotate(x);
-			} else if ((x == p.left) == (p == pp.left)) {
-				// zig-zig
-				rotate(p);
-				rotate(x);
-			} else {
-				// zig-zag
-				rotate(x);
-				rotate(x);
-			}
-		}
 	}
 
 	// Usage example
