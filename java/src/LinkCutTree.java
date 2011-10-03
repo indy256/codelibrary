@@ -9,8 +9,8 @@ public class LinkCutTree {
 
 	// prerequisite: v is a root node, w is in another tree
 	public static void link(Node v, Node w) {
-		expose(v);
-		expose(w);
+		access(v);
+		access(w);
 
 		v.left = w;
 		w.parent = v;
@@ -19,7 +19,7 @@ public class LinkCutTree {
 
 	// prerequisite: v is not a root node
 	public static void cut2(Node v) {
-		expose(v);
+		access(v);
 
 		if (v.left != null) {
 			v.left.parent = null;
@@ -30,7 +30,7 @@ public class LinkCutTree {
 
 	public static void cut(Node v) {
 		splay(v);
-		
+
 		if (v.left != null) {
 			v.left.parent = null;
 			v.left = null;
@@ -40,7 +40,7 @@ public class LinkCutTree {
 	}
 
 	public static Node findRoot(Node v) {
-		expose(v);
+		access(v);
 
 		while (v.left != null)
 			v = v.left;
@@ -49,7 +49,7 @@ public class LinkCutTree {
 		return v;
 	}
 
-	static void expose(Node v) {
+	static void access(Node v) {
 		splay(v);
 
 		if (v.right != null) {
@@ -82,7 +82,7 @@ public class LinkCutTree {
 		if (findRoot(u) != findRoot(v))
 			return null;
 
-		expose(u);
+		access(u);
 		splay(v);
 
 		if (v.right != null) {
@@ -117,48 +117,81 @@ public class LinkCutTree {
 		return lca;
 	}
 
-	static void rotate(Node v) {
-		Node p = v.parent;
-		Node pp = p.parent;
-		if (v == p.left) {
-			p.left = v.right;
-			if (v.right != null)
-				v.right.parent = p;
-			v.right = p;
-			p.parent = v;
-		} else {
-			p.right = v.left;
-			if (v.left != null)
-				v.left.parent = p;
-			v.left = p;
-			p.parent = v;
-		}
-		v.parent = pp;
-		if (pp != null) {
-			if (p == pp.left)
-				pp.left = v;
-			else
-				pp.right = v;
-		}
-		v.path_parent = p.path_parent;
-		p.path_parent = null;
+	static void connect(Node x, Node y, boolean left) {
+		if (left)
+			y.left = x;
+		else
+			y.right = x;
+		if (x != null)
+			x.parent = y;
 	}
 
-	static void splay(Node v) {
-		while (v.parent != null) {
-			Node p = v.parent;
-			Node pp = p.parent;
-			if (pp == null) {
+	static void rotate(Node x) {
+		Node y = x.parent;
+		Node z = y.parent;
+		if (x == y.left) {
+			connect(x.right, y, true);
+			connect(y, x, false);
+		} else {
+			connect(x.left, y, false);
+			connect(y, x, true);
+		}
+		connect(x, z, false);
+
+		// connect x to z as left child
+		x.parent = z;
+		if (z != null) {
+			if (y == z.left)
+				z.left = x;
+			else
+				z.right = x;
+		}
+		x.path_parent = y.path_parent;
+		y.path_parent = null;
+	}
+
+	static void rotate2(Node x) {
+		Node y = x.parent;
+		Node z = y.parent;
+		if (x == y.left) {
+			y.left = x.right;
+			if (x.right != null)
+				x.right.parent = y;
+			x.right = y;
+			y.parent = x;
+		} else {
+			y.right = x.left;
+			if (x.left != null)
+				x.left.parent = y;
+			x.left = y;
+			y.parent = x;
+		}
+		x.parent = z;
+		if (z != null) {
+			if (y == z.left)
+				z.left = x;
+			else
+				z.right = x;
+		}
+		x.path_parent = y.path_parent;
+		y.path_parent = null;
+	}
+
+	static void splay(Node x) {
+		while (x.parent != null) {
+			Node y = x.parent;
+			Node z = y.parent;
+			if (z == null) {
 				// zig
-				rotate(v);
-			} else if ((v == p.left) == (p == pp.left)) {
+				rotate(x);
+			} else if ((x == y.left) == (y == z.left)) {
 				// zig-zig
-				rotate(p);
-				rotate(v);
+				rotate(y);
+				rotate(x);
 			} else {
 				// zig-zag
-				rotate(v);
-				rotate(v);
+				rotate(x);
+				rotate(x);
 			}
 		}
 	}

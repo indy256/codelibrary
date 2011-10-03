@@ -1,72 +1,89 @@
+import java.util.Arrays;
+
 public class LinkCutTreeRooted {
 
 	int[] left;
 	int[] right;
 	int[] parent;
 	boolean[] root;
+	int[] v;
+	int[] sum;
 
 	public LinkCutTreeRooted(int n) {
 		left = new int[n + 1];
 		right = new int[n + 1];
 		parent = new int[n + 1];
 		root = new boolean[n + 1];
+		v = new int[n + 1];
+		sum = new int[n + 1];
 	}
 
-	void connect(int child[], int p, int v) {
-		child[p] = v;
-		parent[v] = p;
+	void update(int x) {
+		sum[x] = v[x] + sum[left[x]] + sum[right[x]];
 	}
 
-	void rotate(int v) {
-		int p = parent[v];
-		int[] l = v == left[p] ? left : right;
-		int[] r = v == left[p] ? right : left;
-		connect(l, p, r[v]);
-		connect(l, parent[p], v);
-		root[v] |= root[p];
-		root[p] = false;
+	void set(int x, int value) {
+		splay(x);
+		v[x] = value;
+		update(x);
 	}
 
-	void splay(int v) {
-		while (parent[v] != 0) {
-			int p = parent[v];
-			int pp = parent[p];
-			if (pp != 0) {
-				// zig-zig or zig-zag
-				rotate((v == left[p]) == (p == left[pp]) ? p : v);
+	void connect(int p, int v, int[] child) {
+		if (!root[v])
+			child[p] = v;
+		if (v != 0)
+			parent[v] = p;
+	}
+
+	void rotate(int x) {
+		int y = parent[x];
+		int z = parent[y];
+		root[x] |= root[y];
+		root[y] = false;
+		int[] l = x == left[y] ? left : right;
+		int[] r = x == left[y] ? right : left;
+		connect(y, r[x], l);
+		connect(x, y, r);
+		connect(z, x, l);
+		update(x);
+		update(y);
+	}
+
+	void splay(int x) {
+		while (parent[x] != 0) {
+			int y = parent[x];
+			int z = parent[y];
+			if (z != 0) {
+				// zig or zag
+				rotate((x == left[y]) == (y == left[z]) ? y : x);
 			}
-			rotate(v);
+			// zig
+			rotate(x);
 		}
 	}
 
 	// precondition: x is the root, x and y are not connected
 	public void link(int x, int y) {
 		access(x);
-		splay(x);
 
-		root[left[x]] = true;
-		parent[left[x]] = 0;
-		left[x] = 0;
-		parent[x] = y;
-		access(x);
+		root[y] = false;
+		left[x] = y;
+		parent[y] = x;
 	}
 
 	// precondition: v is not a root node
 	public void cut(int x) {
 		access(x);
-
-		if (x.left != null) {
-			x.left.parent = null;
-			x.left.path_parent = null;
-			x.left = null;
-		}
+		root[left[x]] = true;
+		parent[left[x]] = 0;
+		left[x] = 0;
 	}
 
 	public int findRoot(int x) {
 		access(x);
 
-		while (x.left != null)
-			x = x.left;
+		while (left[x] != 0)
+			x = left[x];
 
 		splay(x);
 		return x;
