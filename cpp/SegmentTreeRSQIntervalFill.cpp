@@ -19,7 +19,7 @@ void push(int node, int left, int right) {
 
 void pullUp(int node, int left, int right) {
 	int mid = (left + right) >> 1;
-	tsum[node] += (fillv[node * 2] != -1) ? fillv[node * 2] * (mid - left + 1) : tsum[node * 2];
+	tsum[node] = (fillv[node * 2] != -1) ? fillv[node * 2] * (mid - left + 1) : tsum[node * 2];
 	tsum[node] += (fillv[node * 2 + 1] != -1) ? fillv[node * 2 + 1] * (right - mid) : tsum[node * 2 + 1];
 }
 
