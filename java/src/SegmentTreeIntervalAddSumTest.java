@@ -1,6 +1,6 @@
 import java.util.Random;
 
-public class SegmentTreeRSQIntervalAddTest {
+public class SegmentTreeIntervalAddSumTest {
 
 	static class ReferenceTree {
 		final int n;
@@ -40,7 +40,7 @@ public class SegmentTreeRSQIntervalAddTest {
 		for (int step = 0; step < 100; step++) {
 			int n = rnd.nextInt(2) + 1;
 			ReferenceTree rt = new ReferenceTree(n);
-			SegmentTreeRSQIntervalAdd t = new SegmentTreeRSQIntervalAdd(n);
+			SegmentTreeIntervalAddSum t = new SegmentTreeIntervalAddSum(n);
 			for (int i = 0; i < 100; i++) {
 				int a;
 				int b;

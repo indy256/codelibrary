@@ -18,27 +18,28 @@ void buildTree(int node = 1, int left = 0, int right = maxn - 1) {
 }
 
 void add(int i, int value, int node = 1, int left = 0, int right = maxn - 1) {
-    if (left > i || right < i)
-        return;
     if (left == right) {
         tmin[node] += value;
         return;
     }
     int mid = (left + right) >> 1;
-    add(i, value, node * 2, left, mid);
-    add(i, value, node * 2 + 1, mid + 1, right);
+	if (i <= mid)
+		add(i, value, node * 2, left, mid);
+	else
+		add(i, value, node * 2 + 1, mid + 1, right);
     tmin[node] = min(tmin[node * 2], tmin[node * 2 + 1]);
 }
 
 int minv(int a, int b, int node = 1, int left = 0, int right = maxn - 1) {
-    if (left > b || right < a)
-        return INT_MAX;
     if (left >= a && right <= b)
         return tmin[node];
     int mid = (left + right) >> 1;
-    int l = minv(a, b, node * 2, left, mid);
-    int r = minv(a, b, node * 2 + 1, mid + 1, right);
-    return min(l, r);
+	int res = INT_MAX;
+	if (a <= mid)
+		res = min(res, minv(a, b, node * 2, left, mid));
+	if (b > mid)
+		res = min(res, minv(a, b, node * 2 + 1, mid + 1, right));
+    return res;
 }
 
 int get(int i) {

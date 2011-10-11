@@ -37,14 +37,15 @@ public class SegmentTreeSetPosition {
 	}
 
 	int freeCount(int a, int b, int node, int left, int right) {
-		if (left > b || right < a)
-			return 0;
 		if (left >= a && right <= b)
 			return zeros[node];
 		int mid = (left + right) >> 1;
-		int l = freeCount(a, b, node * 2, left, mid);
-		int r = freeCount(a, b, node * 2 + 1, mid + 1, right);
-		return l + r;
+		int res = 0;
+		if (a <= mid)
+			res += freeCount(a, b, node * 2, left, mid);
+		if (b > mid)
+			res += freeCount(a, b, node * 2 + 1, mid + 1, right);
+		return res;
 	}
 
 	public int kthUnused(int k) {

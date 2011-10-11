@@ -1,10 +1,10 @@
-public class SegmentTreeRSQIntervalAdd {
+public class SegmentTreeIntervalAddSum {
 
 	final int n;
 	final int[] tsum;
 	final int[] tadd;
 
-	public SegmentTreeRSQIntervalAdd(int n) {
+	public SegmentTreeIntervalAddSum(int n) {
 		this.n = n;
 		tsum = new int[4 * n];
 		tadd = new int[4 * n];
@@ -81,7 +81,7 @@ public class SegmentTreeRSQIntervalAdd {
 	}
 
 	public static void main(String[] args) {
-		SegmentTreeRSQIntervalAdd t = new SegmentTreeRSQIntervalAdd(10);
+		SegmentTreeIntervalAddSum t = new SegmentTreeIntervalAddSum(10);
 		t.add(0, 0, 1);
 		t.set(0, 4);
 		t.set(1, 5);

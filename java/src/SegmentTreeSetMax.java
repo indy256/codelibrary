@@ -29,13 +29,11 @@ public class SegmentTreeSetMax {
 	}
 
 	int maxPos(int a, int b, int node, int left, int right) {
-		if (left > b || right < a)
-			return -1;
 		if (left >= a && right <= b)
 			return maxPos[node];
 		int mid = (left + right) >> 1;
-		int p1 = maxPos(a, b, node * 2, left, mid);
-		int p2 = maxPos(a, b, node * 2 + 1, mid + 1, right);
+		int p1 = a <= mid ? maxPos(a, b, node * 2, left, mid) : -1;
+		int p2 = b > mid ? maxPos(a, b, node * 2 + 1, mid + 1, right) : -1;
 		if (p1 == -1)
 			return p2;
 		if (p2 == -1)
@@ -48,15 +46,15 @@ public class SegmentTreeSetMax {
 	}
 
 	void set(int i, int value, int node, int left, int right) {
-		if (left > i || right < i)
-			return;
 		if (left == right) {
 			v[left] = value;
 			return;
 		}
 		int mid = (left + right) >> 1;
-		set(i, value, node * 2, left, mid);
-		set(i, value, node * 2 + 1, mid + 1, right);
+		if (i <= mid)
+			set(i, value, node * 2, left, mid);
+		else
+			set(i, value, node * 2 + 1, mid + 1, right);
 		maxPos[node] = v[maxPos[node * 2]] >= v[maxPos[node * 2 + 1]] ? maxPos[node * 2] : maxPos[node * 2 + 1];
 	}
 

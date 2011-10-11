@@ -1,12 +1,12 @@
 import java.util.Arrays;
 
-public class SegmentTreeRSQIntervalFill {
+public class SegmentTreeIntervalFillSum {
 
 	final int n;
 	final int[] fillv;
 	final int[] tsum;
 
-	public SegmentTreeRSQIntervalFill(int n) {
+	public SegmentTreeIntervalFillSum(int n) {
 		this.n = n;
 		fillv = new int[4 * n];
 		Arrays.fill(fillv, -1);
@@ -93,7 +93,7 @@ public class SegmentTreeRSQIntervalFill {
 	}
 
 	public static void main(String[] args) {
-		SegmentTreeRSQIntervalFill t = new SegmentTreeRSQIntervalFill(10);
+		SegmentTreeIntervalFillSum t = new SegmentTreeIntervalFillSum(10);
 		t.set(0, 4);
 		t.set(1, 5);
 		t.add(1, 5);

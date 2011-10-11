@@ -49,15 +49,16 @@ public class SegmentTreeAddZeroCount {
 	}
 
 	int zeroCount(int a, int b, int sumAdd, int node, int left, int right) {
-		if (left > b || right < a)
-			return 0;
 		sumAdd += add[node];
 		if (left >= a && right <= b)
 			return min[node] + sumAdd == 0 ? minCount[node] : 0;
 		int mid = (left + right) >> 1;
-		int l = zeroCount(a, b, sumAdd, node * 2, left, mid);
-		int r = zeroCount(a, b, sumAdd, node * 2 + 1, mid + 1, right);
-		return l + r;
+		int res = 0;
+		if (a <= mid)
+			res += zeroCount(a, b, sumAdd, node * 2, left, mid);
+		if (b > mid)
+			res += zeroCount(a, b, sumAdd, node * 2 + 1, mid + 1, right);
+		return res;
 	}
 
 	// Usage example
