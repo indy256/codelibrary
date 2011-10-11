@@ -1,3 +1,4 @@
+package obsolete;
 import java.util.*;
 
 public class SegmentTreePush {

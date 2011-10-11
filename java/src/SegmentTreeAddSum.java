@@ -39,14 +39,15 @@ public class SegmentTreeAddSum {
 	}
 
 	int sum(int a, int b, int node, int left, int right) {
-		if (left > b || right < a)
-			return 0;
 		if (left >= a && right <= b)
 			return s[node];
 		int mid = (left + right) >> 1;
-		int l = sum(a, b, node * 2, left, mid);
-		int r = sum(a, b, node * 2 + 1, mid + 1, right);
-		return l + r;
+		int res = 0;
+		if (a <= mid)
+			res += sum(a, b, node * 2, left, mid);
+		if (b > mid)
+			res += sum(a, b, node * 2 + 1, mid + 1, right);
+		return res;
 	}
 
 	public int get(int i) {
