@@ -3,31 +3,31 @@ import java.util.Arrays;
 public class SegmentTreeIntervalFillSum {
 
 	final int n;
-	final int[] fillv;
+	final int[] tfill;
 	final int[] tsum;
 
 	public SegmentTreeIntervalFillSum(int n) {
 		this.n = n;
-		fillv = new int[4 * n];
-		Arrays.fill(fillv, -1);
+		tfill = new int[4 * n];
+		Arrays.fill(tfill, -1);
 		tsum = new int[4 * n];
 	}
 
 	void push(int node, int left, int right) {
-		if (fillv[node] == -1)
+		if (tfill[node] == -1)
 			return;
-		tsum[node] = fillv[node] * (right - left + 1);
+		tsum[node] = tfill[node] * (right - left + 1);
 		if (left < right) {
-			fillv[node * 2] = fillv[node];
-			fillv[node * 2 + 1] = fillv[node];
+			tfill[node * 2] = tfill[node];
+			tfill[node * 2 + 1] = tfill[node];
 		}
-		fillv[node] = -1;
+		tfill[node] = -1;
 	}
 
-	void pullUp(int node, int left, int right) {
+	void pop(int node, int left, int right) {
 		int mid = (left + right) >> 1;
-		tsum[node] = (fillv[node * 2] != -1) ? fillv[node * 2] * (mid - left + 1) : tsum[node * 2];
-		tsum[node] += (fillv[node * 2 + 1] != -1) ? fillv[node * 2 + 1] * (right - mid) : tsum[node * 2 + 1];
+		tsum[node] = (tfill[node * 2] != -1) ? tfill[node * 2] * (mid - left + 1) : tsum[node * 2];
+		tsum[node] += (tfill[node * 2 + 1] != -1) ? tfill[node * 2 + 1] * (right - mid) : tsum[node * 2 + 1];
 	}
 
 	public void add(int i, int value) {
@@ -45,7 +45,7 @@ public class SegmentTreeIntervalFillSum {
 			add(i, value, node * 2, left, mid);
 		else
 			add(i, value, node * 2 + 1, mid + 1, right);
-		pullUp(node, left, right);
+		pop(node, left, right);
 	}
 
 	int sum(int a, int b) {
@@ -62,7 +62,7 @@ public class SegmentTreeIntervalFillSum {
 			res += sum(a, b, node * 2, left, mid);
 		if (b > mid)
 			res += sum(a, b, node * 2 + 1, mid + 1, right);
-		pullUp(node, left, right);
+		pop(node, left, right);
 		return res;
 	}
 
@@ -81,7 +81,7 @@ public class SegmentTreeIntervalFillSum {
 	void fill(int a, int b, int value, int node, int left, int right) {
 		push(node, left, right);
 		if (left >= a && right <= b) {
-			fillv[node] = value;
+			tfill[node] = value;
 			return;
 		}
 		int mid = (left + right) >> 1;
@@ -89,7 +89,7 @@ public class SegmentTreeIntervalFillSum {
 			fill(a, b, value, node * 2, left, mid);
 		if (b > mid)
 			fill(a, b, value, node * 2 + 1, mid + 1, right);
-		pullUp(node, left, right);
+		pop(node, left, right);
 	}
 
 	public static void main(String[] args) {

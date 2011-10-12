@@ -19,7 +19,7 @@ public class SegmentTreeIntervalAddSum {
 		tadd[node] = 0;
 	}
 
-	void pullUp(int node, int left, int right) {
+	void pop(int node, int left, int right) {
 		int mid = (left + right) >> 1;
 		tsum[node] = tsum[node * 2] + tadd[node * 2] * (mid - left + 1);
 		tsum[node] += tsum[node * 2 + 1] + tadd[node * 2 + 1] * (right - mid);
@@ -41,7 +41,7 @@ public class SegmentTreeIntervalAddSum {
 			add(a, b, value, node * 2, left, mid);
 		if (b > mid)
 			add(a, b, value, node * 2 + 1, mid + 1, right);
-		pullUp(node, left, right);
+		pop(node, left, right);
 	}
 
 	int sum(int a, int b) {
@@ -58,7 +58,7 @@ public class SegmentTreeIntervalAddSum {
 			res += sum(a, b, node * 2, left, mid);
 		if (b > mid)
 			res += sum(a, b, node * 2 + 1, mid + 1, right);
-		pullUp(node, left, right);
+		pop(node, left, right);
 		return res;
 	}
 
@@ -72,7 +72,7 @@ public class SegmentTreeIntervalAddSum {
 			return tsum[node];
 		int mid = (left + right) >> 1;
 		int res = i <= mid ? get(i, node * 2, left, mid) : get(i, node * 2 + 1, mid + 1, right);
-		pullUp(node, left, right);
+		pop(node, left, right);
 		return res;
 	}
 
