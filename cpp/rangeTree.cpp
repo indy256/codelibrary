@@ -28,17 +28,17 @@ vector<pii> tree[2 * MMX];
 vector<int> tmin[2 * MMX];
 int n;
 
-void buildY(int y1, int y2, int nodeY, int nodeX = 1) {
+void buildY(int y1, int y2, int nodeX, int nodeY = 1) {
 	if (y1 == y2 - 1) {
-		if (y1 < tree[nodeY].size())
-			tmin[nodeY][nodeX] = tree[nodeY][y1].second;
+		if (y1 < tree[nodeX].size())
+			tmin[nodeX][nodeY] = tree[nodeX][y1].second;
 		else
-			tmin[nodeY][nodeX] = INT_MAX;
+			tmin[nodeX][nodeY] = INT_MAX;
 	} else {
 		int mid = (y1 + y2) >> 1;
-		buildY(y1, mid, nodeY, nodeX * 2);
-		buildY(mid, y2, nodeY, nodeX * 2 + 1);
-		tmin[nodeY][nodeX] = min(tmin[nodeY][nodeX * 2], tmin[nodeY][nodeX * 2 + 1]);
+		buildY(y1, mid, nodeX, nodeY * 2);
+		buildY(mid, y2, nodeX, nodeY * 2 + 1);
+		tmin[nodeX][nodeY] = min(tmin[nodeX][nodeY * 2], tmin[nodeX][nodeY * 2 + 1]);
 	}
 }
 
@@ -46,22 +46,20 @@ void buildX(int x1, int x2, vector<pair<pii, int> > &cur, int nodeX = 1) {
 	for (int i = 0; i < cur.size(); i++)
 		tree[nodeX].push_back(mp(cur[i].first.second, cur[i].second));
 
-	int len;
-	for (len = 1; len < tree[nodeX].size(); len *= 2);
-	tmin[nodeX].resize(len * 2);
-	buildY(0, len, nodeX);
+	tmin[nodeX].resize(tree[nodeX].size() * 2);
+	buildY(0, tmin[nodeX].size(), nodeX);
 	if (x1 == x2 - 1) return;
 	int mid = (x1 + x2) >> 1;
-	vector<pair<pii, int> > lf, rt;
+	vector<pair<pii, int> > left, right;
 
 	for (int i = 0; i < cur.size(); i++) {
 		if (cur[i].first.first < mid)
-			lf.push_back(cur[i]);
+			left.push_back(cur[i]);
 		else
-			rt.push_back(cur[i]);
+			right.push_back(cur[i]);
 	}
-	buildX(x1, mid, lf, nodeX * 2);
-	buildX(mid, x2, rt, nodeX * 2 + 1);
+	buildX(x1, mid, left, nodeX * 2);
+	buildX(mid, x2, right, nodeX * 2 + 1);
 }
 
 void updateY(int y, int z, int value, int num) {
