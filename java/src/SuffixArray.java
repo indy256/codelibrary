@@ -50,8 +50,7 @@ public class SuffixArray {
 			rn = t;
 		}
 		int[] res = new int[p.length - 1];
-		for (int i = 0; i < res.length; i++)
-			res[i] = p[i + 1];
+		System.arraycopy(p, 1, res, 0, res.length);
 		return res;
 	}
 
