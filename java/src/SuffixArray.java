@@ -18,36 +18,36 @@ public class SuffixArray {
 		for (int i = n - 1; i >= 0; i--) {
 			p[--cnt256[a[i]]] = i;
 		}
-		int ranks = 0;
-		int[] r = new int[n];
+		int classes = 0;
+		int[] c = new int[n];
 		int[] cnt = new int[n];
 		for (int i = 1; i < n; i++) {
 			if (a[p[i - 1]] != a[p[i]]) {
-				cnt[++ranks] = i;
+				cnt[++classes] = i;
 			}
-			r[p[i]] = ranks;
+			c[p[i]] = classes;
 		}
-		int[] pp = new int[n];
-		int[] rn = new int[n];
+		int[] pn = new int[n];
+		int[] cn = new int[n];
 		for (int d = 1; d < n; d *= 2) {
-			System.arraycopy(p, 0, pp, 0, n);
+			System.arraycopy(p, 0, pn, 0, n);
 			for (int i = 0; i < n; i++) {
-				int p1 = pp[i] - d;
+				int p1 = pn[i] - d;
 				if (p1 >= 0) {
-					p[cnt[r[p1]]++] = p1;
+					p[cnt[c[p1]]++] = p1;
 				}
 			}
-			ranks = 0;
+			classes = 0;
 			for (int i = 1; i < n; i++) {
-				if (n - p[i] <= d * 2 || n - p[i - 1] <= d * 2 || r[p[i - 1]] != r[p[i]]
-						|| r[p[i - 1] + d] != r[p[i] + d]) {
-					cnt[++ranks] = i;
+				if (n - p[i] <= d * 2 || n - p[i - 1] <= d * 2 || c[p[i - 1]] != c[p[i]]
+						|| c[p[i - 1] + d] != c[p[i] + d]) {
+					cnt[++classes] = i;
 				}
-				rn[p[i]] = ranks;
+				cn[p[i]] = classes;
 			}
-			int[] t = r;
-			r = rn;
-			rn = t;
+			final int[] t = c;
+			c = cn;
+			cn = t;
 		}
 		int[] res = new int[p.length - 1];
 		System.arraycopy(p, 1, res, 0, res.length);
