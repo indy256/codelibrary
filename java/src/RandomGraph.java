@@ -23,7 +23,7 @@ public class RandomGraph {
 			do {
 				long node = q.poll();
 				deg = (int) (node >>> 32);
-				num = (int) (node & 0xFFFFFFFF);
+				num = (int) node;
 			} while (deg != degree[num]);
 			t[x].add(num);
 			t[num].add(x);
@@ -32,8 +32,8 @@ public class RandomGraph {
 				q.add(((long) degree[x] << 32) + x);
 			}
 		}
-		int u = (int) (q.poll() & 0xFFFFFFFF);
-		int v = (int) (q.poll() & 0xFFFFFFFF);
+		int u = q.poll().intValue();
+		int v = q.poll().intValue();
 		t[u].add(v);
 		t[v].add(u);
 		return t;
@@ -66,7 +66,7 @@ public class RandomGraph {
 		for (int x : getRandomCombination(edges.size(), E - (V - 1), rnd)) {
 			long e = edges.get(x);
 			int u = (int) (e >>> 32);
-			int v = (int) (e & 0xFFFFFFFF);
+			int v = (int) e;
 			g[u].add(v);
 			g[v].add(u);
 		}
