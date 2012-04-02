@@ -5,26 +5,28 @@ public class Sort {
 	static Random rnd = new Random();
 
 	public static void qSort(int[] a, int low, int high) {
+		if (low > high)
+			return;
+		int x = a[low + rnd.nextInt(high - low + 1)];
 		int i = low;
 		int j = high;
-		int x = a[low + rnd.nextInt(high - low + 1)];
-		do {
+		while (true) {
 			while (a[i] < x)
 				++i;
 			while (x < a[j])
 				--j;
-			if (i <= j) {
-				int t = a[i];
-				a[i] = a[j];
-				a[j] = t;
-				++i;
-				--j;
-			}
-		} while (i <= j);
-		if (low < j)
-			qSort(a, low, j);
-		if (i < high)
-			qSort(a, i, high);
+			if (i > j)
+				break;
+			int t = a[i];
+			a[i] = a[j];
+			a[j] = t;
+			++i;
+			--j;
+			if (i > j)
+				break;
+		}
+		qSort(a, low, j);
+		qSort(a, i, high);
 	}
 
 	public static void qSort2(int[] a, int low, int high) {
@@ -39,12 +41,9 @@ public class Sort {
 		swap(a, low + rnd.nextInt(high - low), high - 1);
 		int x = a[high - 1];
 		int i = low - 1;
-		for (int j = low; j < high; j++) {
-			if (a[j] <= x) {
-				++i;
-				swap(a, i, j);
-			}
-		}
+		for (int j = low; j < high; j++)
+			if (a[j] <= x)
+				swap(a, ++i, j);
 		return i;
 	}
 

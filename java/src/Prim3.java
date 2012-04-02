@@ -1,4 +1,4 @@
-public class Prim {
+public class Prim3 {
 
 	public static long mstPrim(int[][] d) {
 		int n = d.length;
