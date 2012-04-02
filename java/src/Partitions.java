@@ -46,14 +46,25 @@ public class Partitions {
 		p[0][0] = 1;
 		for (int i = 1; i <= n; i++) {
 			for (int j = 1; j <= i; j++) {
-				for (int k = 0; k <= j; k++) {
-					p[i][j] += p[i - j][k];
-				}
+				p[i][j] = p[i - 1][j - 1] + p[i - j][j];
 			}
 		}
 		long res = 0;
 		for (int j = 0; j <= n; j++) {
 			res += p[n][j];
+		}
+		return p;
+	}
+
+	public static long[][] partitionFunction2(int n) {
+		long[][] p = new long[n + 1][n + 1];
+		p[0][0] = 1;
+		for (int i = 1; i <= n; i++) {
+			for (int j = 1; j <= i; j++) {
+				for (int k = 0; k <= j; k++) {
+					p[i][j] += p[i - j][k];
+				}
+			}
 		}
 		return p;
 	}
@@ -74,14 +85,5 @@ public class Partitions {
 
 		int[] p1 = new int[8];
 		generateIncreasingPartitions(p1, p1.length, 0, 0);
-		
-		Set<Integer> set = new HashSet<Integer>();
-		for (int i = 0; i < 500; i++) {
-			
-			for (int j = 0; j < 500; j++) {
-				set.add(i*i+j*j);				
-			}
-		}
-		System.out.println(set.size());
 	}
 }

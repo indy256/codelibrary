@@ -2,23 +2,24 @@ import java.util.*;
 
 public class DijkstraHeap {
 
-	public static void shortestPaths(List<Edge>[] edges, int s, long[] prio, int[] pred) {
+	public static void shortestPaths(List<Edge>[] edges, int s, int[] prio, int[] pred) {
 		Arrays.fill(pred, -1);
-		Arrays.fill(prio, Long.MAX_VALUE);
+		Arrays.fill(prio, Integer.MAX_VALUE);
 		prio[s] = 0;
-		Queue<QItem> q = new PriorityQueue<QItem>();
-		q.add(new QItem(prio[s], s));
+		PriorityQueue<Long> q = new PriorityQueue<Long>();
+		q.add((long) s);
 		while (!q.isEmpty()) {
-			QItem cur = q.poll();
-			if (cur.prio != prio[cur.u])
+			long cur = q.poll();
+			int curu = (int) cur;
+			if (cur >>> 32 != prio[curu])
 				continue;
-			for (Edge e : edges[cur.u]) {
+			for (Edge e : edges[curu]) {
 				int v = e.t;
-				long nprio = prio[cur.u] + e.cost;
+				int nprio = prio[curu] + e.cost;
 				if (prio[v] > nprio) {
 					prio[v] = nprio;
-					pred[v] = cur.u;
-					q.add(new QItem(nprio, v));
+					pred[v] = curu;
+					q.add(((long) nprio << 32) + v);
 				}
 			}
 		}
@@ -30,20 +31,6 @@ public class DijkstraHeap {
 		public Edge(int t, int cost) {
 			this.t = t;
 			this.cost = cost;
-		}
-	}
-
-	static class QItem implements Comparable<QItem> {
-		long prio;
-		int u;
-
-		public QItem(long prio, int u) {
-			this.prio = prio;
-			this.u = u;
-		}
-
-		public int compareTo(QItem q) {
-			return prio < q.prio ? -1 : prio > q.prio ? 1 : 0;
 		}
 	}
 
@@ -60,12 +47,12 @@ public class DijkstraHeap {
 				}
 			}
 		}
-		long[] distances = new long[n];
+		int[] dist = new int[n];
 		int[] pred = new int[n];
-		shortestPaths(edges, 0, distances, pred);
-		System.out.println(0 == distances[0]);
-		System.out.println(3 == distances[1]);
-		System.out.println(1 == distances[2]);
+		shortestPaths(edges, 0, dist, pred);
+		System.out.println(0 == dist[0]);
+		System.out.println(3 == dist[1]);
+		System.out.println(1 == dist[2]);
 		System.out.println(-1 == pred[0]);
 		System.out.println(0 == pred[1]);
 		System.out.println(1 == pred[2]);

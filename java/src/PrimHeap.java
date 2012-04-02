@@ -5,27 +5,27 @@ public class PrimHeap {
 	public static long mst(List<Edge>[] edges, int[] pred) {
 		int n = edges.length;
 		Arrays.fill(pred, -1);
-		boolean[] vis = new boolean[n];
+		boolean[] used = new boolean[n];
 		int[] prio = new int[n];
 		Arrays.fill(prio, Integer.MAX_VALUE);
 		prio[0] = 0;
-		Queue<QItem> q = new PriorityQueue<QItem>();
-		q.add(new QItem(prio[0], 0));
+		PriorityQueue<Long> q = new PriorityQueue<Long>();
+		q.add(0L);
 		long res = 0;
 
 		while (!q.isEmpty()) {
-			QItem cur = q.poll();
-			int u = cur.u;
-			if (vis[u])
+			long cur = q.poll();
+			int u = (int) cur;
+			if (used[u])
 				continue;
-			vis[u] = true;
-			res += cur.prio;
+			used[u] = true;
+			res += cur >>> 32;
 			for (Edge e : edges[u]) {
 				int v = e.t;
-				if (!vis[v] && prio[v] > e.cost) {
+				if (!used[v] && prio[v] > e.cost) {
 					prio[v] = e.cost;
 					pred[v] = u;
-					q.add(new QItem(prio[v], v));
+					q.add(((long) prio[v] << 32) + v);
 				}
 			}
 		}
@@ -38,20 +38,6 @@ public class PrimHeap {
 		public Edge(int t, int cost) {
 			this.t = t;
 			this.cost = cost;
-		}
-	}
-
-	static class QItem implements Comparable<QItem> {
-		int prio;
-		int u;
-
-		public QItem(int prio, int u) {
-			this.prio = prio;
-			this.u = u;
-		}
-
-		public int compareTo(QItem q) {
-			return prio < q.prio ? -1 : prio > q.prio ? 1 : 0;
 		}
 	}
 
@@ -69,7 +55,6 @@ public class PrimHeap {
 			}
 		}
 		int[] pred = new int[n];
-		long res = mst(edges, pred);
-		System.out.println(res);
+		System.out.println(mst(edges, pred));
 	}
 }
