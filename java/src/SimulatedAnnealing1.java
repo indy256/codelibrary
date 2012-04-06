@@ -1,8 +1,9 @@
 import java.awt.*;
+import java.io.PrintWriter;
 import java.util.*;
 import javax.swing.*;
 
-public class SimulatedAnnealing extends JFrame {
+public class SimulatedAnnealing1 extends JFrame {
 	static Random rnd = new Random();
 	JPanel panel;
 	int[] x;
@@ -95,8 +96,8 @@ public class SimulatedAnnealing extends JFrame {
 		}
 	}
 
-	public SimulatedAnnealing() {
-		final int n = rnd.nextInt(100) + 50;
+	public SimulatedAnnealing1() {
+		final int n = rnd.nextInt(20) + 50;
 		x = new int[n];
 		y = new int[n];
 		p = new int[n];
@@ -107,6 +108,16 @@ public class SimulatedAnnealing extends JFrame {
 			y[i] = rnd.nextInt(max);
 			p[i] = i;
 		}
+
+//		try {
+//			PrintWriter pw = new PrintWriter("tsp.txt");
+//			pw.println(n);
+//			for (int i = 0; i < n; i++) {
+//				pw.println(x[i] + " " + y[i]);
+//			}
+//			pw.close();
+//		} catch (Exception e) {
+//		}
 
 		panel = new JPanel() {
 			protected void paintComponent(Graphics g) {
@@ -136,7 +147,7 @@ public class SimulatedAnnealing extends JFrame {
 	}
 
 	public static void main(String[] args) {
-		JFrame frame = new SimulatedAnnealing();
+		JFrame frame = new SimulatedAnnealing1();
 		frame.setSize(new Dimension(800, 600));
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
