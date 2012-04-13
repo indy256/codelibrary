@@ -25,28 +25,31 @@ public class ShortestHamiltonianPath {
 			res = Math.min(res, dp[(1 << n) - 1][i]);
 		}
 
+		// reconstruct path
 		int cur = (1 << n) - 1;
 		int[] order = new int[n];
-		for (int i = 0; i < n; i++) {
+		int last = -1;
+		for (int i = n - 1; i >= 1; i--) {
 			int bj = -1;
-			for (int j = 0; j < n; j++) {
-				if ((cur & 1 << j) != 0) {
-					if (bj == -1 || dp[(1 << n) - 1][bj] + dist[bj][0] > dp[(1 << n) - 1][j] + dist[j][0]) {
-						bj = j;
-					}
+			for (int j = 1; j < n; j++) {
+				if ((cur & 1 << j) != 0
+						&& (bj == -1 || dp[cur][bj] + (last == -1 ? 0 : dist[bj][last]) > dp[cur][j]
+								+ (last == -1 ? 0 : dist[j][last]))) {
+					bj = j;
 				}
 			}
 			order[i] = bj;
 			cur ^= 1 << bj;
+			last = bj;
 		}
-		System.err.println(Arrays.toString(order));
+		System.out.println(Arrays.toString(order));
 		return res;
 	}
 
 	// Usage example
 	public static void main(String[] args) {
-		int[][] dist = { { 0, 1, 1 }, { 1, 0, 10 }, { 1, 10, 0 } };
-		int pathLength = getShortestHamiltonianPath(dist);
-		System.out.println(2 == pathLength);
+		int[][] dist = { { 0, 1, 10, 1, 10 }, { 1, 0, 10, 10, 1 }, { 10, 10, 0, 1, 1 }, { 1, 10, 1, 0, 10 },
+				{ 10, 1, 1, 10, 0 } };
+		System.out.println(5 == getShortestHamiltonianPath(dist));
 	}
 }

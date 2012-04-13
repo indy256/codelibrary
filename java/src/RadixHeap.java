@@ -7,16 +7,16 @@ public class RadixHeap {
 
 	public RadixHeap(int n, int maxValue) {
 		int B = 0;
-		while (1 << B <= maxValue)
+		while ((1 << B) <= maxValue)
 			++B;
-		++B;
+		B += 2;
 		b = new List[B];
-		for (int i = 0; i < b.length; i++) {
+		for (int i = 0; i < B; i++) {
 			b[i] = new ArrayList<Long>();
 		}
 		u = new int[B];
-		for (int i = 0; i + 1 < B; i++) {
-			u[i + 1] = 1 << i;
+		for (int i = 1; i < B - 1; i++) {
+			u[i] = 1 << (i - 1);
 		}
 		u[B - 1] = Integer.MAX_VALUE;
 	}
@@ -37,13 +37,9 @@ public class RadixHeap {
 			if (b[i].get(bestj).intValue() > b[i].get(j).intValue())
 				bestj = j;
 		long res = b[i].remove(bestj);
-		i = 0;
 		while (i < b.length && b[i].isEmpty())
 			++i;
-		if (i == b.length) {
-			return res;
-		}
-		if (i > 0) {
+		if (i > 0 && i < b.length) {
 			bestj = 0;
 			for (int j = 1; j < b[i].size(); j++)
 				if (b[i].get(bestj).intValue() > b[i].get(j).intValue())
@@ -74,7 +70,7 @@ public class RadixHeap {
 			a[i] = rnd.nextInt(100);
 		}
 
-		RadixHeap h = new RadixHeap(n, 1000000);
+		RadixHeap h = new RadixHeap(n, 1000);
 		for (int i = 0; i < n; i++) {
 			h.add(i, a[i]);
 		}
@@ -82,12 +78,9 @@ public class RadixHeap {
 		int[] b = new int[n];
 		for (int i = 0; i < n; i++) {
 			b[i] = (int) h.remove();
-			// System.out.println(i + " " + b[i]);
 		}
 
 		Arrays.sort(a);
 		System.out.println(Arrays.equals(a, b));
-
 	}
-
 }
