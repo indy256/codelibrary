@@ -1,9 +1,10 @@
 import java.awt.*;
+import java.io.PrintWriter;
 import java.util.*;
 import javax.swing.*;
 
 public class SimulatedAnnealing extends JFrame {
-	Random rnd = new Random();
+	Random rnd = new Random(5);
 	int n = rnd.nextInt(300) + 150;
 
 	double[] x = new double[n];
@@ -15,6 +16,16 @@ public class SimulatedAnnealing extends JFrame {
 			y[i] = rnd.nextDouble();
 			p[i] = i;
 		}
+		try {
+			PrintWriter pw = new PrintWriter("D:/Program Files/Concorde/tsp1.txt");
+			pw.println(n);
+			for (int i = 0; i < n; i++) {
+				pw.println((int)(x[i]*1000) + " " + (int)(y[i]*1000));
+			}
+			pw.close();
+		} catch (Exception e) {
+		}
+
 	}
 
 	int[] neighbour(int[] state, double curTemp) {
@@ -25,7 +36,7 @@ public class SimulatedAnnealing extends JFrame {
 			i = rnd.nextInt(n);
 			j = rnd.nextInt(n);
 		} while (Math.abs(i - j) > n * curTemp);
-		
+
 		int[] newState = state.clone();
 		int sign = i - j;
 		// reverse order from i to j
@@ -109,7 +120,7 @@ public class SimulatedAnnealing extends JFrame {
 					g.drawOval((int) (x[i] * maxx) - 1, (int) ((1 - y[i]) * maxy) - 1, 3, 3);
 				}
 				g.setColor(Color.BLACK);
-				g.drawString(String.format("length = %6.1f", eval(p)), 2, maxy + 10);
+				g.drawString(String.format("length = %6.3f", eval(p)), 2, maxy + 10);
 			}
 		};
 		setContentPane(panel);
