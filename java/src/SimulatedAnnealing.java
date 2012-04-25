@@ -1,10 +1,9 @@
 import java.awt.*;
-import java.io.PrintWriter;
 import java.util.*;
 import javax.swing.*;
 
 public class SimulatedAnnealing extends JFrame {
-	Random rnd = new Random(5);
+	Random rnd = new Random();
 	int n = rnd.nextInt(300) + 150;
 
 	double[] x = new double[n];
@@ -16,16 +15,6 @@ public class SimulatedAnnealing extends JFrame {
 			y[i] = rnd.nextDouble();
 			p[i] = i;
 		}
-		try {
-			PrintWriter pw = new PrintWriter("D:/Program Files/Concorde/tsp1.txt");
-			pw.println(n);
-			for (int i = 0; i < n; i++) {
-				pw.println((int)(x[i]*1000) + " " + (int)(y[i]*1000));
-			}
-			pw.close();
-		} catch (Exception e) {
-		}
-
 	}
 
 	int[] neighbour(int[] state, double curTemp) {
@@ -109,18 +98,18 @@ public class SimulatedAnnealing extends JFrame {
 				((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 				((Graphics2D) g).setStroke(new BasicStroke(3));
 				g.setColor(Color.BLUE);
-				int maxx = getWidth() - 5;
-				int maxy = getHeight() - 30;
+				int w = getWidth() - 5;
+				int h = getHeight() - 30;
 				for (int i = 0, j = n - 1; i < n; j = i++) {
-					g.drawLine((int) (x[p[i]] * maxx), (int) ((1 - y[p[i]]) * maxy), (int) (x[p[j]] * maxx),
-							(int) ((1 - y[p[j]]) * maxy));
+					g.drawLine((int) (x[p[i]] * w), (int) ((1 - y[p[i]]) * h), (int) (x[p[j]] * w),
+							(int) ((1 - y[p[j]]) * h));
 				}
 				g.setColor(Color.RED);
 				for (int i = 0; i < n; i++) {
-					g.drawOval((int) (x[i] * maxx) - 1, (int) ((1 - y[i]) * maxy) - 1, 3, 3);
+					g.drawOval((int) (x[i] * w) - 1, (int) ((1 - y[i]) * h) - 1, 3, 3);
 				}
 				g.setColor(Color.BLACK);
-				g.drawString(String.format("length = %6.3f", eval(p)), 2, maxy + 10);
+				g.drawString(String.format("length = %6.1f", eval(p)), 2, h + 10);
 			}
 		};
 		setContentPane(panel);
