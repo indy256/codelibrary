@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.io.PrintWriter;
 import java.util.*;
 import javax.swing.*;
 
@@ -62,7 +63,7 @@ public class SimulatedAnnealing1 extends JFrame {
 		if (diff < 0) {
 			return 1;
 		} else {
-			return Math.exp(-diff / curTemp);
+			return 0 * Math.exp(-diff / curTemp);
 		}
 	}
 
@@ -107,6 +108,16 @@ public class SimulatedAnnealing1 extends JFrame {
 			y[i] = rnd.nextInt(max);
 			p[i] = i;
 		}
+
+//		try {
+//			PrintWriter pw = new PrintWriter("tsp.txt");
+//			pw.println(n);
+//			for (int i = 0; i < n; i++) {
+//				pw.println(x[i] + " " + y[i]);
+//			}
+//			pw.close();
+//		} catch (Exception e) {
+//		}
 
 		panel = new JPanel() {
 			protected void paintComponent(Graphics g) {
