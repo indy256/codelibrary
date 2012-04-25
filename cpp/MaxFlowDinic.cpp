@@ -1,90 +1,86 @@
 #include <algorithm>
+#include <vector>
 #include <climits>
 #include <iostream>
 using namespace std;
 
 const int maxnodes = 5000;
-const int maxedges = 60000;
 
-int src, dest, edges, nodes;
-int last[maxnodes], head[maxedges], prev[maxedges];
-int flow[maxedges], cap[maxedges];
-int dist[maxnodes], Q[maxnodes], work[maxnodes];
+int nodes = maxnodes, src, dest;
+int dist[maxnodes], q[maxnodes], work[maxnodes];
 
-void init(int _nodes) {
-    fill(last, last + _nodes, -1);
-    edges = 0;
-    nodes = _nodes;
-}
+struct Edge {
+	int to, rev;
+	int f, cap;
+};
 
-void addEdge(int u, int v, int cap1, int cap2) {
-    head[edges] = v;
-    cap[edges] = cap1;
-    flow[edges] = 0;
-    prev[edges] = last[u];
-    last[u] = edges++;
-    head[edges] = u;
-    cap[edges] = cap2;
-    flow[edges] = 0;
-    prev[edges] = last[v];
-    last[v] = edges++;
+vector<Edge> g[maxnodes];
+
+void addEdge(int s, int t, int cap){
+	Edge a = {t, g[t].size(), 0, cap};
+	Edge b = {s, g[s].size(), 0, cap};
+	g[s].push_back(a);
+	g[t].push_back(b);
 }
 
 bool dinic_bfs() {
-    fill(dist, dist + nodes, -1);
-    dist[src] = 0;
-    int sizeQ = 0;
-    Q[sizeQ++] = src;
-    for (int i = 0; i < sizeQ; i++) {
-        int u = Q[i];
-        for (int e = last[u]; e >= 0; e = prev[e]) {
-            int v = head[e];
-            if (dist[v] < 0 && flow[e] < cap[e]) {
-                dist[v] = dist[u] + 1;
-                Q[sizeQ++] = v;
-            }
-        }
-    }
-    return dist[dest] >= 0;
+	fill(dist, dist + nodes, -1);
+	dist[src] = 0;
+	int qt = 0;
+	q[qt++] = src;
+	for (int qh = 0; qh < qt; qh++) {
+		int u = q[qh];
+		for (int j = 0; j < (int) g[u].size(); j++) {
+			Edge &e = g[u][j];
+			int v = e.to;
+			if (dist[v] < 0 && e.f < e.cap) {
+				dist[v] = dist[u] + 1;
+				q[qt++] = v;
+			}
+		}
+	}
+	return dist[dest] >= 0;
 }
 
 int dinic_dfs(int u, int f) {
-    if (u == dest)
-        return f;
-    for (int &e = work[u]; e >= 0; e = prev[e]) {
-        int v = head[e];
-        if (dist[v] == dist[u] + 1 && flow[e] < cap[e]) {
-            int df = dinic_dfs(v, min(f, cap[e] - flow[e]));
-            if (df > 0) {
-                flow[e] += df;
-                flow[e ^ 1] -= df;
-                return df;
-            }
-        }
-    }
-    return 0;
+	if (u == dest)
+		return f;
+	for (int &i = work[u]; i < (int) g[u].size(); i++) {
+		Edge &e = g[u][i];
+		if (e.cap <= e.f) continue;
+		int v = e.to;
+		if (dist[v] == dist[u] + 1) {
+			int df = dinic_dfs(v, min(f, e.cap - e.f));
+			if (df > 0) {
+				e.f += df;
+				g[v][e.rev].f -= df;
+				return df;
+			}
+		}
+	}
+	return 0;
 }
 
 int maxFlow(int _src, int _dest) {
-    src = _src;
-    dest = _dest;
-    int result = 0;
-    while (dinic_bfs()) {
-        copy(last, last + nodes, work);
-        while (int delta = dinic_dfs(src, INT_MAX))
-            result += delta;
-    }
-    return result;
+	src = _src;
+	dest = _dest;
+	int result = 0;
+	while (dinic_bfs()) {
+		fill(work, work + nodes, 0);
+		while (int delta = dinic_dfs(src, INT_MAX))
+			result += delta;
+	}
+	return result;
 }
 
 int main() {
     int n = 3;
-    init(n);
+    nodes = n;
 
     int capacity[][3] = { { 0, 3, 2 }, { 0, 0, 2 }, { 0, 0, 0 } };
     for (int i = 0; i < n; i++)
         for (int j = 0; j < n; j++)
             if (capacity[i][j] != 0)
-                addEdge(i, j, capacity[i][j], capacity[i][j]);
+                addEdge(i, j, capacity[i][j]);
     cout << (4 == maxFlow(0, 2)) << endl;
 }
