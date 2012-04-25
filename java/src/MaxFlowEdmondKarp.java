@@ -58,9 +58,9 @@ public class MaxFlowEdmondKarp {
 
 	// Usage example
 	public static void main(String[] args) {
-		MaxFlowEdmondKarp flow = new MaxFlowEdmondKarp();
 		int[][] capacity = { { 0, 3, 2 }, { 0, 0, 2 }, { 0, 0, 0 } };
 		int n = capacity.length;
+		MaxFlowEdmondKarp flow = new MaxFlowEdmondKarp();
 		flow.init(n);
 		for (int i = 0; i < n; i++)
 			for (int j = 0; j < n; j++)

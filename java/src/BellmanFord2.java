@@ -2,98 +2,81 @@ import java.util.*;
 
 public class BellmanFord2 {
 
-	static class Edge {
-		int t, cost;
+	static final int INF = Integer.MAX_VALUE / 2;
 
-		public Edge(int t, int cost) {
-			this.t = t;
+	public static class Edge {
+		int u, v;
+		int cost;
+
+		public Edge(int u, int v, int cost) {
+			this.u = u;
+			this.v = v;
 			this.cost = cost;
 		}
 	}
 
-	public static boolean bellmanFord(List<Edge>[] edges, int s, int[] prio, int[] pred) {
+	public static boolean bellmanFord(int n, List<Edge> edges, int s, int[] dist, int[] pred) {
 		Arrays.fill(pred, -1);
-		Arrays.fill(prio, Integer.MAX_VALUE);
-		prio[s] = 0;
-		int n = edges.length;
-		boolean wasChanged = true;
-		for (int k = 0; k < n && wasChanged; k++) {
-			wasChanged = false;
-			for (int u = 0; u < n; u++) {
-				if (prio[u] == Integer.MAX_VALUE) {
-					continue;
-				}
-				for (Edge e : edges[u]) {
-					int nprio = prio[u] + e.cost;
-					if (prio[e.t] > nprio) {
-						prio[e.t] = nprio;
-						pred[e.t] = u;
-						wasChanged = true;
+		Arrays.fill(dist, INF);
+		dist[s] = 0;
+		boolean updated = false;
+		for (int step = 0; step < n; step++) {
+			updated = false;
+			for (Edge e : edges)
+				if (dist[e.u] < INF) {
+					if (dist[e.v] > dist[e.u] + e.cost) {
+						dist[e.v] = Math.max(dist[e.u] + e.cost, -INF);
+						pred[e.v] = e.u;
+						updated = true;
 					}
 				}
-			}
+			if (!updated)
+				break;
 		}
-		// wasChanged is true iff graph has a negative cycle
-		return wasChanged;
+		// if updated is true then a negative cycle exists
+		return updated == false;
 	}
 
-	public static int[] findNegativeCycle(List<Edge>[] edges) {
-		int n = edges.length;
+	public static int[] findNegativeCycle(int n, List<Edge> edges) {
 		int[] pred = new int[n];
 		Arrays.fill(pred, -1);
-		int[] prio = new int[n];
-		Arrays.fill(prio, Integer.MAX_VALUE);
-		prio[0] = 0;
-		int last = 0;
-		for (int k = 0; k < n && last != -1; k++) {
+		int[] dist = new int[n];
+		int last = -1;
+		for (int step = 0; step < n; step++) {
 			last = -1;
-			for (int u = 0; u < n; u++) {
-				if (prio[u] == Integer.MAX_VALUE) {
-					continue;
+			for (Edge e : edges)
+				if (dist[e.v] > dist[e.u] + e.cost) {
+					dist[e.v] = Math.max(dist[e.u] + e.cost, -INF);
+					pred[e.v] = e.u;
+					last = e.v;
 				}
-				for (Edge e : edges[u]) {
-					int v = e.t;
-					int nprio = prio[u] + e.cost;
-					if (prio[v] > nprio) {
-						prio[v] = nprio;
-						pred[v] = u;
-						if (last == -1)
-							last = v;
-					}
-				}
-			}
+			if (last == -1)
+				return null;
 		}
-		if (last == -1)
-			return null;
-		int[] path = new int[n + 1];
-		int[] pos = new int[n + 1];
-		for (int i = 0;; i++) {
-			path[i] = last;
-			if (pos[last] != 0) {
-				int len = i + 1 - pos[last];
-				int[] cycle = new int[len];
-				for (int j = 0; j < len; j++) {
-					cycle[j] = path[i - j];
-				}
-				return cycle;
-			}
-			pos[last] = i + 1;
+		for (int i = 0; i < n; i++) {
 			last = pred[last];
 		}
+		int[] p = new int[n];
+		int cnt = 0;
+		for (int u = last; u != last || cnt == 0; u = pred[u]) {
+			p[cnt++] = u;
+		}
+		int[] cycle = new int[cnt];
+		for (int i = 0; i < cycle.length; i++) {
+			cycle[i] = p[--cnt];
+		}
+		return cycle;
 	}
 
 	// Usage example
 	public static void main(String[] args) {
-		List<Edge>[] edges = new List[4];
-		for (int i = 0; i < edges.length; i++) {
-			edges[i] = new ArrayList<Edge>();
-		}
-		edges[0].add(new Edge(1, 1));
-		edges[1].add(new Edge(0, 1));
-		edges[1].add(new Edge(2, 1));
-		edges[2].add(new Edge(3, -10));
-		edges[3].add(new Edge(1, 1));
-		int[] cycle = findNegativeCycle(edges);
+		List<Edge> edges = new ArrayList<Edge>();
+		edges.add(new Edge(0, 1, 1));
+		edges.add(new Edge(1, 0, 1));
+		edges.add(new Edge(1, 2, 1));
+		edges.add(new Edge(2, 3, -10));
+		edges.add(new Edge(3, 1, 1));
+		int[] cycle = findNegativeCycle(4, edges);
 		System.out.println(Arrays.toString(cycle));
 	}
 }
