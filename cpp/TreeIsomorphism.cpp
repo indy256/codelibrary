@@ -92,10 +92,6 @@ bool rootedTreeIsomorphism(int r1, int r2) {
             int v = L[i + 1][j];
             subtreeLabels[pred[v]].push_back(label[v]);
         }
-        for (int j = 0; j < (int) L[i].size(); j++) {
-            int v = L[i][j];
-            sort(subtreeLabels[v].begin(), subtreeLabels[v].end());
-        }
 
         sort(L[i].begin(), L[i].end(), compare);
 

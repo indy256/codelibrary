@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BellmanFord.cpp">
+    <ClCompile Include="TreeIsomorphism.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
