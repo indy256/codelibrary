@@ -20,11 +20,8 @@ public class SimulatedAnnealing extends JFrame {
 	int[] neighbour(int[] state, double curTemp) {
 		int n = state.length;
 		int i = rnd.nextInt(n);
-		int j = 0;
-		do {
-			j = rnd.nextInt(n);
-		} while (Math.abs(i - j) > n * curTemp);
-
+		int w = (int) (n * curTemp / 2);
+		int j = (i + rnd.nextInt(2 * w + 1) - w + n) % n;
 		int[] newState = state.clone();
 		int sign = i - j;
 		// reverse order from i to j
@@ -44,7 +41,7 @@ public class SimulatedAnnealing extends JFrame {
 			return 1;
 		} else {
 			int magicValue = 100000;
-			double probability = Math.exp(-diff * magicValue / n / curTemp);
+			double probability = 1 / (1 + Math.exp(diff * magicValue / n / curTemp));
 			return probability;
 		}
 	}

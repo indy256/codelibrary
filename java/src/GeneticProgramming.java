@@ -105,25 +105,18 @@ public class GeneticProgramming extends JFrame {
 			}
 		}
 
-		List<Integer> free1 = new ArrayList<Integer>();
-		List<Integer> free2 = new ArrayList<Integer>();
-		for (int i = 0; i < n; i++) {
-			if (!used1[i]) {
-				free1.add(i);
-			}
-			if (!used2[i]) {
-				free2.add(i);
-			}
-		}
-
 		int pos1 = 0;
 		int pos2 = 0;
 		for (int i = 0; i < n; i++) {
 			if (n1[i] == -1) {
-				n1[i] = free1.get(pos1++);
+				while (used1[pos1])
+					++pos1;
+				n1[i] = pos1++;
 			}
 			if (n2[i] == -1) {
-				n2[i] = free2.get(pos2++);
+				while (used2[pos2])
+					++pos2;
+				n2[i] = pos2++;
 			}
 		}
 		return new int[][] { n1, n2 };
