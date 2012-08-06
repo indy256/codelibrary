@@ -19,10 +19,9 @@ public class SimulatedAnnealing extends JFrame {
 
 	int[] neighbour(int[] state, double curTemp) {
 		int n = state.length;
-		int i = 0;
+		int i = rnd.nextInt(n);
 		int j = 0;
 		do {
-			i = rnd.nextInt(n);
 			j = rnd.nextInt(n);
 		} while (Math.abs(i - j) > n * curTemp);
 

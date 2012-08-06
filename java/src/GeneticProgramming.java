@@ -1,5 +1,4 @@
 import java.awt.*;
-import java.io.PrintWriter;
 import java.util.*;
 import java.util.List;
 
@@ -68,21 +67,14 @@ public class GeneticProgramming extends JFrame {
 
 		public void nextGeneration() {
 			Collections.sort(chromosomes);
-			List<Chromosome> nextChromosomes = new ArrayList<Chromosome>();
-			for (int i = 0; i < (chromosomes.size() + 1) / 2; i++) {
-				nextChromosomes.add(chromosomes.get(i));
-			}
-			chromosomes = nextChromosomes;
+			chromosomes = new ArrayList<Chromosome>(chromosomes.subList(0, (chromosomes.size() + 1) / 2));
 		}
 	}
 
 	int[][] crossOver(int[] p1, int[] p2) {
 		int n = p1.length;
 		int i1 = rnd.nextInt(n);
-		int i2;
-		do {
-			i2 = rnd.nextInt(n);
-		} while (i2 == i1);
+		int i2 = (i1 + 1 + rnd.nextInt(n - 1)) % n;
 
 		int[] n1 = p1.clone();
 		int[] n2 = p2.clone();
@@ -139,30 +131,22 @@ public class GeneticProgramming extends JFrame {
 
 	void mutate(int[] p) {
 		int n = p.length;
-		int i1 = rnd.nextInt(n);
-		int i2;
-		do {
-			i2 = rnd.nextInt(n);
-		} while (i2 == i1);
+		int i = rnd.nextInt(n);
+		int j = (i + 1 + rnd.nextInt(n - 1)) % n;
 		if (rnd.nextBoolean()) {
 			// swap
-			int t = p[i1];
-			p[i1] = p[i2];
-			p[i2] = t;
+			int t = p[i];
+			p[i] = p[j];
+			p[j] = t;
 		} else {
-			// rotate
-			while (true) {
-				int t = p[i1];
-				p[i1] = p[i2];
-				p[i2] = t;
-				i1 = (i1 + 1) % n;
-				if (i1 == i2) {
-					break;
-				}
-				i2 = (i2 + n - 1) % n;
-				if (i1 == i2) {
-					break;
-				}
+			// reverse order from i to j
+			int sign = i - j;
+			while (sign * (i - j) > 0) {
+				int t = p[i];
+				p[i] = p[j];
+				p[j] = t;
+				i = (i + 1) % n;
+				j = (j - 1 + n) % n;
 			}
 		}
 	}
@@ -181,10 +165,7 @@ public class GeneticProgramming extends JFrame {
 		for (int g = 0; g < generations; g++) {
 			while (population.chromosomes.size() < population.populationLimit) {
 				int i1 = rnd.nextInt(population.chromosomes.size());
-				int i2;
-				do {
-					i2 = rnd.nextInt(population.chromosomes.size());
-				} while (i2 == i1);
+				int i2 = (i1 + 1 + rnd.nextInt(population.chromosomes.size() - 1)) % population.chromosomes.size();
 
 				Chromosome ch1 = population.chromosomes.get(i1);
 				Chromosome ch2 = population.chromosomes.get(i2);
@@ -212,7 +193,6 @@ public class GeneticProgramming extends JFrame {
 
 	public GeneticProgramming() {
 		final int n = rnd.nextInt(20) + 200;
-		// final int n = 5;
 		x = new int[n];
 		y = new int[n];
 		p = new int[n];
@@ -223,16 +203,6 @@ public class GeneticProgramming extends JFrame {
 			y[i] = rnd.nextInt(max);
 			p[i] = i;
 		}
-
-//		try {
-//			PrintWriter pw = new PrintWriter("tsp.txt");
-//			pw.println(n);
-//			for (int i = 0; i < n; i++) {
-//				pw.println(x[i] + " " + y[i]);
-//			}
-//			pw.close();
-//		} catch (Exception e) {
-//		}
 
 		panel = new JPanel() {
 			protected void paintComponent(Graphics g) {
@@ -246,7 +216,7 @@ public class GeneticProgramming extends JFrame {
 				}
 				g.setColor(Color.RED);
 				for (int i = 0; i < n; i++) {
-					g.drawOval(x[i]-1, max - y[i]-1, 3, 3);
+					g.drawOval(x[i] - 1, max - y[i] - 1, 3, 3);
 				}
 				g.setColor(Color.BLACK);
 				g.drawString(String.format("%1.1f", eval(p)), 2, 410);
