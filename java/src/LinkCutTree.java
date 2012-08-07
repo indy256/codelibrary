@@ -4,189 +4,51 @@ public class LinkCutTree {
 		Node left;
 		Node right;
 		Node parent;
-		Node path_parent;
-	}
+		int id;
 
-	// prerequisite: v is a root node, w is in another tree
-	public static void link(Node v, Node w) {
-		access(v);
-		access(w);
-
-		v.left = w;
-		w.parent = v;
-		w.path_parent = null;
-	}
-
-	// prerequisite: v is not a root node
-	public static void cut2(Node v) {
-		access(v);
-
-		if (v.left != null) {
-			v.left.parent = null;
-			v.left.path_parent = null;
-			v.left = null;
+		public Node(int id) {
+			this.id = id;
 		}
 	}
 
-	public static void cut(Node v) {
-		splay(v);
-
-		if (v.left != null) {
-			v.left.parent = null;
-			v.left = null;
-		}
-
-		v.path_parent = null;
+	static boolean isRoot(Node x) {
+		return x.parent == null || (x.parent.left != x && x.parent.right != x);
 	}
 
-	public static Node findRoot(Node v) {
-		access(v);
-
-		while (v.left != null)
-			v = v.left;
-
-		splay(v);
-		return v;
-	}
-
-	static void access(Node v) {
-		splay(v);
-
-		if (v.right != null) {
-			v.right.path_parent = v;
-			v.right.parent = null;
-			v.right = null;
-		}
-
-		for (Node t = v; t.path_parent != null;) {
-			Node w = t.path_parent;
-			splay(w);
-
-			// switch
-			if (w.right != null) {
-				w.right.path_parent = w;
-				w.right.parent = null;
-			}
-
-			w.right = t;
-			t.parent = w;
-			t.path_parent = null;
-
-			t = w;
-		}
-
-		splay(v);
-	}
-
-	public static Node lca(Node u, Node v) {
-		if (findRoot(u) != findRoot(v))
-			return null;
-
-		access(u);
-		splay(v);
-
-		if (v.right != null) {
-			v.right.path_parent = v;
-			v.right.parent = null;
-			v.right = null;
-		}
-
-		Node lca = v;
-
-		for (Node t = v; t.path_parent != null;) {
-			Node w = t.path_parent;
-			splay(w);
-
-			if (w.path_parent == null)
-				lca = w;
-
-			// switch
-			if (w.right != null) {
-				w.right.path_parent = w;
-				w.right.parent = null;
-			}
-
-			w.right = t;
-			t.parent = w;
-			t.path_parent = null;
-
-			t = w;
-		}
-
-		splay(v);
-		return lca;
-	}
-
-	static void connect(Node x, Node y, boolean left) {
-		if (left)
-			y.left = x;
+	static void connect(Node x, Node p, boolean leftChild) {
+		if (leftChild)
+			p.left = x;
 		else
-			y.right = x;
+			p.right = x;
 		if (x != null)
-			x.parent = y;
+			x.parent = p;
 	}
 
 	static void rotate(Node x) {
-		Node y = x.parent;
-		Node z = y.parent;
-		if (x == y.left) {
-			connect(x.right, y, true);
-			connect(y, x, false);
-		} else {
-			connect(x.left, y, false);
-			connect(y, x, true);
-		}
-		connect(x, z, false);
+		Node p = x.parent;
+		Node g = p.parent;
+		boolean isRootP = isRoot(p);
 
-		// connect x to z as left child
-		x.parent = z;
-		if (z != null) {
-			if (y == z.left)
-				z.left = x;
-			else
-				z.right = x;
-		}
-		x.path_parent = y.path_parent;
-		y.path_parent = null;
-	}
+		boolean leftChild = x == p.left;
+		connect(leftChild ? x.right : x.left, p, leftChild);
+		connect(p, x, !leftChild);
 
-	static void rotate2(Node x) {
-		Node y = x.parent;
-		Node z = y.parent;
-		if (x == y.left) {
-			y.left = x.right;
-			if (x.right != null)
-				x.right.parent = y;
-			x.right = y;
-			y.parent = x;
-		} else {
-			y.right = x.left;
-			if (x.left != null)
-				x.left.parent = y;
-			x.left = y;
-			y.parent = x;
-		}
-		x.parent = z;
-		if (z != null) {
-			if (y == z.left)
-				z.left = x;
-			else
-				z.right = x;
-		}
-		x.path_parent = y.path_parent;
-		y.path_parent = null;
+		if (g != null && !isRootP)
+			connect(x, g, p == g.left);
+		else
+			x.parent = g;
 	}
 
 	static void splay(Node x) {
-		while (x.parent != null) {
-			Node y = x.parent;
-			Node z = y.parent;
-			if (z == null) {
+		while (!isRoot(x)) {
+			Node p = x.parent;
+			Node g = p.parent;
+			if (isRoot(p)) {
 				// zig
 				rotate(x);
-			} else if ((x == y.left) == (y == z.left)) {
+			} else if ((x == p.left) == (p == g.left)) {
 				// zig-zig
-				rotate(y);
+				rotate(p);
 				rotate(x);
 			} else {
 				// zig-zag
@@ -196,13 +58,54 @@ public class LinkCutTree {
 		}
 	}
 
+	static Node expose(Node x) {
+		Node last = null;
+		for (Node y = x; y != null; y = y.parent) {
+			splay(y);
+			y.left = last;
+			last = y;
+		}
+		splay(x);
+		return last;
+	}
+
+	public static Node findRoot(Node x) {
+		expose(x);
+		while (x.right != null)
+			x = x.right;
+		return x;
+	}
+
+	// prerequisite: x is a root node, y is in another tree
+	public static void link(Node x, Node y) {
+		expose(x);
+		if (x.right != null)
+			throw new RuntimeException("error: x is not a root node");
+		x.parent = y;
+	}
+
+	public static void cut(Node x) {
+		expose(x);
+		if (x.right == null)
+			throw new RuntimeException("error: x is a root node");
+		x.right.parent = null;
+		x.right = null;
+	}
+
+	public static Node lca(Node x, Node y) {
+		if (findRoot(x) != findRoot(y))
+			return null;
+		expose(x);
+		return expose(y);
+	}
+
 	// Usage example
 	public static void main(String[] args) {
-		Node n1 = new Node();
-		Node n2 = new Node();
-		Node n3 = new Node();
-		Node n4 = new Node();
-		Node n5 = new Node();
+		Node n1 = new Node(1);
+		Node n2 = new Node(2);
+		Node n3 = new Node(3);
+		Node n4 = new Node(4);
+		Node n5 = new Node(5);
 
 		link(n1, n2);
 		link(n3, n2);
