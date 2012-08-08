@@ -6,6 +6,7 @@ public class LinkCutTree {
 		Node parent;
 	}
 
+	// Whether x is a root of a splay tree
 	static boolean isRoot(Node x) {
 		return x.parent == null || (x.parent.left != x && x.parent.right != x);
 	}
@@ -22,14 +23,16 @@ public class LinkCutTree {
 	static void rotate(Node x) {
 		Node p = x.parent;
 		Node g = p.parent;
+		boolean isRootP = isRoot(p);
+		boolean leftChildX = (x == p.left);
 
-		boolean leftChild = (x == p.left);
-		connect(leftChild ? x.right : x.left, p, leftChild);
-		connect(p, x, !leftChild);
+		connect(leftChildX ? x.right : x.left, p, leftChildX);
+		connect(p, x, !leftChildX);
 
-		x.parent = g;
-		if (g != null && (g.left == p || g.right == p))
+		if (!isRootP)
 			connect(x, g, p == g.left);
+		else
+			x.parent = g;
 	}
 
 	static void splay(Node x) {
@@ -51,6 +54,7 @@ public class LinkCutTree {
 		}
 	}
 
+	// Makes node x the root of the virtual tree, and also x is the leftmost node in its splay tree
 	static Node expose(Node x) {
 		Node last = null;
 		for (Node y = x; y != null; y = y.parent) {
@@ -79,6 +83,8 @@ public class LinkCutTree {
 
 	public static void cut(Node x) {
 		expose(x);
+		if (x.right == null)
+			throw new RuntimeException("error: x is a root node");
 		x.right.parent = null;
 		x.right = null;
 	}
