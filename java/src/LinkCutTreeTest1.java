@@ -13,7 +13,7 @@ public class LinkCutTreeTest1 {
 		Map<LinkCutTree.Node, Integer> set1 = new IdentityHashMap<LinkCutTree.Node, Integer>();
 		Map<TreeForest.Node, Integer> set2 = new IdentityHashMap<TreeForest.Node, Integer>();
 		for (int i = 0; i < n; i++) {
-			nodes1[i] = new LinkCutTree.Node(i);
+			nodes1[i] = new LinkCutTree.Node();
 			nodes2[i] = new TreeForest.Node();
 			set1.put(nodes1[i], i);
 			set2.put(nodes2[i], i);
