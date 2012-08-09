@@ -46,18 +46,9 @@ public class DYNALCA {
 		while (!isRoot(x)) {
 			int p = parent[x];
 			int g = parent[p];
-			if (isRoot(p)) {
-				// zig
-				rotate(x);
-			} else if ((x == left[p]) == (p == left[g])) {
-				// zig-zig
-				rotate(p);
-				rotate(x);
-			} else {
-				// zig-zag
-				rotate(x);
-				rotate(x);
-			}
+			if (!isRoot(p))
+				rotate((x == left[p]) == (p == left[g]) ? p : x);
+			rotate(x);
 		}
 	}
 
@@ -97,14 +88,15 @@ public class DYNALCA {
 	}
 
 	public static int lca(int x, int y) {
-		if (findRoot(x) != findRoot(y))
-			throw new RuntimeException("error: x and y are not connected");
+		// if (findRoot(x) != findRoot(y))
+		// throw new RuntimeException("error: x and y are not connected");
 		expose(x);
 		return expose(y);
 	}
 
 	// Usage example
 	public static void main(String[] args) throws Exception {
+		long time = System.currentTimeMillis();
 		PrintWriter pw = new PrintWriter(System.out);
 
 		int n = nextInt();
@@ -128,6 +120,7 @@ public class DYNALCA {
 			}
 		}
 		pw.close();
+		System.err.println(System.currentTimeMillis() - time);
 	}
 
 	static int nextInt() throws IOException {

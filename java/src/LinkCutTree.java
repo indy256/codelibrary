@@ -38,19 +38,9 @@ public class LinkCutTree {
 	static void splay(Node x) {
 		while (!isRoot(x)) {
 			Node p = x.parent;
-			Node g = p.parent;
-			if (isRoot(p)) {
-				// zig
-				rotate(x);
-			} else if ((x == p.left) == (p == g.left)) {
-				// zig-zig
-				rotate(p);
-				rotate(x);
-			} else {
-				// zig-zag
-				rotate(x);
-				rotate(x);
-			}
+			if (!isRoot(p))
+				rotate((x == p.left) == (p == p.parent.left) ? p : x);
+			rotate(x);
 		}
 	}
 

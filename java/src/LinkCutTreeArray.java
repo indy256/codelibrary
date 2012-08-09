@@ -41,19 +41,9 @@ public class LinkCutTreeArray {
 	static void splay(int x) {
 		while (!isRoot(x)) {
 			int p = parent[x];
-			int g = parent[p];
-			if (isRoot(p)) {
-				// zig
-				rotate(x);
-			} else if ((x == left[p]) == (p == left[g])) {
-				// zig-zig
-				rotate(p);
-				rotate(x);
-			} else {
-				// zig-zag
-				rotate(x);
-				rotate(x);
-			}
+			if (!isRoot(p))
+				rotate((x == left[p]) == (p == left[parent[p]]) ? p : x);
+			rotate(x);
 		}
 	}
 
