@@ -1,163 +1,106 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.util.IdentityHashMap;
-import java.util.Map;
-import java.util.StringTokenizer;
+import java.io.*;
+import java.util.*;
 
 public class DYNALCA {
 
-	public static class Node {
-		Node left;
-		Node right;
-		Node parent;
-		Node path_parent;
+	static int[] left;
+	static int[] right;
+	static int[] parent;
+
+	static void init(int n) {
+		left = new int[n];
+		right = new int[n];
+		parent = new int[n];
 	}
 
-	// prerequisite: v is a root node, w is in another tree
-	public static void link(Node v, Node w) {
-		expose(v);
-		expose(w);
-
-		v.left = w;
-		w.parent = v;
-		w.path_parent = null;
+	// Whether x is a root of a splay tree
+	static boolean isRoot(int x) {
+		return parent[x] == 0 || (left[parent[x]] != x && right[parent[x]] != x);
 	}
 
-	// prerequisite: v is not a root node
-	public static void cut(Node v) {
-		expose(v);
-
-		if (v.left != null) {
-			v.left.parent = null;
-			v.left.path_parent = null;
-			v.left = null;
-		}
+	static void connect(int ch, int p, boolean leftChild) {
+		if (leftChild)
+			left[p] = ch;
+		else
+			right[p] = ch;
+		if (ch != 0)
+			parent[ch] = p;
 	}
 
-	public static Node findRoot(Node v) {
-		expose(v);
+	static void rotate(int x) {
+		int p = parent[x];
+		int g = parent[p];
+		boolean isRootP = isRoot(p);
+		boolean leftChildX = (x == left[p]);
 
-		while (v.left != null)
-			v = v.left;
+		connect(leftChildX ? right[x] : left[x], p, leftChildX);
+		connect(p, x, !leftChildX);
 
-		splay(v);
-		return v;
+		if (!isRootP)
+			connect(x, g, p == left[g]);
+		else
+			parent[x] = g;
 	}
 
-	public static Node lca(Node u, Node v) {
-		if (findRoot(u) != findRoot(v))
-			return null;
-
-		expose(u);
-		splay(v);
-
-		if (v.right != null) {
-			v.right.path_parent = v;
-			v.right.parent = null;
-			v.right = null;
-		}
-
-		Node lca = v;
-
-		for (Node t = v; t.path_parent != null;) {
-			Node w = t.path_parent;
-			splay(w);
-
-			if (w.path_parent == null)
-				lca = w;
-
-			// switch
-			if (w.right != null) {
-				w.right.path_parent = w;
-				w.right.parent = null;
-			}
-
-			w.right = t;
-			t.parent = w;
-			t.path_parent = null;
-
-			t = w;
-		}
-
-		splay(v);
-		return lca;
-	}
-
-	static void expose(Node v) {
-		splay(v);
-
-		if (v.right != null) {
-			v.right.path_parent = v;
-			v.right.parent = null;
-			v.right = null;
-		}
-
-		for (Node t = v; t.path_parent != null;) {
-			Node w = t.path_parent;
-			splay(w);
-
-			// switch
-			if (w.right != null) {
-				w.right.path_parent = w;
-				w.right.parent = null;
-			}
-
-			w.right = t;
-			t.parent = w;
-			t.path_parent = null;
-
-			t = w;
-		}
-
-		splay(v);
-	}
-
-	static void rotate(Node v) {
-		Node p = v.parent;
-		Node pp = p.parent;
-		if (v == p.left) {
-			p.left = v.right;
-			if (v.right != null)
-				v.right.parent = p;
-			v.right = p;
-			p.parent = v;
-		} else {
-			p.right = v.left;
-			if (v.left != null)
-				v.left.parent = p;
-			v.left = p;
-			p.parent = v;
-		}
-		v.parent = pp;
-		if (pp != null) {
-			if (p == pp.left)
-				pp.left = v;
-			else
-				pp.right = v;
-		}
-		v.path_parent = p.path_parent;
-		p.path_parent = null;
-	}
-
-	static void splay(Node v) {
-		while (v.parent != null) {
-			Node p = v.parent;
-			Node pp = p.parent;
-			if (pp == null) {
+	static void splay(int x) {
+		while (!isRoot(x)) {
+			int p = parent[x];
+			int g = parent[p];
+			if (isRoot(p)) {
 				// zig
-				rotate(v);
-			} else if ((v == p.left) == (p == pp.left)) {
+				rotate(x);
+			} else if ((x == left[p]) == (p == left[g])) {
 				// zig-zig
 				rotate(p);
-				rotate(v);
+				rotate(x);
 			} else {
 				// zig-zag
-				rotate(v);
-				rotate(v);
+				rotate(x);
+				rotate(x);
 			}
 		}
+	}
+
+	// Makes node x the root of the virtual tree, and also x is the leftmost node in its splay tree
+	static int expose(int x) {
+		int last = 0;
+		for (int y = x; y != 0; y = parent[y]) {
+			splay(y);
+			left[y] = last;
+			last = y;
+		}
+		splay(x);
+		return last;
+	}
+
+	public static int findRoot(int x) {
+		expose(x);
+		while (right[x] != 0)
+			x = right[x];
+		return x;
+	}
+
+	// prerequisite: x is a root node, y is in another tree
+	public static void link(int x, int y) {
+		expose(x);
+		if (right[x] != 0)
+			throw new RuntimeException("error: x is not a root node");
+		parent[x] = y;
+	}
+
+	public static void cut(int x) {
+		expose(x);
+		if (right[x] == 0)
+			throw new RuntimeException("error: x is a root node");
+		parent[right[x]] = 0;
+		right[x] = 0;
+	}
+
+	public static int lca(int x, int y) {
+		if (findRoot(x) != findRoot(y))
+			throw new RuntimeException("error: x and y are not connected");
+		expose(x);
+		return expose(y);
 	}
 
 	// Usage example
@@ -165,29 +108,23 @@ public class DYNALCA {
 		PrintWriter pw = new PrintWriter(System.out);
 
 		int n = nextInt();
-		Map<Node, Integer> m = new IdentityHashMap<Node, Integer>();
-
-		Node[] nodes = new Node[n];
-		for (int i = 0; i < n; i++) {
-			nodes[i] = new Node();
-			m.put(nodes[i], i);
-		}
+		init(n + 1);
 
 		int q = nextInt();
 		for (int i = 0; i < q; i++) {
 			String type = nextToken();
 			if ("link".equals(type)) {
-				int u = nextInt() - 1;
-				int v = nextInt() - 1;
-				link(nodes[u], nodes[v]);
+				int u = nextInt();
+				int v = nextInt();
+				link(u, v);
 			} else if ("cut".equals(type)) {
-				int u = nextInt() - 1;
-				cut(nodes[u]);
+				int u = nextInt();
+				cut(u);
 			} else {
-				int u = nextInt() - 1;
-				int v = nextInt() - 1;
-				Node lca = lca(nodes[u], nodes[v]);
-				pw.println(m.get(lca) + 1);
+				int u = nextInt();
+				int v = nextInt();
+				int lca = lca(u, v);
+				pw.println(lca);
 			}
 		}
 		pw.close();
