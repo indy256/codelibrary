@@ -1,3 +1,4 @@
+// Based on http://www.codeforces.com/contest/117/submission/860934
 public class LinkCutTree {
 
 	public static class Node {
@@ -101,7 +102,12 @@ public class LinkCutTree {
 		link(n4, n3);
 		System.out.println(n2 == lca(n1, n4));
 		cut(n4);
-//		System.out.println(null == lca(n1, n4));
+		try {
+			lca(n1, n4);
+			System.out.println(false);
+		} catch (RuntimeException e) {
+			System.out.println(true);
+		}
 		link(n5, n3);
 		System.out.println(n2 == lca(n1, n5));
 	}
