@@ -65,6 +65,8 @@ public class LinkCutTree {
 
 	// prerequisite: x is a root node, y is in another tree
 	public static void link(Node x, Node y) {
+		if (findRoot(x) == findRoot(y))
+			throw new RuntimeException("error: x and y are connected");
 		expose(x);
 		if (x.right != null)
 			throw new RuntimeException("error: x is not a root node");
@@ -81,7 +83,7 @@ public class LinkCutTree {
 
 	public static Node lca(Node x, Node y) {
 		if (findRoot(x) != findRoot(y))
-			return null;
+			throw new RuntimeException("error: x and y are not connected");
 		expose(x);
 		return expose(y);
 	}
@@ -99,7 +101,7 @@ public class LinkCutTree {
 		link(n4, n3);
 		System.out.println(n2 == lca(n1, n4));
 		cut(n4);
-		System.out.println(null == lca(n1, n4));
+//		System.out.println(null == lca(n1, n4));
 		link(n5, n3);
 		System.out.println(n2 == lca(n1, n5));
 	}

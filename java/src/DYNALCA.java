@@ -88,8 +88,8 @@ public class DYNALCA {
 	}
 
 	public static int lca(int x, int y) {
-		// if (findRoot(x) != findRoot(y))
-		// throw new RuntimeException("error: x and y are not connected");
+		if (findRoot(x) != findRoot(y))
+			throw new RuntimeException("error: x and y are not connected");
 		expose(x);
 		return expose(y);
 	}
