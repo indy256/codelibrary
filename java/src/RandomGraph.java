@@ -2,6 +2,18 @@ import java.util.*;
 
 public class RandomGraph {
 
+	public static List<Integer>[] getRandomTree2(int n, Random rnd) {
+		List<Integer>[] t = new List[n];
+		for (int i = 0; i < n; i++)
+			t[i] = new ArrayList<Integer>();
+		int[] p = getRandomPermutation(n, rnd);
+		for (int i = 0; i < n; i++) {
+			int parent = rnd.nextInt(i);
+			t[p[parent]].add(p[i]);
+		}
+		return t;
+	}
+
 	public static List<Integer>[] pruferCode2Tree(int[] a) {
 		int n = a.length + 2;
 		List<Integer>[] t = new List[n];
@@ -73,6 +85,20 @@ public class RandomGraph {
 		for (int i = 0; i < V; i++)
 			Collections.sort(g[i]);
 		return g;
+	}
+
+	static int[] getRandomPermutation(int n, Random rnd) {
+		int[] res = new int[n];
+		for (int i = 0; i < n; i++) {
+			res[i] = i;
+		}
+		for (int i = res.length - 1; i > 0; i--) {
+			int j = rnd.nextInt(i + 1);
+			int t = res[i];
+			res[i] = res[j];
+			res[j] = t;
+		}
+		return res;
 	}
 
 	static int[] getRandomCombination(int n, int m, Random rnd) {
