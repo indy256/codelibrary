@@ -1,12 +1,11 @@
 import java.math.BigInteger;
 
 public class Rational implements Comparable<Rational> {
-	BigInteger num;
-	BigInteger den;
+	final BigInteger num;
+	final BigInteger den;
 
 	public static final Rational ZERO = new Rational(0);
 	public static final Rational ONE = new Rational(1);
-	public static final Rational TWO = new Rational(2);
 	public static final Rational POSITIVE_INFINITY = new Rational(1, 0);
 	public static final Rational NEGATIVE_INFINITY = new Rational(-1, 0);
 
@@ -20,12 +19,7 @@ public class Rational implements Comparable<Rational> {
 	}
 
 	public Rational(BigInteger num, BigInteger den) {
-		this.num = num;
-		this.den = den;
-		reduce();
-	}
-
-	void reduce() {
+		// reduce
 		if (!den.abs().equals(BigInteger.ONE)) {
 			BigInteger gcd = num.gcd(den);
 			if (gcd.signum() != 0 && !gcd.equals(BigInteger.ONE)) {
@@ -37,6 +31,8 @@ public class Rational implements Comparable<Rational> {
 			num = num.negate();
 			den = den.negate();
 		}
+		this.num = num;
+		this.den = den;
 	}
 
 	public Rational add(Rational r) {
@@ -75,7 +71,7 @@ public class Rational implements Comparable<Rational> {
 		return num.doubleValue() / den.doubleValue();
 	}
 
-	public double longValue() {
+	public long longValue() {
 		return num.longValue() / den.longValue();
 	}
 

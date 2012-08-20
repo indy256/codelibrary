@@ -2,7 +2,7 @@ import java.util.*;
 
 public class Simplex {
 
-	// returns x | c*x -> max, A*x <= b
+	// returns c*x such that c*x -> max, A*x <= b, x >= 0
 	public static Rational simplex(Rational[][] A, Rational[] b, Rational[] c, Rational[] x) {
 		int m = A.length;
 		int n = A[0].length + 1;
@@ -106,6 +106,7 @@ public class Simplex {
 		System.out.println(new Rational(57, 8).equals(res));
 		System.out.println(Arrays.toString(x));
 
+		// no feasible non-negative solutions
 		a = new long[][] { { 4, -1 }, { 2, 1 }, { -5, 2 } };
 		b = new long[] { 8, -10, 2 };
 		c = new long[] { 1, 1 };
@@ -118,11 +119,20 @@ public class Simplex {
 		res = simplex(cnv(a), cnv(b), cnv(c), null);
 		System.out.println(Rational.POSITIVE_INFINITY == res);
 
+		// no feasible solutions
 		a = new long[][] { { 1 }, { -1 } };
 		b = new long[] { 1, -2 };
-		c = new long[] { 0, 0 };
+		c = new long[] { 0 };
 		res = simplex(cnv(a), cnv(b), cnv(c), null);
 		System.out.println(null == res);
+
+		// infinite solutions, but only one is returned
+		a = new long[][] { { 1, 1 } };
+		b = new long[] { 0 };
+		c = new long[] { 1, 1 };
+		x = new Rational[c.length];
+		res = simplex(cnv(a), cnv(b), cnv(c), x);
+		System.out.println(Arrays.toString(x));
 	}
 
 	static Rational[] cnv(long[] a) {

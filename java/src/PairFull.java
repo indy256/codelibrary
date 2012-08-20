@@ -1,8 +1,8 @@
 import java.util.*;
 
 public class PairFull<U extends Comparable<U>, V extends Comparable<V>> implements Comparable<PairFull<U, V>> {
-	U u;
-	V v;
+	final U u;
+	final V v;
 
 	public PairFull(U u, V v) {
 		this.u = u;
@@ -14,9 +14,10 @@ public class PairFull<U extends Comparable<U>, V extends Comparable<V>> implemen
 	}
 
 	public boolean equals(Object o) {
-		if (!(o instanceof PairFull)) {
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
 			return false;
-		}
 		PairFull<U, V> p = (PairFull<U, V>) o;
 		return (u == null ? p.u == null : u.equals(p.u)) && (v == null ? p.v == null : v.equals(p.v));
 	}

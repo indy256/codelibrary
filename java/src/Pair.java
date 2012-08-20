@@ -1,8 +1,8 @@
 import java.util.*;
 
 public class Pair implements Comparable<Pair> {
-	long u;
-	long v;
+	final long u;
+	final long v;
 
 	public Pair(long u, long v) {
 		this.u = u;
@@ -12,7 +12,7 @@ public class Pair implements Comparable<Pair> {
 	public int hashCode() {
 		int hu = (int) (u ^ (u >>> 32));
 		int hv = (int) (v ^ (v >>> 32));
-		return (int) (hu * 31 + hv);
+		return 31 * hu + hv;
 	}
 
 	public boolean equals(Object o) {
