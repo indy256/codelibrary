@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class MaxMatching1 {
+public class MaxMatching2 {
 
 	static boolean findPath(List<Integer>[] g, int u1, int[] matching, boolean[] vis) {
 		vis[u1] = true;
@@ -14,13 +14,13 @@ public class MaxMatching1 {
 		return false;
 	}
 
-	public static int maxMatching(List<Integer>[] g) {
-		int n = g.length;
-		int[] matching = new int[n];
+	public static int maxMatching(List<Integer>[] g, int n2) {
+		int n1 = g.length;
+		int[] matching = new int[n2];
 		Arrays.fill(matching, -1);
 		int matches = 0;
-		for (int u = 0; u < n; u++) {
-			if (findPath(g, u, matching, new boolean[n]))
+		for (int u = 0; u < n1; u++) {
+			if (findPath(g, u, matching, new boolean[n1]))
 				++matches;
 		}
 		return matches;
@@ -28,14 +28,15 @@ public class MaxMatching1 {
 
 	// Usage example
 	public static void main(String[] args) {
-		int n = 2;
-		List<Integer>[] g = new List[n];
-		for (int i = 0; i < n; i++) {
+		int n1 = 2;
+		int n2 = 3;
+		List<Integer>[] g = new List[n1];
+		for (int i = 0; i < n1; i++) {
 			g[i] = new ArrayList<Integer>();
 		}
+		g[0].add(2);
 		g[0].add(0);
-		g[0].add(1);
-		g[1].add(1);
-		System.out.println(2 == maxMatching(g));
+		g[1].add(2);
+		System.out.println(2 == maxMatching(g, n2));
 	}
 }
