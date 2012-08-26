@@ -1,3 +1,4 @@
+package trees;
 public class SegmentTreeFastIntervalSetMax {
 	int n;
 	int[] t;

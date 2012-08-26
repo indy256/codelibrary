@@ -2,130 +2,111 @@ import java.util.*;
 
 public class MinCostFlow {
 
-	static final int INF = Integer.MAX_VALUE / 2;
+	static class Edge {
+		int to, f, cap, cost, rev;
 
-	List<Edge>[] graph;
+		Edge(int v, int cap, int cost, int rev) {
+			this.to = v;
+			this.cap = cap;
+			this.cost = cost;
+			this.rev = rev;
+		}
+	}
 
-	void init(int n) {
+	static List<Edge>[] graph;
+	static int[] prio, curflow, prevedge, prevnode, q, pot;
+	static boolean[] inqueue;
+	static int nodes;
+
+	static void init(int n) {
+		nodes = n;
 		graph = new List[n];
 		for (int i = 0; i < n; i++) {
 			graph[i] = new ArrayList<Edge>();
 		}
+		prio = new int[n];
+		curflow = new int[n];
+		prevedge = new int[n];
+		prevnode = new int[n];
+		q = new int[n];
+		pot = new int[n];
+		inqueue = new boolean[n];
 	}
 
-	void addEdge(int s, int t, int cap, int cost) {
-		graph[s].add(new Edge(s, t, graph[t].size(), cap, cost));
-		graph[t].add(new Edge(t, s, graph[s].size() - 1, 0, -cost));
+	static void addEdge(int s, int t, int cap, int cost) {
+		graph[s].add(new Edge(t, cap, cost, graph[t].size()));
+		graph[t].add(new Edge(s, 0, -cost, graph[s].size() - 1));
 	}
 
-	static class Edge {
-		public int u, v, rev, cap, f, cost;
-
-		public Edge(int u, int v, int rev, int cap, int cost) {
-			this.u = u;
-			this.v = v;
-			this.rev = rev;
-			this.cap = cap;
-			this.cost = cost;
-		}
-	}
-
-	static class Path {
-		public List<Edge> edges = new ArrayList<Edge>();
-		public int f;
-	}
-
-	static Path getPath(Edge[] p, int s, int t) {
-		Path path = new Path();
-		path.f = Integer.MAX_VALUE;
-		for (; t != s; t = p[t].u) {
-			path.edges.add(p[t]);
-			path.f = Math.min(path.f, p[t].cap - p[t].f);
-		}
-		return path;
-	}
-
-	static class QItem implements Comparable<QItem> {
-		int prio;
-		int v;
-
-		public QItem(int prio, int v) {
-			this.prio = prio;
-			this.v = v;
-		}
-
-		public int compareTo(QItem q) {
-			return prio < q.prio ? -1 : prio > q.prio ? 1 : 0;
-		}
-	}
-
-	static boolean bellmanFord(List<Edge>[] graph, int s, int[] dist) {
-		Arrays.fill(dist, INF);
+	static void bellmanFord(int s, int[] dist) {
+		Arrays.fill(dist, 0, nodes, Integer.MAX_VALUE);
 		dist[s] = 0;
-		int n = graph.length;
-		boolean updated = false;
-		for (int step = 0; step < n; step++) {
-			updated = false;
-			for (int u = 0; u < n; u++) {
-				if (dist[u] < INF) {
-					for (Edge e : graph[u]) {
-						if (e.cap > 0 && dist[e.v] > dist[u] + e.cost) {
-							dist[e.v] = Math.max(dist[u] + e.cost, -INF);
-							updated = true;
-						}
+		int qt = 0;
+		q[qt++] = s;
+		for (int qh = 0; (qh - qt) % nodes != 0; qh++) {
+			int u = q[qh % nodes];
+			inqueue[u] = false;
+			for (int i = 0; i < (int) graph[u].size(); i++) {
+				Edge e = graph[u].get(i);
+				if (e.cap <= e.f)
+					continue;
+				int v = e.to;
+				int ndist = dist[u] + e.cost;
+				if (dist[v] > ndist) {
+					dist[v] = ndist;
+					if (!inqueue[v]) {
+						inqueue[v] = true;
+						q[qt++ % nodes] = v;
 					}
 				}
 			}
-			if (!updated)
-				break;
 		}
-		// if updated is true then a negative cycle exists
-		return updated == false;
 	}
 
-	public int[] minCostFlow(int s, int t) {
-		int[] pot = new int[graph.length];
-		if (!bellmanFord(graph, s, pot)) {
-			throw new IllegalArgumentException("Negative cycles are not supported");
-		}
+	static int[] minCostFlow(int s, int t, int maxf) {
+		// bellmanFord can be safely commented if edges costs are non-negative
+		bellmanFord(s, pot);
 		int flow = 0;
 		int flowCost = 0;
-		while (true) {
-			Queue<QItem> q = new PriorityQueue<QItem>();
-			q.add(new QItem(0, s));
-			Edge[] p = new Edge[graph.length];
-			int[] prio = new int[graph.length];
-			Arrays.fill(prio, INF);
+		while (flow < maxf) {
+			Queue<Long> q = new PriorityQueue<Long>();
+			q.add((long) s);
+			Arrays.fill(prio, 0, nodes, Integer.MAX_VALUE);
 			prio[s] = 0;
+			curflow[s] = Integer.MAX_VALUE;
 			while (!q.isEmpty()) {
-				QItem cur = q.poll();
-				if (cur.prio != prio[cur.v]) {
+				long cur = q.remove();
+				int d = (int) (cur >>> 32);
+				int u = (int) cur;
+				if (d != prio[u])
 					continue;
-				}
-				for (Edge e : graph[cur.v]) {
-					int nprio = prio[cur.v] + e.cost + pot[cur.v] - pot[e.v];
-					if (e.cap > e.f && prio[e.v] > nprio) {
-						prio[e.v] = nprio;
-						p[e.v] = e;
-						q.add(new QItem(nprio, e.v));
+				for (int i = 0; i < (int) graph[u].size(); i++) {
+					Edge e = graph[u].get(i);
+					int v = e.to;
+					if (e.cap <= e.f)
+						continue;
+					int nprio = prio[u] + e.cost + pot[u] - pot[v];
+					if (prio[v] > nprio) {
+						prio[v] = nprio;
+						q.add(((long) nprio << 32) + v);
+						prevnode[v] = u;
+						prevedge[v] = i;
+						curflow[v] = Math.min(curflow[u], e.cap - e.f);
 					}
 				}
 			}
-			if (p[t] == null) {
+			if (prio[t] == Integer.MAX_VALUE)
 				break;
+			for (int i = 0; i < nodes; i++)
+				pot[i] += prio[i];
+			int df = Math.min(curflow[t], maxf - flow);
+			flow += df;
+			for (int v = t; v != s; v = prevnode[v]) {
+				Edge e = graph[prevnode[v]].get(prevedge[v]);
+				e.f += df;
+				graph[v].get(e.rev).f -= df;
+				flowCost += df * e.cost;
 			}
-			for (int i = 0; i < graph.length; i++) {
-				if (p[i] != null) {
-					pot[i] += prio[i];
-				}
-			}
-			Path path = getPath(p, s, t);
-			for (Edge e : path.edges) {
-				e.f += path.f;
-				graph[e.v].get(e.rev).f -= path.f;
-				flowCost += path.f * e.cost;
-			}
-			flow += path.f;
 		}
 		return new int[] { flow, flowCost };
 	}
@@ -134,18 +115,14 @@ public class MinCostFlow {
 	public static void main(String[] args) {
 		int[][] capacity = { { 0, 3, 2 }, { 0, 0, 2 }, { 0, 0, 0 } };
 		int n = capacity.length;
-		MinCostFlow f = new MinCostFlow();
-		f.init(n);
-		for (int i = 0; i < n; i++) {
-			for (int j = 0; j < n; j++) {
-				if (capacity[i][j] != 0) {
-					f.addEdge(i, j, capacity[i][j], 1);
-				}
-			}
-		}
+		init(n);
+		for (int i = 0; i < n; i++)
+			for (int j = 0; j < n; j++)
+				if (capacity[i][j] != 0)
+					addEdge(i, j, capacity[i][j], 1);
 		int s = 0;
 		int t = 2;
-		int[] res = f.minCostFlow(s, t);
+		int[] res = minCostFlow(s, t, Integer.MAX_VALUE);
 		int flow = res[0];
 		int flowCost = res[1];
 		System.out.println(4 == flow);

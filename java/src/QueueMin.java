@@ -18,7 +18,7 @@ public class QueueMin<E extends Comparable<E>> {
 
 	public void push_back(E x) {
 		E minima = s1.isEmpty() ? x : min(x, s1.get(s1.size() - 1)[1]);
-		s1.add((E[]) new Comparable[] { x, minima });
+		s1.add((E[]) new Comparable[] { x, minima });		
 	}
 
 	public void pop_front() {

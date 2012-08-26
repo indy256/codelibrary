@@ -1,3 +1,4 @@
+package trees;
 public class SegmentTree2DFastAddMax {
 	int n;
 	int m;

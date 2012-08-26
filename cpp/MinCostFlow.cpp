@@ -1,4 +1,5 @@
 #include <queue>
+#include <vector>
 #include <climits>
 #include <iostream>
 using namespace std;
@@ -25,40 +26,36 @@ void addEdge(int s, int t, int cap, int cost){
 	graph[t].push_back(b);
 }
 
-void bellmanFord(int s) {
-	fill(pot, pot + nodes, INT_MAX);
-	pot[s] = 0;
-	int qh = 0;
+void bellmanFord(int s, int dist[]) {
+	fill(dist, dist + nodes, INT_MAX);
+	dist[s] = 0;
 	int qt = 0;
 	q[qt++] = s;
-	while (qh != qt) {
-		int u = q[qh++];
-		if (qh == nodes)
-			qh = 0;
+	for (int qh = 0; (qh - qt) % nodes != 0; qh++) {
+		int u = q[qh % nodes];
 		inqueue[u] = false;
 		for (int i = 0; i < (int) graph[u].size(); i++) {
 			Edge &e = graph[u][i];
-			int v = e.to;
 			if (e.cap <= e.f) continue;
-			int npot = pot[u] + e.cost;
-			if (pot[v] > npot) {
-				pot[v] = npot;
+			int v = e.to;
+			int ndist = dist[u] + e.cost;
+			if (dist[v] > ndist) {
+				dist[v] = ndist;
 				if (!inqueue[v]) {
 					inqueue[v] = true;
-					q[qt++] = v;
-					if (qt == nodes)
-						qt = 0;
+					q[qt++ % nodes] = v;
 				}
 			}
 		}
 	}
 }
 
-pii minCostFlow(int s, int t) {
-	bellmanFord(s);
+pii minCostFlow(int s, int t, int maxf) {
+	// bellmanFord can be safely commented if edges costs are non-negative
+	bellmanFord(s, pot);
 	int flow = 0;
 	int flowCost = 0;
-	while (true) {
+	while (flow < maxf) {
 		priority_queue<ll, vector<ll> , greater<ll> > q;
 		q.push(s);
 		fill(prio, prio + nodes, INT_MAX);
@@ -67,7 +64,7 @@ pii minCostFlow(int s, int t) {
 		while (!q.empty()) {
 			ll cur = q.top();
 			int d = cur >> 32;
-			int u = (int) cur;
+			int u = cur;
 			q.pop();
 			if (d != prio[u])
 				continue;
@@ -83,14 +80,14 @@ pii minCostFlow(int s, int t) {
 					prevedge[v] = i;
 					curflow[v] = min(curflow[u], e.cap - e.f);
 				}
-			}		
+			}
 		}
 		if (prio[t] == INT_MAX)
 			break;
 		for (int i = 0; i < nodes; i++)
 			pot[i] += prio[i];
-		int df = curflow[t];
-		flow += df;		
+		int df = min(curflow[t], maxf - flow);
+		flow += df;
 		for (int v = t; v != s; v = prevnode[v]) {
 			Edge &e = graph[prevnode[v]][prevedge[v]];
 			e.f += df;
@@ -101,20 +98,18 @@ pii minCostFlow(int s, int t) {
 	return make_pair(flow, flowCost);
 }
 
+// Usage example
 int main() {
 	int capacity[3][3] = { { 0, 3, 2 }, { 0, 0, 2 }, { 0, 0, 0 } };
 	int n = 3;
 	nodes = n;
-	for (int i = 0; i < n; i++) {
-		for (int j = 0; j < n; j++) {
-			if (capacity[i][j] != 0) {
+	for (int i = 0; i < n; i++)
+		for (int j = 0; j < n; j++)
+			if (capacity[i][j] != 0)
 				addEdge(i, j, capacity[i][j], 1);
-			}
-		}
-	}
 	int s = 0;
 	int t = 2;
-	pii res = minCostFlow(s, t);
+	pii res = minCostFlow(s, t, INT_MAX);
 	int flow = res.first;
 	int flowCost = res.second;
 	cout << (4 == flow) << endl;

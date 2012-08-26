@@ -3,10 +3,9 @@ import java.util.*;
 public class MaxFlowDinic {
 
 	static class Edge {
-		int s, t, rev, cap, f;
+		int t, rev, cap, f;
 
-		public Edge(int s, int t, int rev, int cap) {
-			this.s = s;
+		public Edge(int t, int rev, int cap) {
 			this.t = t;
 			this.rev = rev;
 			this.cap = cap;
@@ -27,8 +26,8 @@ public class MaxFlowDinic {
 	}
 
 	public void addEdge(int s, int t, int cap) {
-		graph[s].add(new Edge(s, t, graph[t].size(), cap));
-		graph[t].add(new Edge(t, s, graph[s].size() - 1, 0));
+		graph[s].add(new Edge(t, graph[t].size(), cap));
+		graph[t].add(new Edge(t, graph[s].size() - 1, 0));
 	}
 
 	boolean dinic_bfs() {

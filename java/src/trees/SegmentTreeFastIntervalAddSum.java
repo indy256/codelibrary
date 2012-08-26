@@ -1,11 +1,12 @@
-public class SegmentTreeFastIntervalSetMax {
+package trees;
+public class SegmentTreeFastIntervalAddSum {
 	int n;
 	int[] t;
 	int[] m;
 	boolean[] h;
 	int[] q;
 
-	public SegmentTreeFastIntervalSetMax(int n) {
+	public SegmentTreeFastIntervalAddSum(int n) {
 		this.n = n;
 		t = new int[2 * n];
 		m = new int[2 * n];
@@ -18,16 +19,16 @@ public class SegmentTreeFastIntervalSetMax {
 	}
 
 	void modifierHelper(int i, int p) {
-		t[i] = p;
-		m[i] = p;
+		t[i] += p * q[i];
+		m[i] += p;
 		h[i] = true;
 	}
 
 	void pop(int i) {
 		if (h[i >> 1]) {
-			t[i >> 1] = m[i >> 1];
+			t[i >> 1] = t[i] + t[i ^ 1] + m[i >> 1] * q[i >> 1];
 		} else {
-			t[i >> 1] = Math.max(t[i], t[i ^ 1]);
+			t[i >> 1] = t[i] + t[i ^ 1];
 		}
 	}
 
@@ -41,6 +42,7 @@ public class SegmentTreeFastIntervalSetMax {
 			modifierHelper(i, m[i >> 1]);
 			modifierHelper(i ^ 1, m[i >> 1]);
 			h[i >> 1] = false;
+			m[i >> 1] = 0;
 		}
 	}
 
@@ -52,7 +54,7 @@ public class SegmentTreeFastIntervalSetMax {
 			push(i >> k);
 	}
 
-	public void modifySet(int a, int b, int v) {
+	public void modifyAdd(int a, int b, int v) {
 		a += n;
 		b += n;
 		pushDown(a);
@@ -71,7 +73,7 @@ public class SegmentTreeFastIntervalSetMax {
 		popUp(tb);
 	}
 
-	public int queryMax(int a, int b) {
+	public int querySum(int a, int b) {
 		a += n;
 		b += n;
 		pushDown(a);
@@ -80,26 +82,27 @@ public class SegmentTreeFastIntervalSetMax {
 		int res = 0;
 		for (; a <= b; a = (a + 1) >> 1, b = (b - 1) >> 1) {
 			if ((a & 1) != 0)
-				res = Math.max(res, t[a]);
+				res += t[a];
 			if ((b & 1) == 0)
-				res = Math.max(res, t[b]);
+				res += t[b];
 		}
 		return res;
 	}
 
 	public int get(int i) {
-		return queryMax(i, i);
+		return querySum(i, i);
 	}
 
 	public void set(int i, int v) {
-		modifySet(i, i, v);
+		modifyAdd(i, i, -querySum(i, i) + v);
 	}
 
 	// Usage example
 	public static void main(String[] args) {
-		SegmentTreeFastIntervalSetMax t = new SegmentTreeFastIntervalSetMax(2);
-		t.modifySet(0, 1, 1);
-		t.modifySet(1, 1, 2);
-		System.out.println(2 == t.queryMax(0, 1));
+		SegmentTreeFastIntervalAddSum t = new SegmentTreeFastIntervalAddSum(2);
+		t.modifyAdd(0, 1, 2);
+		t.modifyAdd(0, 1, 3);
+		t.set(0, 0);
+		System.out.println(5 == t.querySum(0, 1));
 	}
 }

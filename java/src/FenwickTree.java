@@ -2,22 +2,6 @@ public class FenwickTree {
 	int[] t;
 	int n;
 
-	public FenwickTree(int n) {
-		this.n = n;
-		t = new int[n];
-	}
-
-	public FenwickTree(int[] a) {
-		n = a.length;
-		t = new int[n];
-		for (int i = 0; i < n; i++) {
-			t[i] += a[i];
-			int j = i | i + 1;
-			if (j < n)
-				t[j] += t[i];
-		}
-	}
-
 	public void add(int i, int value) {
 		for (; i < n; i += (i + 1) & -(i + 1))
 			t[i] += value;
@@ -29,6 +13,22 @@ public class FenwickTree {
 		for (; i >= 0; i -= (i + 1) & -(i + 1))
 			res += t[i];
 		return res;
+	}
+
+	public FenwickTree(int n) {
+		this.n = n;
+		t = new int[n];
+	}
+
+	public FenwickTree(int[] a) {
+		n = a.length;
+		t = new int[n];
+		for (int i = 0; i < n; i++) {
+			t[i] += a[i];
+			int j = i + ((i + 1) & -(i + 1)); // i | (i + 1);
+			if (j < n)
+				t[j] += t[i];
+		}
 	}
 
 	// sum[a,b]
