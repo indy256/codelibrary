@@ -2,7 +2,7 @@ import java.util.*;
 
 public class Simplex {
 
-	// returns c*x such that c*x -> max, A*x <= b, x >= 0
+	// returns max c*x such that A*x <= b, x >= 0
 	public static Rational simplex(Rational[][] A, Rational[] b, Rational[] c, Rational[] x) {
 		int m = A.length;
 		int n = A[0].length + 1;
