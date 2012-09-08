@@ -106,10 +106,9 @@ int main() {
 		{ 0, 0, 2},
 		{ 0, 0, 0}
 	};
-	int n = 3;
-	nodes = n;
-	for (int i = 0; i < n; i++)
-		for (int j = 0; j < n; j++)
+	nodes = 3;
+	for (int i = 0; i < nodes; i++)
+		for (int j = 0; j < nodes; j++)
 			if (capacity[i][j] != 0)
 				addEdge(i, j, capacity[i][j], 1);
 	int s = 0;
