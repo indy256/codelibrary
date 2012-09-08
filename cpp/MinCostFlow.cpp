@@ -19,7 +19,7 @@ struct Edge {
 
 vector<Edge> graph[maxnodes];
 
-void addEdge(int s, int t, int cap, int cost){
+void addEdge(int s, int t, int cap, int cost) {
 	Edge a = {t, 0, cap, cost, graph[t].size()};
 	Edge b = {s, 0, 0, -cost, graph[s].size()};
 	graph[s].push_back(a);
@@ -56,7 +56,7 @@ pii minCostFlow(int s, int t, int maxf) {
 	int flow = 0;
 	int flowCost = 0;
 	while (flow < maxf) {
-		priority_queue<ll, vector<ll> , greater<ll> > q;
+		priority_queue<ll, vector<ll>, greater<ll> > q;
 		q.push(s);
 		fill(prio, prio + nodes, INT_MAX);
 		prio[s] = 0;
@@ -99,8 +99,13 @@ pii minCostFlow(int s, int t, int maxf) {
 }
 
 // Usage example
+
 int main() {
-	int capacity[3][3] = { { 0, 3, 2 }, { 0, 0, 2 }, { 0, 0, 0 } };
+	int capacity[3][3] = {
+		{ 0, 3, 2},
+		{ 0, 0, 2},
+		{ 0, 0, 0}
+	};
 	int n = 3;
 	nodes = n;
 	for (int i = 0; i < n; i++)
