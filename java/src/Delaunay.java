@@ -32,8 +32,8 @@ public class Delaunay extends JFrame {
 						int[] s2 = { t.a, t.b, t.c, t.a };
 						for (int u = 0; u < 3; u++)
 							for (int v = 0; v < 3; v++)
-								if (isCrossIntersect(x[s1[u]], y[s1[u]], x[s1[u + 1]], y[s1[u + 1]], x[s2[v]], y[s2[v]], x[s2[v + 1]],
-										y[s2[v + 1]]))
+								if (isCrossIntersect(x[s1[u]], y[s1[u]], x[s1[u + 1]], y[s1[u + 1]], x[s2[v]],
+										y[s2[v]], x[s2[v + 1]], y[s2[v + 1]]))
 									continue m1;
 					}
 					res.add(new Triangle(i, j, k));
