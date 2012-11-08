@@ -50,16 +50,14 @@ public class PrimesGenerator {
 		return true;
 	}
 
-	public static int[] numberOfDivisors(int n) {
-		int[] am = new int[n + 1];
-		for (int i = 2; i <= n; ++i)
-			am[i] = 1;
+	public static int[] numberOfPrimeDivisors(int n) {
+		int[] divisors = new int[n + 1];
+		Arrays.fill(divisors, 2, n + 1, 1);
 		for (int i = 2; i * i <= n; ++i)
-			if (am[i] == 1) {
-				for (int j = i * i, k = i; j <= n; j += i, ++k)
-					am[j] = am[k] + 1;
-			}
-		return am;
+			if (divisors[i] == 1)
+				for (int j = i; i * j <= n; j++)
+					divisors[j * i] = divisors[j] + 1;
+		return divisors;
 	}
 
 	// Usage example
@@ -73,6 +71,6 @@ public class PrimesGenerator {
 		System.out.println(Arrays.toString(primes2));
 		System.out.println(Arrays.equals(primes1, primes2));
 
-		System.out.println(Arrays.toString(numberOfDivisors(n)));
+		System.out.println(Arrays.toString(numberOfPrimeDivisors(n)));
 	}
 }
