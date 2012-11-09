@@ -55,7 +55,7 @@ public class PrimesGenerator {
 		Arrays.fill(divisors, 2, n + 1, 1);
 		for (int i = 2; i * i <= n; ++i)
 			if (divisors[i] == 1)
-				for (int j = i; i * j <= n; j++)
+				for (int j = i; j * i <= n; j++)
 					divisors[j * i] = divisors[j] + 1;
 		return divisors;
 	}
