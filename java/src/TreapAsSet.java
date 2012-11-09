@@ -6,9 +6,10 @@ public class TreapAsSet {
 	static class Treap {
 		int x;
 		long y;
+		Treap left;
+		Treap right;
 		int count;
-		Treap left = null;
-		Treap right = null;
+		long sum;
 
 		Treap(int x) {
 			this.x = x;
@@ -18,11 +19,16 @@ public class TreapAsSet {
 
 		void update() {
 			count = 1 + getCount(left) + getCount(right);
+			sum = x + getSum(left) + getSum(right);
 		}
 	}
 
 	static int getCount(Treap root) {
 		return root == null ? 0 : root.count;
+	}
+
+	static long getSum(Treap root) {
+		return root == null ? 0 : root.sum;
 	}
 
 	static class TreapPair {
