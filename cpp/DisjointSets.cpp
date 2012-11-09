@@ -14,8 +14,7 @@ void init(int _n) {
 }
 
 int root(int x) {
-	while (x != p[x]) x = p[x];
-	return x;
+	return x == p[x] ? x : (p[x] = root(p[x]));
 }
 
 void unite(int a, int b) {
