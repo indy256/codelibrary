@@ -7,8 +7,8 @@ public class TreapAsIndexedList {
 		long y;
 		int count;
 		int value;
-		Treap left = null;
-		Treap right = null;
+		Treap left;
+		Treap right;
 
 		Treap(int value) {
 			y = random.nextLong();
