@@ -1,25 +1,26 @@
+package obsolete;
 import java.util.*;
 
-public class TreapAsSet {
+public class TreapSet1 {
 	static Random random = new Random();
 
 	static class Treap {
-		int x;
-		long y;
+		int value;
+		long prio;
 		Treap left;
 		Treap right;
 		int count;
 		long sum;
 
-		Treap(int x) {
-			this.x = x;
-			y = random.nextLong();
+		Treap(int value) {
+			this.value = value;
+			prio = random.nextLong();
 			count = 1;
 		}
 
 		void update() {
 			count = 1 + getCount(left) + getCount(right);
-			sum = x + getSum(left) + getSum(right);
+			sum = value + getSum(left) + getSum(right);
 		}
 	}
 
@@ -44,7 +45,7 @@ public class TreapAsSet {
 	static TreapPair split(Treap root, int minRight) {
 		if (root == null)
 			return new TreapPair(null, null);
-		if (root.x >= minRight) {
+		if (root.value >= minRight) {
 			TreapPair sub = split(root.left, minRight);
 			root.left = sub.right;
 			root.update();
@@ -64,7 +65,7 @@ public class TreapAsSet {
 			return right;
 		if (right == null)
 			return left;
-		if (left.y > right.y) {
+		if (left.prio > right.prio) {
 			left.right = merge(left.right, right);
 			left.update();
 			return left;
@@ -80,6 +81,25 @@ public class TreapAsSet {
 		return merge(merge(t.left, new Treap(x)), t.right);
 	}
 
+	static Treap insert2(Treap root, Treap item) {
+		if (root == null)
+			return item;
+		else if (item.prio > root.prio) {
+			TreapPair t = split(root, item.value);
+			item.left = t.left;
+			item.right = t.right;
+			item.update();
+			return item;
+		} else {
+			if (item.value < root.value)
+				root.left = insert2(root.left, item);
+			else
+				root.right = insert2(root.right, item);
+			root.update();
+			return root;
+		}
+	}
+
 	static Treap remove(Treap root, int x) {
 		TreapPair t = split(root, x);
 		return merge(t.left, split(t.right, x + 1).right);
@@ -90,14 +110,14 @@ public class TreapAsSet {
 			return kth(root.left, k);
 		else if (k > getCount(root.left))
 			return kth(root.right, k - getCount(root.left) - 1);
-		return root.x;
+		return root.value;
 	}
 
 	static void print(Treap root) {
 		if (root == null)
 			return;
 		print(root.left);
-		System.out.println(root.x);
+		System.out.println(root.value);
 		print(root.right);
 	}
 
@@ -106,7 +126,8 @@ public class TreapAsSet {
 		Treap treap = null;
 		Set<Integer> set = new TreeSet<Integer>();
 		for (int i = 0; i < 100000; i++) {
-			int x = random.nextInt();
+			// System.out.println(i);
+			int x = random.nextInt(100);
 			if (random.nextBoolean()) {
 				treap = remove(treap, x);
 				set.remove(x);

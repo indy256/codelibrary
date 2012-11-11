@@ -1,28 +1,35 @@
 import java.util.*;
 
-public class TreapAsIndexedList {
+public class TreapIndexedList1 {
 	static Random random = new Random();
 
 	static class Treap {
-		long y;
-		int count;
 		int value;
+		long prio;
 		Treap left;
 		Treap right;
+		int count;
+		long sum;
+		long addv;
 
 		Treap(int value) {
-			y = random.nextLong();
-			count = 1;
 			this.value = value;
+			prio = random.nextLong();
+			count = 1;
 		}
 
 		void update() {
 			count = 1 + getCount(left) + getCount(right);
+			sum = value + getSum(left) + getSum(right);
 		}
 	}
 
 	static int getCount(Treap root) {
 		return root == null ? 0 : root.count;
+	}
+
+	static long getSum(Treap root) {
+		return root == null ? 0 : root.sum;
 	}
 
 	static class TreapPair {
@@ -35,17 +42,28 @@ public class TreapAsIndexedList {
 		}
 	}
 
-	static TreapPair split(Treap root, int index) {
+	static void push(Treap p) {
+		if (p != null && p.addv != 0) {
+//			if (p.l != null)
+//				p.l.addv += p.addv;
+//			if (p.r != null)
+//				p.r.addv += p.addv;
+			p.addv = 0;
+		}
+	}
+
+	static TreapPair split(Treap root, int minRight) {
 		if (root == null)
 			return new TreapPair(null, null);
-		if (getCount(root.left) >= index) {
-			TreapPair sub = split(root.left, index);
+		if (getCount(root.left) >= minRight) {
+			push(root);
+			TreapPair sub = split(root.left, minRight);
 			root.left = sub.right;
 			root.update();
 			sub.right = root;
 			return sub;
 		} else {
-			TreapPair sub = split(root.right, index - getCount(root.left) - 1);
+			TreapPair sub = split(root.right, minRight - getCount(root.left) - 1);
 			root.right = sub.left;
 			root.update();
 			sub.left = root;
@@ -58,7 +76,7 @@ public class TreapAsIndexedList {
 			return right;
 		if (right == null)
 			return left;
-		if (left.y > right.y) {
+		if (left.prio > right.prio) {
 			left.right = merge(left.right, right);
 			left.update();
 			return left;
@@ -85,6 +103,24 @@ public class TreapAsIndexedList {
 		else if (index > getCount(root.left))
 			return get(root.right, index - getCount(root.left) - 1);
 		return root.value;
+	}
+
+	static class TreapAndSum {
+		Treap t;
+		long sum;
+
+		TreapAndSum(Treap t, long sum) {
+			this.t = t;
+			this.sum = sum;
+		}
+	}
+
+	static TreapAndSum sum(Treap root, int a, int b) {
+		TreapPair t1 = split(root, b + 1);
+		TreapPair t2 = split(t1.left, a);
+		long sum = getSum(t2.right);
+		Treap t = merge(merge(t2.left, t2.right), t1.right);
+		return new TreapAndSum(t, sum);
 	}
 
 	static void print(Treap root) {
