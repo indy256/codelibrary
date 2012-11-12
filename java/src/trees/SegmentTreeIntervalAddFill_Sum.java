@@ -40,23 +40,23 @@ public class SegmentTreeIntervalAddFill_Sum {
 
 		int toAdd = tadd[node];
 		tadd[node] = 0;
-		s[node] += toAdd;
-		min[node] += toAdd;
+		tsum[node] += toAdd;
+		tmin[node] += toAdd;
 		if (left < right) {
 			tadd[node * 2] += toAdd;
 			tadd[node * 2 + 1] += toAdd;
 		}
-		if (!isFilled[node])
-			return;
-		isFilled[node] = false;
-		tfill[node] += toAdd;
-		s[node] = tfill[node] * (right - left + 1);
-		min[node] = tfill[node];
-		if (left < right) {
-			tfill[node * 2] = tfill[node * 2 + 1] = tfill[node];
-			tadd[node * 2] = tadd[node * 2 + 1] = 0;
-			isFilled[node * 2] = isFilled[node * 2 + 1] = true;
-		}
+//		if (!isFilled[node])
+//			return;
+//		isFilled[node] = false;
+//		tfill[node] += toAdd;
+//		s[node] = tfill[node] * (right - left + 1);
+//		min[node] = tfill[node];
+//		if (left < right) {
+//			tfill[node * 2] = tfill[node * 2 + 1] = tfill[node];
+//			tadd[node * 2] = tadd[node * 2 + 1] = 0;
+//			isFilled[node * 2] = isFilled[node * 2 + 1] = true;
+//		}
 	}
 
 	void pop(int node, int left, int right) {

@@ -100,7 +100,7 @@ public class TreapSet {
 		Treap treap = null;
 		Set<Integer> set = new TreeSet<Integer>();
 		for (int i = 0; i < 100000; i++) {
-			int x = random.nextInt(100);
+			int x = random.nextInt(100000);
 			if (random.nextBoolean()) {
 				treap = remove(treap, x);
 				set.remove(x);

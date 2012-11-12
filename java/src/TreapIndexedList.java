@@ -1,34 +1,70 @@
 import java.util.*;
 
 public class TreapIndexedList {
+	// specific code
+	static final int NEUTRAL_VALUE = Integer.MIN_VALUE;
+	static final int NEUTRAL_DELTA = 0;
+
+	static int joinValues(int leftValue, int rightValue) {
+		return Math.max(leftValue, rightValue);
+	}
+
+	static int joinDeltas(int oldDelta, int newDelta) {
+		return oldDelta + newDelta;
+	}
+
+	static int joinValueDelta(int value, int delta, int length) {
+		return value + delta;
+	}
+
 	static Random random = new Random();
 
 	static class Treap {
+		int nodeValue;
 		int value;
+		int delta;
+		int count;
 		long prio;
 		Treap left;
 		Treap right;
-		int count;
-		long sum;
 
 		Treap(int value) {
+			nodeValue = value;
 			this.value = value;
+			delta = NEUTRAL_DELTA;
 			prio = random.nextLong();
 			count = 1;
 		}
 
 		void update() {
 			count = 1 + getCount(left) + getCount(right);
-			sum = value + getSum(left) + getSum(right);
+			value = joinValues(joinValues(getValue(left), nodeValue), getValue(right));
 		}
+	}
+
+	static void pushDelta(Treap root) {
+		if (root == null)
+			return;
+		if (root.left != null) {
+			root.left.delta = joinDeltas(root.left.delta, root.delta);
+			root.left.value = joinValueDelta(root.left.value, root.delta, root.left.count);
+			root.left.nodeValue = joinValueDelta(root.left.nodeValue, root.delta, 1);
+		}
+		if (root.right != null) {
+			root.right.delta = joinDeltas(root.right.delta, root.delta);
+			root.right.value = joinValueDelta(root.right.value, root.delta, root.right.count);
+			root.right.nodeValue = joinValueDelta(root.right.nodeValue, root.delta, 1);
+		}
+		root.nodeValue = joinValueDelta(root.nodeValue, root.delta, 1);
+		root.delta = NEUTRAL_DELTA;
 	}
 
 	static int getCount(Treap root) {
 		return root == null ? 0 : root.count;
 	}
 
-	static long getSum(Treap root) {
-		return root == null ? 0 : root.sum;
+	static int getValue(Treap root) {
+		return root == null ? NEUTRAL_VALUE : root.value;
 	}
 
 	static class TreapPair {
@@ -44,6 +80,7 @@ public class TreapIndexedList {
 	static TreapPair split(Treap root, int minRight) {
 		if (root == null)
 			return new TreapPair(null, null);
+		pushDelta(root);
 		if (getCount(root.left) >= minRight) {
 			TreapPair sub = split(root.left, minRight);
 			root.left = sub.right;
@@ -60,6 +97,8 @@ public class TreapIndexedList {
 	}
 
 	static Treap merge(Treap left, Treap right) {
+		pushDelta(left);
+		pushDelta(right);
 		if (left == null)
 			return right;
 		if (right == null)
@@ -90,63 +129,72 @@ public class TreapIndexedList {
 			return get(root.left, index);
 		else if (index > getCount(root.left))
 			return get(root.right, index - getCount(root.left) - 1);
-		return root.value;
+		return root.nodeValue;
 	}
 
-	static class TreapAndSum {
+	static class TreapAndValue {
 		Treap t;
-		long sum;
+		int value;
 
-		TreapAndSum(Treap t, long sum) {
+		TreapAndValue(Treap t, int value) {
 			this.t = t;
-			this.sum = sum;
+			this.value = value;
 		}
 	}
 
-	static TreapAndSum sum(Treap root, int a, int b) {
+	static TreapAndValue query(Treap root, int a, int b) {
 		TreapPair t1 = split(root, b + 1);
 		TreapPair t2 = split(t1.left, a);
-		long sum = getSum(t2.right);
+		int value = getValue(t2.right);
 		Treap t = merge(merge(t2.left, t2.right), t1.right);
-		return new TreapAndSum(t, sum);
+		return new TreapAndValue(t, value);
 	}
 
 	static void print(Treap root) {
 		if (root == null)
 			return;
 		print(root.left);
-		System.out.print(root.value + " ");
+		System.out.print(root.nodeValue + " ");
 		print(root.right);
 	}
 
 	// Usage example
 	public static void main(String[] args) {
 		Treap treap = null;
-		List<Integer> list = new ArrayList<Integer>();
-
-		for (int i = 0; i < 100000; i++) {
-			if (random.nextInt(10) != 0) {
-				int p = random.nextInt(list.size() + 1);
-				treap = insert(treap, p, i);
-				list.add(p, i);
-			} else if (list.size() > 0) {
-				int p = random.nextInt(list.size());
-				if (random.nextBoolean()) {
-					treap = remove(treap, p);
-					list.remove(p);
-				} else {
-					int v1 = get(treap, p);
-					int v2 = list.get(p);
-					if (v1 != v2) {
-						System.err.println(v2 + " " + v1);
-						break;
-					}
-				}
-			}
-			if (list.size() != getCount(treap)) {
-				System.err.println(list.size() + " " + getCount(treap));
-				break;
-			}
-		}
+		treap = insert(treap, 0, 1);
+		treap = insert(treap, 0, 2);
+		treap = insert(treap, 0, 3);
+		System.out.println(getValue(treap));
+		print(treap);
+		System.out.println();
+		TreapAndValue tv = query(treap, 1, 2);
+		treap = tv.t;
+		System.out.println(tv.value);
+		// List<Integer> list = new ArrayList<Integer>();
+		//
+		// for (int i = 0; i < 100000; i++) {
+		// if (random.nextInt(10) != 0) {
+		// int p = random.nextInt(list.size() + 1);
+		// treap = insert(treap, p, i);
+		// list.add(p, i);
+		// } else if (list.size() > 0) {
+		// int p = random.nextInt(list.size());
+		// if (random.nextBoolean()) {
+		// treap = remove(treap, p);
+		// list.remove(p);
+		// } else {
+		// int v1 = get(treap, p);
+		// int v2 = list.get(p);
+		// if (v1 != v2) {
+		// System.err.println(v2 + " " + v1);
+		// break;
+		// }
+		// }
+		// }
+		// if (list.size() != getCount(treap)) {
+		// System.err.println(list.size() + " " + getCount(treap));
+		// break;
+		// }
+		// }
 	}
 }

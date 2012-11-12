@@ -1,3 +1,4 @@
+package obsolete;
 import java.util.*;
 
 public class TreapIndexedList1 {
@@ -10,7 +11,6 @@ public class TreapIndexedList1 {
 		Treap right;
 		int count;
 		long sum;
-		long addv;
 
 		Treap(int value) {
 			this.value = value;
@@ -42,21 +42,10 @@ public class TreapIndexedList1 {
 		}
 	}
 
-	static void push(Treap p) {
-		if (p != null && p.addv != 0) {
-//			if (p.l != null)
-//				p.l.addv += p.addv;
-//			if (p.r != null)
-//				p.r.addv += p.addv;
-			p.addv = 0;
-		}
-	}
-
 	static TreapPair split(Treap root, int minRight) {
 		if (root == null)
 			return new TreapPair(null, null);
 		if (getCount(root.left) >= minRight) {
-			push(root);
 			TreapPair sub = split(root.left, minRight);
 			root.left = sub.right;
 			root.update();

@@ -1,27 +1,27 @@
 public class DisjointSets {
-	int[] p;
 
-	public DisjointSets(int size) {
-		p = new int[size];
+	public static int[] createSets(int size) {
+		int[] p = new int[size];
 		for (int i = 0; i < size; i++)
 			p[i] = i;
+		return p;
 	}
 
-	public int root(int x) {
-		return x == p[x] ? x : (p[x] = root(p[x]));
+	public static int root(int[] p, int x) {
+		return x == p[x] ? x : (p[x] = root(p, p[x]));
 	}
 
-	public void unite(int a, int b) {
-		a = root(a);
-		b = root(b);
+	public static void unite(int[] p, int a, int b) {
+		a = root(p, a);
+		b = root(p, b);
 		if (a != b)
 			p[a] = b;
 	}
 
 	public static void main(String[] args) {
-		DisjointSets ds = new DisjointSets(10);
-		System.out.println(false == (ds.root(0) == ds.root(3)));
-		ds.unite(0, 3);
-		System.out.println(true == (ds.root(0) == ds.root(3)));
+		int[] p = createSets(10);
+		System.out.println(false == (root(p, 0) == root(p, 3)));
+		unite(p, 0, 3);
+		System.out.println(true == (root(p, 0) == root(p, 3)));
 	}
 }

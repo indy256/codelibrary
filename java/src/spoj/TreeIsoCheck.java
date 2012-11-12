@@ -1,5 +1,4 @@
 package spoj;
-import RandomGraph;
 
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
