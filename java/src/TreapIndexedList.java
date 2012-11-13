@@ -30,7 +30,7 @@ public class TreapIndexedList {
 
 		Treap(int value) {
 			nodeValue = value;
-			this.value = value;
+			this.value = nodeValue;
 			delta = NEUTRAL_DELTA;
 			prio = random.nextLong();
 			count = 1;
@@ -44,7 +44,7 @@ public class TreapIndexedList {
 
 	static void pushDelta(Treap root) {
 		if (root == null)
-			return;
+			return;      
 		if (root.left != null) {
 			root.left.delta = joinDeltas(root.left.delta, root.delta);
 			root.left.value = joinValueDelta(root.left.value, root.delta, root.left.count);
@@ -143,6 +143,14 @@ public class TreapIndexedList {
 	}
 
 	static TreapAndValue query(Treap root, int a, int b) {
+		TreapPair t1 = split(root, b + 1);
+		TreapPair t2 = split(t1.left, a);
+		int value = getValue(t2.right);
+		Treap t = merge(merge(t2.left, t2.right), t1.right);
+		return new TreapAndValue(t, value);
+	}
+
+	static TreapAndValue modify(Treap root, int a, int b, int value) {
 		TreapPair t1 = split(root, b + 1);
 		TreapPair t2 = split(t1.left, a);
 		int value = getValue(t2.right);
