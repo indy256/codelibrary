@@ -78,7 +78,7 @@ public class PolygonAlgo {
 
 		public boolean equivalent(Line line) {
 			return sign(det(a, b, line.a, line.b)) == 0 && sign(det(a, c, line.a, line.c)) == 0
-					&& sign(det(b, c, line.b, line.c)) == 0;
+			/* && sign(det(b, c, line.b, line.c)) == 0 */;
 		}
 
 		public double angle() {
@@ -222,9 +222,7 @@ public class PolygonAlgo {
 		for (int i = n - 2, t = k; i >= 0; q[k++] = p[i--])
 			for (; k > t && !cw(q[k - 2], q[k - 1], p[i]); --k)
 				;
-		Point[] res = new Point[k - 1 - (q[0].compareTo(q[1]) == 0 ? 1 : 0)];
-		System.arraycopy(q, 0, res, 0, res.length);
-		return res;
+		return Arrays.copyOf(q, k - 1 - (q[0].compareTo(q[1]) == 0 ? 1 : 0));
 	}
 
 	Point[] convexCut(Point[] poly, Point p1, Point p2) {
