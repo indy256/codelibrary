@@ -1,6 +1,7 @@
 import java.util.*;
 
 public class TreapIndexedList {
+
 	// specific code
 	static final int NEUTRAL_VALUE = Integer.MIN_VALUE;
 	static final int NEUTRAL_DELTA = 0;
@@ -17,11 +18,12 @@ public class TreapIndexedList {
 		return value + delta;
 	}
 
+	// generic code
 	static Random random = new Random();
 
 	static class Treap {
 		int nodeValue;
-		int value;
+		int subTreeValue;
 		int delta;
 		int count;
 		long prio;
@@ -30,32 +32,31 @@ public class TreapIndexedList {
 
 		Treap(int value) {
 			nodeValue = value;
-			this.value = nodeValue;
+			subTreeValue = value;
 			delta = NEUTRAL_DELTA;
-			prio = random.nextLong();
 			count = 1;
+			prio = random.nextLong();
 		}
 
 		void update() {
+			subTreeValue = joinValues(joinValues(getValue(left), nodeValue), getValue(right));
 			count = 1 + getCount(left) + getCount(right);
-			value = joinValues(joinValues(getValue(left), nodeValue), getValue(right));
 		}
+	}
+
+	static void push(Treap child, int rootDelta) {
+		if (child == null)
+			return;
+		child.delta = joinDeltas(child.delta, rootDelta);
+		child.nodeValue = joinValueDelta(child.nodeValue, rootDelta, 1);
+		child.subTreeValue = joinValueDelta(child.subTreeValue, rootDelta, child.count);
 	}
 
 	static void pushDelta(Treap root) {
 		if (root == null)
-			return;      
-		if (root.left != null) {
-			root.left.delta = joinDeltas(root.left.delta, root.delta);
-			root.left.value = joinValueDelta(root.left.value, root.delta, root.left.count);
-			root.left.nodeValue = joinValueDelta(root.left.nodeValue, root.delta, 1);
-		}
-		if (root.right != null) {
-			root.right.delta = joinDeltas(root.right.delta, root.delta);
-			root.right.value = joinValueDelta(root.right.value, root.delta, root.right.count);
-			root.right.nodeValue = joinValueDelta(root.right.nodeValue, root.delta, 1);
-		}
-		root.nodeValue = joinValueDelta(root.nodeValue, root.delta, 1);
+			return;
+		push(root.left, root.delta);
+		push(root.right, root.delta);
 		root.delta = NEUTRAL_DELTA;
 	}
 
@@ -64,7 +65,7 @@ public class TreapIndexedList {
 	}
 
 	static int getValue(Treap root) {
-		return root == null ? NEUTRAL_VALUE : root.value;
+		return root == null ? NEUTRAL_VALUE : root.subTreeValue;
 	}
 
 	static class TreapPair {
@@ -124,43 +125,37 @@ public class TreapIndexedList {
 		return merge(t.left, split(t.right, index + 1 - getCount(t.left)).right);
 	}
 
-	static int get(Treap root, int index) {
-		if (index < getCount(root.left))
-			return get(root.left, index);
-		else if (index > getCount(root.left))
-			return get(root.right, index - getCount(root.left) - 1);
-		return root.nodeValue;
+	static Treap modify(Treap root, int a, int b, int delta) {
+		TreapPair t1 = split(root, b + 1);
+		TreapPair t2 = split(t1.left, a);
+		Treap t = t2.right;
+		t.delta = joinDeltas(t.delta, delta);
+		t.nodeValue = joinValueDelta(t.nodeValue, delta, 1);
+		t.subTreeValue = joinValueDelta(t.subTreeValue, delta, t.count);
+		return merge(merge(t2.left, t2.right), t1.right);
 	}
 
-	static class TreapAndValue {
-		Treap t;
+	static class TreapAndResult {
+		Treap treap;
 		int value;
 
-		TreapAndValue(Treap t, int value) {
-			this.t = t;
+		TreapAndResult(Treap t, int value) {
+			this.treap = t;
 			this.value = value;
 		}
 	}
 
-	static TreapAndValue query(Treap root, int a, int b) {
+	static TreapAndResult query(Treap root, int a, int b) {
 		TreapPair t1 = split(root, b + 1);
 		TreapPair t2 = split(t1.left, a);
 		int value = getValue(t2.right);
-		Treap t = merge(merge(t2.left, t2.right), t1.right);
-		return new TreapAndValue(t, value);
-	}
-
-	static TreapAndValue modify(Treap root, int a, int b, int value) {
-		TreapPair t1 = split(root, b + 1);
-		TreapPair t2 = split(t1.left, a);
-		int value = getValue(t2.right);
-		Treap t = merge(merge(t2.left, t2.right), t1.right);
-		return new TreapAndValue(t, value);
+		return new TreapAndResult(merge(merge(t2.left, t2.right), t1.right), value);
 	}
 
 	static void print(Treap root) {
 		if (root == null)
 			return;
+		pushDelta(root);
 		print(root.left);
 		System.out.print(root.nodeValue + " ");
 		print(root.right);
@@ -169,40 +164,55 @@ public class TreapIndexedList {
 	// Usage example
 	public static void main(String[] args) {
 		Treap treap = null;
-		treap = insert(treap, 0, 1);
-		treap = insert(treap, 0, 2);
-		treap = insert(treap, 0, 3);
-		System.out.println(getValue(treap));
-		print(treap);
-		System.out.println();
-		TreapAndValue tv = query(treap, 1, 2);
-		treap = tv.t;
-		System.out.println(tv.value);
-		// List<Integer> list = new ArrayList<Integer>();
-		//
-		// for (int i = 0; i < 100000; i++) {
-		// if (random.nextInt(10) != 0) {
-		// int p = random.nextInt(list.size() + 1);
-		// treap = insert(treap, p, i);
-		// list.add(p, i);
-		// } else if (list.size() > 0) {
-		// int p = random.nextInt(list.size());
-		// if (random.nextBoolean()) {
-		// treap = remove(treap, p);
-		// list.remove(p);
-		// } else {
-		// int v1 = get(treap, p);
-		// int v2 = list.get(p);
-		// if (v1 != v2) {
-		// System.err.println(v2 + " " + v1);
-		// break;
-		// }
-		// }
-		// }
-		// if (list.size() != getCount(treap)) {
-		// System.err.println(list.size() + " " + getCount(treap));
-		// break;
-		// }
-		// }
+		List<Integer> list = new ArrayList<Integer>();
+		Random rnd = new Random();
+		for (int step = 0; step < 100000; step++) {
+			int cmd = rnd.nextInt(6);
+			if (cmd < 2 && list.size() < 100) {
+				int pos = rnd.nextInt(list.size() + 1);
+				int delta = rnd.nextInt(100);
+				list.add(pos, delta);
+				treap = insert(treap, pos, delta);
+			} else if (cmd < 3 && list.size() > 0) {
+				int pos = rnd.nextInt(list.size());
+				list.remove(pos);
+				treap = remove(treap, pos);
+			} else if (cmd < 4 && list.size() > 0) {
+				int b = rnd.nextInt(list.size());
+				int a = rnd.nextInt(b + 1);
+				int res = list.get(a);
+				for (int i = a + 1; i <= b; i++)
+					res = joinValues(res, list.get(i));
+				TreapAndResult tr = query(treap, a, b);
+				treap = tr.treap;
+				if (res != tr.value) {
+					System.out.println(list);
+					print(treap);
+					System.out.println();
+					System.err.println(res + " " + tr.value);
+					System.exit(0);
+				}
+			} else if (cmd < 5 && list.size() > 0) {
+				int b = rnd.nextInt(list.size());
+				int a = rnd.nextInt(b + 1);
+				int delta = rnd.nextInt(100);
+				for (int i = a; i <= b; i++)
+					list.set(i, joinValueDelta(list.get(i), delta, 1));
+				treap = modify(treap, a, b, delta);
+			} else {
+				for (int i = 0; i < list.size(); i++) {
+					TreapAndResult tr = query(treap, i, i);
+					treap = tr.treap;
+					int v = tr.value;
+					if (list.get(i) != v) {
+						System.out.println(list);
+						print(treap);
+						System.out.println();
+						System.exit(0);
+					}
+				}
+			}
+		}
+		System.out.println("test passed");
 	}
 }
