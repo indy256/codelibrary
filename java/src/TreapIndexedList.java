@@ -39,7 +39,7 @@ public class TreapIndexedList {
 		}
 
 		void update() {
-			subTreeValue = joinValues(joinValues(getValue(left), nodeValue), getValue(right));
+			subTreeValue = joinValues(joinValues(getSubTreeValue(left), nodeValue), getSubTreeValue(right));
 			count = 1 + getCount(left) + getCount(right);
 		}
 	}
@@ -64,7 +64,7 @@ public class TreapIndexedList {
 		return root == null ? 0 : root.count;
 	}
 
-	static int getValue(Treap root) {
+	static int getSubTreeValue(Treap root) {
 		return root == null ? NEUTRAL_VALUE : root.subTreeValue;
 	}
 
@@ -115,9 +115,9 @@ public class TreapIndexedList {
 		}
 	}
 
-	static Treap insert(Treap root, int index, int x) {
+	static Treap insert(Treap root, int index, int value) {
 		TreapPair t = split(root, index);
-		return merge(merge(t.left, new Treap(x)), t.right);
+		return merge(merge(t.left, new Treap(value)), t.right);
 	}
 
 	static Treap remove(Treap root, int index) {
@@ -145,7 +145,7 @@ public class TreapIndexedList {
 	static TreapAndResult query(Treap root, int a, int b) {
 		TreapPair t1 = split(root, b + 1);
 		TreapPair t2 = split(t1.left, a);
-		int value = getValue(t2.right);
+		int value = getSubTreeValue(t2.right);
 		return new TreapAndResult(merge(merge(t2.left, t2.right), t1.right), value);
 	}
 
