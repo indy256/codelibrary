@@ -14,7 +14,7 @@ public class TreapIndexedList {
 		return oldDelta + newDelta;
 	}
 
-	static int joinValueDelta(int value, int delta, int length) {
+	static int joinValueWithDelta(int value, int delta, int length) {
 		return value + delta;
 	}
 
@@ -44,19 +44,19 @@ public class TreapIndexedList {
 		}
 	}
 
-	static void push(Treap child, int rootDelta) {
-		if (child == null)
+	static void applyDelta(Treap root, int delta) {
+		if (root == null)
 			return;
-		child.delta = joinDeltas(child.delta, rootDelta);
-		child.nodeValue = joinValueDelta(child.nodeValue, rootDelta, 1);
-		child.subTreeValue = joinValueDelta(child.subTreeValue, rootDelta, child.count);
+		root.delta = joinDeltas(root.delta, delta);
+		root.nodeValue = joinValueWithDelta(root.nodeValue, delta, 1);
+		root.subTreeValue = joinValueWithDelta(root.subTreeValue, delta, root.count);
 	}
 
 	static void pushDelta(Treap root) {
 		if (root == null)
 			return;
-		push(root.left, root.delta);
-		push(root.right, root.delta);
+		applyDelta(root.left, root.delta);
+		applyDelta(root.right, root.delta);
 		root.delta = NEUTRAL_DELTA;
 	}
 
@@ -128,10 +128,7 @@ public class TreapIndexedList {
 	static Treap modify(Treap root, int a, int b, int delta) {
 		TreapPair t1 = split(root, b + 1);
 		TreapPair t2 = split(t1.left, a);
-		Treap t = t2.right;
-		t.delta = joinDeltas(t.delta, delta);
-		t.nodeValue = joinValueDelta(t.nodeValue, delta, 1);
-		t.subTreeValue = joinValueDelta(t.subTreeValue, delta, t.count);
+		applyDelta(t2.right, delta);
 		return merge(merge(t2.left, t2.right), t1.right);
 	}
 
@@ -197,7 +194,7 @@ public class TreapIndexedList {
 				int a = rnd.nextInt(b + 1);
 				int delta = rnd.nextInt(100);
 				for (int i = a; i <= b; i++)
-					list.set(i, joinValueDelta(list.get(i), delta, 1));
+					list.set(i, joinValueWithDelta(list.get(i), delta, 1));
 				treap = modify(treap, a, b, delta);
 			} else {
 				for (int i = 0; i < list.size(); i++) {

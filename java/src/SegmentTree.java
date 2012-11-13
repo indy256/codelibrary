@@ -13,7 +13,7 @@ public class SegmentTree {
 		return oldDelta + newDelta;
 	}
 
-	static int joinValueDelta(int value, int delta, int length) {
+	static int joinValueWithDelta(int value, int delta, int length) {
 		return value + delta;
 	}
 
@@ -45,8 +45,8 @@ public class SegmentTree {
 		delta[2 * root + 1] = joinDeltas(delta[2 * root + 1], delta[root]);
 		delta[2 * root + 2] = joinDeltas(delta[2 * root + 2], delta[root]);
 		int middle = (left + right) / 2;
-		value[2 * root + 1] = joinValueDelta(value[2 * root + 1], delta[root], middle - left + 1);
-		value[2 * root + 2] = joinValueDelta(value[2 * root + 2], delta[root], right - middle);
+		value[2 * root + 1] = joinValueWithDelta(value[2 * root + 1], delta[root], middle - left + 1);
+		value[2 * root + 2] = joinValueWithDelta(value[2 * root + 2], delta[root], right - middle);
 		delta[root] = NEUTRAL_DELTA;
 	}
 
@@ -73,7 +73,7 @@ public class SegmentTree {
 			return;
 		if (a <= left && right <= b) {
 			this.delta[root] = joinDeltas(this.delta[root], delta);
-			value[root] = joinValueDelta(value[root], delta, right - left + 1);
+			value[root] = joinValueWithDelta(value[root], delta, right - left + 1);
 			return;
 		}
 		pushDelta(root, left, right);
