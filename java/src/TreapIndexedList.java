@@ -158,7 +158,7 @@ public class TreapIndexedList {
 		print(root.right);
 	}
 
-	// Usage example
+	// Random test
 	public static void main(String[] args) {
 		Treap treap = null;
 		List<Integer> list = new ArrayList<Integer>();
@@ -185,9 +185,7 @@ public class TreapIndexedList {
 				if (res != tr.value) {
 					System.out.println(list);
 					print(treap);
-					System.out.println();
-					System.err.println(res + " " + tr.value);
-					System.exit(0);
+					return;
 				}
 			} else if (cmd < 5 && list.size() > 0) {
 				int b = rnd.nextInt(list.size());
@@ -204,12 +202,11 @@ public class TreapIndexedList {
 					if (list.get(i) != v) {
 						System.out.println(list);
 						print(treap);
-						System.out.println();
-						System.exit(0);
+						return;
 					}
 				}
 			}
 		}
-		System.out.println("test passed");
+		System.out.println("Test passed");
 	}
 }

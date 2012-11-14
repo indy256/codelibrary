@@ -13,20 +13,19 @@ public class MaxFlowEdmondKarp {
 		}
 	}
 
-	public List<Edge>[] graph;
-
-	public void init(int nodes) {
-		graph = new List[nodes];
+	public static List<Edge>[] createGraph(int nodes) {
+		List<Edge>[] graph = new List[nodes];
 		for (int i = 0; i < nodes; i++)
 			graph[i] = new ArrayList<Edge>();
+		return graph;
 	}
 
-	public void addEdge(int s, int t, int cap) {
+	public static void addEdge(List<Edge>[] graph, int s, int t, int cap) {
 		graph[s].add(new Edge(s, t, graph[t].size(), cap));
 		graph[t].add(new Edge(t, s, graph[s].size() - 1, 0));
 	}
 
-	public int maxFlow(int s, int t) {
+	public static int maxFlow(List<Edge>[] graph, int s, int t) {
 		int flow = 0;
 		int[] q = new int[graph.length];
 		while (true) {
@@ -58,14 +57,10 @@ public class MaxFlowEdmondKarp {
 
 	// Usage example
 	public static void main(String[] args) {
-		int[][] capacity = { { 0, 3, 2 }, { 0, 0, 2 }, { 0, 0, 0 } };
-		int n = capacity.length;
-		MaxFlowEdmondKarp flow = new MaxFlowEdmondKarp();
-		flow.init(n);
-		for (int i = 0; i < n; i++)
-			for (int j = 0; j < n; j++)
-				if (capacity[i][j] != 0)
-					flow.addEdge(i, j, capacity[i][j]);
-		System.out.println(4 == flow.maxFlow(0, 2));
+		List<Edge>[] graph = createGraph(3);
+		addEdge(graph, 0, 1, 3);
+		addEdge(graph, 0, 2, 2);
+		addEdge(graph, 1, 2, 2);
+		System.out.println(4 == maxFlow(graph, 0, 2));
 	}
 }

@@ -12,25 +12,19 @@ public class MaxFlowDinic {
 		}
 	}
 
-	List<Edge>[] graph;
-	int src, dest;
-	int[] ptr, Q, dist;
-
-	public void init(int nodes) {
-		graph = new List[nodes];
+	public static List<Edge>[] createGraph(int nodes) {
+		List<Edge>[] graph = new List[nodes];
 		for (int i = 0; i < nodes; i++)
 			graph[i] = new ArrayList<Edge>();
-		ptr = new int[nodes];
-		Q = new int[nodes];
-		dist = new int[nodes];
+		return graph;
 	}
 
-	public void addEdge(int s, int t, int cap) {
+	public static void addEdge(List<Edge>[] graph, int s, int t, int cap) {
 		graph[s].add(new Edge(t, graph[t].size(), cap));
 		graph[t].add(new Edge(t, graph[s].size() - 1, 0));
 	}
 
-	boolean dinic_bfs() {
+	static boolean dinic_bfs(List<Edge>[] graph, int[] dist, int[] Q, int src, int dest) {
 		Arrays.fill(dist, -1);
 		dist[src] = 0;
 		int sizeQ = 0;
@@ -47,13 +41,13 @@ public class MaxFlowDinic {
 		return dist[dest] >= 0;
 	}
 
-	int dinic_dfs(int u, int f) {
+	static int dinic_dfs(List<Edge>[] graph, int[] ptr, int[] dist, int dest, int u, int f) {
 		if (u == dest)
 			return f;
 		for (; ptr[u] < graph[u].size(); ++ptr[u]) {
 			Edge e = graph[u].get(ptr[u]);
 			if (dist[e.t] == dist[u] + 1 && e.f < e.cap) {
-				int df = dinic_dfs(e.t, Math.min(f, e.cap - e.f));
+				int df = dinic_dfs(graph, ptr, dist, dest, e.t, Math.min(f, e.cap - e.f));
 				if (df > 0) {
 					e.f += df;
 					graph[e.t].get(e.rev).f -= df;
@@ -64,14 +58,15 @@ public class MaxFlowDinic {
 		return 0;
 	}
 
-	public int maxFlow(int src, int dest) {
-		this.src = src;
-		this.dest = dest;
+	public static int maxFlow(List<Edge>[] graph, int src, int dest) {
+		int[] ptr = new int[graph.length];
+		int[] Q = new int[graph.length];
+		int[] dist = new int[graph.length];
 		int flow = 0;
-		while (dinic_bfs()) {
+		while (dinic_bfs(graph, dist, Q, src, dest)) {
 			Arrays.fill(ptr, 0);
 			while (true) {
-				int df = dinic_dfs(src, Integer.MAX_VALUE);
+				int df = dinic_dfs(graph, ptr, dist, dest, src, Integer.MAX_VALUE);
 				if (df == 0)
 					break;
 				flow += df;
@@ -82,14 +77,10 @@ public class MaxFlowDinic {
 
 	// Usage example
 	public static void main(String[] args) {
-		int[][] capacity = { { 0, 3, 2 }, { 0, 0, 2 }, { 0, 0, 0 } };
-		int n = capacity.length;
-		MaxFlowDinic flow = new MaxFlowDinic();
-		flow.init(n);
-		for (int i = 0; i < n; i++)
-			for (int j = 0; j < n; j++)
-				if (capacity[i][j] != 0)
-					flow.addEdge(i, j, capacity[i][j]);
-		System.out.println(4 == flow.maxFlow(0, 2));
+		List<Edge>[] graph = createGraph(3);
+		addEdge(graph, 0, 1, 3);
+		addEdge(graph, 0, 2, 2);
+		addEdge(graph, 1, 2, 2);
+		System.out.println(4 == maxFlow(graph, 0, 2));
 	}
 }

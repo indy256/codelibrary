@@ -153,7 +153,7 @@ void modify(treap* &root, int a, int b, int delta) {
 	split(root, l1, r1, b + 1);
 	treap *l2, *r2;
 	split(l1, l2, r2, a);
-	int res = getSubTreeValue(r2);
+	applyDelta(r2, delta);
 	treap *t;
 	merge(t, l2, r2);
 	merge(root, t, r1);
@@ -167,22 +167,56 @@ void print(treap* t) {
 	print(t->r);
 }
 
+// Random test
 int main() {
 	for (int i = 0; i < MAXN; i++)
 		rnd.push_back(i);
 	random_shuffle(rnd.begin(), rnd.end());
-
+	
 	treap* t = NULL;
+	vector<int> list;
 
-	insert(t, 0, 1);
-	insert(t, 0, 2);
-	insert(t, 0, 3);
-	cout << query(t, 1, 2) << endl;
-	print(t);
-	cout << endl;
-
-	remove(t, 1);
-	print(t);
-	cout << endl;
-	cout << get(t, 0) << endl;
+	for (int step = 0; step < 3000; step++) {
+		int cmd = rand() % 6;
+		if (cmd < 2 && list.size() < 100) {
+			int pos = rand() % (list.size() + 1);
+			int delta = rand() % 100;
+			list.insert(list.begin() + pos, delta);
+			insert(t, pos, delta);
+		} else if (cmd < 3 && list.size() > 0) {
+			int pos = rand() % list.size();
+			list.erase(list.begin() + pos);
+			remove(t, pos);
+		} else if (cmd < 4 && list.size() > 0) {
+			int b = rand() % list.size();
+			int a = rand() % (b + 1);
+			int res = list[a];
+			for (int i = a + 1; i <= b; i++)
+				res = joinValues(res, list[i]);
+			int q = query(t, a, b);
+			if (res != q) {
+				for(int i = 0; i < list.size(); i++) cout << list[i] << endl;
+				print(t);
+				return 0;
+			}
+		} else if (cmd < 5 && list.size() > 0) {
+			int b = rand() % list.size();
+			int a = rand() % (b + 1);
+			int delta = rand() % 100;
+			for (int i = a; i <= b; i++)
+				list[i] = joinValueWithDelta(list[i], delta, 1);
+			modify(t, a, b, delta);
+		} else {
+			for (int i = 0; i < list.size(); i++) {
+				int q1 = query(t, i, i);
+				int q2 = get(t, i);
+				if (list[i] != q1 || q1 != q2) {
+					for(int i = 0; i < list.size(); i++) cout << list[i] << endl;
+					print(t);
+					return 0;
+				}
+			}
+		}
+	}
+	cout << "Test passed" << endl;
 }
