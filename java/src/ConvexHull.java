@@ -33,9 +33,7 @@ public class ConvexHull {
 		for (int i = n - 2, t = cnt; i >= 0; q[cnt++] = p[i--])
 			for (; cnt > t && !cw(q[cnt - 2], q[cnt - 1], p[i]); --cnt)
 				;
-		Point[] res = new Point[cnt - 1 - (q[0].compareTo(q[1]) == 0 ? 1 : 0)];
-		System.arraycopy(q, 0, res, 0, res.length);
-		return res;
+		return Arrays.copyOf(q, cnt - 1 - (q[0].compareTo(q[1]) == 0 ? 1 : 0));
 	}
 
 	// Usage example
