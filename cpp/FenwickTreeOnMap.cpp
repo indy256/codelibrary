@@ -2,43 +2,30 @@
 #include <map>
 using namespace std;
 
-map<int, int> t;
-int n = 2000000000;
+const int n = 2000000000;
 
-void add(int i, int value) {
+void add(map<int, int> &t, int i, int value) {
 	for (; i < n; i += (i + 1) & -(i + 1))
 		t[i] += value;
 }
 
-int sum(int i) {
+// sum[0,i]
+int sum(map<int, int> &t, int i) {
 	int res = 0;
 	for (; i >= 0; i -= (i + 1) & -(i + 1))
 		if (t.count(i)) res += t[i];
 	return res;
 }
 
-// sum[a,b]
-int sum(int a, int b) {
-	return sum(b) - sum(a - 1);
-}
-
-int get(int i) {
-	return sum(i, i);
-}
-
-void set(int i, int value) {
-	add(i, -get(i) + value);
-}
-
 // Usage example
 int main() {
-	set(0, 4);
-	set(1, 5);
-	set(2, 5);
-	add(2, 5);
+	map<int, int> t;
+	add(t, 0, 4);
+	add(t, 1, 5);
+	add(t, 2, 5);
+	add(t, 2, 5);
 
-	cout << (4 == get(0)) << endl;
-	cout << (15 == sum(1, 2)) << endl;
-	cout << (19 == sum(0, 2)) << endl;
-	cout << (19 == sum(0, 1000000000)) << endl;
+	cout << (4 == sum(t, 0)) << endl;
+	cout << (19 == sum(t, 2)) << endl;
+	cout << (19 == sum(t, 1000000000)) << endl;
 }

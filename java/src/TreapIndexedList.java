@@ -190,7 +190,7 @@ public class TreapIndexedList {
 			} else if (cmd < 5 && list.size() > 0) {
 				int b = rnd.nextInt(list.size());
 				int a = rnd.nextInt(b + 1);
-				int delta = rnd.nextInt(100);
+				int delta = rnd.nextInt(100) - 50;
 				for (int i = a; i <= b; i++)
 					list.set(i, joinValueWithDelta(list.get(i), delta, 1));
 				treap = modify(treap, a, b, delta);

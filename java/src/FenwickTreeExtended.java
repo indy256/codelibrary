@@ -1,4 +1,4 @@
-public class FenwickTreeExtra {
+public class FenwickTreeExtended {
 
 	public static void add(int[] t, int i, int value) {
 		for (; i < t.length; i += (i + 1) & -(i + 1))

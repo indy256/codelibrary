@@ -1,3 +1,5 @@
+import java.util.*;
+
 public class SegmentTree {
 
 	// specific code
@@ -82,15 +84,42 @@ public class SegmentTree {
 		value[root] = joinValues(value[2 * root + 1], value[2 * root + 2]);
 	}
 
-	// Usage example
+	// Random test
 	public static void main(String[] args) {
-		int n = 10;
-		SegmentTree t = new SegmentTree(n);
-		t.modify(4, 6, 1);
-		System.out.println(0 == t.query(0, 3));
-		t.modify(3, 7, 2);
-		System.out.println(3 == t.query(6, 6));
-		t.modify(0, 1, 9);
-		System.out.println(3 == t.query(5, 7));
+		Random rnd = new Random(1);
+		for (int step = 0; step < 1000; step++) {
+			int n = rnd.nextInt(50) + 1;
+			int[] x = new int[n];
+			Arrays.fill(x, INIT_VALUE);
+			SegmentTree t = new SegmentTree(n);
+			for (int i = 0; i < 1000; i++) {
+				int b = rnd.nextInt(n);
+				int a = rnd.nextInt(b + 1);
+				int cmd = rnd.nextInt(3);
+				if (cmd == 0) {
+					int delta = rnd.nextInt(100) - 50;
+					t.modify(a, b, delta);
+					for (int j = a; j <= b; j++)
+						x[j] = joinValueWithDelta(x[j], delta, 1);
+				} else if (cmd == 1) {
+					int res1 = t.query(a, b);
+					int res2 = x[a];
+					for (int j = a + 1; j <= b; j++)
+						res2 = joinValues(res2, x[j]);
+					if (res1 != res2) {
+						System.err.println("error");
+						return;
+					}
+				} else {
+					for (int j = 0; j < n; j++) {
+						if (t.query(j, j) != x[j]) {
+							System.err.println("error");
+							return;
+						}
+					}
+				}
+			}
+		}
+		System.out.println("Test passed");
 	}
 }

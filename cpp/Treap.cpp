@@ -190,11 +190,11 @@ int main() {
 		} else if (cmd < 4 && list.size() > 0) {
 			int b = rand() % list.size();
 			int a = rand() % (b + 1);
-			int res = list[a];
+			int res1 = list[a];
 			for (int i = a + 1; i <= b; i++)
-				res = joinValues(res, list[i]);
-			int q = query(t, a, b);
-			if (res != q) {
+				res1 = joinValues(res, list[i]);
+			int res2 = query(t, a, b);
+			if (res1 != res2) {
 				for(int i = 0; i < list.size(); i++) cout << list[i] << endl;
 				print(t);
 				return 0;

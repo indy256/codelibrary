@@ -1,18 +1,13 @@
 public class FenwickTree2D {
-	int[][] t;
 
-	public FenwickTree2D(int R, int C) {
-		t = new int[R][C];
-	}
-
-	public void add(int r, int c, long value) {
+	public static void add(int[][] t, int r, int c, long value) {
 		for (int i = r; i < t.length; i += (i + 1) & -(i + 1))
 			for (int j = c; j < t[0].length; j += (j + 1) & -(j + 1))
 				t[i][j] += value;
 	}
 
 	// sum[(0, 0), (r, c)]
-	public int sum(int r, int c) {
+	public static int sum(int[][] t, int r, int c) {
 		int res = 0;
 		for (int i = r; i >= 0; i -= (i + 1) & -(i + 1))
 			for (int j = c; j >= 0; j -= (j + 1) & -(j + 1))
@@ -21,15 +16,22 @@ public class FenwickTree2D {
 	}
 
 	// sum[(r1, c1), (r2, c2)]
-	public int sum(int r1, int c1, int r2, int c2) {
-		return sum(r2, c2) - sum(r1 - 1, c2) - sum(r2, c1 - 1) + sum(r1 - 1, c1 - 1);
+	public static int sum(int[][] t, int r1, int c1, int r2, int c2) {
+		return sum(t, r2, c2) - sum(t, r1 - 1, c2) - sum(t, r2, c1 - 1) + sum(t, r1 - 1, c1 - 1);
 	}
 
-	public int get(int r, int c) {
-		return sum(r, c, r, c);
+	public static int get(int[][] t, int r, int c) {
+		return sum(t, r, c, r, c);
 	}
 
-	public void set(int r, int c, int value) {
-		add(r, c, -get(r, c) + value);
+	public static void set(int[][] t, int r, int c, int value) {
+		add(t, r, c, -get(t, r, c) + value);
+	}
+
+	// Usage example
+	public static void main(String[] args) {
+		int[][] t = new int[10][10];
+		add(t, 1, 2, 2);
+		System.out.println(2 == sum(t, 0, 0, 9, 9));
 	}
 }
