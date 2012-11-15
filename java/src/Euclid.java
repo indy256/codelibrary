@@ -61,6 +61,15 @@ public class Euclid {
 		return (euclid(a, m)[1] % m + m) % m;
 	}
 
+	// precondition: p is prime
+	public static int[] generateInverse(int p) {
+		int[] res = new int[p];
+		res[1] = 1;
+		for (int i = 2; i < p; ++i)
+			res[i] = (p - (p / i) * res[p % i] % p) % p;
+		return res;
+	}
+
 	// Usage example
 	public static void main(String[] args) {
 		Random rnd = new Random(1);
@@ -93,6 +102,9 @@ public class Euclid {
 		long a = 6;
 		long b = 9;
 		long[] res = euclid(a, b);
-		System.out.println(res[1] + " * (" + a + ") " + " + " + res[2] + " * (" + b + ") = gcd(a,b) = " + res[0]);
+		System.out.println(res[1] + " * (" + a + ") " + " + " + res[2] + " * (" + b + ") = gcd(" + a + "," + b + ") = "
+				+ res[0]);
+
+		System.out.println(Arrays.toString(generateInverse(7)));
 	}
 }

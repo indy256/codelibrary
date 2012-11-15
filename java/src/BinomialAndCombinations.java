@@ -1,7 +1,8 @@
+import java.math.BigInteger;
 import java.util.*;
 
-public class Combinations {
-	
+public class BinomialAndCombinations {
+
 	public static long[][] binomialTable(int maxn) {
 		long[][] c = new long[maxn + 1][maxn + 1];
 		for (int i = 0; i <= maxn; i++)
@@ -15,15 +16,32 @@ public class Combinations {
 	}
 
 	public static long binomial(long n, long m) {
-		if (n < m || n < 0 || m < 0) {
+		if (n < m || m < 0 || n < 0)
 			return 0;
-		}
 		long res = 1;
 		for (long i = 0; i < Math.min(m, n - m); i++) {
 			res = res / gcd(res, i + 1) * ((n - i) / ((i + 1) / gcd(res, i + 1)));
 			// res = res * (n - i) / (i + 1);
 		}
 		return res;
+	}
+
+	public static int factorial(int n, int mod) {
+		long result = 1;
+		for (int i = 2; i <= n; i++)
+			result = result * i % mod;
+		return (int) (result % mod);
+	}
+
+	public static int binomial(int n, int m, int mod) {
+		if (n < m || m < 0 || n < 0)
+			return 0;
+		if (2 * m > n)
+			m = n - m;
+		long res = 1;
+		for (int i = n - m + 1; i <= n; i++)
+			res = res * i % mod;
+		return (int) (res * BigInteger.valueOf(factorial(m, mod)).modInverse(BigInteger.valueOf(mod)).intValue() % mod);
 	}
 
 	public static boolean nextCombination(int[] p, int n) {
