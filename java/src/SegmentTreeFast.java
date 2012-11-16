@@ -133,7 +133,6 @@ public class SegmentTreeFast {
 						}
 					}
 				}
-
 			}
 		}
 		System.out.println("Test passed");

@@ -26,11 +26,11 @@ public class LCA {
 			return;
 		}
 		int mid = (left + right) >> 1;
-		int n0 = node * 2;
 		int n1 = node * 2 + 1;
-		buildTree(n0, left, mid);
-		buildTree(n1, mid + 1, right);
-		minPos[node] = depth[minPos[n0]] < depth[minPos[n1]] ? minPos[n0] : minPos[n1];
+		int n2 = node * 2 + 2;
+		buildTree(n1, left, mid);
+		buildTree(n2, mid + 1, right);
+		minPos[node] = depth[minPos[n1]] < depth[minPos[n2]] ? minPos[n1] : minPos[n2];
 	}
 
 	public LCA(List<Integer>[] tree, int root) {
@@ -44,7 +44,7 @@ public class LCA {
 		dfs(tree, root, 0);
 
 		minPos = new int[4 * n];
-		buildTree(1, 0, n - 1);
+		buildTree(0, 0, n - 1);
 
 		first = new int[nodes];
 		Arrays.fill(first, -1);
@@ -56,17 +56,17 @@ public class LCA {
 	}
 
 	public int lca(int a, int b) {
-		return minPos(1, 0, n - 1, Math.min(first[a], first[b]), Math.max(first[a], first[b]));
+		return minPos(0, 0, n - 1, Math.min(first[a], first[b]), Math.max(first[a], first[b]));
 	}
 
 	int minPos(int node, int left, int right, int a, int b) {
-		if (left > b || right < a)
+		if (a > right || b < left)
 			return -1;
-		if (left >= a && right <= b)
+		if (a <= left && right <= b)
 			return minPos[node];
 		int mid = (left + right) >> 1;
-		int p1 = minPos(node * 2, left, mid, a, b);
-		int p2 = minPos(node * 2 + 1, mid + 1, right, a, b);
+		int p1 = minPos(node * 2 + 1, left, mid, a, b);
+		int p2 = minPos(node * 2 + 2, mid + 1, right, a, b);
 		if (p1 == -1)
 			return p2;
 		if (p2 == -1)
@@ -87,7 +87,7 @@ public class LCA {
 		tree[4].add(6);
 		LCA q = new LCA(tree, 0);
 
-		System.out.println(q.lca(5, 6));
-		System.out.println(q.lca(3, 5));
+		System.out.println(4 == q.lca(5, 6));
+		System.out.println(1 == q.lca(3, 5));
 	}
 }
