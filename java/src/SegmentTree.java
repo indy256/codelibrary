@@ -43,12 +43,15 @@ public class SegmentTree {
 		}
 	}
 
+	void applyDelta(int root, int delta, int length) {
+		value[root] = joinValueWithDelta(value[root], delta, length);
+		this.delta[root] = joinDeltas(this.delta[root], delta);
+	}
+
 	void pushDelta(int root, int left, int right) {
-		delta[2 * root + 1] = joinDeltas(delta[2 * root + 1], delta[root]);
-		delta[2 * root + 2] = joinDeltas(delta[2 * root + 2], delta[root]);
 		int middle = (left + right) / 2;
-		value[2 * root + 1] = joinValueWithDelta(value[2 * root + 1], delta[root], middle - left + 1);
-		value[2 * root + 2] = joinValueWithDelta(value[2 * root + 2], delta[root], right - middle);
+		applyDelta(2 * root + 1, delta[root], middle - left + 1);
+		applyDelta(2 * root + 2, delta[root], right - middle);
 		delta[root] = NEUTRAL_DELTA;
 	}
 
@@ -74,8 +77,7 @@ public class SegmentTree {
 		if (a > right || b < left)
 			return;
 		if (a <= left && right <= b) {
-			this.delta[root] = joinDeltas(this.delta[root], delta);
-			value[root] = joinValueWithDelta(value[root], delta, right - left + 1);
+			applyDelta(root, delta, right - left + 1);
 			return;
 		}
 		pushDelta(root, left, right);
@@ -86,7 +88,7 @@ public class SegmentTree {
 
 	// Random test
 	public static void main(String[] args) {
-		Random rnd = new Random(1);
+		Random rnd = new Random();
 		for (int step = 0; step < 1000; step++) {
 			int n = rnd.nextInt(50) + 1;
 			int[] x = new int[n];
