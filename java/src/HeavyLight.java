@@ -2,130 +2,193 @@ import java.util.*;
 
 public class HeavyLight {
 
-	final int maxN = 100000;
-	int size[], p[];
-	List<Integer>[] c;
-	int tn, root[], num[];
-	int no[], pos[], t[];
-	int mpos, mem[];
-	int Time, t_in[], t_out[];
+	// specific code
+	static final int INIT_VALUE = 0;
+	static final int NEUTRAL_VALUE = Integer.MIN_VALUE;
+	static final int NEUTRAL_DELTA = 0;
 
-	public HeavyLight() {
-		size = new int[maxN];
-		p = new int[maxN];
-		c = new List[maxN];
-		for (int i = 0; i < maxN; i++) {
-			c[i] = new ArrayList<Integer>();
-		}
-		root = new int[maxN];
-		num = new int[maxN];
-		no = new int[maxN];
-		pos = new int[maxN];
-		t = new int[maxN];
-		mem = new int[2 * maxN];
-		t_in = new int[maxN];
-		t_out = new int[maxN];
+	static int joinValues(int leftValue, int rightValue) {
+		return Math.max(leftValue, rightValue);
 	}
 
-	void dfs(int v, int pr) {
-		int x;
-		t_in[v] = Time++;
-		p[v] = pr;
-		size[v] = 1;
+	static int joinDeltas(int oldDelta, int newDelta) {
+		return oldDelta + newDelta;
+	}
 
-		for (int i = 0; i < c[v].size(); i++)
-			if ((x = c[v].get(i)) != pr) {
-				dfs(x, v);
-				size[v] += size[x];
+	static int joinValueWithDelta(int value, int delta, int length) {
+		return value + delta;
+	}
+
+	// generic code
+	int[][] value;
+	int[][] delta;
+	int[][] len;
+
+	List<Integer>[] graph;
+	int[] size;
+	int[] parent;
+	int[] tin;
+	int[] tout;
+	int time;
+	int[] path;
+	int[] pathSize;
+	int[] pathPos;
+	int[] pathRoot;
+	int pathCount;
+
+	public HeavyLight(List<Integer>[] graph) {
+		this.graph = graph;
+		int n = graph.length;
+
+		size = new int[n];
+		parent = new int[n];
+		tin = new int[n];
+		tout = new int[n];
+		calcSizeParentTinTout(0, -1);
+
+		path = new int[n];
+		pathSize = new int[n];
+		pathPos = new int[n];
+		pathRoot = new int[n];
+		buildPaths(0, newPath(0));
+
+		value = new int[pathCount][];
+		delta = new int[pathCount][];
+		len = new int[pathCount][];
+
+		for (int i = 0; i < pathCount; i++) {
+			int m = pathSize[i];
+			value[i] = new int[2 * m];
+			Arrays.fill(value[i], INIT_VALUE);
+			delta[i] = new int[2 * m];
+			Arrays.fill(delta[i], NEUTRAL_DELTA);
+			len[i] = new int[2 * m];
+			Arrays.fill(len[i], m, 2 * m, 1);
+			for (int j = 2 * m - 1; j > 1; j -= 2)
+				len[i][j >> 1] = len[i][j] + len[i][j ^ 1];
+		}
+	}
+
+	void calcSizeParentTinTout(int u, int p) {
+		tin[u] = time++;
+		parent[u] = p;
+		size[u] = 1;
+		for (int v : graph[u])
+			if (v != p) {
+				calcSizeParentTinTout(v, u);
+				size[u] += size[v];
 			}
-		t_out[v] = Time++;
+		tout[u] = time++;
 	}
 
-	int new_t(int v) {
-		root[tn] = v;
-		return tn++;
+	int newPath(int u) {
+		pathRoot[pathCount] = u;
+		return pathCount++;
 	}
 
-	void build(int v, int v_no) {
-		int x;
-		no[v] = v_no;
-		pos[v] = num[v_no]++;
-		for (int i = 0; i < c[v].size(); i++)
-			if ((x = c[v].get(i)) != p[v])
-				build(x, 2 * size[x] > size[v] ? v_no : new_t(x));
-	}
-
-	void inc(int i, int j, int v) {
-		j += num[i];
-		// mem[t[i]][j] += v;
-		for (j /= 2; j > 0; j /= 2) {
-			// t[i][j] = Math.max(t[i][2 * (j)], t[i][2 * (j) + 1]);
+	void buildPaths(int u, int path) {
+		this.path[u] = path;
+		pathPos[u] = pathSize[path]++;
+		for (int v : graph[u]) {
+			if (v != parent[u])
+				buildPaths(v, 2 * size[v] > size[u] ? path : newPath(v));
 		}
 	}
 
-	int get(int i, int l, int r) {
-		int[] T = null;// t[i];
-		int N = num[i];
-		int res = 0;
-		for (l += N, r += N; l <= r; l /= 2, r /= 2) {
-			if (l % 2 == 1)
-				res = Math.max(res, T[l++]);
-			if (r % 2 == 0)
-				res = Math.max(res, T[r--]);
+	void applyDelta(int path, int i, int delta) {
+		value[path][i] = joinValueWithDelta(value[path][i], delta, len[path][i]);
+		this.delta[path][i] = joinDeltas(this.delta[path][i], delta);
+	}
+
+	void pushDelta(int path, int i) {
+		int d = 0;
+		for (; (i >> d) > 0; d++)
+			;
+		for (d -= 2; d >= 0; d--) {
+			int x = i >> d;
+			applyDelta(path, x, delta[path][x >> 1]);
+			applyDelta(path, x ^ 1, delta[path][x >> 1]);
+			delta[path][x >> 1] = NEUTRAL_DELTA;
+		}
+	}
+
+	void modifyPath(int path, int a, int b, int delta) {
+		a = pathPos[a] + pathSize[path];
+		b = pathPos[b] + pathSize[path];
+		pushDelta(path, a);
+		pushDelta(path, b);
+		int ta = -1;
+		int tb = -1;
+		for (; a <= b; a = (a + 1) >> 1, b = (b - 1) >> 1) {
+			if ((a & 1) != 0) {
+				applyDelta(path, a, delta);
+				if (ta == -1)
+					ta = a;
+			}
+			if ((b & 1) == 0) {
+				applyDelta(path, b, delta);
+				if (tb == -1)
+					tb = b;
+			}
+		}
+		for (int i = ta; i > 1; i >>= 1)
+			value[path][i >> 1] = joinValues(value[path][i], value[path][i ^ 1]);
+		for (int i = tb; i > 1; i >>= 1)
+			value[path][i >> 1] = joinValues(value[path][i], value[path][i ^ 1]);
+	}
+
+	int queryPath(int path, int a, int b) {
+		a = pathPos[a] + pathSize[path];
+		b = pathPos[b] + pathSize[path];
+		pushDelta(path, a);
+		pushDelta(path, b);
+		int res = NEUTRAL_VALUE;
+		for (; a <= b; a = (a + 1) >> 1, b = (b - 1) >> 1) {
+			if ((a & 1) != 0)
+				res = joinValues(res, value[path][a]);
+			if ((b & 1) == 0)
+				res = joinValues(res, value[path][b]);
 		}
 		return res;
 	}
 
-	boolean ancestor(int i, int j) {
-		return t_in[i] <= t_in[j] && t_out[j] <= t_out[i];
+	public void modify(int a, int b, int delta) {
+		for (; !isAncestor(b, pathRoot[path[a]]); a = parent[path[a]])
+			modifyPath(path[a], 0, pathPos[a], delta);
+		for (; !isAncestor(a, pathRoot[path[b]]); b = parent[path[b]])
+			modifyPath(path[b], 0, pathPos[b], delta);
+		modifyPath(path[a], Math.min(pathPos[a], pathPos[b]), Math.max(pathPos[a], pathPos[b]), delta);
+	}
+
+	boolean isAncestor(int ch, int p) {
+		return tin[p] <= tin[ch] && tout[ch] <= tout[p];
+	}
+
+	public int query(int a, int b) {
+		int res = NEUTRAL_VALUE;
+		for (; !isAncestor(b, pathRoot[path[a]]); a = parent[path[a]])
+			res = joinValues(res, queryPath(path[a], 0, pathPos[a]));
+		for (; !isAncestor(a, pathRoot[path[b]]); b = parent[path[b]])
+			res = joinValues(res, queryPath(path[b], 0, pathPos[b]));
+		return joinValues(res, queryPath(path[a], Math.min(pathPos[a], pathPos[b]), Math.max(pathPos[a], pathPos[b])));
 	}
 
 	public static void main(String[] args) {
-		HeavyLight hv = new HeavyLight();
+		List<Integer>[] graph = new List[10];
+		for (int i = 0; i < graph.length; i++)
+			graph[i] = new ArrayList<Integer>();
+		graph[0].add(1);
+		graph[1].add(0);
+		graph[0].add(2);
+		graph[2].add(0);
+		graph[1].add(3);
+		graph[3].add(1);
+		HeavyLight hl = new HeavyLight(graph);
 
-		Scanner sc = new Scanner(System.in);
-		int n = sc.nextInt();
-
-		for (int i = 0; i < n - 1; i++) {
-			int a = sc.nextInt() - 1;
-			int b = sc.nextInt() - 1;
-
-			hv.c[a].add(b);
-			hv.c[b].add(a);
-		}
-
-		hv.dfs(0, -1);
-		hv.build(0, hv.new_t(0));
-
-		for (int i = 0; i < hv.tn; i++) {
-			// hv.t[i] = hv.mpos;
-			hv.mpos += 2 * hv.num[i];
-		}
-
-		int m = sc.nextInt();
-
-		while (m-- > 0) {
-			String c = sc.next();
-			if ("I".equals(c)) {
-				int a = sc.nextInt() - 1;
-				int b = sc.nextInt() - 1;
-				hv.inc(hv.no[a], hv.pos[a], b);
-			} else {
-				int a = sc.nextInt() - 1;
-				int b = sc.nextInt() - 1;
-				int res = 0;
-				for (int t = 0; t < 2; t++) {
-					int v;
-					while (!hv.ancestor(v = hv.root[hv.no[a]], b)) {
-						res = Math.max(res, hv.get(hv.no[a], 0, hv.pos[a]));
-						a = hv.p[v];
-					}
-					int x = a;
-					a = b;
-					b = x;
-				}
-				// printf("%d\n", max(res, get(no[a], min(pos[a], pos[b]), max(pos[a], pos[b]))));
-			}
-		}
+		hl.modify(0, 0, 50);
+		hl.modify(1, 1, 40);
+		hl.modify(2, 2, 30);
+		hl.modify(3, 3, 20);
+		System.out.println(hl.query(3, 1));
 	}
 }

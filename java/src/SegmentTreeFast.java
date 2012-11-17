@@ -20,19 +20,17 @@ public class SegmentTreeFast {
 	}
 
 	// generic code
-	int n;
 	int[] value;
 	int[] delta;
 	int[] len;
 
 	public SegmentTreeFast(int n) {
-		this.n = n;
 		value = new int[2 * n];
 		Arrays.fill(value, INIT_VALUE);
 		delta = new int[2 * n];
+		Arrays.fill(delta, NEUTRAL_DELTA);
 		len = new int[2 * n];
-		for (int i = n; i < 2 * n; i++)
-			len[i] = 1;
+		Arrays.fill(len, n, 2 * n, 1);
 		for (int i = 2 * n - 1; i > 1; i -= 2)
 			len[i >> 1] = len[i] + len[i ^ 1];
 	}
@@ -42,53 +40,48 @@ public class SegmentTreeFast {
 		this.delta[i] = joinDeltas(this.delta[i], delta);
 	}
 
-	void push(int i) {
-		applyDelta(i, delta[i >> 1]);
-		applyDelta(i ^ 1, delta[i >> 1]);
-		delta[i >> 1] = NEUTRAL_DELTA;
-	}
-
-	void pushDown(int i) {
-		int k;
-		for (k = 0; (i >> k) > 0; k++)
+	void pushDelta(int i) {
+		int d = 0;
+		for (; (i >> d) > 0; d++)
 			;
-		for (k -= 2; k >= 0; k--)
-			push(i >> k);
+		for (d -= 2; d >= 0; d--) {
+			int x = i >> d;
+			applyDelta(x, delta[x >> 1]);
+			applyDelta(x ^ 1, delta[x >> 1]);
+			delta[x >> 1] = NEUTRAL_DELTA;
+		}
 	}
 
-	void popUp(int i) {
-		for (; i > 1; i >>= 1)
-			value[i >> 1] = joinValues(value[i], value[i ^ 1]);
-	}
-
-	public void modify(int a, int b, int v) {
-		a += n;
-		b += n;
-		pushDown(a);
-		pushDown(b);
+	public void modify(int a, int b, int delta) {
+		a += value.length >> 1;
+		b += value.length >> 1;
+		pushDelta(a);
+		pushDelta(b);
 		int ta = -1;
 		int tb = -1;
 		for (; a <= b; a = (a + 1) >> 1, b = (b - 1) >> 1) {
 			if ((a & 1) != 0) {
-				applyDelta(a, v);
+				applyDelta(a, delta);
 				if (ta == -1)
 					ta = a;
 			}
 			if ((b & 1) == 0) {
-				applyDelta(b, v);
+				applyDelta(b, delta);
 				if (tb == -1)
 					tb = b;
 			}
 		}
-		popUp(ta);
-		popUp(tb);
+		for (int i = ta; i > 1; i >>= 1)
+			value[i >> 1] = joinValues(value[i], value[i ^ 1]);
+		for (int i = tb; i > 1; i >>= 1)
+			value[i >> 1] = joinValues(value[i], value[i ^ 1]);
 	}
 
 	public int query(int a, int b) {
-		a += n;
-		b += n;
-		pushDown(a);
-		pushDown(b);
+		a += value.length >> 1;
+		b += value.length >> 1;
+		pushDelta(a);
+		pushDelta(b);
 		int res = NEUTRAL_VALUE;
 		for (; a <= b; a = (a + 1) >> 1, b = (b - 1) >> 1) {
 			if ((a & 1) != 0)
