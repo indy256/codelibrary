@@ -1,3 +1,5 @@
+package trees;
+
 public class SegmentTreeFastAddMax {
 
 	public static int get(int[] t, int i) {

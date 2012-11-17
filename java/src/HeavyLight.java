@@ -113,8 +113,8 @@ public class HeavyLight {
 	}
 
 	void modifyPath(int path, int a, int b, int delta) {
-		a = pathPos[a] + pathSize[path];
-		b = pathPos[b] + pathSize[path];
+		a += value[path].length >> 1;
+		b += value[path].length >> 1;
 		pushDelta(path, a);
 		pushDelta(path, b);
 		int ta = -1;
@@ -138,8 +138,8 @@ public class HeavyLight {
 	}
 
 	int queryPath(int path, int a, int b) {
-		a = pathPos[a] + pathSize[path];
-		b = pathPos[b] + pathSize[path];
+		a += value[path].length >> 1;
+		b += value[path].length >> 1;
 		pushDelta(path, a);
 		pushDelta(path, b);
 		int res = NEUTRAL_VALUE;
@@ -152,43 +152,87 @@ public class HeavyLight {
 		return res;
 	}
 
+	boolean isAncestor(int p, int ch) {
+		return tin[p] <= tin[ch] && tout[ch] <= tout[p];
+	}
+
 	public void modify(int a, int b, int delta) {
-		for (; !isAncestor(b, pathRoot[path[a]]); a = parent[path[a]])
+		for (int root; !isAncestor(root = pathRoot[path[a]], b); a = parent[root])
 			modifyPath(path[a], 0, pathPos[a], delta);
-		for (; !isAncestor(a, pathRoot[path[b]]); b = parent[path[b]])
+		for (int root; !isAncestor(root = pathRoot[path[b]], a); b = parent[root])
 			modifyPath(path[b], 0, pathPos[b], delta);
 		modifyPath(path[a], Math.min(pathPos[a], pathPos[b]), Math.max(pathPos[a], pathPos[b]), delta);
 	}
 
-	boolean isAncestor(int ch, int p) {
-		return tin[p] <= tin[ch] && tout[ch] <= tout[p];
-	}
-
 	public int query(int a, int b) {
 		int res = NEUTRAL_VALUE;
-		for (; !isAncestor(b, pathRoot[path[a]]); a = parent[path[a]])
+		for (int root; !isAncestor(root = pathRoot[path[a]], b); a = parent[root])
 			res = joinValues(res, queryPath(path[a], 0, pathPos[a]));
-		for (; !isAncestor(a, pathRoot[path[b]]); b = parent[path[b]])
+		for (int root; !isAncestor(root = pathRoot[path[b]], a); b = parent[root])
 			res = joinValues(res, queryPath(path[b], 0, pathPos[b]));
 		return joinValues(res, queryPath(path[a], Math.min(pathPos[a], pathPos[b]), Math.max(pathPos[a], pathPos[b])));
 	}
 
+	// Random test
 	public static void main(String[] args) {
-		List<Integer>[] graph = new List[10];
-		for (int i = 0; i < graph.length; i++)
-			graph[i] = new ArrayList<Integer>();
-		graph[0].add(1);
-		graph[1].add(0);
-		graph[0].add(2);
-		graph[2].add(0);
-		graph[1].add(3);
-		graph[3].add(1);
-		HeavyLight hl = new HeavyLight(graph);
+		Random rnd = new Random();
+		for (int step = 0; step < 1000; step++) {
+			int n = rnd.nextInt(50) + 1;
+			List<Integer>[] tree = getRandomTree(n, rnd);
+			int[] x = new int[n];
+			Arrays.fill(x, INIT_VALUE);
+			HeavyLight hl = new HeavyLight(tree);
+			for (int i = 0; i < 1000; i++) {
+				int a = rnd.nextInt(n);
+				int b = rnd.nextInt(n);
+				List<Integer> path = new ArrayList<Integer>();
+				getPath(tree, a, b, -1, path);
+				if (rnd.nextBoolean()) {
+					int delta = rnd.nextInt(50) - 100;
+					hl.modify(a, b, delta);
+					for (int u : path)
+						x[u] = joinValueWithDelta(x[u], delta, 1);
+				} else {
+					int res1 = hl.query(a, b);
+					int res2 = NEUTRAL_VALUE;
+					for (int u : path)
+						res2 = joinValues(res2, x[u]);
+					if (res1 != res2) {
+						System.err.println("error");
+						return;
+					}
+				}
+			}
+		}
+		System.out.println("Test passed");
+	}
 
-		hl.modify(0, 0, 50);
-		hl.modify(1, 1, 40);
-		hl.modify(2, 2, 30);
-		hl.modify(3, 3, 20);
-		System.out.println(hl.query(3, 1));
+	static boolean getPath(List<Integer>[] tree, int a, int b, int p, List<Integer> path) {
+		path.add(a);
+		if (a == b)
+			return true;
+		for (int u : tree[a]) {
+			if (u != p && getPath(tree, u, b, a, path))
+				return true;
+		}
+		path.remove(path.size() - 1);
+		return false;
+	}
+
+	static List<Integer>[] getRandomTree(int n, Random rnd) {
+		List<Integer>[] t = new List[n];
+		for (int i = 0; i < n; i++)
+			t[i] = new ArrayList<Integer>();
+		List<Integer> p = new ArrayList<Integer>();
+		for (int i = 0; i < n; i++)
+			p.add(i);
+		Collections.shuffle(p, rnd);
+		for (int i = 1; i < n; i++) {
+			int child = p.get(i);
+			int parent = p.get(rnd.nextInt(i));
+			t[parent].add(child);
+			t[child].add(parent);
+		}
+		return t;
 	}
 }

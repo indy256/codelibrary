@@ -7,9 +7,10 @@ public class RandomGraph {
 		for (int i = 0; i < n; i++)
 			t[i] = new ArrayList<Integer>();
 		int[] p = getRandomPermutation(n, rnd);
-		for (int i = 0; i < n; i++) {
-			int parent = rnd.nextInt(i);
-			t[p[parent]].add(p[i]);
+		for (int i = 1; i < n; i++) {
+			int parent = p[rnd.nextInt(i)];
+			t[parent].add(p[i]);
+			t[p[i]].add(parent);
 		}
 		return t;
 	}
