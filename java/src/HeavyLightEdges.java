@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class HeavyLight {
+public class HeavyLightEdges {
 
 	// specific code
 	static final int INIT_VALUE = 0;
@@ -36,7 +36,7 @@ public class HeavyLight {
 	int[] pathRoot;
 	int pathCount;
 
-	public HeavyLight(List<Integer>[] graph) {
+	public HeavyLightEdges(List<Integer>[] graph) {
 		this.graph = graph;
 		int n = graph.length;
 
@@ -181,7 +181,7 @@ public class HeavyLight {
 			List<Integer>[] tree = getRandomTree(n, rnd);
 			int[] x = new int[n];
 			Arrays.fill(x, INIT_VALUE);
-			HeavyLight hl = new HeavyLight(tree);
+			HeavyLightEdges hl = new HeavyLightEdges(tree);
 			for (int i = 0; i < 1000; i++) {
 				int a = rnd.nextInt(n);
 				int b = rnd.nextInt(n);
