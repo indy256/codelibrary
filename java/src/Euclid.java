@@ -70,6 +70,35 @@ public class Euclid {
 		return res;
 	}
 
+	public static int simpleRestore(int[] mod, int[] p) {
+		int res = mod[0];
+		int add = p[0];
+		for (int i = 1; i < mod.length; i++) {
+			while (res % p[i] != mod[i])
+				res += add;
+			add *= p[i];
+		}
+		return res;
+	}
+
+	public static int garnerRestore(int[] mod, int[] p) {
+		int[] x = new int[mod.length];
+		for (int i = 0; i < x.length; ++i) {
+			x[i] = mod[i];
+			for (int j = 0; j < i; ++j) {
+				x[i] = (int) modInverse(p[j], p[i]) * (x[i] - x[j]);
+				x[i] = (x[i] % p[i] + p[i]) % p[i];
+			}
+		}
+		int res = x[0];
+		int add = p[0];
+		for (int i = 1; i < mod.length; i++) {
+			res += x[i] * add;
+			add *= p[i];
+		}
+		return res;
+	}
+
 	// Usage example
 	public static void main(String[] args) {
 		Random rnd = new Random(1);
