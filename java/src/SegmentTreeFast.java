@@ -26,9 +26,14 @@ public class SegmentTreeFast {
 
 	public SegmentTreeFast(int n) {
 		value = new int[2 * n];
-		Arrays.fill(value, INIT_VALUE);
+		for (int i = 0; i < n; i++)
+			value[i + n] = INIT_VALUE;
+		for (int i = 2 * n - 1; i > 1; i -= 2)
+			value[i >> 1] = joinValues(value[i], value[i ^ 1]);
+
 		delta = new int[2 * n];
 		Arrays.fill(delta, NEUTRAL_DELTA);
+
 		len = new int[2 * n];
 		Arrays.fill(len, n, 2 * n, 1);
 		for (int i = 2 * n - 1; i > 1; i -= 2)
