@@ -33,6 +33,18 @@ public class BinomialAndCombinations {
 		return (int) (result % mod);
 	}
 
+	// p - prime, p*log(n) complexity
+	int factorial2(int n, int p) {
+		int res = 1;
+		while (n > 1) {
+			res = (res * ((n / p) % 2 == 1 ? p - 1 : 1)) % p;
+			for (int i = 2; i <= n % p; ++i)
+				res = (res * i) % p;
+			n /= p;
+		}
+		return res % p;
+	}
+
 	public static int binomial(int n, int m, int mod) {
 		if (n < m || m < 0 || n < 0)
 			return 0;
