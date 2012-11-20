@@ -28,7 +28,7 @@ public class HashingOld {
 	// Usage example
 	public static void main(String[] args) {
 		String s = "123123";
-		Hashing h = new Hashing();
+		HashingOld h = new HashingOld();
 		h.buildHash(s);
 
 		System.out.println(true == h.equals(0, 3, 3));

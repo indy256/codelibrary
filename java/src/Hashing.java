@@ -3,15 +3,15 @@ import java.util.*;
 
 public class Hashing {
 
-	final int multiplier = 43;
+	static final int multiplier = 43;
 	static final Random rnd = new Random();
-	final int mod1 = BigInteger.valueOf((int) (1e9 + rnd.nextInt((int) 1e9))).nextProbablePrime().intValue();
-	final int mod2 = BigInteger.valueOf((int) (1e9 + rnd.nextInt((int) 1e9))).nextProbablePrime().intValue();
+	static final int mod1 = BigInteger.valueOf((int) (1e9 + rnd.nextInt((int) 1e9))).nextProbablePrime().intValue();
+	static final int mod2 = BigInteger.valueOf((int) (1e9 + rnd.nextInt((int) 1e9))).nextProbablePrime().intValue();
 	long[] p1, p2;
 	long[] hash1, hash2;
 	int n;
 
-	public void buildHash(String s) {
+	public Hashing(String s) {
 		n = s.length();
 		p1 = new long[n + 1];
 		p2 = new long[n + 1];
@@ -40,8 +40,7 @@ public class Hashing {
 	// Usage example
 	public static void main(String[] args) {
 		String s = "123123";
-		Hashing h = new Hashing();
-		h.buildHash(s);
+		Hashing h = new Hashing(s);
 
 		System.out.println(true == h.equals(0, 3, 3));
 		System.out.println(false == h.equals(1, 3, 2));
