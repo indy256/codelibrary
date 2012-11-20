@@ -16,11 +16,12 @@ public class Gauss {
 			for (int i = row + 1; i < n; i++)
 				a[row][i] /= a[row][row];
 			b[row] /= a[row][row];
-			a[row][row] = 1;
+			// a[row][row] = 1;
 			for (int i = 0; i < n; i++) {
 				double x = a[i][row];
 				if (i != row && x != 0) {
-					for (int j = 0; j < n; j++)
+					// row + 1 instead of row is an optimization
+					for (int j = row + 1; j < n; j++)
 						a[i][j] -= a[row][j] * x;
 					b[i] -= b[row] * x;
 				}
