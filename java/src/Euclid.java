@@ -72,11 +72,11 @@ public class Euclid {
 
 	public static int simpleRestore(int[] mod, int[] p) {
 		int res = mod[0];
-		int add = p[0];
+		int m = 1;
 		for (int i = 1; i < mod.length; i++) {
+			m *= p[i - 1];
 			while (res % p[i] != mod[i])
-				res += add;
-			add *= p[i];
+				res += m;
 		}
 		return res;
 	}
