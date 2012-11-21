@@ -36,16 +36,7 @@ public class NthElement {
 		a[j] = t;
 	}
 
-	static int[] getRandomPermutation(int n, Random rnd) {
-		int[] res = new int[n];
-		for (int i = 0; i < n; i++)
-			res[i] = i;
-		for (int i = res.length - 1; i > 0; i--)
-			swap(res, i, rnd.nextInt(i + 1));
-		return res;
-	}
-
-	// Usage example
+	// Random test
 	public static void main(String[] args) {
 		for (int step = 0; step < 100000; step++) {
 			int n = rnd.nextInt(10) + 1;
@@ -56,5 +47,14 @@ public class NthElement {
 				System.err.println(res + " " + k);
 			}
 		}
+	}
+
+	static int[] getRandomPermutation(int n, Random rnd) {
+		int[] res = new int[n];
+		for (int i = 0; i < n; i++)
+			res[i] = i;
+		for (int i = res.length - 1; i > 0; i--)
+			swap(res, i, rnd.nextInt(i + 1));
+		return res;
 	}
 }

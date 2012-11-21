@@ -1,4 +1,6 @@
 package trees;
+import SegmentTreeFastAddMax;
+
 import java.util.Random;
 
 public class SegmentTreeTest {
