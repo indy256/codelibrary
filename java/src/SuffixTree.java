@@ -122,8 +122,8 @@ public class SuffixTree {
 
 	// Usage example
 	public static void main(String[] args) {
-		String s1 = "12345";
-		String s2 = "124234";
+		String s1 = "abcde";
+		String s2 = "abdbcd";
 		// build generalized suffix tree (see Gusfield, p.125)
 		String s = s1 + '\1' + s2 + '\2';
 		Node root = buildSuffixTree(s);
