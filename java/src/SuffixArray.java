@@ -2,62 +2,55 @@ import java.util.*;
 
 public class SuffixArray {
 
-	// Builds suffix array in O(n*log(n))
-	public static int[] suffixArray(String s) {
-		s += '\0';
-		int n = s.length();
-		char[] a = s.toCharArray();
-		int[] p = new int[n];
-		int[] cnt256 = new int[256];
+	// suffix array in O(n*log(n))
+	public static int[] suffixArray(String str) {
+		int n = str.length();
+		// sa[i] - suffix on i'th position after sorting by first len characters
+		int[] sa = new int[n];
+		// rank[i] - position of the i'th suffix after sorting by first len characters
+		int[] rank = new int[n];
+		int maxlen = n;
 		for (int i = 0; i < n; i++) {
-			++cnt256[a[i]];
+			rank[i] = str.charAt(i);
+			maxlen = Math.max(maxlen, str.charAt(i) + 1);
 		}
-		for (int i = 1; i < 256; i++) {
-			cnt256[i] += cnt256[i - 1];
-		}
-		for (int i = n - 1; i >= 0; i--) {
-			p[--cnt256[a[i]]] = i;
-		}
-		int classes = 0;
-		int[] c = new int[n];
-		int[] cnt = new int[n];
-		for (int i = 1; i < n; i++) {
-			if (a[p[i - 1]] != a[p[i]]) {
-				cnt[++classes] = i;
-			}
-			c[p[i]] = classes;
-		}
-		int[] pn = new int[n];
-		int[] cn = new int[n];
-		for (int d = 1; d < n; d *= 2) {
-			System.arraycopy(p, 0, pn, 0, n);
-			for (int i = 0; i < n; i++) {
-				int p1 = pn[i] - d;
-				if (p1 >= 0) {
-					p[cnt[c[p1]]++] = p1;
-				}
-			}
-			classes = 0;
+
+		// counting sort
+		int[] cnt = new int[maxlen];
+		for (int i = 0; i < n; i++)
+			++cnt[rank[i]];
+		for (int i = 1; i < cnt.length; i++)
+			cnt[i] += cnt[i - 1];
+		for (int i = 0; i < n; i++)
+			sa[--cnt[rank[i]]] = i;
+
+		for (int len = 1; len < n; len *= 2) {
+			// Suffixes are already sorted by first len characters.
+			// Now sort suffixes by first len * 2 characters.
+			int[] r = rank.clone();
+			rank[sa[0]] = 0;
 			for (int i = 1; i < n; i++) {
-				if (n - p[i] <= d * 2 || n - p[i - 1] <= d * 2 || c[p[i - 1]] != c[p[i]]
-						|| c[p[i - 1] + d] != c[p[i] + d]) {
-					cnt[++classes] = i;
-				}
-				cn[p[i]] = classes;
+				int s1 = sa[i - 1];
+				int s2 = sa[i];
+				rank[s2] = r[s1] == r[s2] && Math.max(s1, s2) + len < n && r[s1 + len / 2] == r[s2 + len / 2] ? rank[s1] : i;
 			}
-			final int[] t = c;
-			c = cn;
-			cn = t;
+			for (int i = 0; i < n; i++)
+				cnt[i] = i;
+			int[] s = sa.clone();
+			for (int i = 0; i < n; i++) {
+				// s[i] - order of suffixes sorted by first len characters
+				// (s[i] - len) - order of suffixes sorted by second len characters
+				int s1 = s[i] - len;
+				if (s1 >= 0)
+					sa[cnt[rank[s1]]++] = s1;
+			}
 		}
-		int[] res = new int[p.length - 1];
-		System.arraycopy(p, 1, res, 0, res.length);
-		return res;
+		return sa;
 	}
 
+	// longest common prefixes array in O(n)
 	public static int[] lcp(int[] sa, String s) {
 		int n = sa.length;
-		if (n <= 1)
-			return new int[0];
 		int[] rank = new int[n];
 		for (int i = 0; i < n; i++)
 			rank[sa[i]] = i;
@@ -80,10 +73,23 @@ public class SuffixArray {
 		int[] sa = suffixArray(s);
 
 		// print suffixes in lexicographic order
-		for (int p : sa) {
+		for (int p : sa)
 			System.out.println(s.substring(p));
-		}
 
 		System.out.println("lcp = " + Arrays.toString(lcp(sa, s)));
+
+		// random test
+		Random rnd = new Random();
+		for (int step = 0; step < 100000; step++) {
+			int n = rnd.nextInt(20);
+			StringBuilder sb = new StringBuilder();
+			for (int i = 0; i < n; i++)
+				sb.append((char) ('a' + rnd.nextInt(26)));
+			int[] a = suffixArray(sb.toString());
+			for (int i = 0; i + 1 < n; i++)
+				if (sb.substring(a[i]).compareTo(sb.substring(a[i + 1])) >= 0)
+					throw new RuntimeException("error");
+		}
+		System.out.println("Test passed");
 	}
 }

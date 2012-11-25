@@ -125,7 +125,7 @@ public class Sort {
 		}
 		int n = a.length;
 		int[] b = new int[n];
-		for (int i = n - 1; i >= 0; i--) {
+		for (int i = 0; i < n; i++) {
 			b[--cnt[a[i]]] = a[i];
 		}
 		System.arraycopy(b, 0, a, 0, n);
@@ -134,22 +134,21 @@ public class Sort {
 	public static void radixSort(int[] a) {
 		final int d = 8;
 		final int w = 32;
-		int[] b = null;
+		int[] t = new int[a.length];
 		for (int p = 0; p < w / d; p++) {
-			int c[] = new int[1 << d];
+			int[] cnt = new int[1 << d];
 			// the next three for loops implement counting-sort
-			b = new int[a.length];
 			for (int i = 0; i < a.length; i++)
-				++c[((a[i] ^ Integer.MIN_VALUE) >>> d * p) & ((1 << d) - 1)];
+				++cnt[((a[i] ^ Integer.MIN_VALUE) >>> d * p) & ((1 << d) - 1)];
 			for (int i = 1; i < 1 << d; i++)
-				c[i] += c[i - 1];
+				cnt[i] += cnt[i - 1];
 			for (int i = a.length - 1; i >= 0; i--)
-				b[--c[((a[i] ^ Integer.MIN_VALUE) >>> d * p) & ((1 << d) - 1)]] = a[i];
-			System.arraycopy(b, 0, a, 0, a.length);
+				t[--cnt[((a[i] ^ Integer.MIN_VALUE) >>> d * p) & ((1 << d) - 1)]] = a[i];
+			System.arraycopy(t, 0, a, 0, a.length);
 		}
 	}
 
-	// Usage example
+	// random test
 	public static void main(String[] args) {
 		Random rnd = new Random(1);
 		for (int step = 0; step < 1000; step++) {

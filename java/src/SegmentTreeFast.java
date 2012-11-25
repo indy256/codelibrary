@@ -119,16 +119,13 @@ public class SegmentTreeFast {
 					int res2 = x[a];
 					for (int j = a + 1; j <= b; j++)
 						res2 = joinValues(res2, x[j]);
-					if (res1 != res2) {
-						System.err.println("error");
-						return;
-					}
+					if (res1 != res2)
+						throw new RuntimeException("error");
+
 				} else {
 					for (int j = 0; j < n; j++) {
-						if (t.query(j, j) != x[j]) {
-							System.err.println("error");
-							return;
-						}
+						if (t.query(j, j) != x[j])
+							throw new RuntimeException("error");
 					}
 				}
 			}

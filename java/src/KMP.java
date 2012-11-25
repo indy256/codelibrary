@@ -2,15 +2,15 @@ public class KMP {
 
 	public static int[] prefixFunction(String s) {
 		int[] p = new int[s.length()];
-		for (int i = 1, k = 0; i < s.length(); i++)
-			for (;; k = p[k - 1]) {
-				if (s.charAt(k) == s.charAt(i)) {
-					p[i] = ++k;
-					break;
-				}
-				if (k == 0)
-					break;
-			}
+		p[0] = 0;
+		int k = 0;
+		for (int i = 1; i < s.length(); i++) {
+			while (k > 0 && s.charAt(k) != s.charAt(i))
+				k = p[k - 1];
+			if (s.charAt(k) == s.charAt(i))
+				++k;
+			p[i] = k;
+		}
 		return p;
 	}
 

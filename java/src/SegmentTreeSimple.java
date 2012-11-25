@@ -27,9 +27,9 @@ public class SegmentTreeSimple {
 	public static void main(String[] args) {
 		int n = 11;
 		int[] t = new int[n + n];
-		add(t, 1, 2);
-		add(t, 2, 1);
-		add(t, 1, 5);
-		System.out.println(7 == max(t, 0, n - 1));
+		add(t, 1, 1);
+		add(t, 2, 2);
+		add(t, 1, 3);
+		System.out.println(4 == max(t, 0, n - 1));
 	}
 }
