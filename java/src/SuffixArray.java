@@ -3,7 +3,7 @@ import java.util.*;
 public class SuffixArray {
 
 	// suffix array in O(n*log(n))
-	public static int[] suffixArray(String str) {
+	public static int[] suffixArray(CharSequence str) {
 		int n = str.length();
 		// sa[i] - suffix on i'th position after sorting by first len characters
 		int[] sa = new int[n];
@@ -15,7 +15,7 @@ public class SuffixArray {
 			maxlen = Math.max(maxlen, str.charAt(i) + 1);
 		}
 
-		// counting sort
+		// counting sort of input characters
 		int[] cnt = new int[maxlen];
 		for (int i = 0; i < n; i++)
 			++cnt[rank[i]];
