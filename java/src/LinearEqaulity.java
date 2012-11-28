@@ -1,6 +1,6 @@
 public class LinearEqaulity {
 
-	// number of integer non-negative solutions of equality a[0]*x + ... + a[n-1]*z = b
+	// number of integer solutions of equality a[0]*x1 + ... + a[n-1]*xn = b, xi >= 0
 	public static long countSolutions(int[] a, int b) {
 		long[] dp = new long[b + 1];
 		dp[0] = 1;
