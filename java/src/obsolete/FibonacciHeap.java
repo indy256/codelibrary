@@ -48,7 +48,7 @@
  *      nf      01/06/02        Removed all synchronization
  *
  */
-package org.jgrapht.util;
+package obsolete;
 
 import java.util.*;
 

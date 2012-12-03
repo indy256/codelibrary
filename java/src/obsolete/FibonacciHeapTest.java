@@ -36,7 +36,7 @@
  * -------
  * 20-Apr-2008 : Initial revision (JVS);
  */
-package org.jgrapht.util;
+package obsolete;
 
 import java.util.*;
 

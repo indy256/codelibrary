@@ -49,7 +49,7 @@
  *      JVS     06/24/06        Generics
  *
  */
-package org.jgrapht.util;
+package obsolete;
 
 /**
  * Implements a node of the Fibonacci heap. It holds the information necessary

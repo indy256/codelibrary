@@ -1,3 +1,4 @@
+package obsolete;
 import static java.util.Arrays.fill;
 
 import java.util.Arrays;
@@ -150,8 +151,8 @@ public class RangeCoder {
             int[] b = codec.decode(n);
             boolean ok = Arrays.equals(a, b);
             if (!ok) {
-                Algo.debug(a);
-                Algo.debug(b);
+                debug(a);
+                debug(b);
             }
         }
     }
