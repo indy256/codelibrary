@@ -180,8 +180,7 @@ public class HeavyLightEdges {
 			res = joinValues(res, queryPath(path[b], 0, pathPos[b]));
 		if (pathPos[a] == pathPos[b])
 			return res;
-		return joinValues(res,
-				queryPath(path[a], Math.min(pathPos[a], pathPos[b]) + 1, Math.max(pathPos[a], pathPos[b])));
+		return joinValues(res, queryPath(path[a], Math.min(pathPos[a], pathPos[b]) + 1, Math.max(pathPos[a], pathPos[b])));
 	}
 
 	// Random test
@@ -214,10 +213,8 @@ public class HeavyLightEdges {
 						long key = edge(path.get(j), path.get(j + 1));
 						res2 = joinValues(res2, x.get(key));
 					}
-					if (res1 != res2) {
-						System.err.println("error");
-						return;
-					}
+					if (res1 != res2)
+						throw new RuntimeException("error");
 				}
 			}
 		}

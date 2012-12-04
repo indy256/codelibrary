@@ -203,10 +203,8 @@ public class HeavyLightVertices {
 					int res2 = NEUTRAL_VALUE;
 					for (int u : path)
 						res2 = joinValues(res2, x[u]);
-					if (res1 != res2) {
-						System.err.println("error");
-						return;
-					}
+					if (res1 != res2)
+						throw new RuntimeException("error");
 				}
 			}
 		}

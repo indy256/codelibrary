@@ -75,15 +75,15 @@ public class LCA {
 
 	// Random test
 	public static void main(String[] args) {
-		Random rnd = new Random(1);
+		Random rnd = new Random();
 		for (int step = 0; step < 1000; step++) {
-			//System.out.println(step);
 			int n = rnd.nextInt(50) + 1;
-			n=2;
 			List<Integer>[] tree = getRandomTree(n, rnd);
 			int[] depth = new int[n];
- 			calcDepth(tree, depth, 0, 0);
-			LCA q = new LCA(tree, 0);
+			Arrays.fill(depth, -1);
+			int root = rnd.nextInt(n);
+			calcDepth(tree, depth, root, 0);
+			LCA q = new LCA(tree, root);
 			for (int i = 0; i < 1000; i++) {
 				int a = rnd.nextInt(n);
 				int b = rnd.nextInt(n);
@@ -91,14 +91,11 @@ public class LCA {
 				getPath(tree, a, b, -1, path);
 				int res1 = q.lca(a, b);
 				int res2 = a;
-				for (int u : path) {
+				for (int u : path)
 					if (depth[res2] > depth[u])
 						res2 = u;
-				}
-				if (res1 != res2) {
-					System.err.println("error");
-					return;
-				}
+				if (res1 != res2)
+					throw new RuntimeException("error");
 			}
 		}
 		System.out.println("Test passed");
@@ -138,27 +135,4 @@ public class LCA {
 			if (depth[v] == -1)
 				calcDepth(tree, depth, v, d + 1);
 	}
-
-	// public static void main(String[] args) {
-	// List<Integer>[] tree = new List[7];
-	// for (int i = 0; i < tree.length; i++)
-	// tree[i] = new ArrayList<Integer>();
-	//
-	// tree[0].add(1);
-	// tree[1].add(0);
-	// tree[0].add(2);
-	// tree[2].add(0);
-	// tree[1].add(3);
-	// tree[3].add(1);
-	// tree[1].add(4);
-	// tree[4].add(1);
-	// tree[4].add(5);
-	// tree[5].add(4);
-	// tree[4].add(6);
-	// tree[6].add(4);
-	// LCA q = new LCA(tree, 0);
-	//
-	// System.out.println(4 == q.lca(5, 6));
-	// System.out.println(1 == q.lca(3, 5));
-	// }
 }
