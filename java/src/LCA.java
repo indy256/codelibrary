@@ -12,12 +12,11 @@ public class LCA {
 	void dfs(List<Integer>[] tree, int u, int d) {
 		depth[u] = d;
 		dfs_order[cnt++] = u;
-		for (int v : tree[u]) {
+		for (int v : tree[u])
 			if (depth[v] == -1) {
 				dfs(tree, v, d + 1);
 				dfs_order[cnt++] = u;
 			}
-		}
 	}
 
 	void buildTree(int node, int left, int right) {
@@ -74,20 +73,92 @@ public class LCA {
 		return depth[p1] < depth[p2] ? p1 : p2;
 	}
 
+	// Random test
 	public static void main(String[] args) {
-		List<Integer>[] tree = new List[7];
-		for (int i = 0; i < tree.length; i++) {
-			tree[i] = new ArrayList<Integer>();
+		Random rnd = new Random(1);
+		for (int step = 0; step < 1000; step++) {
+			//System.out.println(step);
+			int n = rnd.nextInt(50) + 1;
+			n=2;
+			List<Integer>[] tree = getRandomTree(n, rnd);
+			int[] depth = new int[n];
+ 			calcDepth(tree, depth, 0, 0);
+			LCA q = new LCA(tree, 0);
+			for (int i = 0; i < 1000; i++) {
+				int a = rnd.nextInt(n);
+				int b = rnd.nextInt(n);
+				List<Integer> path = new ArrayList<Integer>();
+				getPath(tree, a, b, -1, path);
+				int res1 = q.lca(a, b);
+				int res2 = a;
+				for (int u : path) {
+					if (depth[res2] > depth[u])
+						res2 = u;
+				}
+				if (res1 != res2) {
+					System.err.println("error");
+					return;
+				}
+			}
 		}
-		tree[0].add(1);
-		tree[0].add(2);
-		tree[1].add(3);
-		tree[1].add(4);
-		tree[4].add(5);
-		tree[4].add(6);
-		LCA q = new LCA(tree, 0);
-
-		System.out.println(4 == q.lca(5, 6));
-		System.out.println(1 == q.lca(3, 5));
+		System.out.println("Test passed");
 	}
+
+	static boolean getPath(List<Integer>[] tree, int a, int b, int p, List<Integer> path) {
+		path.add(a);
+		if (a == b)
+			return true;
+		for (int u : tree[a])
+			if (u != p && getPath(tree, u, b, a, path))
+				return true;
+		path.remove(path.size() - 1);
+		return false;
+	}
+
+	static List<Integer>[] getRandomTree(int n, Random rnd) {
+		List<Integer>[] t = new List[n];
+		for (int i = 0; i < n; i++)
+			t[i] = new ArrayList<Integer>();
+		List<Integer> p = new ArrayList<Integer>();
+		for (int i = 0; i < n; i++)
+			p.add(i);
+		Collections.shuffle(p, rnd);
+		for (int i = 1; i < n; i++) {
+			int child = p.get(i);
+			int parent = p.get(rnd.nextInt(i));
+			t[parent].add(child);
+			t[child].add(parent);
+		}
+		return t;
+	}
+
+	static void calcDepth(List<Integer>[] tree, int[] depth, int u, int d) {
+		depth[u] = d;
+		for (int v : tree[u])
+			if (depth[v] == -1)
+				calcDepth(tree, depth, v, d + 1);
+	}
+
+	// public static void main(String[] args) {
+	// List<Integer>[] tree = new List[7];
+	// for (int i = 0; i < tree.length; i++)
+	// tree[i] = new ArrayList<Integer>();
+	//
+	// tree[0].add(1);
+	// tree[1].add(0);
+	// tree[0].add(2);
+	// tree[2].add(0);
+	// tree[1].add(3);
+	// tree[3].add(1);
+	// tree[1].add(4);
+	// tree[4].add(1);
+	// tree[4].add(5);
+	// tree[5].add(4);
+	// tree[4].add(6);
+	// tree[6].add(4);
+	// LCA q = new LCA(tree, 0);
+	//
+	// System.out.println(4 == q.lca(5, 6));
+	// System.out.println(1 == q.lca(3, 5));
+	// }
 }

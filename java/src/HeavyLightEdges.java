@@ -232,10 +232,9 @@ public class HeavyLightEdges {
 		path.add(a);
 		if (a == b)
 			return true;
-		for (int u : tree[a]) {
+		for (int u : tree[a])
 			if (u != p && getPath(tree, u, b, a, path))
 				return true;
-		}
 		path.remove(path.size() - 1);
 		return false;
 	}

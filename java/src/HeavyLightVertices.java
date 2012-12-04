@@ -67,7 +67,7 @@ public class HeavyLightVertices {
 
 			delta[i] = new int[2 * m];
 			Arrays.fill(delta[i], NEUTRAL_DELTA);
-			
+
 			len[i] = new int[2 * m];
 			Arrays.fill(len[i], m, 2 * m, 1);
 			for (int j = 2 * m - 1; j > 1; j -= 2)
@@ -217,10 +217,9 @@ public class HeavyLightVertices {
 		path.add(a);
 		if (a == b)
 			return true;
-		for (int u : tree[a]) {
+		for (int u : tree[a])
 			if (u != p && getPath(tree, u, b, a, path))
 				return true;
-		}
 		path.remove(path.size() - 1);
 		return false;
 	}
