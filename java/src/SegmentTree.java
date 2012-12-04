@@ -2,7 +2,7 @@ import java.util.*;
 
 public class SegmentTree {
 
-	// specific code
+	// Modify this constants/methods to implement your custom operation on the tree
 	static final int INIT_VALUE = 0;
 	static final int NEUTRAL_VALUE = Integer.MIN_VALUE;
 	static final int NEUTRAL_DELTA = 0;
@@ -19,7 +19,7 @@ public class SegmentTree {
 		return value + delta;
 	}
 
-	// generic code
+	// generic tree code
 	int n;
 	int[] value;
 	int[] delta; // affects only child roots
