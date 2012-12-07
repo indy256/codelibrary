@@ -1,8 +1,11 @@
 import java.util.*;
 
-public class HeavyLightEdges {
+public class HeavyLight {
 
 	// specific code
+	// true - values on vertices, false - values on edges
+	static boolean VALUES_ON_VERTICES = true;
+
 	static final int INIT_VALUE = 0;
 	static final int NEUTRAL_VALUE = Integer.MIN_VALUE;
 	static final int NEUTRAL_DELTA = 0;
@@ -36,7 +39,7 @@ public class HeavyLightEdges {
 	int[] pathRoot;
 	int pathCount;
 
-	public HeavyLightEdges(List<Integer>[] graph) {
+	public HeavyLight(List<Integer>[] graph) {
 		this.graph = graph;
 		int n = graph.length;
 
@@ -167,9 +170,10 @@ public class HeavyLightEdges {
 			modifyPath(path[a], 0, pathPos[a], delta);
 		for (int root; !isAncestor(root = pathRoot[path[b]], a); b = parent[root])
 			modifyPath(path[b], 0, pathPos[b], delta);
-		if (a == b)
+		if (!VALUES_ON_VERTICES && a == b)
 			return;
-		modifyPath(path[a], Math.min(pathPos[a], pathPos[b]) + 1, Math.max(pathPos[a], pathPos[b]), delta);
+		modifyPath(path[a], Math.min(pathPos[a], pathPos[b]) + (VALUES_ON_VERTICES ? 0 : 1),
+				Math.max(pathPos[a], pathPos[b]), delta);
 	}
 
 	public int query(int a, int b) {
@@ -178,14 +182,45 @@ public class HeavyLightEdges {
 			res = joinValues(res, queryPath(path[a], 0, pathPos[a]));
 		for (int root; !isAncestor(root = pathRoot[path[b]], a); b = parent[root])
 			res = joinValues(res, queryPath(path[b], 0, pathPos[b]));
-		if (a == b)
+		if (!VALUES_ON_VERTICES && a == b)
 			return res;
-		return joinValues(res, queryPath(path[a], Math.min(pathPos[a], pathPos[b]) + 1, Math.max(pathPos[a], pathPos[b])));
+		return joinValues(
+				res,
+				queryPath(path[a], Math.min(pathPos[a], pathPos[b]) + (VALUES_ON_VERTICES ? 0 : 1),
+						Math.max(pathPos[a], pathPos[b])));
 	}
 
 	// Random test
 	public static void main(String[] args) {
-		Random rnd = new Random();
+		Random rnd = new Random(1);
+		VALUES_ON_VERTICES = true;
+		for (int step = 0; step < 1000; step++) {
+			int n = rnd.nextInt(50) + 1;
+			List<Integer>[] tree = getRandomTree(n, rnd);
+			int[] x = new int[n];
+			Arrays.fill(x, INIT_VALUE);
+			HeavyLight hl = new HeavyLight(tree);
+			for (int i = 0; i < 1000; i++) {
+				int a = rnd.nextInt(n);
+				int b = rnd.nextInt(n);
+				List<Integer> path = new ArrayList<Integer>();
+				getPath(tree, a, b, -1, path);
+				if (rnd.nextBoolean()) {
+					int delta = rnd.nextInt(50) - 100;
+					hl.modify(a, b, delta);
+					for (int u : path)
+						x[u] = joinValueWithDelta(x[u], delta, 1);
+				} else {
+					int res1 = hl.query(a, b);
+					int res2 = NEUTRAL_VALUE;
+					for (int u : path)
+						res2 = joinValues(res2, x[u]);
+					if (res1 != res2)
+						throw new RuntimeException("error");
+				}
+			}
+		}
+		VALUES_ON_VERTICES = false;
 		for (int step = 0; step < 1000; step++) {
 			int n = rnd.nextInt(50) + 1;
 			List<Integer>[] tree = getRandomTree(n, rnd);
@@ -193,7 +228,7 @@ public class HeavyLightEdges {
 			for (int u = 0; u < tree.length; u++)
 				for (int v : tree[u])
 					x.put(edge(u, v), INIT_VALUE);
-			HeavyLightEdges hl = new HeavyLightEdges(tree);
+			HeavyLight hl = new HeavyLight(tree);
 			for (int i = 0; i < 1000; i++) {
 				int a = rnd.nextInt(n);
 				int b = rnd.nextInt(n);

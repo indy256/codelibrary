@@ -12,15 +12,11 @@ public class SuffixArray2 {
 			rank[i] = s.charAt(i);
 		}
 		for (int len = 1; len < n; len *= 2) {
-			final long[] rank2 = new long[n];
+			long[] rank2 = new long[n];
 			for (int i = 0; i < n; i++)
 				rank2[i] = ((long) rank[i] << 32) + (i + len < n ? rank[i + len] + 1 : 0);
 
-			Arrays.sort(sa, new Comparator<Integer>() {
-				public int compare(Integer a, Integer b) {
-					return Long.compare(rank2[a], rank2[b]);
-				}
-			});
+			Arrays.sort(sa, (a, b) -> Long.compare(rank2[a], rank2[b]));
 
 			for (int i = 0; i < n; i++)
 				rank[sa[i]] = i > 0 && rank2[sa[i - 1]] == rank2[sa[i]] ? rank[sa[i - 1]] : i;

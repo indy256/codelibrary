@@ -1,4 +1,5 @@
 package trees;
+
 public class SegmentTree2DFastAddMax {
 	int n;
 	int m;
@@ -24,12 +25,9 @@ public class SegmentTree2DFastAddMax {
 	}
 
 	public void add(int x, int y, int value) {
-		t[x + n][y + m] += value;
 		for (x += n; x > 0; x >>= 1) {
-			if (x > 1)
-				t[x >> 1][y + m] = Math.max(t[x][y + m], t[x ^ 1][y + m]);
-			for (int i = y + m; i > 1; i >>= 1) {
-				t[x][i >> 1] = Math.max(t[x][i], t[x][i ^ 1]);
+			for (int i = y + m; i > 0; i >>= 1) {
+				t[x][i] = Math.max(t[x][i], value);
 			}
 		}
 	}
