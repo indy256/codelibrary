@@ -1,5 +1,3 @@
-package com.radiumone.engine.i10n.rubicon;
-
 public class LinkedCutTree {
 
 	static final int MAXN = 110000;
