@@ -167,7 +167,7 @@ public class HeavyLightEdges {
 			modifyPath(path[a], 0, pathPos[a], delta);
 		for (int root; !isAncestor(root = pathRoot[path[b]], a); b = parent[root])
 			modifyPath(path[b], 0, pathPos[b], delta);
-		if (pathPos[a] == pathPos[b])
+		if (a == b)
 			return;
 		modifyPath(path[a], Math.min(pathPos[a], pathPos[b]) + 1, Math.max(pathPos[a], pathPos[b]), delta);
 	}
@@ -178,7 +178,7 @@ public class HeavyLightEdges {
 			res = joinValues(res, queryPath(path[a], 0, pathPos[a]));
 		for (int root; !isAncestor(root = pathRoot[path[b]], a); b = parent[root])
 			res = joinValues(res, queryPath(path[b], 0, pathPos[b]));
-		if (pathPos[a] == pathPos[b])
+		if (a == b)
 			return res;
 		return joinValues(res, queryPath(path[a], Math.min(pathPos[a], pathPos[b]) + 1, Math.max(pathPos[a], pathPos[b])));
 	}
