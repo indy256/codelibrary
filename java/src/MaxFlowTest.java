@@ -13,14 +13,14 @@ public class MaxFlowTest {
 		int E = 1000000;
 		Random rnd = new Random(1);
 		List<Integer>[] g = RandomGraph.getRandomUndirectedConnectedGraph(V, E, rnd);
-		MaxFlowDinic f1 = new MaxFlowDinic();
+//		MaxFlowDinic f1 = new MaxFlowDinic();
 		MaxFlowDinicMatrix f2 = new MaxFlowDinicMatrix();
 		MaxFlowPreflow f3 = new MaxFlowPreflow();
 		MaxFlowRetreat f4 = new MaxFlowRetreat();
 
 		System.out.println("starting");
 
-		f1.init(V);
+//		f1.init(V);
 		f2.init(V);
 		f3.init(V);
 		f4.init(V);
@@ -28,7 +28,7 @@ public class MaxFlowTest {
 		for (int i = 0; i < g.length; i++) {
 			for (int j : g[i]) {
 				int cap = rnd.nextInt(100) + 1;
-				f1.addEdge(i, j, cap);
+//				f1.addEdge(i, j, cap);
 				f2.addEdge(i, j, cap);
 				f3.addEdge(i, j, cap);
 				f4.addEdge(i, j, cap);
@@ -36,8 +36,8 @@ public class MaxFlowTest {
 		}
 
 		long time = System.currentTimeMillis();
-		int flow1 = f1.maxFlow(0, V - 1);
-		System.out.println(System.currentTimeMillis() - time);
+//		int flow1 = f1.maxFlow(0, V - 1);
+//		System.out.println(System.currentTimeMillis() - time);
 
 		time = System.currentTimeMillis();
 		int flow2 = f2.maxFlow(0, V - 1);
@@ -51,6 +51,6 @@ public class MaxFlowTest {
 		int flow4 = f4.maxFlow(0, V - 1);
 		System.out.println(System.currentTimeMillis() - time);
 
-		System.out.println(flow1 + " " + flow2 + " " + flow3 + " " + flow4);
+		System.out.println(/*flow1 + */" " + flow2 + " " + flow3 + " " + flow4);
 	}
 }

@@ -1,2 +1,4 @@
 bin
-*.iws
+out
+.idea/workspace.xml
+.idea/findbugs-idea.xml

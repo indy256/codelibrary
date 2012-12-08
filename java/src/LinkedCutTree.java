@@ -3,7 +3,7 @@ public class LinkedCutTree {
 	static final int MAXN = 110000;
 
 	static class Node {
-		static final Node NILL = new Node(0, 0);
+		static final Node NILL = new Node();
 		Node l, r, p, pp;
 		int size;
 		int nodeValue;
@@ -13,11 +13,11 @@ public class LinkedCutTree {
 		Node(int size, int nodeValue) {
 			this.size = size;
 			this.nodeValue = nodeValue;
+			l = r = p = pp = NILL;
 		}
 
-		Node setLinks() {
-			l = r = p = pp = NILL;
-			return this;
+		Node() {
+			l = r = p = pp = this;
 		}
 
 		void push() {
@@ -144,9 +144,8 @@ public class LinkedCutTree {
 	}
 
 	public static void main(String[] args) {
-		Node.NILL.setLinks();
 		for (int i = 0; i < MAXN; i++)
-			v2n[i] = new Node(1, i).setLinks();
+			v2n[i] = new Node(1, i);
 		link(1, 0);
 		link(2, 0);
 		link(3, 2);
