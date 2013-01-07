@@ -13,7 +13,10 @@ public class LinkedCutTree {
 		Node(int size, int nodeValue) {
 			this.size = size;
 			this.nodeValue = nodeValue;
-			l = r = p = pp = NILL;
+			l = new Node();
+			r = new Node();
+			p = new Node();
+			pp = new Node();
 		}
 
 		Node() {
