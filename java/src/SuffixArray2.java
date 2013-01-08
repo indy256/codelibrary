@@ -16,6 +16,7 @@ public class SuffixArray2 {
 			for (int i = 0; i < n; i++)
 				rank2[i] = ((long) rank[i] << 32) + (i + len < n ? rank[i + len] + 1 : 0);
 
+			// java8 lambda syntax
 			Arrays.sort(sa, (a, b) -> Long.compare(rank2[a], rank2[b]));
 
 			for (int i = 0; i < n; i++)

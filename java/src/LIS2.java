@@ -17,7 +17,7 @@ public class LIS2 {
 		return hi;
 	}
 
-	public static int[] getLIS(int[] x) {
+	public static int[] getLis(int[] x) {
 		int n = x.length;
 		int[] pred = new int[n];
 		int[] antichains = new int[n + 1];
@@ -33,11 +33,11 @@ public class LIS2 {
 				pred[i] = tail[j - 1];
 			}
 		}
-		for (int pos = n;; pos--) {
-			if (antichains[pos] != Integer.MAX_VALUE) {
-				int[] res = new int[pos];
-				for (int j = tail[pos]; j != -1; j = pred[j]) {
-					res[--pos] = x[j];
+		for (int len = n;; len--) {
+			if (antichains[len] != Integer.MAX_VALUE) {
+				int[] res = new int[len];
+				for (int j = tail[len]; j != -1; j = pred[j]) {
+					res[--len] = x[j];
 				}
 				return res;
 			}
@@ -47,7 +47,35 @@ public class LIS2 {
 	// Usage example
 	public static void main(String[] args) {
 		int[] a = { 1, 5, 4, 2, 3, 7, 6 };
-		int[] lis = getLIS(a);
+		int[] lis = getLis(a);
 		System.out.println(Arrays.toString(lis));
+
+		Random rnd = new Random(1);
+		for (int step = 0; step < 10000; step++) {
+			int n = rnd.nextInt(10) + 1;
+			int[] s = new int[n];
+			for (int i = 0; i < n; i++)
+				s[i] = rnd.nextInt(10);
+			int res1 = getLis(s).length;
+			int res2 = getLisSlow(s);
+			if (res1 != res2)
+				throw new RuntimeException("error");
+		}
+	}
+
+	public static int getLisSlow(int[] s) {
+		int n = s.length;
+		int res = 0;
+		m1: for (int mask = 0; mask < 1 << n; mask++) {
+			List<Integer> a = new ArrayList<Integer>();
+			for (int i = 0; i < n; i++)
+				if ((mask & (1 << i)) != 0)
+					a.add(s[i]);
+			for (int i = 0; i + 1 < a.size(); i++)
+				if (a.get(i) >= a.get(i + 1))
+					continue m1;
+			res = Math.max(res, a.size());
+		}
+		return res;
 	}
 }
