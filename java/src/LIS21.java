@@ -1,14 +1,14 @@
 import java.util.*;
 
-public class LIS2 {
+public class LIS21 {
 
-	static int lower_bound(int[] a, int len, int key) {
+	static int upper_bound(int[] a, int key) {
 		int lo = -1;
-		int hi = len;
+		int hi = a.length;
 		while (hi - lo > 1) {
 			int mid = (lo + hi) / 2;
 			int midVal = a[mid];
-			if (midVal < key) {
+			if (midVal <= key) {
 				lo = mid;
 			} else {
 				hi = mid;
@@ -17,33 +17,36 @@ public class LIS2 {
 		return hi;
 	}
 
-	public static int[] lis(int[] a) {
-		int n = a.length;
-		int[] b = new int[n];
-		int[] len = new int[n];
-
-		int cnt = 0;
+	public static int[] getLis(int[] x) {
+		int n = x.length;
+		int[] pred = new int[n];
+		int[] antichains = new int[n + 1];
+		Arrays.fill(antichains, Integer.MAX_VALUE);
+		antichains[0] = Integer.MIN_VALUE;
+		int[] tail = new int[n + 1];
+		tail[0] = -1;
 		for (int i = 0; i < n; i++) {
-			// invariant: b[j] is the smallest number that ends a strictly-increasing subsequence of a[0..i-1] of length j+1
-			// len[j] = length of LIS ending at a[j] for all j=0..i-1
-			int j = lower_bound(b, cnt, a[i]);
-			if (j == cnt) ++cnt;
-			b[j] = a[i];
-			len[i] = j + 1;
+			int j = upper_bound(antichains, x[i]);
+			if (antichains[j - 1] < x[i]) {
+				antichains[j] = x[i];
+				tail[j] = i;
+				pred[i] = tail[j - 1];
+			}
 		}
-
-		// reconstruct some LIS
-		int[] res = new int[cnt];
-		for (int i = n - 1; i >= 0; i--)
-			if (len[i] == cnt && (cnt == res.length || a[i] < res[cnt]))
-				res[--cnt] = a[i];
-		return res;
+		for (int len = n;; len--)
+			if (antichains[len] != Integer.MAX_VALUE) {
+				int[] res = new int[len];
+				for (int j = tail[len]; j != -1; j = pred[j]) {
+					res[--len] = x[j];
+				}
+				return res;
+			}
 	}
 
 	// random test
 	public static void main(String[] args) {
-		int[] a = { 1, 5, 5, 4, 2, 3, 7, 6, 6 };
-		int[] lis = lis(a);
+		int[] a = { 1, 5, 4, 2, 3, 7, 6 };
+		int[] lis = getLis(a);
 		System.out.println(Arrays.toString(lis));
 
 		Random rnd = new Random(1);
@@ -52,7 +55,7 @@ public class LIS2 {
 			int[] s = new int[n];
 			for (int i = 0; i < n; i++)
 				s[i] = rnd.nextInt(10);
-			int res1 = lis(s).length;
+			int res1 = getLis(s).length;
 			int res2 = getLisSlow(s);
 			if (res1 != res2)
 				throw new RuntimeException("error");
