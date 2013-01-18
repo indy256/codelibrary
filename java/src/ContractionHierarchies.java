@@ -47,7 +47,18 @@ public class ContractionHierarchies {
 		return 10 * edgeDifference + 50 * originalEdgesCount + contractedNeighbors;
 	}
 
-	Collection<Shortcut> findShortcuts(List<Integer>[] g, List<Integer>[] rg, int v) {
+	Collection<Shortcut> findShortcuts(int[][] g, int[][] rg, int[][] dist, int v) {
+		final int[] incoming = rg[v];
+		final int[] outgoing = rg[v];
+
+		for (int i = 0; i < incoming.length; i++) {
+			int u = incoming[i];
+			int distUV = dist[u][i];
+
+
+		}
+
+
 		// we can use distance instead of weight, see prepareEdges where distance is overwritten by weight!
 		List<NodeCH> goalNodes = new ArrayList<NodeCH>();
 		Map<Long, Shortcut> shortcuts = new HashMap<Long, Shortcut>();
