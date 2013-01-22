@@ -227,7 +227,7 @@ public class PolygonAlgo {
 
 	Point[] convexCut(Point[] poly, Point p1, Point p2) {
 		int n = poly.length;
-		ArrayList<Point> res = new ArrayList<Point>();
+		List<Point> res = new ArrayList<>();
 		for (int i = 0, j = n - 1; i < n; j = i++) {
 			int d1 = sign(p2.sub(p1).cross(poly[i].sub(p1)));
 			int d2 = sign(p2.sub(p1).cross(poly[j].sub(p1)));

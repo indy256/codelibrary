@@ -9,7 +9,7 @@ public class CopyOfMinCostFlow2 {
 	void init(int n) {
 		graph = new List[n];
 		for (int i = 0; i < n; i++) {
-			graph[i] = new ArrayList<Edge>();
+			graph[i] = new ArrayList<>();
 		}
 	}
 
@@ -31,7 +31,7 @@ public class CopyOfMinCostFlow2 {
 	}
 
 	static class Path {
-		public List<Edge> edges = new ArrayList<Edge>();
+		public List<Edge> edges = new ArrayList<>();
 		public int f;
 	}
 

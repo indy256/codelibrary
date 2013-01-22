@@ -3,7 +3,7 @@ import java.util.*;
 public class PerfectMatchingCount {
 
 	static class Vertex {
-		List<Vertex> adj = new ArrayList<Vertex>();
+		List<Vertex> adj = new ArrayList<>();
 		int id, max;
 	}
 
@@ -72,7 +72,7 @@ public class PerfectMatchingCount {
 	}
 
 	static Vertex[] convert(boolean[][] g) {
-		List<Vertex> list = new ArrayList<Vertex>();
+		List<Vertex> list = new ArrayList<>();
 		for (int i = 0; i < g.length; i++)
 			list.add(new Vertex());
 		for (int i = 0; i < g.length; i++)

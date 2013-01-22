@@ -4,7 +4,7 @@ import java.util.*;
  * @author Andrey Naumenko
  */
 public class ContractionHierarchies {
-
+/*
 	int calculatePriority(List<Integer>[] g, List<Integer>[] rg, int v) {
 		// set of shortcuts that would be added if endNode v would be contracted next.
 		Collection<Shortcut> tmpShortcuts = findShortcuts(g, rg, v);
@@ -187,15 +187,16 @@ public class ContractionHierarchies {
 		int n = 3;
 		List<Edge>[] g = new List[n];
 		for (int i = 0; i < n; i++)
-			g[i] = new ArrayList<Edge>();
+			g[i] = new ArrayList<>();
 		g[2].add(new Edge(0, 1));
 		g[2].add(new Edge(1, 1));
 		g[0].add(new Edge(1, 1));
 		List<Edge>[] rg = new List[n];
 		for (int i = 0; i < n; i++)
-			rg[i] = new ArrayList<Edge>();
+			rg[i] = new ArrayList<>();
 		for (int i = 0; i < n; i++)
 			for (Edge e : g[i])
 				rg[e.t].add(new Edge(i, e.dist));
 	}
+	*/
 }

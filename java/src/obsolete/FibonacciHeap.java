@@ -435,8 +435,7 @@ public class FibonacciHeap<T>
         int arraySize =
             ((int) Math.floor(Math.log(nNodes) * oneOverLogPhi)) + 1;
 
-        List<FibonacciHeapNode<T>> array =
-            new ArrayList<FibonacciHeapNode<T>>(arraySize);
+        List<FibonacciHeapNode<T>> array = new ArrayList<>(arraySize);
 
         // Initialize degree array
         for (int i = 0; i < arraySize; i++) {

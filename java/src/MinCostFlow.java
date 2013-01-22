@@ -16,7 +16,7 @@ public class MinCostFlow {
 	public static List<Edge>[] createGraph(int n) {
 		List<Edge>[] graph = new List[n];
 		for (int i = 0; i < n; i++)
-			graph[i] = new ArrayList<Edge>();
+			graph[i] = new ArrayList<>();
 		return graph;
 	}
 

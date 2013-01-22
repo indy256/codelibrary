@@ -65,12 +65,12 @@ public class Permutations {
 	public static List<List<Integer>> decomposeIntoCycles(int[] p) {
 		int n = p.length;
 		boolean[] vis = new boolean[n];
-		List<List<Integer>> res = new ArrayList<List<Integer>>();
+		List<List<Integer>> res = new ArrayList<>();
 		for (int i = 0; i < n; i++) {
 			if (vis[i])
 				continue;
 			int j = i;
-			List<Integer> cur = new ArrayList<Integer>();
+			List<Integer> cur = new ArrayList<>();
 			do {
 				cur.add(j);
 				vis[j] = true;

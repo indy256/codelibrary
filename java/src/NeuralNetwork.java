@@ -65,7 +65,7 @@ public class NeuralNetwork {
 	}
 
 	public double[] getWeights() {
-		List<Double> rv = new ArrayList<Double>();
+		List<Double> rv = new ArrayList<>();
 		for (int i = 0; i < totalNo; i++)
 			for (double w : weights[i]) {
 				rv.add(w);

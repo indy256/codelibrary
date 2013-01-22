@@ -10,7 +10,7 @@ public class DYNACON_REF {
 		public Graph(int n) {
 			edges = new Set[n];
 			for (int i = 0; i < n; i++) {
-				edges[i] = new HashSet<Integer>();
+				edges[i] = new HashSet<>();
 			}
 		}
 

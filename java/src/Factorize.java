@@ -3,8 +3,8 @@ import java.util.*;
 public class Factorize {
 
 	public static TreeMap<Long, Integer> factorize(long n) {
-		TreeMap<Long, Integer> factors = new TreeMap<Long, Integer>();
-		for (long d = 2; n > 1;) {
+		TreeMap<Long, Integer> factors = new TreeMap<>();
+		for (long d = 2; n > 1; ) {
 			int cnt = 0;
 			while (n % d == 0) {
 				cnt++;
@@ -22,19 +22,16 @@ public class Factorize {
 	}
 
 	public static int[] getDivisors(int n) {
-		List<Integer> list = new ArrayList<Integer>();
-		for (int i = 1; (long) i * i <= n; i++) {
+		List<Integer> list = new ArrayList<>();
+		for (int i = 1; (long) i * i <= n; i++)
 			if (n % i == 0) {
 				list.add(i);
-				if (i * i != n) {
+				if (i * i != n)
 					list.add(n / i);
-				}
 			}
-		}
 		int[] res = new int[list.size()];
-		for (int i = 0; i < res.length; i++) {
+		for (int i = 0; i < res.length; i++)
 			res[i] = list.get(i);
-		}
 		Arrays.sort(res);
 		return res;
 	}

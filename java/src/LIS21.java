@@ -66,7 +66,7 @@ public class LIS21 {
 		int n = s.length;
 		int res = 0;
 		m1: for (int mask = 0; mask < 1 << n; mask++) {
-			List<Integer> a = new ArrayList<Integer>();
+			List<Integer> a = new ArrayList<>();
 			for (int i = 0; i < n; i++)
 				if ((mask & (1 << i)) != 0)
 					a.add(s[i]);

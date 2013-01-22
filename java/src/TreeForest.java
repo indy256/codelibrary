@@ -3,7 +3,7 @@ import java.util.*;
 public class TreeForest {
 
 	static class Node {
-		Set<Node> children = Collections.newSetFromMap(new IdentityHashMap<Node, Boolean>());
+		Set<Node> children = Collections.newSetFromMap(new IdentityHashMap<>());
 		Node parent;
 	}
 
@@ -26,7 +26,7 @@ public class TreeForest {
 	}
 
 	static Node lca(Node v, Node w) {
-		Set<Node> s = Collections.newSetFromMap(new IdentityHashMap<Node, Boolean>());
+		Set<Node> s = Collections.newSetFromMap(new IdentityHashMap<>());
 		for (; v != null; v = v.parent)
 			s.add(v);
 

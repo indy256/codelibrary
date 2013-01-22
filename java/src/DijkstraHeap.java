@@ -40,7 +40,7 @@ public class DijkstraHeap {
 		int n = cost.length;
 		List<Edge>[] edges = new List[n];
 		for (int i = 0; i < n; i++) {
-			edges[i] = new ArrayList<Edge>();
+			edges[i] = new ArrayList<>();
 			for (int j = 0; j < n; j++) {
 				if (cost[i][j] != 0) {
 					edges[i].add(new Edge(j, cost[i][j]));

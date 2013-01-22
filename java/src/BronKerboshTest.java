@@ -78,8 +78,8 @@ public class BronKerboshTest {
 		int[] all = new int[n];
 		for (int i = 0; i < n; i++)
 			all[i] = i;
-		List<Integer> res = new ArrayList<Integer>();
-		findMaximumIndependentSet(new ArrayList<Integer>(), res, graph, all, 0, n);
+		List<Integer> res = new ArrayList<>();
+		findMaximumIndependentSet(new ArrayList<>(), res, graph, all, 0, n);
 		return res;
 	}
 

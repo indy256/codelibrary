@@ -78,7 +78,7 @@ public class BellmanFord {
 	public static void main(String[] args) {
 		List<Edge>[] graph = new List[4];
 		for (int i = 0; i < graph.length; i++) {
-			graph[i] = new ArrayList<Edge>();
+			graph[i] = new ArrayList<>();
 		}
 		graph[0].add(new Edge(1, 1));
 		graph[1].add(new Edge(0, 1));

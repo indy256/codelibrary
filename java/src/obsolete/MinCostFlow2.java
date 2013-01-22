@@ -72,7 +72,7 @@ public class MinCostFlow2 {
 			this.n = n;
 			edges = new List[n];
 			for (int i = 0; i < n; i++) {
-				edges[i] = new ArrayList<Edge>();
+				edges[i] = new ArrayList<>();
 			}
 		}
 
@@ -103,7 +103,7 @@ public class MinCostFlow2 {
 	}
 
 	public static class Path {
-		public List<Edge> edges = new ArrayList<Edge>();
+		public List<Edge> edges = new ArrayList<>();
 		public int f;
 	}
 

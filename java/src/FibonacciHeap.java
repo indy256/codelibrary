@@ -5,7 +5,7 @@ public class FibonacciHeap {
 	/**
 	 * Maps from elements to nodes
 	 */
-	protected Map<Object, Node> nodes = new HashMap<Object, Node>();
+	protected Map<Object, Node> nodes = new HashMap<>();
 
 	protected Node min;
 

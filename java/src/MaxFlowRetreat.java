@@ -21,7 +21,7 @@ public class MaxFlowRetreat {
 	public void init(int nodes) {
 		graph = new List[nodes];
 		for (int i = 0; i < nodes; i++)
-			graph[i] = new ArrayList<Edge>();
+			graph[i] = new ArrayList<>();
 		pred = new Edge[nodes];
 		dist = new int[nodes];
 		Q = new int[nodes];

@@ -161,7 +161,7 @@ public class TreapIndexedList {
 	// Random test
 	public static void main(String[] args) {
 		Treap treap = null;
-		List<Integer> list = new ArrayList<Integer>();
+		List<Integer> list = new ArrayList<>();
 		Random rnd = new Random();
 		for (int step = 0; step < 100000; step++) {
 			int cmd = rnd.nextInt(6);

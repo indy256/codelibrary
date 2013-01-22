@@ -1,11 +1,11 @@
 import java.util.*;
 
 public class Graph {
-	public Map<Integer, Set<Integer>> edges = new TreeMap<Integer, Set<Integer>>();
+	public Map<Integer, Set<Integer>> edges = new TreeMap<>();
 
 	public void addNode(int u) {
 		if (!edges.containsKey(u)) {
-			edges.put(u, new TreeSet<Integer>());
+			edges.put(u, new TreeSet<>());
 		}
 	}
 

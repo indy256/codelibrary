@@ -5,7 +5,7 @@ public class RandomGraph {
 	public static List<Integer>[] getRandomTree2(int n, Random rnd) {
 		List<Integer>[] t = new List[n];
 		for (int i = 0; i < n; i++)
-			t[i] = new ArrayList<Integer>();
+			t[i] = new ArrayList<>();
 		int[] p = getRandomPermutation(n, rnd);
 		for (int i = 1; i < n; i++) {
 			int parent = p[rnd.nextInt(i)];
@@ -19,13 +19,13 @@ public class RandomGraph {
 		int n = a.length + 2;
 		List<Integer>[] t = new List[n];
 		for (int i = 0; i < n; i++) {
-			t[i] = new ArrayList<Integer>();
+			t[i] = new ArrayList<>();
 		}
 		int[] degree = new int[n];
 		for (int x : a) {
 			++degree[x];
 		}
-		PriorityQueue<Long> q = new PriorityQueue<Long>();
+		PriorityQueue<Long> q = new PriorityQueue<>();
 		for (int i = 0; i < n; i++) {
 			++degree[i];
 			q.add(((long) degree[i] << 32) + i);
@@ -64,7 +64,7 @@ public class RandomGraph {
 	// precondition: V >= 2, V-1 <= E <= V*(V-1)/2
 	public static List<Integer>[] getRandomUndirectedConnectedGraph(int V, int E, Random rnd) {
 		List<Integer>[] g = getRandomTree(V, rnd);
-		Set<Long> edgeSet = new LinkedHashSet<Long>();
+		Set<Long> edgeSet = new LinkedHashSet<>();
 		for (int i = 0; i < V; i++) {
 			for (int j = i + 1; j < V; j++) {
 				edgeSet.add(((long) i << 32) + j);
@@ -75,7 +75,7 @@ public class RandomGraph {
 				edgeSet.remove(((long) i << 32) + j);
 			}
 		}
-		List<Long> edges = new ArrayList<Long>(edgeSet);
+		List<Long> edges = new ArrayList<>(edgeSet);
 		for (int x : getRandomCombination(edges.size(), E - (V - 1), rnd)) {
 			long e = edges.get(x);
 			int u = (int) (e >>> 32);

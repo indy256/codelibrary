@@ -22,7 +22,7 @@ public class KdTreePointQueryFast2Test {
 			int[] x = new int[n];
 			int[] y = new int[n];
 			KdTreePointQueryFast2.Point[] points = new KdTreePointQueryFast2.Point[n];
-			Set<Long> set = new HashSet<Long>();
+			Set<Long> set = new HashSet<>();
 			for (int i = 0; i < n; i++) {
 				do {
 					x[i] = rnd.nextInt(1000);
@@ -72,7 +72,7 @@ public class KdTreePointQueryFast2Test {
 		int[] x = new int[n];
 		int[] y = new int[n];
 		KdTreePointQueryFast2.Point[] points = new KdTreePointQueryFast2.Point[n];
-		Set<Long> set = new HashSet<Long>();
+		Set<Long> set = new HashSet<>();
 		for (int i = 0; i < n; i++) {
 			do {
 				x[i] = rnd.nextInt(1000000);

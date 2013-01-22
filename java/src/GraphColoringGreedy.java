@@ -7,7 +7,7 @@ public class GraphColoringGreedy {
 		int n = graph.length;
 		BitSet[] used = new BitSet[n];
 		int[] colors = new int[n];
-		PriorityQueue<Long> q = new PriorityQueue<Long>(n);
+		PriorityQueue<Long> q = new PriorityQueue<>(n);
 		for (int i = 0; i < n; i++) {
 			used[i] = new BitSet();
 			colors[i] = -1;
@@ -38,7 +38,7 @@ public class GraphColoringGreedy {
 		int n = 5;
 		List<Integer>[] g = new List[n];
 		for (int i = 0; i < n; i++) {
-			g[i] = new ArrayList<Integer>();
+			g[i] = new ArrayList<>();
 		}
 		for (int i = 0; i < n; i++) {
 			for (int j = 0; j < n; j++) {

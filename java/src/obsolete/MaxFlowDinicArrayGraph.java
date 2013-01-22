@@ -24,7 +24,7 @@ public class MaxFlowDinicArrayGraph {
 	public void init(int maxnodes) {
 		graph = new List[maxnodes];
 		for (int i = 0; i < maxnodes; i++) {
-			graph[i] = new ArrayList<Edge>();
+			graph[i] = new ArrayList<>();
 		}
 		work = new int[maxnodes];
 		Q = new int[maxnodes];

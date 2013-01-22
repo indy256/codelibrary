@@ -36,7 +36,7 @@ public class OuthsAndCrossesGeneric {
 		}
 	}
 
-	static Map<State, int[]> cache = new HashMap<State, int[]>();
+	static Map<State, int[]> cache = new HashMap<>();
 
 	static int[] dfs(State s) {
 		if (cache.containsKey(s))

@@ -5,12 +5,12 @@ import java.util.*;
 public class DYNACON1_2 {
 
 	static class GraphMap {
-		Map<Integer, Map<Integer, Integer>> edges = new HashMap<Integer, Map<Integer, Integer>>();
+		Map<Integer, Map<Integer, Integer>> edges = new HashMap<>();
 
 		void add0(int u, int v) {
 			Map<Integer, Integer> m = edges.get(u);
 			if (m == null) {
-				edges.put(u, m = new HashMap<Integer, Integer>());
+				edges.put(u, m = new HashMap<>());
 			}
 			Integer x = m.get(v);
 			if (x == null)
@@ -106,7 +106,7 @@ public class DYNACON1_2 {
 		PrintWriter pw = new PrintWriter(System.out);
 
 		int n = nextInt();
-		Set<Long> g = new HashSet<Long>();
+		Set<Long> g = new HashSet<>();
 
 		int q = nextInt();
 		int[] vt = new int[q];
@@ -132,7 +132,7 @@ public class DYNACON1_2 {
 		int block = (int) Math.sqrt(q);
 
 		for (int i = 0; i < q; i += block) {
-			List<Long> removedEdges = new ArrayList<Long>();
+			List<Long> removedEdges = new ArrayList<>();
 
 			for (int j = i; j < Math.min(i + block, q); j++) {
 				if (vt[j] == 1) {

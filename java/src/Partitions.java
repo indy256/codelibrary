@@ -77,7 +77,7 @@ public class Partitions {
 		System.out.println(204226 == countPartitions(50));
 		System.out.println(190569292 == countPartitions(100));
 
-		List<Integer> p = new ArrayList<Integer>();
+		List<Integer> p = new ArrayList<>();
 		Collections.addAll(p, 1, 1, 1, 1, 1);
 		do {
 			System.out.println(p);

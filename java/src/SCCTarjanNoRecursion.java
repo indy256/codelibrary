@@ -13,7 +13,7 @@ public class SCCTarjanNoRecursion {
 		Arrays.fill(index, -1);
 		int[] lowlink = new int[n];
 		int time = 0;
-		List<List<Integer>> components = new ArrayList<List<Integer>>();
+		List<List<Integer>> components = new ArrayList<>();
 
 		for (int u = 0; u < n; u++) {
 			if (index[u] == -1) {
@@ -47,7 +47,7 @@ public class SCCTarjanNoRecursion {
 							lowlink[prev] = Math.min(lowlink[prev], lowlink[cur]);
 						}
 						if (lowlink[cur] == index[cur]) {
-							List<Integer> component = new ArrayList<Integer>();
+							List<Integer> component = new ArrayList<>();
 							while (true) {
 								int v = stack[--st];
 								lowlink[v] = Integer.MAX_VALUE;
@@ -70,7 +70,7 @@ public class SCCTarjanNoRecursion {
 	public static void main(String[] args) {
 		List<Integer>[] g = new List[3];
 		for (int i = 0; i < g.length; i++)
-			g[i] = new ArrayList<Integer>();
+			g[i] = new ArrayList<>();
 
 		g[2].add(0);
 		g[2].add(1);

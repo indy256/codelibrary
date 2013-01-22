@@ -98,7 +98,7 @@ public class TreapSet {
 	// Usage example
 	public static void main(String[] args) {
 		Treap treap = null;
-		Set<Integer> set = new TreeSet<Integer>();
+		Set<Integer> set = new TreeSet<>();
 		for (int i = 0; i < 100000; i++) {
 			int x = random.nextInt(100000);
 			if (random.nextBoolean()) {
