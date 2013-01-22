@@ -1,4 +1,4 @@
 bin
 out
 .idea
-wikialgo.iml
+*.iml
