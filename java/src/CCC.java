@@ -10,7 +10,7 @@ public class CCC extends JFrame {
 		long[] z = new long[n];
 		for (int i = 0; i < n; i++)
 			z[i] = x[i] * x[i] + y[i] * y[i];
-		List<Triangle> res = new ArrayList<Triangle>();
+		List<Triangle> res = new ArrayList<>();
 		for (int i = 0; i < n - 2; i++) {
 			for (int j = i + 1; j < n; j++) {
 				m1: for (int k = i + 1; k < n; k++) {

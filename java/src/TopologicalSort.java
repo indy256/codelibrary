@@ -13,7 +13,7 @@ public class TopologicalSort {
 	public static List<Integer> topologicalSort(List<Integer>[] graph) {
 		int n = graph.length;
 		boolean[] used = new boolean[n];
-		List<Integer> res = new ArrayList<Integer>();
+		List<Integer> res = new ArrayList<>();
 		for (int i = 0; i < n; i++)
 			if (!used[i])
 				dfs(graph, used, res, i);
@@ -26,7 +26,7 @@ public class TopologicalSort {
 		int n = 3;
 		List<Integer>[] g = new List[n];
 		for (int i = 0; i < n; i++) {
-			g[i] = new ArrayList<Integer>();
+			g[i] = new ArrayList<>();
 		}
 		g[2].add(0);
 		g[2].add(1);

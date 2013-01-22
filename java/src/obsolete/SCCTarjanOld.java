@@ -17,7 +17,7 @@ public class SCCTarjanOld {
 		this.graph = graph;
 		lowlink = new int[n];
 		vis = new boolean[n];
-		stack = new ArrayList<Integer>();
+		stack = new ArrayList<>();
 		res = new int[n];
 		time = 0;
 		components = 0;
@@ -61,7 +61,7 @@ public class SCCTarjanOld {
 	public static void main(String[] args) {
 		List<Integer>[] g = new List[3];
 		for (int i = 0; i < g.length; i++)
-			g[i] = new ArrayList<Integer>();
+			g[i] = new ArrayList<>();
 		g[2].add(0);
 		g[2].add(1);
 		g[0].add(1);

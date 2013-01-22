@@ -14,7 +14,7 @@ public class CoverTreeTest {
 			long[] x = new long[n];
 			long[] y = new long[n];
 			CoverTree.Node[] nodes = new CoverTree.Node[n];
-			Set<Long> set = new HashSet<Long>();
+			Set<Long> set = new HashSet<>();
 			CoverTree tree = new CoverTree();
 			for (int i = 0; i < n; i++) {
 				do {
@@ -51,7 +51,7 @@ public class CoverTreeTest {
 		long[] x = new long[n];
 		long[] y = new long[n];
 		CoverTree.Node[] nodes = new CoverTree.Node[n];
-		Set<Long> set = new HashSet<Long>();
+		Set<Long> set = new HashSet<>();
 		CoverTree tree = new CoverTree();
 		for (int i = 0; i < n; i++) {
 			do {

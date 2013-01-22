@@ -22,7 +22,7 @@ public class MinCostFlowBF {
 		nodes = n;
 		graph = new List[n];
 		for (int i = 0; i < n; i++) {
-			graph[i] = new ArrayList<Edge>();
+			graph[i] = new ArrayList<>();
 		}
 		prio = new int[n];
 		curflow = new int[n];

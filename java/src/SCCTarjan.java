@@ -14,8 +14,8 @@ public class SCCTarjan {
 		this.graph = graph;
 		lowlink = new int[n];
 		used = new boolean[n];
-		stack = new ArrayList<Integer>();
-		components = new ArrayList<List<Integer>>();
+		stack = new ArrayList<>();
+		components = new ArrayList<>();
 		time = 0;
 
 		for (int u = 0; u < n; u++)
@@ -41,7 +41,7 @@ public class SCCTarjan {
 		}
 
 		if (isRoot) {
-			List<Integer> component = new ArrayList<Integer>();
+			List<Integer> component = new ArrayList<>();
 			while (true) {
 				int k = stack.remove(stack.size() - 1);
 				component.add(k);
@@ -57,7 +57,7 @@ public class SCCTarjan {
 	public static void main(String[] args) {
 		List<Integer>[] g = new List[3];
 		for (int i = 0; i < g.length; i++) {
-			g[i] = new ArrayList<Integer>();
+			g[i] = new ArrayList<>();
 		}
 		g[2].add(0);
 		g[2].add(1);

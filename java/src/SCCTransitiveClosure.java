@@ -20,14 +20,14 @@ public class SCCTransitiveClosure {
 
 	public static List<List<Integer>> scc(List<Integer>[] graph) {
 		boolean[][] d = transitiveClosure(graph);
-		List<List<Integer>> res = new ArrayList<List<Integer>>();
+		List<List<Integer>> res = new ArrayList<>();
 
 		int n = graph.length;
 		boolean[] used = new boolean[n];
 
 		for (int i = 0; i < n; i++) {
 			if (!used[i]) {
-				List<Integer> component = new ArrayList<Integer>();
+				List<Integer> component = new ArrayList<>();
 				for (int j = 0; j < n; j++)
 					if (i == j || d[i][j] && d[j][i]) {
 						component.add(j);
@@ -44,7 +44,7 @@ public class SCCTransitiveClosure {
 	public static void main(String[] args) {
 		List<Integer>[] g = new List[3];
 		for (int i = 0; i < g.length; i++)
-			g[i] = new ArrayList<Integer>();
+			g[i] = new ArrayList<>();
 
 		g[2].add(0);
 		g[2].add(1);

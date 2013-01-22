@@ -15,7 +15,7 @@ public class MaxFlowDinic {
 	public static List<Edge>[] createGraph(int nodes) {
 		List<Edge>[] graph = new List[nodes];
 		for (int i = 0; i < nodes; i++)
-			graph[i] = new ArrayList<Edge>();
+			graph[i] = new ArrayList<>();
 		return graph;
 	}
 

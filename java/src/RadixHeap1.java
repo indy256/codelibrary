@@ -12,7 +12,7 @@ public class RadixHeap1 {
 		++B;
 		b = new List[B];
 		for (int i = 0; i < b.length; i++) {
-			b[i] = new ArrayList<Long>();
+			b[i] = new ArrayList<>();
 		}
 		u = new int[B];
 		for (int i = 0; i + 1 < B; i++) {

@@ -14,11 +14,11 @@ public class MLE {
 			long x, y;
 			List<Node>[] children = new List[levels];
 			int maxChildLevel = 0;
-			static final List<Node> emptyList = new ArrayList<Node>();
+			static final List<Node> emptyList = new ArrayList<>();
 
 			public void addChild(Node node, int level) {
 				if (children[level] == null) {
-					children[level] = new ArrayList<Node>();
+					children[level] = new ArrayList<>();
 				}
 				children[level].add(node);
 				maxChildLevel = Math.max(maxChildLevel, level);
@@ -90,7 +90,7 @@ public class MLE {
 
 		void findNearest(Node p, List<Node> Qi, int level) {
 			for (; !Qi.isEmpty(); level++) {
-				List<Node> Q = new ArrayList<Node>();
+				List<Node> Q = new ArrayList<>();
 				for (Node q : Qi) {
 					Q.add(q);
 					for (Node ch : q.getChildren(level)) {

@@ -1,8 +1,8 @@
 import java.util.*;
 
 public class QueueMin<E extends Comparable<E>> {
-	List<E[]> s1 = new ArrayList<E[]>();
-	List<E[]> s2 = new ArrayList<E[]>();
+	List<E[]> s1 = new ArrayList<>();
+	List<E[]> s2 = new ArrayList<>();
 
 	E min(E a, E b) {
 		return a.compareTo(b) < 0 ? a : b;
@@ -34,7 +34,7 @@ public class QueueMin<E extends Comparable<E>> {
 
 	// Usage example
 	public static void main(String[] args) {
-		QueueMin<Integer> q = new QueueMin<Integer>();
+		QueueMin<Integer> q = new QueueMin<>();
 		q.push_back(2);
 		q.push_back(3);
 		System.out.println(2 == q.min());

@@ -1,4 +1,4 @@
 bin
 out
-.idea/workspace.xml
-.idea/findbugs-idea.xml
+.idea
+*.iml

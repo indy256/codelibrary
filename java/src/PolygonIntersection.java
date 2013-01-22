@@ -100,7 +100,7 @@ public class PolygonIntersection {
 		int n = P.length;
 		int m = Q.length;
 		int a = 0, b = 0, aa = 0, ba = 0, inflag = 0;
-		List<Point> R = new ArrayList<Point>();
+		List<Point> R = new ArrayList<>();
 		while ((aa < n || ba < m) && aa < 2 * n && ba < 2 * m) {
 			Point p1 = P[a], p2 = P[(a + 1) % n], q1 = Q[b], q2 = Q[(b + 1) % m];
 			Point A = new Point(p2.x - p1.x, p2.y - p1.y);
@@ -150,7 +150,7 @@ public class PolygonIntersection {
 			if (pointInPolygon(Q[0], P))
 				return Q;
 		}
-		List<Point> U = new ArrayList<Point>();
+		List<Point> U = new ArrayList<>();
 		for (int i = 0; i < R.size(); i++)
 			if (i == 0 || !R.get(i).equals(R.get(i - 1)))
 				U.add(R.get(i));

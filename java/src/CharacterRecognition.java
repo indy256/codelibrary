@@ -43,8 +43,8 @@ public class CharacterRecognition {
 		int sR = symbol.length;
 		int sC = symbol[0].length;
 
-		List<Point> bt = new ArrayList<Point>();
-		List<Point> tb = new ArrayList<Point>();
+		List<Point> bt = new ArrayList<>();
+		List<Point> tb = new ArrayList<>();
 
 		for (int r = 0; r < sR; r++) {
 			if (symbol[r][0]) {

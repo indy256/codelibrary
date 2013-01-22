@@ -25,7 +25,7 @@ public class BronKerboshOld {
 			if (!used.isEmpty()) {
 				int min = Integer.MAX_VALUE;
 				for (int u : used) {
-					Set<Integer> t = new HashSet<Integer>(edges[u]);
+					Set<Integer> t = new HashSet<>(edges[u]);
 					t.retainAll(notUsed);
 					if (t.isEmpty())
 						return;
@@ -35,8 +35,8 @@ public class BronKerboshOld {
 					}
 				}
 			}
-			Set<Integer> next_used = new HashSet<Integer>(used);
-			Set<Integer> next_notUsed = new HashSet<Integer>(notUsed);
+			Set<Integer> next_used = new HashSet<>(used);
+			Set<Integer> next_notUsed = new HashSet<>(notUsed);
 			next_used.removeAll(edges[v]);
 			next_notUsed.removeAll(edges[v]);
 			next_notUsed.remove(v);
@@ -50,12 +50,12 @@ public class BronKerboshOld {
 
 	public static Set<Integer> maximumIndependentSet(List<Integer>[] graph) {
 		int n = graph.length;
-		Set<Integer> allVertices = new HashSet<Integer>();
+		Set<Integer> allVertices = new HashSet<>();
 		for (int i = 0; i < n; i++) {
 			allVertices.add(i);
 		}
-		Set<Integer> resultedMaxSet = new HashSet<Integer>();
-		findIndependentSet(new HashSet<Integer>(), new HashSet<Integer>(), allVertices, graph, resultedMaxSet);
+		Set<Integer> resultedMaxSet = new HashSet<>();
+		findIndependentSet(new HashSet<>(), new HashSet<>(), allVertices, graph, resultedMaxSet);
 		return resultedMaxSet;
 	}
 

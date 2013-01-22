@@ -58,7 +58,7 @@ public class GeneticProgramming extends JFrame {
 	}
 
 	static class Population {
-		List<Chromosome> chromosomes = new ArrayList<Chromosome>();
+		List<Chromosome> chromosomes = new ArrayList<>();
 		final int populationLimit;
 
 		public Population(int populationLimit) {
@@ -67,7 +67,7 @@ public class GeneticProgramming extends JFrame {
 
 		public void nextGeneration() {
 			Collections.sort(chromosomes);
-			chromosomes = new ArrayList<Chromosome>(chromosomes.subList(0, (chromosomes.size() + 1) / 2));
+			chromosomes = new ArrayList<>(chromosomes.subList(0, (chromosomes.size() + 1) / 2));
 		}
 	}
 

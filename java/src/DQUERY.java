@@ -36,7 +36,7 @@ public class DQUERY {
 			queries[0][i] = nextInt() - 1;
 			queries[1][i] = nextInt() - 1;
 		}
-		Map<Integer, Integer> m = new HashMap<Integer, Integer>();
+		Map<Integer, Integer> m = new HashMap<>();
 		int id = 0;
 		for (int i = 0; i < n; i++) {
 			if (!m.containsKey(a[i]))

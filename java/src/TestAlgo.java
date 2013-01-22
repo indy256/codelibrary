@@ -18,7 +18,7 @@ public class TestAlgo extends TestCase {
 		List<Integer>[] res = new List[n];
 
 		for (int i = 0; i < n; i++) {
-			res[i] = new ArrayList<Integer>();
+			res[i] = new ArrayList<>();
 			for (int j = 0; j < n; j++)
 				if (rnd.nextBoolean())
 					res[i].add(j);
@@ -37,18 +37,18 @@ public class TestAlgo extends TestCase {
 			List<List<Integer>> scc3 = new SCCTarjan().scc(g);
 			List<List<Integer>> scc4 = SCCTarjanNoRecursion.scc(g);
 
-			Set<Set<Integer>> s1 = new HashSet<Set<Integer>>();
+			Set<Set<Integer>> s1 = new HashSet<>();
 			for (List<Integer> cmp : scc1)
-				s1.add(new HashSet(cmp));
-			Set<Set<Integer>> s2 = new HashSet<Set<Integer>>();
+				s1.add(new HashSet<>(cmp));
+			Set<Set<Integer>> s2 = new HashSet<>();
 			for (List<Integer> cmp : scc2)
-				s2.add(new HashSet(cmp));
-			Set<Set<Integer>> s3 = new HashSet<Set<Integer>>();
+				s2.add(new HashSet<>(cmp));
+			Set<Set<Integer>> s3 = new HashSet<>();
 			for (List<Integer> cmp : scc3)
-				s3.add(new HashSet(cmp));
-			Set<Set<Integer>> s4 = new HashSet<Set<Integer>>();
+				s3.add(new HashSet<>(cmp));
+			Set<Set<Integer>> s4 = new HashSet<>();
 			for (List<Integer> cmp : scc4)
-				s4.add(new HashSet(cmp));
+				s4.add(new HashSet<>(cmp));
 
 			assertEquals(s1, s2);
 			assertEquals(s1, s3);

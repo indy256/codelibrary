@@ -2,7 +2,7 @@ import java.util.*;
 
 public class Trie {
 	static class TrieNode {
-		Map<Character, TrieNode> children = new TreeMap<Character, TrieNode>();
+		Map<Character, TrieNode> children = new TreeMap<>();
 		boolean leaf;
 	}
 

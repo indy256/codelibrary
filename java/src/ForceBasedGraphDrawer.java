@@ -11,7 +11,7 @@ public class ForceBasedGraphDrawer extends JFrame {
     int n = d.length;
     x = new double[n];
     y = new double[n];
-    Set<Long> set = new HashSet<Long>();
+    Set<Long> set = new HashSet<>();
     for (int i = 0; i < n; i++) {
       while (true) {
         int px = rnd.nextInt(100);

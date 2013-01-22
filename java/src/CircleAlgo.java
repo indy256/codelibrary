@@ -80,7 +80,7 @@ public class CircleAlgo {
 		double c = line.c + circle.x * a + circle.y * b;
 		double r = circle.r;
 		double aabb = a * a + b * b;
-		List<Point> res = new ArrayList<Point>();
+		List<Point> res = new ArrayList<>();
 		double d = c * c / aabb - r * r;
 		if (d > eps)
 			return res;
@@ -116,7 +116,7 @@ public class CircleAlgo {
 			CX = CY;
 			CY = t;
 		}
-		List<Point> res = new ArrayList<Point>();
+		List<Point> res = new ArrayList<>();
 		double A = a * a + b * b;
 		double B = 2.0 * b * (c + a * CX) - 2.0 * a * a * CY;
 		double C = sqr(c + a * CX) + a * a * (CY * CY - R * R);
@@ -148,7 +148,7 @@ public class CircleAlgo {
 				// infinity intersection points
 				return null;
 			}
-			return new ArrayList<Point>();
+			return new ArrayList<>();
 		}
 		c2.x -= c1.x;
 		c2.y -= c1.y;
@@ -190,7 +190,7 @@ public class CircleAlgo {
 	}
 
 	static Circle minEnclosingCircleWith1Point(List<Point> pointsList, Point q) {
-		List<Point> points = new ArrayList<Point>(pointsList);
+		List<Point> points = new ArrayList<>(pointsList);
 		Collections.shuffle(points);
 		Circle circle = getCircumCircle(points.get(0), q);
 		for (int i = 1; i < points.size(); i++) {

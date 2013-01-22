@@ -87,7 +87,7 @@ public class LCA {
 			for (int i = 0; i < 1000; i++) {
 				int a = rnd.nextInt(n);
 				int b = rnd.nextInt(n);
-				List<Integer> path = new ArrayList<Integer>();
+				List<Integer> path = new ArrayList<>();
 				getPath(tree, a, b, -1, path);
 				int res1 = q.lca(a, b);
 				int res2 = a;
@@ -115,8 +115,8 @@ public class LCA {
 	static List<Integer>[] getRandomTree(int n, Random rnd) {
 		List<Integer>[] t = new List[n];
 		for (int i = 0; i < n; i++)
-			t[i] = new ArrayList<Integer>();
-		List<Integer> p = new ArrayList<Integer>();
+			t[i] = new ArrayList<>();
+		List<Integer> p = new ArrayList<>();
 		for (int i = 0; i < n; i++)
 			p.add(i);
 		Collections.shuffle(p, rnd);

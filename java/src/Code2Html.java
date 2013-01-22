@@ -3,6 +3,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.PrintWriter;
 import java.util.HashSet;
+import java.util.Set;
 
 public class Code2Html {
 
@@ -13,11 +14,11 @@ public class Code2Html {
 	static String separators = " ;,.<>()=/+-*\t";
 
 	public static void main(String[] args) throws Exception {
-		HashSet<String> keywords = new HashSet<String>();
+		Set<String> keywords = new HashSet<>();
 		for (String s : KEYWORDS) {
 			keywords.add(s);
 		}
-		HashSet<String> macros = new HashSet<String>();
+		Set<String> macros = new HashSet<>();
 		for (String s : MACROS) {
 			macros.add(s);
 		}

@@ -89,7 +89,7 @@ public class DYNACON2 {
 		long time = System.currentTimeMillis();
 		int n = nextInt();
 		int q = nextInt();
-		Map<Long, Integer> m = new TreeMap<Long, Integer>();
+		Map<Long, Integer> m = new TreeMap<>();
 		for (int i = 0; i < q; i++) {
 			String type = nextToken();
 			query[i] = type.charAt(0);

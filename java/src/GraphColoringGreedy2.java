@@ -34,7 +34,7 @@ public class GraphColoringGreedy2 {
 		int n = 5;
 		List<Integer>[] g = new List[n];
 		for (int i = 0; i < n; i++) {
-			g[i] = new ArrayList<Integer>();
+			g[i] = new ArrayList<>();
 		}
 		for (int i = 0; i < n; i++) {
 			for (int j = 0; j < n; j++) {

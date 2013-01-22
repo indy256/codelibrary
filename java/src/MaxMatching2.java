@@ -32,7 +32,7 @@ public class MaxMatching2 {
 		int n2 = 3;
 		List<Integer>[] g = new List[n1];
 		for (int i = 0; i < n1; i++) {
-			g[i] = new ArrayList<Integer>();
+			g[i] = new ArrayList<>();
 		}
 		g[0].add(2);
 		g[0].add(0);

@@ -70,7 +70,7 @@ public class BellmanFord2 {
 
 	// Usage example
 	public static void main(String[] args) {
-		List<Edge> edges = new ArrayList<Edge>();
+		List<Edge> edges = new ArrayList<>();
 		edges.add(new Edge(0, 1, 1));
 		edges.add(new Edge(1, 0, 1));
 		edges.add(new Edge(1, 2, 1));

@@ -203,7 +203,7 @@ public class HeavyLight {
 			for (int i = 0; i < 1000; i++) {
 				int a = rnd.nextInt(n);
 				int b = rnd.nextInt(n);
-				List<Integer> path = new ArrayList<Integer>();
+				List<Integer> path = new ArrayList<>();
 				getPath(tree, a, b, -1, path);
 				if (rnd.nextBoolean()) {
 					int delta = rnd.nextInt(50) - 100;
@@ -224,7 +224,7 @@ public class HeavyLight {
 		for (int step = 0; step < 1000; step++) {
 			int n = rnd.nextInt(50) + 1;
 			List<Integer>[] tree = getRandomTree(n, rnd);
-			Map<Long, Integer> x = new HashMap<Long, Integer>();
+			Map<Long, Integer> x = new HashMap<>();
 			for (int u = 0; u < tree.length; u++)
 				for (int v : tree[u])
 					x.put(edge(u, v), INIT_VALUE);
@@ -232,7 +232,7 @@ public class HeavyLight {
 			for (int i = 0; i < 1000; i++) {
 				int a = rnd.nextInt(n);
 				int b = rnd.nextInt(n);
-				List<Integer> path = new ArrayList<Integer>();
+				List<Integer> path = new ArrayList<>();
 				getPath(tree, a, b, -1, path);
 				if (rnd.nextBoolean()) {
 					int delta = rnd.nextInt(50) - 100;
@@ -274,8 +274,8 @@ public class HeavyLight {
 	static List<Integer>[] getRandomTree(int n, Random rnd) {
 		List<Integer>[] t = new List[n];
 		for (int i = 0; i < n; i++)
-			t[i] = new ArrayList<Integer>();
-		List<Integer> p = new ArrayList<Integer>();
+			t[i] = new ArrayList<>();
+		List<Integer> p = new ArrayList<>();
 		for (int i = 0; i < n; i++)
 			p.add(i);
 		Collections.shuffle(p, rnd);

@@ -21,7 +21,7 @@ public class KdTreePointQueryNodeTest {
 			int[] x = new int[n];
 			int[] y = new int[n];
 			KdTreePointQueryNode.Point[] points = new KdTreePointQueryNode.Point[n];
-			Set<Long> set = new HashSet<Long>();
+			Set<Long> set = new HashSet<>();
 			for (int i = 0; i < n; i++) {
 				do {
 					x[i] = rnd.nextInt(1000);
@@ -71,7 +71,7 @@ public class KdTreePointQueryNodeTest {
 		int[] x = new int[n];
 		int[] y = new int[n];
 		KdTreePointQueryNode.Point[] points = new KdTreePointQueryNode.Point[n];
-		Set<Long> set = new HashSet<Long>();
+		Set<Long> set = new HashSet<>();
 		for (int i = 0; i < n; i++) {
 			do {
 				x[i] = rnd.nextInt(1000000);

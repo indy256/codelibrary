@@ -33,8 +33,8 @@ public class Pair implements Comparable<Pair> {
 
 	// Usage example
 	public static void main(String[] args) {
-		Set<Pair> set1 = new TreeSet<Pair>();
-		Set<Pair> set2 = new HashSet<Pair>();
+		Set<Pair> set1 = new TreeSet<>();
+		Set<Pair> set2 = new HashSet<>();
 		for (int i = 0; i < 20; i++) {
 			Pair p = new Pair(i % 5, i % 10);
 			set1.add(p);

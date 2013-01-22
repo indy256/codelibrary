@@ -78,8 +78,8 @@ public class BronKerboshSort {
 		int[] all = new int[n];
 		for (int i = 0; i < n; i++)
 			all[i] = i;
-		List<Integer> res = new ArrayList<Integer>();
-		findMaximumIndependentSet(new ArrayList<Integer>(), res, graph, all, 0, n);
+		List<Integer> res = new ArrayList<>();
+		findMaximumIndependentSet(new ArrayList<>(), res, graph, all, 0, n);
 		return res;
 	}
 
@@ -130,7 +130,7 @@ public class BronKerboshSort {
 		}
 		graph = new List[V];
 		for (int i = 0; i < V; i++) {
-			graph[i] = new ArrayList<Integer>();
+			graph[i] = new ArrayList<>();
 		}
 		for (int i = 0; i < V; i++) {
 			for (int j : g1.edges.get(p[i])) {

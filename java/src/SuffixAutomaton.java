@@ -10,7 +10,7 @@ public class SuffixAutomaton {
 		{
 			Arrays.fill(next, -1);
 		}
-		List<Integer> ilink = new ArrayList<Integer>(0);
+		List<Integer> ilink = new ArrayList<>(0);
 	};
 
 	State[] st;
@@ -99,7 +99,7 @@ public class SuffixAutomaton {
 		String common = lcs(haystack, needle);
 		if (!common.equals(needle))
 			return new int[0];
-		List<Integer> list = new ArrayList<Integer>();
+		List<Integer> list = new ArrayList<>();
 		dfs(lastp, needle.length(), list);
 		int[] res = new int[list.size()];
 		for (int i = 0; i < res.length; i++)

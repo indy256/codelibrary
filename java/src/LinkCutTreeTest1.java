@@ -10,8 +10,8 @@ public class LinkCutTreeTest1 {
 		int n = 100000;
 		LinkCutTreeLca.Node[] nodes1 = new LinkCutTreeLca.Node[n];
 		TreeForest.Node[] nodes2 = new TreeForest.Node[n];
-		Map<LinkCutTreeLca.Node, Integer> set1 = new IdentityHashMap<LinkCutTreeLca.Node, Integer>();
-		Map<TreeForest.Node, Integer> set2 = new IdentityHashMap<TreeForest.Node, Integer>();
+		Map<LinkCutTreeLca.Node, Integer> set1 = new IdentityHashMap<>();
+		Map<TreeForest.Node, Integer> set2 = new IdentityHashMap<>();
 		for (int i = 0; i < n; i++) {
 			nodes1[i] = new LinkCutTreeLca.Node();
 			nodes2[i] = new TreeForest.Node();

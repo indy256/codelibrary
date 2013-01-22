@@ -27,7 +27,7 @@ public class CoverTree {
 
 		public void addChild(Node node, int level) {
 			if (children[level] == null)
-				children[level] = new ArrayList<Node>(1);
+				children[level] = new ArrayList<>(1);
 			children[level].add(node);
 			maxChildLevel = Math.max(maxChildLevel, level);
 		}
@@ -51,7 +51,7 @@ public class CoverTree {
 
 	boolean insert(Node p, List<Node> Qi, int level) {
 		Node parent = null;
-		List<Node> nQi = new ArrayList<Node>();
+		List<Node> nQi = new ArrayList<>();
 		for (Node q : Qi) {
 			if (dist(p, q) <= layerRadius[level]) {
 				nQi.add(q);
@@ -85,7 +85,7 @@ public class CoverTree {
 
 	void findNearest(Node p, List<Node> Qi, int level) {
 		for (; !Qi.isEmpty(); level++) {
-			List<Node> Q = new ArrayList<Node>();
+			List<Node> Q = new ArrayList<>();
 			for (Node q : Qi) {
 				Q.add(q);
 				for (Node ch : q.getChildren(level)) {
@@ -100,7 +100,7 @@ public class CoverTree {
 				}
 			}
 
-			Qi = new ArrayList<Node>();
+			Qi = new ArrayList<>();
 			for (Node q : Q)
 				if (q.maxChildLevel > level && dist(p, q) <= bestDist + layerRadius[level])
 					Qi.add(q);
