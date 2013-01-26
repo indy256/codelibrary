@@ -14,8 +14,8 @@ import com.graphhopper.util.EdgeSkipIterator;
  */
 public class Path4CH extends PathBidirRef {
 
-    public Path4CH(Graph g, WeightCalculation weightCalculation) {
-        super(g, weightCalculation);
+    public Path4CH(Graph g) {
+        super(g);
     }
 
     @Override
@@ -37,10 +37,8 @@ public class Path4CH extends PathBidirRef {
     @Override
     public void calcWeight(EdgeIterator mainIter) {
         double dist = mainIter.distance();
-        int flags = mainIter.flags();
-        weight += weightCalculation.getWeight(dist, flags);
-        distance += weightCalculation.revertWeight(dist, flags);
-        time += weightCalculation.getTime(dist, flags);
+        weight += dist;
+        distance += dist;
     }
 
     private void expandEdge(EdgeSkipIterator mainIter, boolean revert) {

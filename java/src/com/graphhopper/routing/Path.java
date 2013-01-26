@@ -1,6 +1,5 @@
 package com.graphhopper.routing;
 
-import com.graphhopper.routing.util.ShortestCarCalc;
 import com.graphhopper.routing.util.WeightCalculation;
 import com.graphhopper.storage.EdgeEntry;
 import com.graphhopper.storage.Graph;
@@ -22,7 +21,6 @@ public class Path {
     protected WeightCalculation weightCalculation;
     protected double weight;
     protected double distance;
-    protected long time;
     protected boolean found;
     // we go upwards (via EdgeEntry.parent) from the goal node to the origin node
     protected boolean reverse = true;
@@ -31,12 +29,11 @@ public class Path {
     private TIntList edgeIds;
 
     Path() {
-        this(null, ShortestCarCalc.DEFAULT);
+        this(null);
     }
 
-    public Path(Graph graph, WeightCalculation weightCalculation) {
+    public Path(Graph graph) {
         this.graph = graph;
-        this.weightCalculation = weightCalculation;
         this.edgeIds = new TIntArrayList();
     }
 
@@ -89,21 +86,10 @@ public class Path {
     }
 
     /**
-     * @return time in seconds
-     */
-    public long time() {
-        return time;
-    }
-
-    /**
      * The final weight which is the sum from the weights of the used edges.
      */
     public double weight() {
         return weight;
-    }
-
-    public void weight(double weight) {
-        this.weight = weight;
     }
 
     /**
@@ -136,9 +122,8 @@ public class Path {
     public void calcWeight(EdgeIterator iter) {
         double dist = iter.distance();
         int fl = iter.flags();
-        weight += weightCalculation.getWeight(dist, fl);
+        weight += dist;
         distance += dist;
-        time += weightCalculation.getTime(dist, fl);
     }
 
     /**

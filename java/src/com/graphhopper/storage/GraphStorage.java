@@ -27,7 +27,6 @@ public class GraphStorage implements Graph, Storable {
 
     // distance of around +-1000 000 meter are ok
     private static final float INT_DIST_FACTOR = 1000f;
-    private Directory dir;
     // edge memory layout: nodeA,nodeB,linkA,linkB,dist,flags,geometryRef
     protected final int E_NODEA, E_NODEB, E_LINKA, E_LINKB, E_DIST, E_FLAGS, E_GEO;
     protected int edgeEntrySize;
@@ -59,7 +58,6 @@ public class GraphStorage implements Graph, Storable {
     private boolean initialized = false;
 
     public GraphStorage(Directory dir) {
-        this.dir = dir;
         this.nodes = dir.findCreate("nodes");
         this.edges = dir.findCreate("egdes");
         this.geometry = dir.findCreate("geometry");

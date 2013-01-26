@@ -17,8 +17,8 @@ public class PathBidirRef extends Path {
     protected EdgeEntry edgeTo;
     private boolean switchWrapper = false;
 
-    public PathBidirRef(Graph g, WeightCalculation weightCalculation) {
-        super(g, weightCalculation);
+    public PathBidirRef(Graph g) {
+        super(g);
         weight = INIT_VALUE;
     }
 

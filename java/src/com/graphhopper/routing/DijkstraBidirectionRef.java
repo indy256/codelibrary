@@ -127,7 +127,7 @@ public class DijkstraBidirectionRef extends AbstractRoutingAlgorithm {
             if (visitedMain.contains(neighborNode))
                 continue;
 
-            double tmpWeight = weightCalc.getWeight(iter.distance(), iter.flags()) + curr.weight;
+            double tmpWeight = iter.distance() + curr.weight;
             EdgeEntry de = shortestWeightMap.get(neighborNode);
             if (de == null) {
                 de = new EdgeEntry(iter.edge(), neighborNode, tmpWeight);
@@ -200,12 +200,12 @@ public class DijkstraBidirectionRef extends AbstractRoutingAlgorithm {
 
     private Path checkIndenticalFromAndTo() {
         if (from == to)
-            return new Path(graph, weightCalc);
+            return new Path(graph);
         return null;
     }
 
     protected PathBidirRef createPath() {
-        return new PathBidirRef(graph, weightCalc);
+        return new PathBidirRef(graph);
     }
 
     public DijkstraBidirectionRef initPath() {
