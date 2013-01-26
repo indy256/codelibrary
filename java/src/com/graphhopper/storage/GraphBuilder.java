@@ -42,11 +42,6 @@ public class GraphBuilder {
         return this;
     }
 
-    public GraphBuilder location(String location) {
-        this.location = location;
-        return this;
-    }
-
     public GraphBuilder size(int size) {
         this.size = size;
         return this;

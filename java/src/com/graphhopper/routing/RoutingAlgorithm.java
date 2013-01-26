@@ -19,7 +19,6 @@
 package com.graphhopper.routing;
 
 import com.graphhopper.routing.util.WeightCalculation;
-import com.graphhopper.util.NotThreadSafe;
 
 /**
  * Calculates the shortest path from the specified node ids. The implementation
@@ -27,7 +26,6 @@ import com.graphhopper.util.NotThreadSafe;
  *
  * @author Peter Karich,
  */
-@NotThreadSafe
 public interface RoutingAlgorithm {
 
     /**

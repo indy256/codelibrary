@@ -23,13 +23,8 @@ import com.graphhopper.routing.util.WeightCalculation;
 import com.graphhopper.storage.EdgeEntry;
 import com.graphhopper.storage.Graph;
 import com.graphhopper.util.EdgeIterator;
-import com.graphhopper.util.PointList;
-import gnu.trove.list.TDoubleList;
 import gnu.trove.list.TIntList;
-import gnu.trove.list.array.TDoubleArrayList;
 import gnu.trove.list.array.TIntArrayList;
-import gnu.trove.set.TIntSet;
-import gnu.trove.set.hash.TIntHashSet;
 
 /**
  * Stores the nodes for the found path of an algorithm. It additionally needs
@@ -52,7 +47,6 @@ public class Path {
     protected EdgeEntry edgeEntry;
     private int fromNode = EdgeIterator.NO_EDGE;
     private TIntList edgeIds;
-    private PointList cachedPoints;
 
     Path() {
         this(null, ShortestCarCalc.DEFAULT);

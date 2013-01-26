@@ -33,12 +33,14 @@ import com.graphhopper.storage.LevelGraphStorage;
 import com.graphhopper.util.EdgeSkipIterator;
 import com.graphhopper.storage.GraphBuilder;
 import com.graphhopper.util.GraphUtility;
-import com.graphhopper.util.Helper;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import static org.junit.Assert.*;
+
+import gnu.trove.list.array.TIntArrayList;
 import org.junit.Test;
 
 /**
@@ -140,7 +142,7 @@ public class PrepareContractionHierarchiesTest {
         RoutingAlgorithm algo = prepare.createAlgo();
         Path p = algo.clear().calcPath(4, 2);
         assertEquals(3, p.distance(), 1e-6);
-        assertEquals(Helper.createTList(4, 3, 5, 2), p.calcNodes());
+		assertEquals(new TIntArrayList(new int[]{4, 3, 5, 2}), p.calcNodes());
     }
 
     @Test
@@ -242,7 +244,7 @@ public class PrepareContractionHierarchiesTest {
         assertEquals(old + 19, GraphUtility.count(g.allEdges()));
         RoutingAlgorithm algo = prepare.createAlgo();
         Path p = algo.clear().calcPath(4, 7);
-        assertEquals(Helper.createTList(4, 5, 6, 7), p.calcNodes());
+		assertEquals(new TIntArrayList(new int[]{4, 5, 6, 7}), p.calcNodes());
     }
 
     @Test
@@ -317,7 +319,7 @@ public class PrepareContractionHierarchiesTest {
         RoutingAlgorithm algo = prepare.type(calc).createAlgo();
         Path p = algo.calcPath(10, 6);
         assertEquals(7, p.distance(), 1e-5);
-        assertEquals(Helper.createTList(10, 0, 1, 2, 3, 4, 5, 6), p.calcNodes());
+		assertEquals(new TIntArrayList(new int[]{10, 0, 1, 2, 3, 4, 5, 6}), p.calcNodes());
     }
 
     @Test
@@ -329,6 +331,6 @@ public class PrepareContractionHierarchiesTest {
         RoutingAlgorithm algo = prepare.type(calc).createAlgo();
         Path p = algo.calcPath(10, 6);
         assertEquals(7, p.distance(), 1e-1);
-        assertEquals(Helper.createTList(10, 0, 1, 2, 3, 4, 5, 6), p.calcNodes());
+		assertEquals(new TIntArrayList(new int[]{10, 0, 1, 2, 3, 4, 5, 6}), p.calcNodes());
     }
 }
