@@ -26,14 +26,6 @@ public class DijkstraSimple extends AbstractRoutingAlgorithm {
     }
 
     @Override
-    public DijkstraSimple clear() {
-        visited.clear();
-        map.clear();
-        heap.clear();
-        return this;
-    }
-
-    @Override
     public Path calcPath(int from, int to) {
         EdgeEntry fromEntry = new EdgeEntry(EdgeIterator.NO_EDGE, from, 0d);
         visited.add(from);
@@ -91,9 +83,5 @@ public class DijkstraSimple extends AbstractRoutingAlgorithm {
     
     protected EdgeIterator neighbors(int neighborNode) {
         return graph.getOutgoing(neighborNode);
-    }
-
-    @Override public String name() {
-        return "dijkstra";
     }
 }

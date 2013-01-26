@@ -39,7 +39,6 @@ public class DijkstraBidirectionRef extends AbstractRoutingAlgorithm {
     public DijkstraBidirectionRef(Graph graph) {
         super(graph);
         initCollections(Math.max(20, graph.nodes()));
-        clear();
     }
 
     protected void initCollections(int nodes) {
@@ -54,19 +53,6 @@ public class DijkstraBidirectionRef extends AbstractRoutingAlgorithm {
 
     public RoutingAlgorithm edgeFilter(EdgeLevelFilter edgeFilter) {
         this.edgeFilter = edgeFilter;
-        return this;
-    }
-
-    @Override
-    public RoutingAlgorithm clear() {
-        alreadyRun = false;
-        visitedFrom.clear();
-        openSetFrom.clear();
-        shortestWeightMapFrom.clear();
-
-        visitedTo.clear();
-        openSetTo.clear();
-        shortestWeightMapTo.clear();
         return this;
     }
 
@@ -225,9 +211,5 @@ public class DijkstraBidirectionRef extends AbstractRoutingAlgorithm {
     public DijkstraBidirectionRef initPath() {
         shortest = createPath();
         return this;
-    }
-
-    @Override public String name() {
-        return "dijkstrabi";
     }
 }

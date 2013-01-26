@@ -17,23 +17,6 @@ public abstract class AbstractRoutingAlgorithm implements RoutingAlgorithm {
         this.graph = graph;
     }
 
-    @Override public RoutingAlgorithm type(WeightCalculation wc) {
-        this.weightCalc = wc;
-        return this;
-    }
-
     protected void updateShortest(EdgeEntry shortestDE, int currLoc) {
-    }
-
-    @Override public RoutingAlgorithm clear() {
-        return this;
-    }
-
-    @Override public String toString() {
-        return name() + "|" + weightCalc;
-    }
-
-    @Override public String name() {
-        return getClass().getSimpleName();
     }
 }

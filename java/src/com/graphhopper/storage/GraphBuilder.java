@@ -37,7 +37,7 @@ public class GraphBuilder {
     }
 
     /**
-     * Default graph is a GraphStorage with an in memory directory and disabled
+     * Default setGraph is a GraphStorage with an in memory directory and disabled
      * storing on flush. Afterwards you'll need to call GraphStorage.createNew
      * to have a useable object. Better use create.
      */
@@ -53,7 +53,7 @@ public class GraphBuilder {
     }
 
     /**
-     * Default graph is a GraphStorage with an in memory directory and disabled
+     * Default setGraph is a GraphStorage with an in memory directory and disabled
      * storing on flush.
      */
     public GraphStorage create() {

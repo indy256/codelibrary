@@ -7,9 +7,9 @@ package com.graphhopper.util;
  * Usage:
  * <pre>
  * // calls to iter.node(), distance() without next() will cause undefined behaviour
- * EdgeIterator iter = graph.getOutgoing(nodeId);
+ * EdgeIterator iter = setGraph.getOutgoing(nodeId);
  * // or similar
- * EdgeIterator iter = graph.getIncoming(nodeId);
+ * EdgeIterator iter = setGraph.getIncoming(nodeId);
  * while(iter.next()) {
  *   int baseNodeId = iter.baseNode(); // equal to nodeId
  *   int adjacentNodeId = iter.node();
@@ -33,7 +33,7 @@ public interface EdgeIterator {
     int edge();
 
     /**
-     * If you retrieve edges via "edgeIterator = graph.getEdges(nodeId)" then
+     * If you retrieve edges via "edgeIterator = setGraph.getEdges(nodeId)" then
      * the returned node is identical to nodeId. Often only used instead of
      * nodeId for convenience reasons. Do not confuse this with <i>source</i>
      * node of a directed edge.

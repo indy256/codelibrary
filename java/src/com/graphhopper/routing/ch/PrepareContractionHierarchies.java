@@ -28,7 +28,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * This class prepares the graph for a bidirectional algorithm supporting
+ * This class prepares the setGraph for a bidirectional algorithm supporting
  * contraction hierarchies ie. an algorithm returned by createAlgo.
  *
  * There are several description of contraction hierarchies available. The
@@ -61,7 +61,7 @@ public class PrepareContractionHierarchies extends AbstractAlgoPreparation<Prepa
     }
 
     @Override
-    public PrepareContractionHierarchies graph(Graph g) {
+    public PrepareContractionHierarchies setGraph(Graph g) {
         this.g = (LevelGraph) g;
         return this;
     }
@@ -187,7 +187,7 @@ public class PrepareContractionHierarchies extends AbstractAlgoPreparation<Prepa
     }
 
     /**
-     * Calculates the priority of endNode v without changing the graph. Warning:
+     * Calculates the priority of endNode v without changing the setGraph. Warning:
      * the calculated priority must NOT depend on priority(v) and therefor
      * findShortcuts should also not depend on the priority(v). Otherwise
      * updating the priority before contracting in contractNodes() could lead to
@@ -235,10 +235,6 @@ public class PrepareContractionHierarchies extends AbstractAlgoPreparation<Prepa
         return 10 * edgeDifference + 50 * originalEdgesCount + contractedNeighbors;
     }
 
-    Collection<Shortcut> getShortcuts() {
-        return shortcuts;
-    }
-
     PrepareContractionHierarchies initFromGraph() {
         originalEdges = new TIntArrayList(g.nodes() / 2, -1);
         edgeFilter = new EdgeLevelFilterCH(this.g);
@@ -267,7 +263,7 @@ public class PrepareContractionHierarchies extends AbstractAlgoPreparation<Prepa
     }
 
     /**
-     * Finds shortcuts, does not change the underlying graph.
+     * Finds shortcuts, does not change the underlying setGraph.
      */
     Collection<Shortcut> findShortcuts(int v) {
         // we can use distance instead of weight, see prepareEdges where distance is overwritten by weight!
@@ -307,7 +303,7 @@ public class PrepareContractionHierarchies extends AbstractAlgoPreparation<Prepa
                 continue;
 
             // TODO instead of a weight-limit we could use a hop-limit 
-            // and successively increasing it when mean-degree of graph increases
+            // and successively increasing it when mean-degree of setGraph increases
             algo = new OneToManyDijkstraCH(g).setFilter(edgeFilter.setAvoidNode(v));
             algo.setLimit(maxWeight).calcPath(u, goalNodes);
             internalFindShortcuts(goalNodes, u, iter1.edge());
@@ -327,7 +323,7 @@ public class PrepareContractionHierarchies extends AbstractAlgoPreparation<Prepa
             }
 
             // FOUND shortcut but be sure that it is the only shortcut in the collection 
-            // and also in the graph for u->w. If existing AND identical length => update flags.
+            // and also in the setGraph for u->w. If existing AND identical length => update flags.
             // Hint: shortcuts are always one-way due to distinct level of every endNode but we don't
             // know yet the levels so we need to determine the correct direction or if both directions
 
@@ -360,14 +356,14 @@ public class PrepareContractionHierarchies extends AbstractAlgoPreparation<Prepa
     }
 
     /**
-     * Introduces the necessary shortcuts for endNode v in the graph.
+     * Introduces the necessary shortcuts for endNode v in the setGraph.
      */
     int addShortcuts(int v) {
         Collection<Shortcut> foundShortcuts = findShortcuts(v);
         int newShortcuts = 0;
         for (Shortcut sc : foundShortcuts) {
             boolean updatedInGraph = false;
-            // check if we need to update some existing shortcut in the graph
+            // check if we need to update some existing shortcut in the setGraph
             EdgeSkipIterator iter = g.getOutgoing(sc.from);
             while (iter.next()) {
                 if (EdgeIterator.Edge.isValid(iter.skippedEdge())
@@ -421,10 +417,6 @@ public class PrepareContractionHierarchies extends AbstractAlgoPreparation<Prepa
                 return currFrom.weight >= shortest.weight() && currTo.weight >= shortest.weight();
             }
 
-            @Override public RoutingAlgorithm type(WeightCalculation wc) {
-                throw new IllegalStateException("You'll need to change weightCalculation of preparation instead of algorithm!");
-            }
-
             @Override protected PathBidirRef createPath() {
                 // CH changes the distance in prepareEdges to the weight
                 // now we need to transform it back to the real distance
@@ -447,10 +439,6 @@ public class PrepareContractionHierarchies extends AbstractAlgoPreparation<Prepa
                 };
                 return new Path4CH(graph, wc);
             }
-
-            @Override public String name() {
-                return "dijkstraCH";
-            }
         };
         dijkstra.edgeFilter(new EdgeLevelFilter(g));
         return dijkstra;
@@ -465,7 +453,6 @@ public class PrepareContractionHierarchies extends AbstractAlgoPreparation<Prepa
 
         public OneToManyDijkstraCH(Graph graph) {
             super(graph);
-            type(ShortestCarCalc.DEFAULT);
         }
 
         public OneToManyDijkstraCH setFilter(EdgeLevelFilter filter) {
@@ -480,11 +467,6 @@ public class PrepareContractionHierarchies extends AbstractAlgoPreparation<Prepa
 
         OneToManyDijkstraCH setLimit(double weight) {
             limit = weight;
-            return this;
-        }
-
-        @Override public OneToManyDijkstraCH clear() {
-            super.clear();
             return this;
         }
 
@@ -511,10 +493,6 @@ public class PrepareContractionHierarchies extends AbstractAlgoPreparation<Prepa
                 }
             }
             return found == goals.size();
-        }
-
-        @Override public String name() {
-            return "dijkstra12Many";
         }
     }
 

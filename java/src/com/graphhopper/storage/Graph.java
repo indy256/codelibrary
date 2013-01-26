@@ -4,7 +4,7 @@ import com.graphhopper.util.EdgeIterator;
 import com.graphhopper.util.RawEdgeIterator;
 
 /**
- * An interface to represent a (geo) graph - suited for efficient storage as it
+ * An interface to represent a (geo) setGraph - suited for efficient storage as it
  * can be requested via indices called node IDs. To get the lat,lon point you
  * need to set up a Location2IDIndex instance.
  *
@@ -23,7 +23,7 @@ public interface Graph {
      * @param a the index of the starting (tower) node of the edge
      * @param b the index of the ending (tower) node of the edge
      * @param distance between a and b. Often setNode is not called - if it is
-     * not a geo-graph - and we need the distance parameter here.
+     * not a geo-setGraph - and we need the distance parameter here.
      * @param flags see EdgeFlags - involves velocity and direction
      * @return the created edge
      */
@@ -41,7 +41,7 @@ public interface Graph {
     EdgeIterator getEdgeProps(int edgeId, int endNode);
 
     /**
-     * @return all edges in this graph
+     * @return all edges in this setGraph
      */
     RawEdgeIterator allEdges();
 

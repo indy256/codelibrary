@@ -56,7 +56,7 @@ public class GraphUtility {
 	}
 
 	/**
-	 * Added this helper method to avoid cluttering the graph interface. Good
+	 * Added this helper method to avoid cluttering the setGraph interface. Good
 	 * idea?
 	 */
 	public static EdgeIterator getEdges(Graph graph, int index, boolean out) {

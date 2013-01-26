@@ -11,11 +11,11 @@ import com.graphhopper.storage.Graph;
 public interface AlgorithmPreparation {
 
     /**
-     * Prepares the underlying graph to be used by a specialized algorithm.
+     * Prepares the underlying setGraph to be used by a specialized algorithm.
      */
     AlgorithmPreparation doWork();
 
-    AlgorithmPreparation graph(Graph g);
+    AlgorithmPreparation setGraph(Graph g);
 
     RoutingAlgorithm createAlgo();
 }

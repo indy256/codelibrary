@@ -4,7 +4,7 @@ import com.graphhopper.util.EdgeSkipIterator;
 import com.graphhopper.util.RawEdgeIterator;
 
 /**
- * Extended graph interface which supports storing and retrieving the level for a node.
+ * Extended setGraph interface which supports storing and retrieving the level for a node.
  *
  * @author Peter Karich,
  */

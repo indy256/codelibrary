@@ -98,7 +98,7 @@ public class ContractionHierarchies {
 				continue;
 
 			// TODO instead of a weight-limit we could use a hop-limit
-			// and successively increasing it when mean-degree of graph increases
+			// and successively increasing it when mean-degree of setGraph increases
 			algo = new OneToManyDijkstraCH(g).setFilter(edgeFilter.setSkipNode(v));
 			algo.setLimit(maxWeight).calcPath(u, goalNodes);
 			internalFindShortcuts(goalNodes, u, iter1.edge());
@@ -118,7 +118,7 @@ public class ContractionHierarchies {
 			}
 
 			// FOUND shortcut but be sure that it is the only shortcut in the collection
-			// and also in the graph for u->w. If existing AND identical length => update flags
+			// and also in the setGraph for u->w. If existing AND identical length => update flags
 			// Hint: shortcuts are always one-way due to distinct level of every endNode but we don't
 			// know yet the levels so we need to determine the correct direction or if both directions
 			long edgeId = (long) u * refs.length + n.endNode;
