@@ -136,7 +136,7 @@ public class GraphStorage implements Graph, Storable {
     public GraphStorage createNew(int nodeCount) {
         checkAlreadyInitialized();
         int initBytes = Math.max(nodeCount * 4 / 50, 100);
-        nodes.createNew((long) initBytes * nodeEntrySize);
+        nodes.createNew((long) 	initBytes * nodeEntrySize);
         initNodeRefs(0, nodes.capacity() / 4);
 
         edges.createNew((long) initBytes * edgeEntrySize);

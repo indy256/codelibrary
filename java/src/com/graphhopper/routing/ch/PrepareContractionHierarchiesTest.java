@@ -25,7 +25,6 @@ import com.graphhopper.routing.ch.PrepareContractionHierarchies.NodeCH;
 import com.graphhopper.routing.ch.PrepareContractionHierarchies.Shortcut;
 import com.graphhopper.routing.util.CarStreetType;
 import com.graphhopper.routing.util.FastestCarCalc;
-import com.graphhopper.routing.util.PrepareTowerNodesShortcutsTest;
 import com.graphhopper.routing.util.ShortestCarCalc;
 import com.graphhopper.routing.util.WeightCalculation;
 import com.graphhopper.storage.Graph;
@@ -125,15 +124,6 @@ public class PrepareContractionHierarchiesTest {
     }
 
     @Test
-    public void testMoreComplexGraph() {
-        LevelGraph g = PrepareTowerNodesShortcutsTest.createShortcutsGraph();
-        int old = GraphUtility.count(g.allEdges());
-        PrepareContractionHierarchies prepare = new PrepareContractionHierarchies().graph(g);
-        prepare.doWork();
-        assertEquals(old + 7, GraphUtility.count(g.allEdges()));
-    }
-
-    @Test
     public void testDirectedGraph() {
         LevelGraph g = createGraph();
         g.edge(5, 4, 3, false);
@@ -151,22 +141,6 @@ public class PrepareContractionHierarchiesTest {
         Path p = algo.clear().calcPath(4, 2);
         assertEquals(3, p.distance(), 1e-6);
         assertEquals(Helper.createTList(4, 3, 5, 2), p.calcNodes());
-    }
-
-    @Test
-    public void testDirectedGraph2() {
-        LevelGraph g = createGraph();
-        PrepareTowerNodesShortcutsTest.initDirected2(g);
-        int old = GraphUtility.count(g.allEdges());
-        PrepareContractionHierarchies prepare = new PrepareContractionHierarchies().graph(g);
-        prepare.doWork();
-        // PrepareTowerNodesShortcutsTest.printEdges(g);
-        assertEquals(old + 14, GraphUtility.count(g.allEdges()));
-        RoutingAlgorithm algo = prepare.createAlgo();
-
-        Path p = algo.clear().calcPath(0, 10);
-        assertEquals(10, p.distance(), 1e-6);
-        assertEquals(Helper.createTList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10), p.calcNodes());
     }
 
     @Test
