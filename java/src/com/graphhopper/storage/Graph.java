@@ -37,20 +37,6 @@ public interface Graph {
     int nodes();
 
     /**
-     * This method ensures that the node with the specified index exists and
-     * sets the lat+lon to the specified values. The index goes from 0
-     * (inclusive) to nodes() (exclusive)
-     */
-    void setNode(int node, double lat, double lon);
-
-    /**
-     * @return the latitude at the specified index
-     */
-    double getLatitude(int node);
-
-    double getLongitude(int node);
-
-    /**
      * Creates an edge between the nodes a and b.
      *
      * @param a the index of the starting (tower) node of the edge

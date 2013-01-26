@@ -134,37 +134,6 @@ public class RAMDataAccess extends AbstractDataAccess {
     }
 
     @Override
-    public void flush() {
-        if (closed)
-            throw new IllegalStateException("already closed");
-        if (!store)
-            return;
-        try {
-            RandomAccessFile raFile = new RandomAccessFile(fullName(), "rw");
-            try {
-                long len = capacity();
-                writeHeader(raFile, len, segmentSizeInBytes);
-                raFile.seek(HEADER_OFFSET);
-                // raFile.writeInt() <- too slow, so copy into byte array
-                for (int s = 0; s < segments.length; s++) {
-                    int area[] = segments[s];
-                    int intLen = area.length;
-                    byte[] byteArea = new byte[intLen * 4];
-                    for (int i = 0; i < intLen; i++) {
-                        // TODO different system have different default byte order!
-                        BitUtil.fromInt(byteArea, area[i], i * 4);
-                    }
-                    raFile.write(byteArea);
-                }
-            } finally {
-                raFile.close();
-            }
-        } catch (Exception ex) {
-            throw new RuntimeException("Couldn't store integers to " + toString(), ex);
-        }
-    }
-
-    @Override
     public void setInt(long longIndex, int value) {
         int bufferIndex = (int) (longIndex >>> segmentSizeIntsPower);
         int index = (int) (longIndex & indexDivisor);

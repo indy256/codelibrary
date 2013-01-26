@@ -115,13 +115,6 @@ public class GraphStorage implements Graph, Storable {
     }
 
     /**
-     * @return the directory where this graph is stored.
-     */
-    public Directory directory() {
-        return dir;
-    }
-
-    /**
      * After configuring this storage you need to create it explicitly.
      */
     public GraphStorage createNew(int nodeCount) {
@@ -141,16 +134,6 @@ public class GraphStorage implements Graph, Storable {
         return nodeCount;
     }
 
-    @Override
-    public double getLatitude(int index) {
-        return Helper.intToDegree(nodes.getInt((long) index * nodeEntrySize + N_LAT));
-    }
-
-    @Override
-    public double getLongitude(int index) {
-        return Helper.intToDegree(nodes.getInt((long) index * nodeEntrySize + N_LON));
-    }
-
     /**
      * Translates double VALUE to integer in order to save it in a DataAccess
      * object
@@ -164,22 +147,6 @@ public class GraphStorage implements Graph, Storable {
      */
     private double getDist(long pointer) {
         return (double) edges.getInt(pointer + E_DIST) / INT_DIST_FACTOR;
-    }
-
-    @Override
-    public void setNode(int index, double lat, double lon) {
-        ensureNodeIndex(index);
-        long tmp = (long) index * nodeEntrySize;
-        nodes.setInt(tmp + N_LAT, Helper.degreeToInt(lat));
-        nodes.setInt(tmp + N_LON, Helper.degreeToInt(lon));
-        if (lat > bounds.maxLat)
-            bounds.maxLat = lat;
-        if (lat < bounds.minLat)
-            bounds.minLat = lat;
-        if (lon > bounds.maxLon)
-            bounds.maxLon = lon;
-        if (lon < bounds.minLon)
-            bounds.minLon = lon;
     }
 
     private long incCapacity(DataAccess da, long deltaCap) {
@@ -226,14 +193,6 @@ public class GraphStorage implements Graph, Storable {
         incCapacity(edges, deltaCap);
     }
 
-    private void ensureGeometry(int index, int size) {
-        long deltaCap = ((long) index + size) * 4 - geometry.capacity();
-        if (deltaCap <= 0)
-            return;
-
-        incCapacity(geometry, deltaCap);
-    }
-
     @Override
     public EdgeIterator edge(int a, int b, double distance, boolean bothDirections) {
         return edge(a, b, distance, CarStreetType.flagsDefault(bothDirections));
@@ -246,13 +205,6 @@ public class GraphStorage implements Graph, Storable {
         EdgeIterable iter = new EdgeIterable(edge, a, false, false);
         iter.next();
         return iter;
-    }
-
-    private int nextGeoRef(int arrayLength) {
-        int tmp = maxGeoRef;
-        // one more integer to store also the size itself
-        maxGeoRef += arrayLength + 1;
-        return tmp;
     }
 
     /**
@@ -554,41 +506,6 @@ public class GraphStorage implements Graph, Storable {
             return baseNode;
         }
 
-        @Override public void wayGeometry(PointList pillarNodes) {
-            if (pillarNodes != null && !pillarNodes.isEmpty()) {
-                int len = pillarNodes.size();
-                int geoRef = nextGeoRef(len * 2);
-                edges.setInt(edgePointer + E_GEO, geoRef);
-                ensureGeometry(geoRef, len * 2 + 1);
-                geometry.setInt(geoRef, len);
-                geoRef++;
-                if (baseNode > node)
-                    pillarNodes.reverse();
-
-                for (int i = 0; i < len; geoRef += 2, i++) {
-                    geometry.setInt(geoRef, Helper.degreeToInt(pillarNodes.latitude(i)));
-                    geometry.setInt(geoRef + 1, Helper.degreeToInt(pillarNodes.longitude(i)));
-                }
-            } else
-                edges.setInt(edgePointer + E_GEO, EdgeIterator.NO_EDGE);
-        }
-
-        @Override public PointList wayGeometry() {
-            int geoRef = edges.getInt(edgePointer + E_GEO);
-            int count = 0;
-            if (geoRef > EdgeIterator.NO_EDGE)
-                count = geometry.getInt(geoRef);
-            PointList pillarNodes = new PointList(count);
-            for (int i = 0; i < count; i++) {
-                double lat = Helper.intToDegree(geometry.getInt(geoRef + i * 2 + 1));
-                double lon = Helper.intToDegree(geometry.getInt(geoRef + i * 2 + 2));
-                pillarNodes.add(lat, lon);
-            }
-            if (baseNode > node)
-                pillarNodes.reverse();
-            return pillarNodes;
-        }
-
         @Override public int edge() {
             return edgeId;
         }
@@ -645,29 +562,6 @@ public class GraphStorage implements Graph, Storable {
     }
 
     @Override
-    public void flush() {
-        // nodes
-        nodes.setHeader(0, getClass().getName().hashCode());
-        nodes.setHeader(1, nodeEntrySize);
-        nodes.setHeader(2, nodeCount);
-        nodes.setHeader(3, Helper.degreeToInt(bounds.minLon));
-        nodes.setHeader(4, Helper.degreeToInt(bounds.maxLon));
-        nodes.setHeader(5, Helper.degreeToInt(bounds.minLat));
-        nodes.setHeader(6, Helper.degreeToInt(bounds.maxLat));
-
-        // edges
-        edges.setHeader(0, edgeEntrySize);
-        edges.setHeader(1, edgeCount);
-
-        // geometry
-        geometry.setHeader(0, maxGeoRef);
-
-        geometry.flush();
-        edges.flush();
-        nodes.flush();
-    }
-
-    @Override
     public void close() {
         edges.close();
         nodes.close();
@@ -680,12 +574,5 @@ public class GraphStorage implements Graph, Storable {
 
     public int version() {
         return nodes.version();
-    }
-
-    @Override public String toString() {
-        return "edges:" + edgeCount + "(" + edges.capacity() / Helper.MB + "), "
-                + "nodes:" + nodeCount + "(" + nodes.capacity() / Helper.MB + "), "
-                + "geo:" + maxGeoRef + "(" + geometry.capacity() / Helper.MB + "), "
-                + "bounds:" + bounds;
     }
 }

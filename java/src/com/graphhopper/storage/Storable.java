@@ -33,13 +33,6 @@ public interface Storable extends Closeable {
     boolean loadExisting();
 
     /**
-     * This method makes sure that the underlying data is written to the storage. Keep in mind that
-     * a disc normally has an IO cache so that flush() is (less) probably not save against power
-     * loses.
-     */
-    void flush();
-
-    /**
      * This method makes sure that the underlying used resources are released. WARNING: it does NOT
      * flush on close!
      */

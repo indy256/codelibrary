@@ -78,14 +78,6 @@ public class EdgeLevelFilter implements EdgeIterator {
         return false;
     }
 
-    @Override public PointList wayGeometry() {
-        return edgeIter.wayGeometry();
-    }
-
-    @Override public void wayGeometry(PointList pillarNodes) {
-        edgeIter.wayGeometry(pillarNodes);
-    }
-
     @Override public void distance(double dist) {
         edgeIter.distance(dist);
     }

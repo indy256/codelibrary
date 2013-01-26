@@ -218,75 +218,7 @@ public class Path {
         return nodes;
     }
 
-    /**
-     * @return the cached list of lat,lon for this path
-     */
-    public PointList calcPoints() {
-        if (cachedPoints != null)
-            return cachedPoints;
-        cachedPoints = new PointList(edgeIds.size() + 1);
-        if (edgeIds.isEmpty())
-            return cachedPoints;
-        int tmpNode = fromNode();
-        cachedPoints.add(graph.getLatitude(tmpNode), graph.getLongitude(tmpNode));
-        forEveryEdge(new EdgeVisitor() {
-            @Override public void next(EdgeIterator iter) {
-                PointList pl = iter.wayGeometry();
-                pl.reverse();
-                for (int j = 0; j < pl.size(); j++) {
-                    cachedPoints.add(pl.latitude(j), pl.longitude(j));
-                }
-                int baseNode = iter.baseNode();
-                cachedPoints.add(graph.getLatitude(baseNode), graph.getLongitude(baseNode));
-            }
-        });
-        return cachedPoints;
-    }
-
-    public TDoubleList calcDistances() {
-        final TDoubleList distances = new TDoubleArrayList(edgeIds.size());
-        if (edgeIds.isEmpty())
-            return distances;
-
-        forEveryEdge(new EdgeVisitor() {
-            @Override public void next(EdgeIterator iter) {
-                distances.add(iter.distance());
-            }
-        });
-        return distances;
-    }
-
-    public TIntSet calculateIdenticalNodes(Path p2) {
-        TIntHashSet thisSet = new TIntHashSet();
-        TIntHashSet retSet = new TIntHashSet();
-        TIntList nodes = calcNodes();
-        int max = nodes.size();
-        for (int i = 0; i < max; i++) {
-            thisSet.add(nodes.get(i));
-        }
-
-        nodes = p2.calcNodes();
-        max = nodes.size();
-        for (int i = 0; i < max; i++) {
-            if (thisSet.contains(nodes.get(i)))
-                retSet.add(nodes.get(i));
-        }
-        return retSet;
-    }
-
     @Override public String toString() {
         return "weight:" + weight() + ", edges:" + edgeIds.size();
-    }
-
-    public String toDetailsString() {
-        String str = "";
-        TIntList nodes = calcNodes();
-        for (int i = 0; i < nodes.size(); i++) {
-            if (i > 0)
-                str += "->";
-
-            str += nodes.get(i);
-        }
-        return toString() + ", " + str;
     }
 }

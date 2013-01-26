@@ -69,21 +69,6 @@ public interface EdgeIterator {
     int node();
 
     /**
-     * For OSM a way is often a curve not just a straight line and so nodes
-     * between tower nodes are necessary to have a more exact geometry (for
-     * drawing). Those nodes are called pillar nodes
-     *
-     * @return pillar nodes
-     */
-    PointList wayGeometry();
-
-    /**
-     * @param list is a sorted collection of nodes between the baseNode and the
-     * current adjacent node
-     */
-    void wayGeometry(PointList list);
-
-    /**
      * @return the distance of the current edge edge
      */
     double distance();
