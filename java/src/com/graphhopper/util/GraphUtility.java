@@ -34,27 +34,6 @@ public class GraphUtility {
 		return counter;
 	}
 
-	public static int count(Iterable<?> iter) {
-		int counter = 0;
-		for (Object o : iter) {
-			++counter;
-		}
-		return counter;
-	}
-
-	public static boolean contains(EdgeIterator iter, int... locs) {
-		TIntHashSet set = new TIntHashSet();
-
-		while (iter.next()) {
-			set.add(iter.node());
-		}
-		for (int l : locs) {
-			if (!set.contains(l))
-				return false;
-		}
-		return true;
-	}
-
 	/**
 	 * Added this helper method to avoid cluttering the setGraph interface. Good
 	 * idea?

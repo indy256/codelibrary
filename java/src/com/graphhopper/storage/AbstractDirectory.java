@@ -41,14 +41,4 @@ public abstract class AbstractDirectory implements Directory {
 	protected void mkdirs() {
 		new File(location).mkdirs();
 	}
-
-	@Override
-	public String toString() {
-		return location();
-	}
-
-	@Override
-	public String location() {
-		return location;
-	}
 }

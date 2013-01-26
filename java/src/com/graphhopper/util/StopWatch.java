@@ -26,14 +26,6 @@ public class StopWatch {
         lastTime = -1;
         return this;
     }
-    @Override
-    public String toString() {
-        String str = "";
-        if (!name.isEmpty())
-            str += name + " ";
-
-        return str + "time:" + getSeconds();
-    }
 
     public float getSeconds() {
         return time / 1000f;

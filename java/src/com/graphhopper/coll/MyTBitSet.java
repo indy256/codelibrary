@@ -33,31 +33,12 @@ public class MyTBitSet implements MyBitSet {
     }
 
     @Override
-    public int cardinality() {
-        return tHash.size();
-    }
-
-    @Override
     public void clear() {
         tHash.clear();
     }
 
     @Override
     public void ensureCapacity(int index) {
-    }
-
-    @Override
-    public MyBitSet copyTo(MyBitSet bs) {
-        bs.clear();
-        if (bs instanceof MyTBitSet) {
-            ((MyTBitSet) bs).tHash.addAll(this.tHash);
-        } else {
-            TIntIterator iter = tHash.iterator();
-            while (iter.hasNext()) {
-                bs.add(iter.next());
-            }
-        }
-        return bs;
     }
 
     @Override

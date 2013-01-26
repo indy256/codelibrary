@@ -24,8 +24,4 @@ public class Edge implements Comparable<Edge> {
     @Override public int compareTo(Edge o) {
         return Double.compare(weight, o.weight);
     }
-
-    @Override public String toString() {
-        return endNode + " (" + edge + ") distance is " + weight;
-    }
 }

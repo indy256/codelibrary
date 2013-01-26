@@ -12,8 +12,6 @@ public interface MyBitSet {
 
     void add(int index);
 
-    int cardinality();
-
     void clear();
 
     /**
@@ -25,9 +23,4 @@ public interface MyBitSet {
      * Searches for a bigger or equal entry and returns it.
      */
     int next(int index);
-
-    /**
-     * @return the specified MyBitSet bs
-     */
-    MyBitSet copyTo(MyBitSet bs);
 }

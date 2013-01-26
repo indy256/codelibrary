@@ -1,10 +1,5 @@
 package com.graphhopper.storage;
 
-import com.graphhopper.util.Helper;
-import java.io.File;
-import java.io.IOException;
-import java.io.RandomAccessFile;
-
 /**
  * @author Peter Karich
  */
@@ -27,15 +22,6 @@ public abstract class AbstractDataAccess implements DataAccess {
     }
 
     @Override
-    public String name() {
-        return name;
-    }
-
-    protected String fullName() {
-        return location + name;
-    }
-
-    @Override
     public DataAccess segmentSize(int bytes) {
         // segment size should be a power of 2
         int tmp = (int) (Math.log(bytes) / Math.log(2));
@@ -46,10 +32,5 @@ public abstract class AbstractDataAccess implements DataAccess {
     @Override
     public int segmentSize() {
         return segmentSizeInBytes;
-    }
-
-    @Override
-    public String toString() {
-        return fullName();
     }
 }

@@ -14,11 +14,6 @@ package com.graphhopper.storage;
 public interface DataAccess extends Storable {
 
     /**
-     * The logical identification of this object.
-     */
-    String name();
-
-    /**
      * Set 4 bytes at position 'index' to the specified value
      */
     void setInt(long index, int value);

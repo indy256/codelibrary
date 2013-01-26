@@ -5,7 +5,6 @@ import com.graphhopper.routing.DijkstraBidirectionRef;
 import com.graphhopper.routing.DijkstraSimple;
 import com.graphhopper.routing.Path;
 import com.graphhopper.routing.PathBidirRef;
-import com.graphhopper.routing.RoutingAlgorithm;
 import com.graphhopper.routing.util.AbstractAlgoPreparation;
 import com.graphhopper.routing.util.CarStreetType;
 import com.graphhopper.routing.util.EdgeLevelFilter;
@@ -17,7 +16,6 @@ import com.graphhopper.storage.LevelGraph;
 import com.graphhopper.util.EdgeIterator;
 import com.graphhopper.util.EdgeSkipIterator;
 import com.graphhopper.util.GraphUtility;
-import com.graphhopper.util.Helper;
 import com.graphhopper.util.RawEdgeIterator;
 import com.graphhopper.util.StopWatch;
 import gnu.trove.list.array.TIntArrayList;
@@ -145,9 +143,10 @@ public class PrepareContractionHierarchies extends AbstractAlgoPreparation<Prepa
                     sw.stop();
                 }
                 updateCounter++;
-                logger.info(counter + ", nodes: " + sortedNodes.size() + ", shortcuts:" + newShortcuts
+				logger.info(counter + ", nodes: " + sortedNodes.size() + ", shortcuts:" + newShortcuts
                         + ", updateAllTime:" + sw.getSeconds() + ", " + updateCounter
-                        + ", memory:" + Helper.getMemInfo());
+                        + ", memory:" + "totalMB:" + Runtime.getRuntime().totalMemory() / (1 << 20)
+						+ ", usedMB:" + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / (1 << 20));
             }
 
             counter++;
