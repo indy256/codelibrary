@@ -59,69 +59,6 @@ public abstract class AbstractDataAccess implements DataAccess {
     }
 
     @Override
-    public void setHeader(int index, int value) {
-        header[index] = value;
-    }
-
-    @Override
-    public int getHeader(int index) {
-        return header[index];
-    }
-
-    /**
-     * @return the remaining space in bytes
-     */
-    protected void writeHeader(RandomAccessFile file, long length, int segmentSize) throws IOException {
-        file.seek(0);
-        file.writeUTF("GH");
-        // make changes to file format only with major version changes
-        file.writeInt(version());
-        file.writeLong(length);
-        file.writeInt(segmentSize);
-        for (int i = 0; i < header.length; i++) {
-            file.writeInt(header[i]);
-        }
-    }
-
-    @Override
-    public int version() {
-        return Helper.VERSION_FILE;
-    }
-
-    protected long readHeader(RandomAccessFile raFile) throws IOException {
-        raFile.seek(0);
-        if (raFile.length() == 0)
-            return -1;
-        String versionHint = raFile.readUTF();
-        if (!"GH".equals(versionHint))
-            throw new IllegalArgumentException("Not a GraphHopper file! Expected 'GH' as file marker but was " + versionHint);
-        // use a separate version field
-        int majorVersion = raFile.readInt();
-        if (majorVersion != version())
-            throw new IllegalArgumentException("This GraphHopper file has the wrong version! "
-                    + "Expected " + version() + " but was " + majorVersion);
-        long bytes = raFile.readLong();
-        segmentSize(raFile.readInt());
-        for (int i = 0; i < header.length; i++) {
-            header[i] = raFile.readInt();
-        }
-        return bytes;
-    }
-
-    @Override
-    public DataAccess copyTo(DataAccess da) {
-        for (int h = 0; h < header.length; h++) {
-            da.setHeader(h, getHeader(h));
-        }
-        da.ensureCapacity(capacity());
-        long max = capacity() / 4;
-        for (long l = 0; l < max; l++) {
-            da.setInt(l, getInt(l));
-        }
-        return da;
-    }
-
-    @Override
     public DataAccess segmentSize(int bytes) {
         // segment size should be a power of 2
         int tmp = (int) (Math.log(bytes) / Math.log(2));
@@ -137,32 +74,5 @@ public abstract class AbstractDataAccess implements DataAccess {
     @Override
     public String toString() {
         return fullName();
-    }
-
-    @Override
-    public void rename(String newName) {
-        File file = new File(location + name);
-        if (file.exists())
-            try {
-                if (!file.renameTo(new File(location + newName)))
-                    throw new IllegalStateException("Couldn't rename this RAMDataAccess object to " + newName);
-                name = newName;
-            } catch (Exception ex) {
-                throw new IllegalStateException("Couldn't rename this RAMDataAccess object!", ex);
-            }
-        else
-            throw new IllegalStateException("File does not exist!? " + fullName()
-                    + " Make sure that you flushed before renaming. Otherwise it could make problems"
-                    + " for memory mapped DataAccess objects");
-    }
-
-    protected boolean checkBeforeRename(String newName) {
-        if (newName == null || newName.isEmpty())
-            throw new IllegalArgumentException("newName mustn't be empty!");
-        if (newName.equals(name))
-            return false;
-        if (new File(location + newName).exists())
-            throw new IllegalArgumentException("file newName already exists!");
-        return true;
     }
 }

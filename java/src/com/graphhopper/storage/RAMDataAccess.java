@@ -33,31 +33,11 @@ import java.util.Arrays;
 public class RAMDataAccess extends AbstractDataAccess {
 
     private int[][] segments = new int[0][];
-    private boolean closed = false;
-    private boolean store;
     private transient int segmentSizeIntsPower;
     private transient int indexDivisor;
 
     RAMDataAccess(String name, String location, boolean store) {
         super(name, location);
-        this.store = store;
-    }
-
-    @Override
-    public DataAccess copyTo(DataAccess da) {
-        if (da instanceof RAMDataAccess) {
-            RAMDataAccess rda = (RAMDataAccess) da;
-            // TODO we could reuse rda segments!
-            rda.segments = new int[segments.length][];
-            for (int i = 0; i < segments.length; i++) {
-                int[] area = segments[i];
-                rda.segments[i] = Arrays.copyOf(area, area.length);
-            }
-            rda.segmentSize(segmentSizeInBytes);
-            // leave id, store and close unchanged
-            return da;
-        } else
-            return super.copyTo(da);
     }
 
     @Override
@@ -94,46 +74,6 @@ public class RAMDataAccess extends AbstractDataAccess {
     }
 
     @Override
-    public boolean loadExisting() {
-        if (segments.length > 0)
-            throw new IllegalStateException("already initialized");
-        if (!store || closed)
-            return false;
-        File file = new File(fullName());
-        if (!file.exists() || file.length() == 0)
-            return false;
-        try {
-            RandomAccessFile raFile = new RandomAccessFile(fullName(), "r");
-            try {
-                long byteCount = readHeader(raFile) - HEADER_OFFSET;
-                if (byteCount < 0)
-                    return false;
-                byte[] bytes = new byte[segmentSizeInBytes];
-                raFile.seek(HEADER_OFFSET);
-                // raFile.readInt() <- too slow                
-                int segmentCount = (int) (byteCount / segmentSizeInBytes);
-                if (byteCount % segmentSizeInBytes != 0)
-                    segmentCount++;
-                segments = new int[segmentCount][];
-                for (int s = 0; s < segmentCount; s++) {
-                    int read = raFile.read(bytes) / 4;
-                    int area[] = new int[read];
-                    for (int j = 0; j < read; j++) {
-                        // TODO different system have different default byte order!
-                        area[j] = BitUtil.toInt(bytes, j * 4);
-                    }
-                    segments[s] = area;
-                }
-                return true;
-            } finally {
-                raFile.close();
-            }
-        } catch (IOException ex) {
-            throw new RuntimeException("Problem while loading " + fullName(), ex);
-        }
-    }
-
-    @Override
     public void setInt(long longIndex, int value) {
         int bufferIndex = (int) (longIndex >>> segmentSizeIntsPower);
         int index = (int) (longIndex & indexDivisor);
@@ -151,7 +91,6 @@ public class RAMDataAccess extends AbstractDataAccess {
     public void close() {
         super.close();
         segments = new int[0][];
-        closed = true;
     }
 
     @Override
@@ -170,16 +109,5 @@ public class RAMDataAccess extends AbstractDataAccess {
         segmentSizeIntsPower = (int) (Math.log(segmentSizeInBytes / 4) / Math.log(2));
         indexDivisor = segmentSizeInBytes / 4 - 1;
         return this;
-    }
-
-    @Override
-    public void rename(String newName) {
-        if (!checkBeforeRename(newName))
-            return;
-        if (store)
-            super.rename(newName);
-
-        // in every case set the name
-        name = newName;
     }
 }

@@ -34,9 +34,4 @@ public interface Directory {
      * location with it. A name is unique in one Directory.
      */
     DataAccess findCreate(String name);
-
-    /**
-     * Removes the specified object from the directory.
-     */
-    void remove(DataAccess da);
 }

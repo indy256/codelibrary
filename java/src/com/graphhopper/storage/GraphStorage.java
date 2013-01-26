@@ -527,41 +527,6 @@ public class GraphStorage implements Graph, Storable {
     }
 
     @Override
-    public boolean loadExisting() {
-        checkAlreadyInitialized();
-        if (edges.loadExisting()) {
-            if (!nodes.loadExisting())
-                throw new IllegalStateException("cannot load nodes. corrupt file or directory? " + dir);
-            if (!geometry.loadExisting())
-                throw new IllegalStateException("cannot load geometry. corrupt file or directory? " + dir);
-            if (nodes.version() != edges.version())
-                throw new IllegalStateException("nodes and edges files have different versions!? " + dir);
-            // nodes
-            int hash = nodes.getHeader(0);
-            if (hash != getClass().getName().hashCode())
-                throw new IllegalStateException("Cannot load the graph - it wasn't create via "
-                        + getClass().getName() + "! " + dir);
-
-            nodeEntrySize = nodes.getHeader(1);
-            nodeCount = nodes.getHeader(2);
-            bounds.minLon = Helper.intToDegree(nodes.getHeader(3));
-            bounds.maxLon = Helper.intToDegree(nodes.getHeader(4));
-            bounds.minLat = Helper.intToDegree(nodes.getHeader(5));
-            bounds.maxLat = Helper.intToDegree(nodes.getHeader(6));
-
-            // edges
-            edgeEntrySize = edges.getHeader(0);
-            edgeCount = edges.getHeader(1);
-
-            // geometry
-            maxGeoRef = edges.getHeader(0);
-            initialized = true;
-            return true;
-        }
-        return false;
-    }
-
-    @Override
     public void close() {
         edges.close();
         nodes.close();
@@ -570,9 +535,5 @@ public class GraphStorage implements Graph, Storable {
     @Override
     public long capacity() {
         return edges.capacity() + nodes.capacity();
-    }
-
-    public int version() {
-        return nodes.version();
     }
 }

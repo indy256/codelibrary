@@ -37,14 +37,6 @@ public interface DataAccess extends Storable {
     String name();
 
     /**
-     * Renames the underlying DataAccess object. (Flushing shouldn't be
-     * necessary before or afterwards)
-     *
-     * @throws IllegalStateException if a rename is not possible
-     */
-    void rename(String newName);
-
-    /**
      * Set 4 bytes at position 'index' to the specified value
      */
     void setInt(long index, int value);
@@ -53,16 +45,6 @@ public interface DataAccess extends Storable {
      * Get 4 bytes from position 'index'
      */
     int getInt(long index);
-
-    /**
-     * Set 4 bytes at the header space index to the specified value
-     */
-    void setHeader(int index, int value);
-
-    /**
-     * Get 4 bytes from the header at 'index'
-     */
-    int getHeader(int index);
 
     /**
      * The first time you use a DataAccess object after configuring it you need
@@ -76,11 +58,6 @@ public interface DataAccess extends Storable {
      * instead.
      */
     void ensureCapacity(long bytes);
-
-    /**
-     * Copies the content from this object into the specified one.
-     */
-    DataAccess copyTo(DataAccess da);
 
     /**
      * In order to increase allocated space one needs to layout the underlying
@@ -97,10 +74,4 @@ public interface DataAccess extends Storable {
      * @return the number of segments.
      */
     int segments();
-
-    /**
-     * @return the version number of this object to make compatibility issues
-     * detectable.
-     */
-    int version();
 }

@@ -58,18 +58,6 @@ public abstract class AbstractDirectory implements Directory {
         return da;
     }
 
-    @Override
-    public void remove(DataAccess da) {
-        removeByName(da.name());
-    }
-
-    void removeByName(String name) {
-        if (map.remove(name) == null)
-            throw new IllegalStateException("Couldn't remove dataAccess object:" + name);
-
-        Helper.removeDir(new File(location + name));
-    }
-
     protected void mkdirs() {
         new File(location).mkdirs();
     }

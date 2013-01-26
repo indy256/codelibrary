@@ -28,11 +28,6 @@ import java.io.Closeable;
 public interface Storable extends Closeable {
 
     /**
-     * @return true if successfully loaded from persistent storage.
-     */
-    boolean loadExisting();
-
-    /**
      * This method makes sure that the underlying used resources are released. WARNING: it does NOT
      * flush on close!
      */
