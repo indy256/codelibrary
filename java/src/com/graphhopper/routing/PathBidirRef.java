@@ -1,10 +1,8 @@
 package com.graphhopper.routing;
 
-import com.graphhopper.routing.util.WeightCalculation;
 import com.graphhopper.storage.EdgeEntry;
 import com.graphhopper.storage.Graph;
 import com.graphhopper.util.EdgeIterator;
-import com.graphhopper.util.GraphUtility;
 
 /**
  * This class creates a DijkstraPath from two Edge's resulting from a

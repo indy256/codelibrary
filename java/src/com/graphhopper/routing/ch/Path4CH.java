@@ -1,7 +1,6 @@
 package com.graphhopper.routing.ch;
 
 import com.graphhopper.routing.PathBidirRef;
-import com.graphhopper.routing.util.WeightCalculation;
 import com.graphhopper.storage.Graph;
 import com.graphhopper.util.EdgeIterator;
 import com.graphhopper.util.EdgeSkipIterator;

@@ -1,6 +1,5 @@
 package com.graphhopper.routing;
 
-import com.graphhopper.routing.util.WeightCalculation;
 import com.graphhopper.storage.EdgeEntry;
 import com.graphhopper.storage.Graph;
 

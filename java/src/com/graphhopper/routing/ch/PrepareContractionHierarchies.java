@@ -8,7 +8,6 @@ import com.graphhopper.routing.PathBidirRef;
 import com.graphhopper.routing.util.AbstractAlgoPreparation;
 import com.graphhopper.routing.util.CarStreetType;
 import com.graphhopper.routing.util.EdgeLevelFilter;
-import com.graphhopper.routing.util.WeightCalculation;
 import com.graphhopper.storage.EdgeEntry;
 import com.graphhopper.storage.Graph;
 import com.graphhopper.storage.LevelGraph;
@@ -404,29 +403,6 @@ public class PrepareContractionHierarchies extends AbstractAlgoPreparation<Prepa
 
 			@Override
 			protected PathBidirRef createPath() {
-				// CH changes the distance in prepareEdges to the weight
-				// now we need to transform it back to the real distance
-				WeightCalculation wc = new WeightCalculation() {
-					@Override
-					public String toString() {
-						return "INVERSE";
-					}
-
-					@Override
-					public double getWeight(double distance, int flags) {
-						return distance;
-					}
-
-					@Override
-					public long getTime(double distance, int flags) {
-						return (long) revertWeight(distance, flags);
-					}
-
-					@Override
-					public double revertWeight(double weight, int flags) {
-						return weight;
-					}
-				};
 				return new Path4CH(graph);
 			}
 		};

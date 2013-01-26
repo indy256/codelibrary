@@ -1,6 +1,5 @@
 package com.graphhopper.routing;
 
-import com.graphhopper.routing.util.WeightCalculation;
 import com.graphhopper.storage.EdgeEntry;
 import com.graphhopper.storage.Graph;
 import com.graphhopper.util.EdgeIterator;
@@ -18,7 +17,6 @@ public class Path {
 
     protected final static double INIT_VALUE = Double.MAX_VALUE;
     protected Graph graph;
-    protected WeightCalculation weightCalculation;
     protected double weight;
     protected double distance;
     protected boolean found;
