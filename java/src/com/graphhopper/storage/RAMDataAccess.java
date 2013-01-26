@@ -18,10 +18,6 @@
  */
 package com.graphhopper.storage;
 
-import com.graphhopper.util.BitUtil;
-import java.io.File;
-import java.io.IOException;
-import java.io.RandomAccessFile;
 import java.util.Arrays;
 
 /**
@@ -85,12 +81,6 @@ public class RAMDataAccess extends AbstractDataAccess {
         int bufferIndex = (int) (longIndex >>> segmentSizeIntsPower);
         int index = (int) (longIndex & indexDivisor);
         return segments[bufferIndex][index];
-    }
-
-    @Override
-    public void close() {
-        super.close();
-        segments = new int[0][];
     }
 
     @Override

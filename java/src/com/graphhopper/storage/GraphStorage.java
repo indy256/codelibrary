@@ -20,14 +20,13 @@ package com.graphhopper.storage;
 
 import com.graphhopper.coll.MyBitSet;
 import com.graphhopper.coll.MyBitSetImpl;
-import com.graphhopper.coll.SparseIntIntArray;
 import com.graphhopper.routing.util.CarStreetType;
 import com.graphhopper.util.EdgeIterator;
 import com.graphhopper.util.GraphUtility;
-import com.graphhopper.util.Helper;
-import com.graphhopper.util.PointList;
 import com.graphhopper.util.RawEdgeIterator;
 import com.graphhopper.util.shapes.BBox;
+
+import java.io.IOException;
 
 /**
  * The main implementation which handles nodes and edges file format. It can be
@@ -302,7 +301,7 @@ public class GraphStorage implements Graph, Storable {
         return new AllEdgeIterator();
     }
 
-    /**
+	/**
      * Include all edges of this storage in the iterator.
      */
     protected class AllEdgeIterator implements RawEdgeIterator {
@@ -313,14 +312,6 @@ public class GraphStorage implements Graph, Storable {
         @Override public boolean next() {
             edgePointer += edgeEntrySize;
             return edgePointer < maxEdges;
-        }
-
-        @Override public int nodeA() {
-            return edges.getInt(edgePointer + E_NODEA);
-        }
-
-        @Override public int nodeB() {
-            return edges.getInt(edgePointer + E_NODEB);
         }
 
         @Override public double distance() {
@@ -524,12 +515,6 @@ public class GraphStorage implements Graph, Storable {
     private void checkAlreadyInitialized() {
         if (initialized)
             throw new IllegalStateException("Already initialized GraphStorage.");
-    }
-
-    @Override
-    public void close() {
-        edges.close();
-        nodes.close();
     }
 
     @Override

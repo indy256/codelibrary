@@ -25,14 +25,7 @@ import java.io.Closeable;
  *
  * @author Peter Karich
  */
-public interface Storable extends Closeable {
-
-    /**
-     * This method makes sure that the underlying used resources are released. WARNING: it does NOT
-     * flush on close!
-     */
-    @Override
-    void close();
+public interface Storable {
 
     /**
      * @return the allocated storage size in bytes

@@ -33,10 +33,6 @@ public class Circle implements Shape {
     private final double normedDist;
     private final BBox bbox;
 
-    public Circle(double lat, double lon, double radiusInMeter) {
-        this(lat, lon, radiusInMeter, SINGLETON);
-    }
-
     public Circle(double lat, double lon, double radiusInMeter, DistanceCalc calc) {
         this.calc = calc;
         this.lat = lat;
@@ -44,14 +40,6 @@ public class Circle implements Shape {
         this.radiusInKm = radiusInMeter;
         this.normedDist = calc.calcNormalizedDist(radiusInMeter);
         bbox = calc.createBBox(lat, lon, radiusInMeter);
-    }
-
-    public double getLat() {
-        return lat;
-    }
-
-    public double getLon() {
-        return lon;
     }
 
     @Override

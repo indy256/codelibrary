@@ -29,16 +29,7 @@ public class StopWatch {
     private long time;
     private String name = "";
 
-    public StopWatch(String name) {
-        this.name = name;
-    }
-
     public StopWatch() {
-    }
-
-    public StopWatch setName(String name) {
-        this.name = name;
-        return this;
     }
 
     public StopWatch start() {
@@ -53,14 +44,6 @@ public class StopWatch {
         lastTime = -1;
         return this;
     }
-
-    /**
-     * @return the delta time in milliseconds
-     */
-    public long getTime() {
-        return time;
-    }
-
     @Override
     public String toString() {
         String str = "";

@@ -44,10 +44,6 @@ public class RAMDirectory extends AbstractDirectory {
             super.mkdirs();
     }
 
-    public boolean isStoring() {
-        return store;
-    }
-
     @Override
     protected DataAccess create(String id, String location) {
         return new RAMDataAccess(id, location, store);

@@ -30,16 +30,6 @@ public interface RawEdgeIterator {
 
     boolean next();
 
-    /**
-     * @return node smaller or equal to B
-     */
-    int nodeA();
-
-    /**
-     * @return node greater than A
-     */
-    int nodeB();
-
     double distance();
 
     void distance(double dist);
