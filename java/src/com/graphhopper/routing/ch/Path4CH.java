@@ -7,7 +7,7 @@ import com.graphhopper.util.EdgeIterator;
 import com.graphhopper.util.EdgeSkipIterator;
 
 /**
- * Recursivly unpack shortcuts.
+ * Recursively unpack shortcuts.
  *
  * @see PrepareContractionHierarchies
  * @author Peter Karich,

@@ -78,7 +78,7 @@ public class PrepareContractionHierarchies extends AbstractAlgoPreparation<Prepa
 	PrepareContractionHierarchies initFromGraph() {
 		originalEdges = new TIntArrayList(g.nodes() / 2, -1);
 		edgeFilter = new EdgeLevelFilterCH(this.g);
-		sortedNodes = new MySortedCollection(g.nodes());
+		sortedNodes = new MySortedCollection();
 		refs = new WeightedNode[g.nodes()];
 		return this;
 	}

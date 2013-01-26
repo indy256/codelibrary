@@ -45,14 +45,6 @@ public class GraphUtility {
 			return graph.getIncoming(index);
 	}
 
-	public static int getToNode(Graph g, int edge, int endNode) {
-		if (EdgeIterator.Edge.isValid(edge)) {
-			EdgeIterator iterTo = g.getEdgeProps(edge, endNode);
-			return iterTo.node();
-		}
-		return endNode;
-	}
-
 	public static final EdgeSkipIterator EMPTY = new EdgeSkipIterator() {
 		@Override
 		public int skippedEdge() {

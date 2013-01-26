@@ -14,17 +14,7 @@ import java.util.TreeMap;
 public class MySortedCollection {
 
     private int size;
-    private int slidingMeanValue = 20;
-    private TreeMap<Integer, TIntHashSet> map;
-
-   public MySortedCollection(int size) {
-        // use size as indicator for maxEntries => try radix sort?
-        map = new TreeMap<Integer, TIntHashSet>();
-    }
-
-    public void clear() {
-        map.clear();
-    }
+	private TreeMap<Integer, TIntHashSet> map = new TreeMap<>();
 
     void remove(int key, int value) {
         TIntHashSet set = map.get(value);
@@ -43,7 +33,8 @@ public class MySortedCollection {
 
     public void insert(int key, int value) {
         TIntHashSet set = map.get(value);
-        if (set == null)
+		int slidingMeanValue = 20;
+		if (set == null)
             map.put(value, set = new TIntHashSet(slidingMeanValue));
 //        else
 //            slidingMeanValue = Math.max(5, (slidingMeanValue + set.size()) / 2);
@@ -59,15 +50,6 @@ public class MySortedCollection {
         if (e.getValue().isEmpty())
             throw new IllegalStateException("internal set is already empty!?");
         return map.firstEntry().getKey();
-    }
-
-    public int peekKey() {
-        if (size == 0)
-            throw new IllegalStateException("collection is already empty!?");
-        TIntHashSet set = map.firstEntry().getValue();
-        if (set.isEmpty())
-            throw new IllegalStateException("internal set is already empty!?");
-        return set.iterator().next();
     }
 
     /**
@@ -95,28 +77,5 @@ public class MySortedCollection {
 
     public boolean isEmpty() {
         return size == 0;
-    }
-
-    public int getSlidingMeanValue() {
-        return slidingMeanValue;
-    }
-
-    @Override
-    public String toString() {
-        int min = Integer.MAX_VALUE;
-        int max = Integer.MIN_VALUE;
-        for (Entry<Integer, TIntHashSet> e : map.entrySet()) {
-            int tmpSize = e.getValue().size();
-            if (min > tmpSize)
-                min = tmpSize;
-            if (max < tmpSize)
-                max = tmpSize;
-        }
-        String str = "";
-        if (!isEmpty())
-            str = ", minEntry=(" + peekKey() + "=>" + peekValue() + ")";
-        return "size=" + size + ", treeMap.size=" + map.size()
-                + ", averageNo=" + size * 1f / map.size()
-                + ", minNo=" + min + ", maxNo=" + max + str;
     }
 }
