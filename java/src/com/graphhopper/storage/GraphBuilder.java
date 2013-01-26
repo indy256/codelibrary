@@ -26,8 +26,6 @@ package com.graphhopper.storage;
 public class GraphBuilder {
 
     private String location;
-    private boolean mmap;
-    private boolean store;
     private boolean level;
     private int size = 100;
 
@@ -49,23 +47,9 @@ public class GraphBuilder {
         return this;
     }
 
-    public GraphBuilder store(boolean store) {
-        this.store = store;
-        return this;
-    }
-
-    public GraphBuilder mmap(boolean mmap) {
-        this.mmap = mmap;
-        return this;
-    }
-
     public GraphBuilder size(int size) {
         this.size = size;
         return this;
-    }
-
-    LevelGraphStorage levelGraphBuild() {
-        return (LevelGraphStorage) levelGraph(true).build();
     }
 
     /**
@@ -82,11 +66,7 @@ public class GraphBuilder {
      */
     GraphStorage build() {
         Directory dir;
-        if (mmap) {
-            dir = new MMapDirectory(location);
-        } else {
-            dir = new RAMDirectory(location, store);
-        }
+        dir = new RAMDirectory(location, false);
         GraphStorage graph;
         if (level)
             graph = new LevelGraphStorage(dir);

@@ -59,15 +59,6 @@ public abstract class AbstractDirectory implements Directory {
     }
 
     @Override
-    public DataAccess rename(DataAccess da, String newName) {
-        String oldName = da.name();
-        da.rename(newName);
-        removeByName(oldName);
-        map.put(newName, da);
-        return da;
-    }
-
-    @Override
     public void remove(DataAccess da) {
         removeByName(da.name());
     }
@@ -81,10 +72,6 @@ public abstract class AbstractDirectory implements Directory {
 
     protected void mkdirs() {
         new File(location).mkdirs();
-    }
-
-    Collection<DataAccess> getAll() {
-        return map.values();
     }
 
     @Override

@@ -38,25 +38,9 @@ public class RAMDataAccess extends AbstractDataAccess {
     private transient int segmentSizeIntsPower;
     private transient int indexDivisor;
 
-    RAMDataAccess() {
-        this("", "", false);
-    }
-
-    RAMDataAccess(String name) {
-        this(name, name, false);
-    }
-
     RAMDataAccess(String name, String location, boolean store) {
         super(name, location);
         this.store = store;
-    }
-
-    /**
-     * @param store true if in-memory data should be saved when calling flush
-     */
-    public RAMDataAccess store(boolean store) {
-        this.store = store;
-        return this;
     }
 
     @Override
@@ -217,22 +201,6 @@ public class RAMDataAccess extends AbstractDataAccess {
         segmentSizeIntsPower = (int) (Math.log(segmentSizeInBytes / 4) / Math.log(2));
         indexDivisor = segmentSizeInBytes / 4 - 1;
         return this;
-    }
-
-    @Override
-    public void trimTo(long capacity) {
-        if (capacity < segmentSizeInBytes)
-            capacity = segmentSizeInBytes;
-        int remainingSegments = (int) (capacity / segmentSizeInBytes);
-        if (capacity % segmentSizeInBytes != 0)
-            remainingSegments++;
-
-        segments = Arrays.copyOf(segments, remainingSegments);
-    }
-
-    boolean releaseSegment(int segNumber) {
-        segments[segNumber] = null;
-        return true;
     }
 
     @Override

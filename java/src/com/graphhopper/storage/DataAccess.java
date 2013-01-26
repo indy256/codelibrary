@@ -78,12 +78,6 @@ public interface DataAccess extends Storable {
     void ensureCapacity(long bytes);
 
     /**
-     * Reduces the allocate space to the specified bytes. Warning: it'll free
-     * the space even if it is in use!
-     */
-    void trimTo(long bytes);
-
-    /**
      * Copies the content from this object into the specified one.
      */
     DataAccess copyTo(DataAccess da);

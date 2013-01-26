@@ -51,12 +51,6 @@ public interface Graph {
     double getLongitude(int node);
 
     /**
-     * Returns the implicit bounds of this graph calculated from the lat,lon
-     * input of setNode
-     */
-    BBox bounds();
-
-    /**
      * Creates an edge between the nodes a and b.
      *
      * @param a the index of the starting (tower) node of the edge
@@ -94,22 +88,4 @@ public interface Graph {
     EdgeIterator getIncoming(int index);
 
     EdgeIterator getOutgoing(int index);
-
-    /**
-     * @return the specified graph g
-     */
-    Graph copyTo(Graph g);
-
-    /**
-     * Schedule the deletion of the specified node until an optimize() call
-     * happens
-     */
-    void markNodeRemoved(int index);
-
-    boolean isNodeRemoved(int index);
-
-    /**
-     * Performs optimization routines like deletion or node rearrangements.
-     */
-    void optimize();
 }

@@ -28,14 +28,6 @@ public class RAMDirectory extends AbstractDirectory {
 
     private boolean store;
 
-    public RAMDirectory() {
-        this("", false);
-    }
-
-    public RAMDirectory(String location) {
-        this(location, false);
-    }
-
     /**
      * @param store true if you want that the RAMDirectory can be loaded or saved on demand, false
      * if it should be entirely in RAM
