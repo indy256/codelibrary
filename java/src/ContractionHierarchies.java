@@ -6,6 +6,7 @@ import java.util.*;
 public class ContractionHierarchies {
 /*
 	int calculatePriority(List<Integer>[] g, List<Integer>[] rg, int v) {
+
 		// set of shortcuts that would be added if endNode v would be contracted next.
 		Collection<Shortcut> tmpShortcuts = findShortcuts(g, rg, v);
 		// from shortcuts we can compute the edgeDifference
