@@ -27,7 +27,6 @@ import java.util.Map;
 public class CarStreetType {
 
     public static final Map<String, Integer> SPEED = new CarSpeed();
-    public static final int MAX_SPEED = SPEED.get("motorway");
     public static final int FACTOR = 2;
     public static final int DEFAULT_SPEED = SPEED.get("secondary");
     private static final int FORWARD = 1;
@@ -39,26 +38,6 @@ public class CarStreetType {
      */
     public CarStreetType(int flags) {
         this.flags = flags;
-    }
-
-    public int getRaw() {
-        return flags;
-    }
-
-    public boolean isMotorway() {
-        return getSpeedPart() == SPEED.get("motorway");
-    }
-
-    public boolean isService() {
-        return getSpeedPart() == SPEED.get("service");
-    }
-
-    public boolean isForward() {
-        return (flags & 1) != 0;
-    }
-
-    public boolean isBackward() {
-        return (flags & 2) != 0;
     }
 
     public int getSpeedPart() {

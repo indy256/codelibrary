@@ -75,10 +75,6 @@ public class DijkstraBidirectionRef extends AbstractRoutingAlgorithm {
         return this;
     }
 
-    protected EdgeLevelFilter edgeFilter() {
-        return edgeFilter;
-    }
-
     @Override
     public RoutingAlgorithm clear() {
         alreadyRun = false;
@@ -90,11 +86,6 @@ public class DijkstraBidirectionRef extends AbstractRoutingAlgorithm {
         openSetTo.clear();
         shortestWeightMapTo.clear();
         return this;
-    }
-
-    void addSkipNode(int node) {
-        visitedFrom.add(node);
-        visitedTo.add(node);
     }
 
     public DijkstraBidirectionRef initFrom(int from) {
@@ -245,14 +236,6 @@ public class DijkstraBidirectionRef extends AbstractRoutingAlgorithm {
         return null;
     }
 
-    public EdgeEntry shortestWeightFrom(int nodeId) {
-        return shortestWeightMapFrom.get(nodeId);
-    }
-
-    public EdgeEntry shortestWeightTo(int nodeId) {
-        return shortestWeightMapTo.get(nodeId);
-    }
-
     protected PathBidirRef createPath() {
         return new PathBidirRef(graph, weightCalc);
     }
@@ -260,13 +243,6 @@ public class DijkstraBidirectionRef extends AbstractRoutingAlgorithm {
     public DijkstraBidirectionRef initPath() {
         shortest = createPath();
         return this;
-    }
-
-    /**
-     * @return number of visited nodes.
-     */
-    int calcVisited() {
-        return visitedFrom.cardinality() + visitedTo.cardinality();
     }
 
     @Override public String name() {

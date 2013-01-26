@@ -29,11 +29,6 @@ public class FastestCarCalc implements WeightCalculation {
     }
 
     @Override
-    public double getMinWeight(double distance) {
-        return distance / CarStreetType.MAX_SPEED;
-    }
-
-    @Override
     public long getTime(double distance, int flags) {
         return (long) (distance * 3.6 / CarStreetType.getSpeed(flags));
     }

@@ -40,19 +40,8 @@ public class PathBidirRef extends Path {
         weight = INIT_VALUE;
     }
 
-    PathBidirRef(PathBidirRef p) {
-        super(p);
-        edgeTo = p.edgeTo;
-        switchWrapper = p.switchWrapper;
-    }
-
     public PathBidirRef switchToFrom(boolean b) {
         switchWrapper = b;
-        return this;
-    }
-
-    public PathBidirRef edgeEntryTo(EdgeEntry edgeTo) {
-        this.edgeTo = edgeTo;
         return this;
     }
 

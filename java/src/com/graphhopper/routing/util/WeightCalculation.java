@@ -31,11 +31,6 @@ public interface WeightCalculation {
     long getTime(double distance, int flags);
 
     /**
-     * @return the calculated weight with the maximum velocity
-     */
-    double getMinWeight(double distance);
-
-    /**
      * @return the calculated weight with the specified velocity
      */
     double getWeight(double distance, int flags);

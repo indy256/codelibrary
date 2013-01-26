@@ -41,8 +41,4 @@ public abstract class AbstractAlgoPreparation<T extends AlgorithmPreparation> im
         // no operation
         return (T) this;
     }
-
-    @Override public boolean isPrepared() {
-        return prepared;
-    }
 }

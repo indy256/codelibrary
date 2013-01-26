@@ -33,11 +33,6 @@ public interface AlgorithmPreparation {
      */
     AlgorithmPreparation doWork();
 
-    /**
-     * @return true if doWork was already called.
-     */
-    boolean isPrepared();
-
     AlgorithmPreparation graph(Graph g);
 
     RoutingAlgorithm createAlgo();

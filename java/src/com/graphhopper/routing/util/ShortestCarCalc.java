@@ -25,10 +25,6 @@ public class ShortestCarCalc implements WeightCalculation {
 
     public final static ShortestCarCalc DEFAULT = new ShortestCarCalc();
 
-    @Override public double getMinWeight(double currDistToGoal) {
-        return currDistToGoal;
-    }
-
     @Override
     public long getTime(double distance, int flags) {
         return (long) (distance * 3.6 / CarStreetType.getSpeed(flags));

@@ -58,16 +58,6 @@ public class Path {
         this.edgeIds = new TIntArrayList();
     }
 
-    /**
-     * Populates an unextracted path instances from the specified path p.
-     */
-    Path(Path p) {
-        this(p.graph, p.weightCalculation);
-        weight = p.weight;
-        edgeIds = new TIntArrayList(edgeIds);
-        edgeEntry = p.edgeEntry;
-    }
-
     public Path edgeEntry(EdgeEntry edgeEntry) {
         this.edgeEntry = edgeEntry;
         return this;

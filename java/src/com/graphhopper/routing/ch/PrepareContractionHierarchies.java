@@ -452,10 +452,6 @@ public class PrepareContractionHierarchies extends AbstractAlgoPreparation<Prepa
                         return "INVERSE";
                     }
 
-                    @Override public double getMinWeight(double distance) {
-                        throw new IllegalStateException("getMinWeight not supported yet");
-                    }
-
                     @Override public double getWeight(double distance, int flags) {
                         return distance;
                     }
