@@ -25,10 +25,6 @@ public class MyDataAccess {
 		}
 	}
 
-	public int segmentSize() {
-		return 4;
-	}
-
 	public long capacity() {
 		return a.length;
 	}

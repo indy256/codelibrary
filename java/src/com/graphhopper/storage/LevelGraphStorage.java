@@ -61,11 +61,8 @@ public class LevelGraphStorage implements LevelGraph {
 		return (int) (f * INT_DIST_FACTOR);
 	}
 
-	private long incCapacity(MyDataAccess da, long deltaCap) {
-		long newSeg = deltaCap / da.segmentSize();
-		if (deltaCap % da.segmentSize() != 0)
-			newSeg++;
-		long cap = da.capacity() + newSeg * da.segmentSize();
+	private static long incCapacity(MyDataAccess da, long deltaCap) {
+		long cap = da.capacity() + (deltaCap + 3) / 4 * 4;
 		da.ensureCapacity(cap);
 		return cap;
 	}
@@ -84,9 +81,6 @@ public class LevelGraphStorage implements LevelGraph {
 		initNodeRefs(oldNodes * nodeEntrySize, newBytesCapacity / 4);
 	}
 
-	/**
-	 * Initializes the node area with the empty edge value.
-	 */
 	private void initNodeRefs(long oldCapacity, long newCapacity) {
 		for (long pointer = oldCapacity + N_EDGE_REF; pointer < newCapacity; pointer += nodeEntrySize) {
 			nodes.setInt(pointer, EdgeIterator.NO_EDGE);
@@ -342,15 +336,15 @@ public class LevelGraphStorage implements LevelGraph {
 	}
 
 	@Override
-	public final void setLevel(int index, int level) {
-		ensureNodeIndex(index);
-		nodes.setInt((long) index * nodeEntrySize + I_LEVEL, level);
-	}
-
-	@Override
 	public final int getLevel(int index) {
 		ensureNodeIndex(index);
 		return nodes.getInt((long) index * nodeEntrySize + I_LEVEL);
+	}
+
+	@Override
+	public final void setLevel(int index, int level) {
+		ensureNodeIndex(index);
+		nodes.setInt((long) index * nodeEntrySize + I_LEVEL, level);
 	}
 
 	@Override
@@ -418,12 +412,12 @@ public class LevelGraphStorage implements LevelGraph {
 		EdgeSkipIterator edge;
 		if (endNode == nodeB) {
 			edge = createSingleEdge(edgeId, nodeA);
-			((EdgeIteratorImpl)edge).node = nodeB;
+			((EdgeIteratorImpl) edge).node = nodeB;
 			return edge;
 		} else if (endNode == nodeA) {
 			edge = createSingleEdge(edgeId, nodeB);
-			((EdgeIteratorImpl)edge).node = nodeA;
-			((SingleEdge)edge).switchFlags = true;
+			((EdgeIteratorImpl) edge).node = nodeA;
+			((SingleEdge) edge).switchFlags = true;
 			return edge;
 		} else
 			return GraphUtility.EMPTY;
@@ -439,11 +433,13 @@ public class LevelGraphStorage implements LevelGraph {
 			super(edge, nodeId);
 		}
 
-		@Override public void setSkippedEdge(int node) {
+		@Override
+		public void setSkippedEdge(int node) {
 			edges.setInt(edgePointer + I_SKIP_EDGE, node);
 		}
 
-		@Override public int getSkippedEdge() {
+		@Override
+		public int getSkippedEdge() {
 			return edges.getInt(edgePointer + I_SKIP_EDGE);
 		}
 	}
