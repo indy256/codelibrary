@@ -5,20 +5,20 @@ package com.graphhopper.storage;
  *
  * @author Peter Karich,
  */
-public class EdgeEntry implements Comparable<EdgeEntry> {
+public class Edge implements Comparable<Edge> {
 
 	public int edge;
 	public int endNode;
 	public double weight;
-	public EdgeEntry parent;
+	public Edge parent;
 
-	public EdgeEntry(int edgeId, int endNode, double distance) {
+	public Edge(int edgeId, int endNode, double distance) {
 		this.edge = edgeId;
 		this.endNode = endNode;
 		this.weight = distance;
 	}
 
-	@Override public int compareTo(EdgeEntry o) {
+	@Override public int compareTo(Edge o) {
 		return Double.compare(weight, o.weight);
 	}
 }

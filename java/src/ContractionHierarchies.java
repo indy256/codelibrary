@@ -166,7 +166,7 @@ public class ContractionHierarchies {
 		int endNode;
 
 		int originalEdges;
-		//EdgeEntry entry;
+		//Edge entry;
 		double distance;
 
 		public String toString() {

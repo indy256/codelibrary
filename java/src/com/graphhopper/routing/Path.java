@@ -1,6 +1,6 @@
 package com.graphhopper.routing;
 
-import com.graphhopper.storage.EdgeEntry;
+import com.graphhopper.storage.Edge;
 import com.graphhopper.storage.Graph;
 import com.graphhopper.util.EdgeIterator;
 import gnu.trove.list.TIntList;
@@ -19,9 +19,9 @@ public class Path {
     protected Graph graph;
     protected double distance;
     protected boolean found;
-    // we go upwards (via EdgeEntry.parent) from the goal node to the origin node
+    // we go upwards (via Edge.parent) from the goal node to the origin node
     protected boolean reverse = true;
-    protected EdgeEntry edgeEntry;
+    protected Edge edge;
     private int fromNode = EdgeIterator.NO_EDGE;
     private TIntList edgeIds;
 
@@ -34,8 +34,8 @@ public class Path {
         this.edgeIds = new TIntArrayList();
     }
 
-    public Path edgeEntry(EdgeEntry edgeEntry) {
-        this.edgeEntry = edgeEntry;
+    public Path edgeEntry(Edge edge) {
+        this.edge = edge;
         return this;
     }
 
@@ -83,10 +83,10 @@ public class Path {
     }
 
     /**
-     * Extracts the Path from the shortest-path-tree determined by edgeEntry.
+     * Extracts the Path from the shortest-path-tree determined by edge.
      */
     public Path extract() {
-        EdgeEntry goalEdge = edgeEntry;
+        Edge goalEdge = edge;
         while (EdgeIterator.Edge.isValid(goalEdge.edge)) {
             processWeight(goalEdge.edge, goalEdge.endNode);
             goalEdge = goalEdge.parent;

@@ -1,6 +1,6 @@
 package com.graphhopper.routing;
 
-import com.graphhopper.storage.EdgeEntry;
+import com.graphhopper.storage.Edge;
 import com.graphhopper.storage.Graph;
 import com.graphhopper.util.EdgeIterator;
 import gnu.trove.map.TIntObjectMap;
@@ -18,8 +18,8 @@ import java.util.PriorityQueue;
 public class DijkstraSimple extends AbstractRoutingAlgorithm {
 
     protected final BitSet visited = new BitSet();
-    private TIntObjectMap<EdgeEntry> map = new TIntObjectHashMap<>();
-    private PriorityQueue<EdgeEntry> heap = new PriorityQueue<>();
+    private TIntObjectMap<Edge> map = new TIntObjectHashMap<>();
+    private PriorityQueue<Edge> heap = new PriorityQueue<>();
 
     public DijkstraSimple(Graph graph) {
         super(graph);
@@ -27,9 +27,9 @@ public class DijkstraSimple extends AbstractRoutingAlgorithm {
 
     @Override
     public Path calcPath(int from, int to) {
-        EdgeEntry fromEntry = new EdgeEntry(EdgeIterator.NO_EDGE, from, 0d);
+        Edge fromEntry = new Edge(EdgeIterator.NO_EDGE, from, 0d);
         visited.set(from);
-        EdgeEntry currEdge = fromEntry;
+        Edge currEdge = fromEntry;
         while (true) {
             int neighborNode = currEdge.endNode;
             EdgeIterator iter = neighbors(neighborNode);
@@ -39,9 +39,9 @@ public class DijkstraSimple extends AbstractRoutingAlgorithm {
                     continue;
 
                 double tmpWeight = iter.distance() + currEdge.weight;
-                EdgeEntry nEdge = map.get(tmpNode);
+                Edge nEdge = map.get(tmpNode);
                 if (nEdge == null) {
-                    nEdge = new EdgeEntry(iter.edge(), tmpNode, tmpWeight);
+                    nEdge = new Edge(iter.edge(), tmpNode, tmpWeight);
                     nEdge.parent = currEdge;
                     map.put(tmpNode, nEdge);
                     heap.add(nEdge);
@@ -73,11 +73,11 @@ public class DijkstraSimple extends AbstractRoutingAlgorithm {
         return extractPath(currEdge);
     }
 
-    protected boolean finished(EdgeEntry currEdge, int to) {
+    protected boolean finished(Edge currEdge, int to) {
         return currEdge.endNode == to;
     }
 
-    public Path extractPath(EdgeEntry goalEdge) {
+    public Path extractPath(Edge goalEdge) {
         return new Path(graph).edgeEntry(goalEdge).extract();
     }
     

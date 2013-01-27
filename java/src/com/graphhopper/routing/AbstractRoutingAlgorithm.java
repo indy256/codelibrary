@@ -1,6 +1,6 @@
 package com.graphhopper.routing;
 
-import com.graphhopper.storage.EdgeEntry;
+import com.graphhopper.storage.Edge;
 import com.graphhopper.storage.Graph;
 
 /**
@@ -14,6 +14,6 @@ public abstract class AbstractRoutingAlgorithm implements RoutingAlgorithm {
         this.graph = graph;
     }
 
-    protected void updateShortest(EdgeEntry shortestDE, int currLoc) {
+    protected void updateShortest(Edge shortestDE, int currLoc) {
     }
 }

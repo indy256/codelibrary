@@ -1,6 +1,6 @@
 package com.graphhopper.routing;
 
-import com.graphhopper.storage.EdgeEntry;
+import com.graphhopper.storage.Edge;
 import com.graphhopper.storage.Graph;
 import com.graphhopper.util.EdgeIterator;
 
@@ -12,7 +12,7 @@ import com.graphhopper.util.EdgeIterator;
  */
 public class PathBidirRef extends Path {
 
-    protected EdgeEntry edgeTo;
+    protected Edge edgeTo;
     private boolean switchWrapper = false;
 
     public PathBidirRef(Graph g) {
@@ -31,16 +31,16 @@ public class PathBidirRef extends Path {
     @Override
     public Path extract() {
         distance = 0;
-        if (edgeEntry == null || edgeTo == null)
+        if (edge == null || edgeTo == null)
             return this;
 
         if (switchWrapper) {
-            EdgeEntry ee = edgeEntry;
-            edgeEntry = edgeTo;
+            Edge ee = edge;
+            edge = edgeTo;
             edgeTo = ee;
         }
 
-        EdgeEntry currEdge = edgeEntry;
+        Edge currEdge = edge;
         while (EdgeIterator.Edge.isValid(currEdge.edge)) {
             processWeight(currEdge.edge, currEdge.endNode);
             currEdge = currEdge.parent;

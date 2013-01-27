@@ -7,7 +7,7 @@ import com.graphhopper.routing.PathBidirRef;
 import com.graphhopper.routing.util.AlgorithmPreparation;
 import com.graphhopper.routing.util.CarStreetType;
 import com.graphhopper.routing.util.EdgeLevelFilter;
-import com.graphhopper.storage.EdgeEntry;
+import com.graphhopper.storage.Edge;
 import com.graphhopper.storage.Graph;
 import com.graphhopper.storage.LevelGraph;
 import com.graphhopper.util.EdgeIterator;
@@ -391,7 +391,7 @@ public class PrepareContractionHierarchies implements AlgorithmPreparation {
 		}
 
 		@Override
-		public boolean finished(EdgeEntry curr, int _ignoreTo) {
+		public boolean finished(Edge curr, int _ignoreTo) {
 			if (curr.weight > limit)
 				return true;
 
@@ -450,7 +450,7 @@ public class PrepareContractionHierarchies implements AlgorithmPreparation {
 
 		int endNode;
 		int originalEdges;
-		EdgeEntry entry;
+		Edge entry;
 		double distance;
 
 		@Override
