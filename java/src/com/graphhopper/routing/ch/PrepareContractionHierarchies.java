@@ -120,27 +120,23 @@ public class PrepareContractionHierarchies extends AbstractAlgoPreparation<Prepa
 		int newShortcuts = 0;
 		final int updateSize = Math.max(10, sortedNodes.size() / 10);
 		int counter = 0;
-		int updateCounter = 0;
 		// no update all => 600k shortcuts and 3min
 		while (!sortedNodes.isEmpty()) {
 			if (counter % updateSize == 0) {
 				// periodically update priorities of ALL nodes
-				if (updateCounter > 0 && updateCounter % 2 == 0) {
-					// TODO avoid to traverse all nodes -> via a new sortedNodes.iterator()
-					for (int node = 0; node < g.nodes(); node++) {
-						if (g.getLevel(node) != 0)
-							continue;
-						WeightedNode wNode = refs[node];
-						sortedNodes.remove(wNode);
-						wNode.priority = calculatePriority(node);
-						sortedNodes.add(wNode);
-					}
+				// TODO avoid to traverse all nodes -> via a new sortedNodes.iterator()
+				for (int node = 0; node < g.nodes(); node++) {
+					if (g.getLevel(node) != 0)
+						continue;
+					WeightedNode wNode = refs[node];
+					sortedNodes.remove(wNode);
+					wNode.priority = calculatePriority(node);
+					sortedNodes.add(wNode);
 				}
-				updateCounter++;
 			}
 
 			++counter;
-			WeightedNode wn = refs[sortedNodes.pollFirst().node];
+			WeightedNode wn = sortedNodes.pollFirst();
 			wn.priority = calculatePriority(wn.node);
 			if (!sortedNodes.isEmpty() && wn.priority > sortedNodes.first().priority) {
 				// endNode got more important => insert as new value and contract it later
