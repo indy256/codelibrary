@@ -6,25 +6,9 @@ import com.graphhopper.util.EdgeSkipIterator;
 import com.graphhopper.util.GraphUtility;
 import com.graphhopper.util.RawEdgeIterator;
 
-/**
- * The main implementation which handles nodes and edges file format. It can be
- * used with different Directory implementations like RAMDirectory for fast and
- * read-thread safe usage which can be flushed to disc or via MMapDirectory for
- * virtual-memory and not thread safe usage.
- * <p/>
- * Life cycle: (1) object creation, (2) configuration, (3) createNew or
- * loadExisting, (4) usage, (5) close
- *
- * @author Peter Karich
- * @see GraphBuilder The GraphBuilder class to easily create a
- *      (Level)LevelGraphStorage
- * @see LevelGraphStorage
- */
 public class LevelGraphStorage implements LevelGraph {
 
-	// distance of around +-1000 000 meter are ok
 	private static final float INT_DIST_FACTOR = 1000f;
-	// edge memory layout: nodeA,nodeB,linkA,linkB,dist,flags,geometryRef
 	protected final int E_NODEA, E_NODEB, E_LINKA, E_LINKB, E_DIST, E_FLAGS, I_SKIP_EDGE;
 	protected final int I_LEVEL, N_EDGE_REF;
 
@@ -36,9 +20,8 @@ public class LevelGraphStorage implements LevelGraph {
 
 	private int edgeCount = 0;
 	private int nodeCount;
-	private boolean initialized = false;
 
-	public LevelGraphStorage() {
+	public LevelGraphStorage(int nodeCount) {
 		nodes = new MyDataAccess();
 		edges = new MyDataAccess();
 
@@ -57,19 +40,12 @@ public class LevelGraphStorage implements LevelGraph {
 
 		nodeEntrySize = nodeEntryIndex;
 		edgeEntrySize = edgeEntryIndex;
-	}
 
-	/**
-	 * After configuring this storage you need to create it explicitly.
-	 */
-	public LevelGraphStorage createNew(int nodeCount) {
 		int initBytes = Math.max(nodeCount * 4 / 50, 100);
 		nodes.createNew((long) initBytes * nodeEntrySize);
 		initNodeRefs(0, nodes.capacity() / 4);
 
 		edges.createNew((long) initBytes * edgeEntrySize);
-		initialized = true;
-		return this;
 	}
 
 	@Override
@@ -86,8 +62,6 @@ public class LevelGraphStorage implements LevelGraph {
 	}
 
 	private long incCapacity(MyDataAccess da, long deltaCap) {
-		if (!initialized)
-			throw new IllegalStateException("Call createNew before or use the GraphBuilder class");
 		long newSeg = deltaCap / da.segmentSize();
 		if (deltaCap % da.segmentSize() != 0)
 			newSeg++;

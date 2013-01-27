@@ -27,7 +27,7 @@ import static org.junit.Assert.*;
 public class PrepareContractionHierarchiesTest {
 
 	LevelGraph createGraph() {
-		return new LevelGraphStorage().createNew(100);
+		return new LevelGraphStorage(100);
 	}
 
 	LevelGraph createExampleGraph() {
