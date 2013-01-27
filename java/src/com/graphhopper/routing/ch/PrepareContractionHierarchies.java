@@ -65,11 +65,9 @@ public class PrepareContractionHierarchies extends AbstractAlgoPreparation<Prepa
 		initFromGraph();
 		// TODO integrate PrepareRoutingShortcuts -> so avoid all nodes with negative level in the other methods
 		// in PrepareShortcuts level 0 and -1 is already used move that to level 1 and 2 so that level 0 stays as uncontracted
-		if (!prepareEdges())
-			return this;
 
-		if (!prepareNodes())
-			return this;
+		prepareEdges();
+		prepareNodes();
 		contractNodes();
 		return this;
 	}
@@ -82,23 +80,19 @@ public class PrepareContractionHierarchies extends AbstractAlgoPreparation<Prepa
 		return this;
 	}
 
-	boolean prepareEdges() {
-		boolean empty = true;
+	void prepareEdges() {
 		for (RawEdgeIterator it = g.allEdges(); it.next(); ) {
 			setOrigEdgeCount(it.edge(), 1);
-			empty = false;
 		}
-		return !empty;
 	}
 
-	boolean prepareNodes() {
+	void prepareNodes() {
 		int len = g.nodes();
 		// minor idea: 1. sort nodes randomly and 2. pre-init with endNode degree
 		for (int node = 0; node < len; node++) {
 			refs[node] = new WeightedNode(node, calculatePriority(node));
 			sortedNodes.add(refs[node]);
 		}
-		return len > 0;
 	}
 
 	void contractNodes() {
