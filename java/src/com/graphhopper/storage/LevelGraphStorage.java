@@ -181,12 +181,7 @@ public class LevelGraphStorage implements LevelGraph {
 			if (baseNode > node)
 				flags = CarStreetType.swapDirection(flags);
 
-			if (!in && !CarStreetType.isForward(flags) || !out && !CarStreetType.isBackward(flags)) {
-				// skip this edge as it does not fit to defined filter
-				return false;
-			} else {
-				return true;
-			}
+			return !(!in && !CarStreetType.isForward(flags) || !out && !CarStreetType.isBackward(flags));
 		}
 
 		@Override
@@ -356,9 +351,7 @@ public class LevelGraphStorage implements LevelGraph {
 		@Override
 		public int flags() {
 			flags = edges[((int) (edgePointer + E_FLAGS))];
-			if (switchFlags)
-				return CarStreetType.swapDirection(flags);
-			return flags;
+			return switchFlags ? CarStreetType.swapDirection(flags) : flags;
 		}
 
 		@Override
