@@ -22,9 +22,6 @@ public class LevelGraphStorage implements LevelGraph {
 	private int nodeCount;
 
 	public LevelGraphStorage(int nodeCount) {
-		nodes = new MyDataAccess();
-		edges = new MyDataAccess();
-
 		int edgeEntryIndex = 0;
 		E_NODEA = edgeEntryIndex++;
 		E_NODEB = edgeEntryIndex++;
@@ -42,9 +39,11 @@ public class LevelGraphStorage implements LevelGraph {
 		edgeEntrySize = edgeEntryIndex;
 
 		int initBytes = Math.max(nodeCount * 4 / 50, 100);
+		nodes = new MyDataAccess();
 		nodes.createNew((long) initBytes * nodeEntrySize);
 		initNodeRefs(0, nodes.capacity() / 4);
 
+		edges = new MyDataAccess();
 		edges.createNew((long) initBytes * edgeEntrySize);
 	}
 
