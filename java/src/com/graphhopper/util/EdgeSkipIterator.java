@@ -10,7 +10,7 @@ import com.graphhopper.storage.LevelGraph;
  */
 public interface EdgeSkipIterator extends EdgeIterator {
 
-    int skippedEdge();
+    int getSkippedEdge();
 
-    void skippedEdge(int node);
+    void setSkippedEdge(int node);
 }

@@ -80,7 +80,6 @@ public abstract class GraphStorage implements Graph {
 	 * After configuring this storage you need to create it explicitly.
 	 */
 	public GraphStorage createNew(int nodeCount) {
-		checkAlreadyInitialized();
 		int initBytes = Math.max(nodeCount * 4 / 50, 100);
 		nodes.createNew((long) initBytes * nodeEntrySize);
 		initNodeRefs(0, nodes.capacity() / 4);
@@ -423,10 +422,5 @@ public abstract class GraphStorage implements Graph {
 		public boolean isEmpty() {
 			return false;
 		}
-	}
-
-	private void checkAlreadyInitialized() {
-		if (initialized)
-			throw new IllegalStateException("Already initialized GraphStorage.");
 	}
 }

@@ -41,7 +41,7 @@ public class LevelGraphStorage extends GraphStorage implements LevelGraph {
         int edgeId = internalEdgeAdd(a, b, distance, flags);
         EdgeSkipIteratorImpl iter = new EdgeSkipIteratorImpl(edgeId, a, false, false);
         iter.next();
-        iter.skippedEdge(-1);
+        iter.setSkippedEdge(-1);
         return iter;
     }
 
@@ -71,12 +71,14 @@ public class LevelGraphStorage extends GraphStorage implements LevelGraph {
             super(edge, node, in, out);
         }
 
-        @Override public void skippedEdge(int edgeId) {
-            edges.setInt(edgePointer + I_SKIP_EDGE, edgeId);
-        }
+		@Override
+		public int getSkippedEdge() {
+			return edges.getInt(edgePointer + I_SKIP_EDGE);
+		}
 
-        @Override public int skippedEdge() {
-            return edges.getInt(edgePointer + I_SKIP_EDGE);
+        @Override
+		public void setSkippedEdge(int edgeId) {
+            edges.setInt(edgePointer + I_SKIP_EDGE, edgeId);
         }
     }
 
@@ -96,11 +98,11 @@ public class LevelGraphStorage extends GraphStorage implements LevelGraph {
             super(edge, nodeId);
         }
 
-        @Override public void skippedEdge(int node) {
+        @Override public void setSkippedEdge(int node) {
             edges.setInt(edgePointer + I_SKIP_EDGE, node);
         }
 
-        @Override public int skippedEdge() {
+        @Override public int getSkippedEdge() {
             return edges.getInt(edgePointer + I_SKIP_EDGE);
         }
     }

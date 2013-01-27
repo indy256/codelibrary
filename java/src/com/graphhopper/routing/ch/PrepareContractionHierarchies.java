@@ -115,7 +115,7 @@ public class PrepareContractionHierarchies implements AlgorithmPreparation {
 
 		int contractedNeighbors = 0;
 		for (EdgeSkipIterator it = g.getEdges(v); it.next(); )
-			if (EdgeIterator.Edge.isValid(it.skippedEdge()))
+			if (EdgeIterator.Edge.isValid(it.getSkippedEdge()))
 				++contractedNeighbors;
 
 		return 10 * edgeDifference + 50 * originalEdgesCount + contractedNeighbors;
@@ -291,12 +291,12 @@ public class PrepareContractionHierarchies implements AlgorithmPreparation {
 			/*
 			EdgeSkipIterator it = g.getOutgoing(sc.from);
 			while (it.next()) {
-				if (EdgeIterator.Edge.isValid(it.skippedEdge())
+				if (EdgeIterator.Edge.isValid(it.setSkippedEdge())
 						&& it.node() == sc.to
 						&& CarStreetType.canBeOverwritten(it.flags(), sc.flags)
 						&& it.distance() > sc.distance) {
 					it.flags(sc.flags);
-					it.skippedEdge(sc.skippedEdge);
+					it.setSkippedEdge(sc.setSkippedEdge);
 					it.distance(sc.distance);
 					setOrigEdgeCount(it.edge(), sc.originalEdges);
 					updatedInGraph = true;
@@ -307,7 +307,7 @@ public class PrepareContractionHierarchies implements AlgorithmPreparation {
 
 			if (!updatedInGraph) {
 				EdgeSkipIterator it = g.edge(sc.from, sc.to, sc.distance, sc.flags);
-				it.skippedEdge(sc.skippedEdge);
+				it.setSkippedEdge(sc.skippedEdge);
 				setOrigEdgeCount(it.edge(), sc.originalEdges);
 				newShortcuts++;
 			}

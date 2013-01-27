@@ -37,7 +37,7 @@ public class ContractionHierarchies {
 		int contractedNeighbors = 0;
 //		EdgeSkipIterator iter = g.getEdges(v);
 //		while (iter.next()) {
-//			if (iter.skippedEdge() >= 0)
+//			if (iter.setSkippedEdge() >= 0)
 //				contractedNeighbors++;
 //		}
 

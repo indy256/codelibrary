@@ -24,7 +24,7 @@ public class Path4CH extends PathBidirRef {
         // Shortcuts do only contain valid weight so first expand before adding
         // to distance and time
         EdgeSkipIterator iter = (EdgeSkipIterator) mainIter;
-        if (EdgeIterator.Edge.isValid(iter.skippedEdge())) {
+        if (EdgeIterator.Edge.isValid(iter.getSkippedEdge())) {
             expandEdge(iter, false);
         } else {
             // only add if it is not a shortcut
@@ -40,7 +40,7 @@ public class Path4CH extends PathBidirRef {
     }
 
     private void expandEdge(EdgeSkipIterator mainIter, boolean revert) {
-        int skippedEdge = mainIter.skippedEdge();
+        int skippedEdge = mainIter.getSkippedEdge();
         if (!EdgeIterator.Edge.isValid(skippedEdge)) {
             calcWeight(mainIter);
             addEdge(mainIter.edge());
@@ -54,7 +54,7 @@ public class Path4CH extends PathBidirRef {
         }
 
         // 2 things => 2*2=4 sitations
-        // - one edge needs to be determined explicitely because we store only one as skippedEdge
+        // - one edge needs to be determined explicitely because we store only one as setSkippedEdge
         // - getEdgeProps could possibly return an empty edge if the shortcuts is available for both directions
         if (reverse) {
             EdgeSkipIterator iter = (EdgeSkipIterator) graph.getEdgeProps(skippedEdge, from);

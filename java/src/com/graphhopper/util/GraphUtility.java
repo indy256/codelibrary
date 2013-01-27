@@ -42,12 +42,12 @@ public class GraphUtility {
 
 	public static final EdgeSkipIterator EMPTY = new EdgeSkipIterator() {
 		@Override
-		public int skippedEdge() {
+		public int getSkippedEdge() {
 			throw new UnsupportedOperationException("Not supported. Edge is empty.");
 		}
 
 		@Override
-		public void skippedEdge(int node) {
+		public void setSkippedEdge(int node) {
 			throw new UnsupportedOperationException("Not supported. Edge is empty.");
 		}
 
