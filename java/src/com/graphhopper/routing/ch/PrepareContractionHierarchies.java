@@ -126,9 +126,8 @@ public class PrepareContractionHierarchies extends AbstractAlgoPreparation<Prepa
 			if (counter % updateSize == 0) {
 				// periodically update priorities of ALL nodes
 				if (updateCounter > 0 && updateCounter % 2 == 0) {
-					int len = g.nodes();
 					// TODO avoid to traverse all nodes -> via a new sortedNodes.iterator()
-					for (int node = 0; node < len; node++) {
+					for (int node = 0; node < g.nodes(); node++) {
 						if (g.getLevel(node) != 0)
 							continue;
 						WeightedNode wNode = refs[node];
@@ -140,11 +139,8 @@ public class PrepareContractionHierarchies extends AbstractAlgoPreparation<Prepa
 				updateCounter++;
 			}
 
-			counter++;
-			//WeightedNode wn = refs[sortedNodes.pollKey()];
+			++counter;
 			WeightedNode wn = refs[sortedNodes.pollFirst().node];
-
-			// update priority of current endNode via simulating 'addShortcuts'
 			wn.priority = calculatePriority(wn.node);
 			if (!sortedNodes.isEmpty() && wn.priority > sortedNodes.first().priority) {
 				// endNode got more important => insert as new value and contract it later
