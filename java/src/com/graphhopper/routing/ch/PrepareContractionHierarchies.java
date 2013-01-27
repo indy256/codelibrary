@@ -187,40 +187,35 @@ public class PrepareContractionHierarchies extends AbstractAlgoPreparation<Prepa
 	}
 
 	/**
-	 * Finds shortcuts, does not change the underlying setGraph.
+	 * Finds shortcuts, does not change the underlying graph
 	 */
 	Collection<Shortcut> findShortcuts(int v) {
 		// we can use distance instead of weight, see prepareEdges where distance is overwritten by weight!
 		List<NodeCH> goalNodes = new ArrayList<NodeCH>();
 		shortcuts.clear();
-		EdgeIterator iter1 = g.getIncoming(v);
 		// TODO PERFORMANCE collect outgoing nodes (goal-nodes) only once and just skip u
-		while (iter1.next()) {
-			int u = iter1.node();
-			int lu = g.getLevel(u);
-			if (lu != 0)
+		for (EdgeIterator it1 = g.getIncoming(v); it1.next(); ) {
+			int u = it1.node();
+			if (g.getLevel(u) != 0)
 				continue;
 
-			double v_u_weight = iter1.distance();
+			double u_v_weight = it1.distance();
 
 			// one-to-many extractPath path
 			goalNodes.clear();
-			EdgeIterator iter2 = g.getOutgoing(v);
 			double maxWeight = 0;
-			while (iter2.next()) {
-				int w = iter2.node();
-				int lw = g.getLevel(w);
-				if (w == u || lw != 0)
+			for (EdgeIterator it2 = g.getOutgoing(v); it2.next(); ) {
+				int w = it2.node();
+				if (w == u || g.getLevel(w) != 0)
 					continue;
 
 				NodeCH n = new NodeCH();
 				n.endNode = w;
-				n.originalEdges = getOrigEdgeCount(iter2.edge());
-				n.distance = v_u_weight + iter2.distance();
+				n.originalEdges = getOrigEdgeCount(it2.edge());
+				n.distance = u_v_weight + it2.distance();
 				goalNodes.add(n);
 
-				if (maxWeight < n.distance)
-					maxWeight = n.distance;
+				maxWeight = Math.max(maxWeight, n.distance);
 			}
 
 			if (goalNodes.isEmpty())
@@ -230,7 +225,7 @@ public class PrepareContractionHierarchies extends AbstractAlgoPreparation<Prepa
 			// and successively increasing it when mean-degree of setGraph increases
 			algo = new OneToManyDijkstraCH(g).setFilter(edgeFilter.setAvoidNode(v));
 			algo.setLimit(maxWeight).calcPath(u, goalNodes);
-			internalFindShortcuts(goalNodes, u, iter1.edge());
+			internalFindShortcuts(goalNodes, u, it1.edge());
 		}
 		return shortcuts;
 	}
@@ -287,11 +282,12 @@ public class PrepareContractionHierarchies extends AbstractAlgoPreparation<Prepa
 		for (Shortcut sc : findShortcuts(v)) {
 			boolean updatedInGraph = false;
 			// check if we need to update some existing shortcut in the setGraph
+			/*
 			EdgeSkipIterator it = g.getOutgoing(sc.from);
 			while (it.next()) {
 				if (EdgeIterator.Edge.isValid(it.skippedEdge())
 						&& it.node() == sc.to
-//						&& CarStreetType.canBeOverwritten(it.flags(), sc.flags)
+						&& CarStreetType.canBeOverwritten(it.flags(), sc.flags)
 						&& it.distance() > sc.distance) {
 					it.flags(sc.flags);
 					it.skippedEdge(sc.skippedEdge);
@@ -301,9 +297,10 @@ public class PrepareContractionHierarchies extends AbstractAlgoPreparation<Prepa
 					break;
 				}
 			}
+			*/
 
 			if (!updatedInGraph) {
-				it = g.edge(sc.from, sc.to, sc.distance, sc.flags);
+				EdgeSkipIterator it = g.edge(sc.from, sc.to, sc.distance, sc.flags);
 				it.skippedEdge(sc.skippedEdge);
 				setOrigEdgeCount(it.edge(), sc.originalEdges);
 				newShortcuts++;
