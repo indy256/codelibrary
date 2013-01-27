@@ -4,13 +4,16 @@ import com.graphhopper.routing.DijkstraBidirectionRef;
 import com.graphhopper.routing.DijkstraSimple;
 import com.graphhopper.routing.Path;
 import com.graphhopper.routing.PathBidirRef;
-import com.graphhopper.routing.util.AbstractAlgoPreparation;
+import com.graphhopper.routing.util.AlgorithmPreparation;
 import com.graphhopper.routing.util.CarStreetType;
 import com.graphhopper.routing.util.EdgeLevelFilter;
 import com.graphhopper.storage.EdgeEntry;
 import com.graphhopper.storage.Graph;
 import com.graphhopper.storage.LevelGraph;
-import com.graphhopper.util.*;
+import com.graphhopper.util.EdgeIterator;
+import com.graphhopper.util.EdgeSkipIterator;
+import com.graphhopper.util.GraphUtility;
+import com.graphhopper.util.RawEdgeIterator;
 import gnu.trove.list.array.TIntArrayList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,7 +36,9 @@ import java.util.TreeSet;
  *
  * @author Peter Karich
  */
-public class PrepareContractionHierarchies extends AbstractAlgoPreparation<PrepareContractionHierarchies> {
+public class PrepareContractionHierarchies implements AlgorithmPreparation {
+
+	private boolean prepared = false;
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	private LevelGraph g;
@@ -56,7 +61,9 @@ public class PrepareContractionHierarchies extends AbstractAlgoPreparation<Prepa
 
 	@Override
 	public PrepareContractionHierarchies doWork() {
-		super.doWork();
+		if (prepared)
+			throw new IllegalStateException("Call doWork only once!");
+		prepared = true;
 		initFromGraph();
 		// TODO integrate PrepareRoutingShortcuts -> so avoid all nodes with negative level in the other methods
 		// in PrepareShortcuts level 0 and -1 is already used move that to level 1 and 2 so that level 0 stays as uncontracted
