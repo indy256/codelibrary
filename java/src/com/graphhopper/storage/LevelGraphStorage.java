@@ -13,7 +13,7 @@ public class LevelGraphStorage implements LevelGraph {
 	protected final int I_LEVEL, N_EDGE_REF;
 
 	protected final int edgeEntrySize;
-	protected final MyDataAccess edges;
+	final int[] edges = new int[1000_000];
 
 	protected final int nodeEntrySize;
 	final int[] nodes = new int[1000_000];
@@ -37,12 +37,8 @@ public class LevelGraphStorage implements LevelGraph {
 		N_EDGE_REF = nodeEntryIndex++;
 		nodeEntrySize = nodeEntryIndex;
 
-		int initBytes = Math.max(nodeCount * 4 / 50, 100);
 		for (int i = 0; i < nodes.length; i += nodeEntryIndex)
 			nodes[i + N_EDGE_REF] = -1;
-
-		edges = new MyDataAccess();
-		edges.createNew((long) initBytes * edgeEntrySize);
 	}
 
 	@Override
@@ -58,22 +54,8 @@ public class LevelGraphStorage implements LevelGraph {
 		return (int) (f * INT_DIST_FACTOR);
 	}
 
-	private static long incCapacity(MyDataAccess da, long deltaCap) {
-		long cap = da.capacity() + (deltaCap + 3) / 4 * 4;
-		da.ensureCapacity(cap);
-		return cap;
-	}
-
 	void ensureNodeIndex(int nodeIndex) {
 		nodeCount = Math.max(nodeCount, nodeIndex + 1);
-	}
-
-	private void ensureEdgeIndex(int edgeIndex) {
-		long deltaCap = (long) edgeIndex * edgeEntrySize * 4 - edges.capacity();
-		if (deltaCap <= 0)
-			return;
-
-		incCapacity(edges, deltaCap);
 	}
 
 	/**
@@ -93,7 +75,6 @@ public class LevelGraphStorage implements LevelGraph {
 		edgeCount++;
 		if (edgeCount < 0)
 			throw new IllegalStateException("too many edges. new edge id would be negative.");
-		ensureEdgeIndex(edgeCount);
 		return nextEdge;
 	}
 
@@ -103,7 +84,7 @@ public class LevelGraphStorage implements LevelGraph {
 		if (edge > EdgeIterator.NO_EDGE) {
 			// append edge and overwrite EMPTY_LINK
 			long lastEdge = getLastEdge(fromNodeId, edge);
-			edges.setInt(lastEdge, newOrExistingEdge);
+			edges[((int) lastEdge)] = newOrExistingEdge;
 		} else {
 			nodes[((int) (nodePointer + N_EDGE_REF))] = newOrExistingEdge;
 		}
@@ -124,12 +105,12 @@ public class LevelGraphStorage implements LevelGraph {
 		}
 
 		long edgePointer = (long) edge * edgeEntrySize;
-		edges.setInt(edgePointer + E_NODEA, nodeThis);
-		edges.setInt(edgePointer + E_NODEB, nodeOther);
-		edges.setInt(edgePointer + E_LINKA, nextEdge);
-		edges.setInt(edgePointer + E_LINKB, nextEdgeOther);
-		edges.setInt(edgePointer + E_DIST, distToInt(distance));
-		edges.setInt(edgePointer + E_FLAGS, flags);
+		edges[((int) (edgePointer + E_NODEA))] = nodeThis;
+		edges[((int) (edgePointer + E_NODEB))] = nodeOther;
+		edges[((int) (edgePointer + E_LINKA))] = nextEdge;
+		edges[((int) (edgePointer + E_LINKB))] = nextEdgeOther;
+		edges[((int) (edgePointer + E_DIST))] = distToInt(distance);
+		edges[((int) (edgePointer + E_FLAGS))] = flags;
 		return edgePointer;
 	}
 
@@ -145,7 +126,7 @@ public class LevelGraphStorage implements LevelGraph {
 			edgePointer *= edgeEntrySize;
 			otherNode = getOtherNode(nodeThis, edgePointer);
 			lastLink = getLinkPosInEdgeArea(nodeThis, otherNode, edgePointer);
-			edgePointer = edges.getInt(lastLink);
+			edgePointer = edges[((int) lastLink)];
 			if (edgePointer == EdgeIterator.NO_EDGE)
 				break;
 		}
@@ -158,10 +139,10 @@ public class LevelGraphStorage implements LevelGraph {
 	}
 
 	private int getOtherNode(int nodeThis, long edgePointer) {
-		int nodeA = edges.getInt(edgePointer + E_NODEA);
+		int nodeA = edges[((int) (edgePointer + E_NODEA))];
 		if (nodeA == nodeThis)
 			// return b
-			return edges.getInt(edgePointer + E_NODEB);
+			return edges[((int) (edgePointer + E_NODEB))];
 		// return a
 		return nodeA;
 	}
@@ -203,7 +184,7 @@ public class LevelGraphStorage implements LevelGraph {
 
 		@Override
 		public int flags() {
-			flags = edges.getInt(edgePointer + E_FLAGS);
+			flags = edges[((int) (edgePointer + E_FLAGS))];
 			if (switchFlags)
 				return CarStreetType.swapDirection(flags);
 			return flags;
@@ -237,11 +218,11 @@ public class LevelGraphStorage implements LevelGraph {
 			node = getOtherNode(baseNode, edgePointer);
 
 			// position to next edge
-			nextEdge = edges.getInt(getLinkPosInEdgeArea(baseNode, node, edgePointer));
+			nextEdge = edges[((int) getLinkPosInEdgeArea(baseNode, node, edgePointer))];
 			if (nextEdge == edgeId)
 				throw new AssertionError("endless loop detected for " + baseNode + "," + node + "," + edgePointer);
 
-			flags = edges.getInt(edgePointer + E_FLAGS);
+			flags = edges[((int) (edgePointer + E_FLAGS))];
 
 			// switch direction flags if necessary
 			if (baseNode > node)
@@ -279,12 +260,12 @@ public class LevelGraphStorage implements LevelGraph {
 
 		@Override
 		public double distance() {
-			return (double) edges.getInt(edgePointer + E_DIST) / INT_DIST_FACTOR;
+			return edges[((int) (edgePointer + E_DIST))] / INT_DIST_FACTOR;
 		}
 
 		@Override
 		public void distance(double dist) {
-			edges.setInt(edgePointer + E_DIST, distToInt(dist));
+			edges[((int) (edgePointer + E_DIST))] = distToInt(dist);
 		}
 
 		@Override
@@ -295,8 +276,8 @@ public class LevelGraphStorage implements LevelGraph {
 		@Override
 		public void flags(int fl) {
 			flags = fl;
-			int nep = edges.getInt(getLinkPosInEdgeArea(baseNode, node, edgePointer));
-			int neop = edges.getInt(getLinkPosInEdgeArea(node, baseNode, edgePointer));
+			int nep = edges[((int) getLinkPosInEdgeArea(baseNode, node, edgePointer))];
+			int neop = edges[((int) getLinkPosInEdgeArea(node, baseNode, edgePointer))];
 			writeEdge(edge(), baseNode, node, nep, neop, distance(), flags);
 		}
 
@@ -371,12 +352,12 @@ public class LevelGraphStorage implements LevelGraph {
 
 		@Override
 		public int getSkippedEdge() {
-			return edges.getInt(edgePointer + I_SKIP_EDGE);
+			return edges[((int) (edgePointer + I_SKIP_EDGE))];
 		}
 
 		@Override
 		public void setSkippedEdge(int edgeId) {
-			edges.setInt(edgePointer + I_SKIP_EDGE, edgeId);
+			edges[((int) (edgePointer + I_SKIP_EDGE))] = edgeId;
 		}
 	}
 
@@ -388,8 +369,8 @@ public class LevelGraphStorage implements LevelGraph {
 			throw new IllegalStateException("endNode " + endNode + " out of bounds [0," + nodeCount + "]");
 		long edgePointer = (long) edgeId * edgeEntrySize;
 		// a bit complex but faster
-		int nodeA = edges.getInt(edgePointer + E_NODEA);
-		int nodeB = edges.getInt(edgePointer + E_NODEB);
+		int nodeA = edges[((int) (edgePointer + E_NODEA))];
+		int nodeB = edges[((int) (edgePointer + E_NODEB))];
 		EdgeSkipIterator edge;
 		if (endNode == nodeB) {
 			edge = createSingleEdge(edgeId, nodeA);
@@ -416,12 +397,12 @@ public class LevelGraphStorage implements LevelGraph {
 
 		@Override
 		public void setSkippedEdge(int node) {
-			edges.setInt(edgePointer + I_SKIP_EDGE, node);
+			edges[((int) (edgePointer + I_SKIP_EDGE))] = node;
 		}
 
 		@Override
 		public int getSkippedEdge() {
-			return edges.getInt(edgePointer + I_SKIP_EDGE);
+			return edges[((int) (edgePointer + I_SKIP_EDGE))];
 		}
 	}
 
