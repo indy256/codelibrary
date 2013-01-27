@@ -10,20 +10,15 @@ import com.graphhopper.routing.util.EdgeLevelFilter;
 import com.graphhopper.storage.EdgeEntry;
 import com.graphhopper.storage.Graph;
 import com.graphhopper.storage.LevelGraph;
-import com.graphhopper.util.EdgeIterator;
-import com.graphhopper.util.EdgeSkipIterator;
-import com.graphhopper.util.GraphUtility;
-import com.graphhopper.util.RawEdgeIterator;
-import com.graphhopper.util.StopWatch;
+import com.graphhopper.util.*;
 import gnu.trove.list.array.TIntArrayList;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.TreeSet;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * This class prepares the setGraph for a bidirectional algorithm supporting
@@ -95,36 +90,54 @@ public class PrepareContractionHierarchies extends AbstractAlgoPreparation<Prepa
 		}
 	}
 
+	/**
+	 * Calculates the priority of endNode v without changing the setGraph. Warning:
+	 * the calculated priority must NOT depend on priority(v) and therefor
+	 * findShortcuts should also not depend on the priority(v). Otherwise
+	 * updating the priority before contracting in contractNodes() could lead to
+	 * a slowishor even endless loop.
+	 */
+	int calculatePriority(int v) {
+		Collection<Shortcut> tmpShortcuts = findShortcuts(v);
+
+		int degree = GraphUtility.count(g.getEdges(v));
+		int edgeDifference = tmpShortcuts.size() - degree;
+
+		int originalEdgesCount = 0;
+		for (Shortcut sc : tmpShortcuts)
+			originalEdgesCount += sc.originalEdges;
+
+		int contractedNeighbors = 0;
+		for (EdgeSkipIterator it = g.getEdges(v); it.next(); )
+			if (EdgeIterator.Edge.isValid(it.skippedEdge()))
+				++contractedNeighbors;
+
+		return 10 * edgeDifference + 50 * originalEdgesCount + contractedNeighbors;
+	}
+
 	void contractNodes() {
 		int level = 1;
 		int newShortcuts = 0;
 		final int updateSize = Math.max(10, sortedNodes.size() / 10);
 		int counter = 0;
 		int updateCounter = 0;
-		StopWatch sw = new StopWatch();
 		// no update all => 600k shortcuts and 3min
 		while (!sortedNodes.isEmpty()) {
 			if (counter % updateSize == 0) {
 				// periodically update priorities of ALL nodes
 				if (updateCounter > 0 && updateCounter % 2 == 0) {
 					int len = g.nodes();
-					sw.start();
 					// TODO avoid to traverse all nodes -> via a new sortedNodes.iterator()
 					for (int node = 0; node < len; node++) {
-						WeightedNode wNode = refs[node];
 						if (g.getLevel(node) != 0)
 							continue;
+						WeightedNode wNode = refs[node];
 						sortedNodes.remove(wNode);
 						wNode.priority = calculatePriority(node);
 						sortedNodes.add(wNode);
 					}
-					sw.stop();
 				}
 				updateCounter++;
-				logger.info(counter + ", nodes: " + sortedNodes.size() + ", shortcuts:" + newShortcuts
-						+ ", updateAllTime:" + sw.getSeconds() + ", " + updateCounter
-						+ ", memory:" + "totalMB:" + Runtime.getRuntime().totalMemory() / (1 << 20)
-						+ ", usedMB:" + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / (1 << 20));
 			}
 
 			counter++;
@@ -163,55 +176,6 @@ public class PrepareContractionHierarchies extends AbstractAlgoPreparation<Prepa
 		}
 		logger.info("new shortcuts " + newShortcuts + ", prioNodeCollection:" + sortedNodes);
 		// System.out.println("new shortcuts " + newShortcuts);
-	}
-
-	/**
-	 * Calculates the priority of endNode v without changing the setGraph. Warning:
-	 * the calculated priority must NOT depend on priority(v) and therefor
-	 * findShortcuts should also not depend on the priority(v). Otherwise
-	 * updating the priority before contracting in contractNodes() could lead to
-	 * a slowishor even endless loop.
-	 */
-	int calculatePriority(int v) {
-		// set of shortcuts that would be added if endNode v would be contracted next.
-		Collection<Shortcut> tmpShortcuts = findShortcuts(v);
-		// from shortcuts we can compute the edgeDifference
-
-		// # low influence: with it the shortcut creation is slightly faster
-		//
-		// |shortcuts(v)| − |{(u, v) | v uncontracted}| − |{(v, w) | v uncontracted}|
-		// meanDegree is used instead of outDegree+inDegree as if one endNode is in both directions
-		// only one bucket memory is used. Additionally one shortcut could also stand for two directions.
-		int degree = GraphUtility.count(g.getEdges(v));
-		int edgeDifference = tmpShortcuts.size() - degree;
-
-		// # huge influence: the bigger the less shortcuts gets created and the faster is the preparation
-		//
-		// every endNode has an 'original edge' number associated. initially it is r=1
-		// when a new shortcut is introduced then r of the associated edges is summed up:
-		// r(u,w)=r(u,v)+r(v,w) now we can define
-		// originalEdgesCount = σ(v) := sum_{ (u,w) ∈ shortcuts(v) } of r(u, w)
-		int originalEdgesCount = 0;
-		for (Shortcut sc : tmpShortcuts) {
-			originalEdgesCount += sc.originalEdges;
-		}
-
-		// # lowest influence on preparation speed or shortcut creation count
-		// (but according to paper should speed up queries)
-		//
-		// number of already contracted neighbors of v
-		int contractedNeighbors = 0;
-		EdgeSkipIterator iter = g.getEdges(v);
-		while (iter.next()) {
-			if (EdgeIterator.Edge.isValid(iter.skippedEdge()))
-				contractedNeighbors++;
-		}
-
-		// unterfranken example
-		// 10, 50, 1 => 180s preparation, q 3.3ms
-		//  2,  4, 1 => 200s preparation, q 3.0ms
-		// according to the paper do a simple linear combination of the properties to get the priority
-		return 10 * edgeDifference + 50 * originalEdgesCount + contractedNeighbors;
 	}
 
 	static class EdgeLevelFilterCH extends EdgeLevelFilter {

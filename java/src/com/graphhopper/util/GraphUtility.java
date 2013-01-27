@@ -15,15 +15,10 @@ import java.util.List;
 public class GraphUtility {
 
 	public static int count(EdgeIterator iter) {
-		return neighbors(iter).size();
-	}
-
-	public static List<Integer> neighbors(EdgeIterator iter) {
-		List<Integer> list = new ArrayList<Integer>();
-		while (iter.next()) {
-			list.add(iter.node());
-		}
-		return list;
+		int res = 0;
+		while (iter.next())
+			++res;
+		return res;
 	}
 
 	public static int count(RawEdgeIterator iter) {
