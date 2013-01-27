@@ -65,7 +65,7 @@ public class LevelGraphStorage extends GraphStorage implements LevelGraph {
         return new EdgeSkipIteratorImpl(edge, baseNode, in, out);
     }
 
-    class EdgeSkipIteratorImpl extends EdgeIterable implements EdgeSkipIterator {
+    class EdgeSkipIteratorImpl extends EdgeIteratorImpl implements EdgeSkipIterator {
 
         public EdgeSkipIteratorImpl(int edge, int node, boolean in, boolean out) {
             super(edge, node, in, out);

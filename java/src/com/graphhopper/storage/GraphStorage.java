@@ -300,7 +300,7 @@ public abstract class GraphStorage implements Graph {
 
 	protected abstract SingleEdge createSingleEdge(int edgeId, int nodeId);
 
-	protected class SingleEdge extends EdgeIterable {
+	protected class SingleEdge extends EdgeIteratorImpl {
 
 		protected boolean switchFlags;
 
@@ -319,7 +319,7 @@ public abstract class GraphStorage implements Graph {
 		}
 	}
 
-	protected class EdgeIterable implements EdgeIterator {
+	protected class EdgeIteratorImpl implements EdgeIterator {
 
 		long edgePointer;
 		boolean in;
@@ -332,7 +332,7 @@ public abstract class GraphStorage implements Graph {
 		int nextEdge;
 
 		// used for SingleEdge and as return value of edge()
-		public EdgeIterable(int edge, int baseNode, boolean in, boolean out) {
+		public EdgeIteratorImpl(int edge, int baseNode, boolean in, boolean out) {
 			this.nextEdge = this.edgeId = edge;
 			this.edgePointer = (long) nextEdge * edgeEntrySize;
 			this.baseNode = baseNode;
