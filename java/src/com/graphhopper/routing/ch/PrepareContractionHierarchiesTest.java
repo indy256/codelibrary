@@ -7,9 +7,9 @@ import com.graphhopper.routing.ch.PrepareContractionHierarchies.NodeCH;
 import com.graphhopper.routing.ch.PrepareContractionHierarchies.Shortcut;
 import com.graphhopper.routing.util.CarStreetType;
 import com.graphhopper.storage.Graph;
-import com.graphhopper.storage.GraphBuilder;
 import com.graphhopper.storage.LevelGraph;
 import com.graphhopper.storage.LevelGraphStorage;
+import com.graphhopper.storage.RAMDirectory;
 import com.graphhopper.util.EdgeSkipIterator;
 import com.graphhopper.util.GraphUtility;
 import gnu.trove.list.array.TIntArrayList;
@@ -28,7 +28,7 @@ import static org.junit.Assert.*;
 public class PrepareContractionHierarchiesTest {
 
 	LevelGraph createGraph() {
-		return new GraphBuilder().levelGraphCreate();
+		return new LevelGraphStorage(new RAMDirectory()).createNew(100);
 	}
 
 	LevelGraph createExampleGraph() {
