@@ -280,33 +280,32 @@ public class PrepareContractionHierarchies extends AbstractAlgoPreparation<Prepa
 	}
 
 	/**
-	 * Introduces the necessary shortcuts for endNode v in the setGraph.
+	 * Introduces the necessary shortcuts for endNode v in the graph
 	 */
 	int addShortcuts(int v) {
-		Collection<Shortcut> foundShortcuts = findShortcuts(v);
 		int newShortcuts = 0;
-		for (Shortcut sc : foundShortcuts) {
+		for (Shortcut sc : findShortcuts(v)) {
 			boolean updatedInGraph = false;
 			// check if we need to update some existing shortcut in the setGraph
-			EdgeSkipIterator iter = g.getOutgoing(sc.from);
-			while (iter.next()) {
-				if (EdgeIterator.Edge.isValid(iter.skippedEdge())
-						&& iter.node() == sc.to
-//						&& CarStreetType.canBeOverwritten(iter.flags(), sc.flags)
-						&& iter.distance() > sc.distance) {
-					iter.flags(sc.flags);
-					iter.skippedEdge(sc.skippedEdge);
-					iter.distance(sc.distance);
-					setOrigEdgeCount(iter.edge(), sc.originalEdges);
+			EdgeSkipIterator it = g.getOutgoing(sc.from);
+			while (it.next()) {
+				if (EdgeIterator.Edge.isValid(it.skippedEdge())
+						&& it.node() == sc.to
+//						&& CarStreetType.canBeOverwritten(it.flags(), sc.flags)
+						&& it.distance() > sc.distance) {
+					it.flags(sc.flags);
+					it.skippedEdge(sc.skippedEdge);
+					it.distance(sc.distance);
+					setOrigEdgeCount(it.edge(), sc.originalEdges);
 					updatedInGraph = true;
 					break;
 				}
 			}
 
 			if (!updatedInGraph) {
-				iter = g.edge(sc.from, sc.to, sc.distance, sc.flags);
-				iter.skippedEdge(sc.skippedEdge);
-				setOrigEdgeCount(iter.edge(), sc.originalEdges);
+				it = g.edge(sc.from, sc.to, sc.distance, sc.flags);
+				it.skippedEdge(sc.skippedEdge);
+				setOrigEdgeCount(it.edge(), sc.originalEdges);
 				newShortcuts++;
 			}
 		}
