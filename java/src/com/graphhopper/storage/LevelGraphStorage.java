@@ -181,7 +181,7 @@ public class LevelGraphStorage implements LevelGraph {
 			if (baseNode > node)
 				flags = CarStreetType.swapDirection(flags);
 
-			return !(!in && !CarStreetType.isForward(flags) || !out && !CarStreetType.isBackward(flags));
+			return (in || CarStreetType.isForward(flags)) && (out || CarStreetType.isBackward(flags));
 		}
 
 		@Override
