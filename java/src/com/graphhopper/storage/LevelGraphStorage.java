@@ -58,18 +58,6 @@ public class LevelGraphStorage implements LevelGraph {
 		nodeCount = Math.max(nodeCount, nodeIndex + 1);
 	}
 
-	private void connectNewEdge(int fromNodeId, int newOrExistingEdge) {
-		long nodePointer = (long) fromNodeId * nodeEntrySize;
-		int edge = nodes[((int) (nodePointer + N_EDGE_REF))];
-		if (edge > EdgeIterator.NO_EDGE) {
-			// append edge and overwrite EMPTY_LINK
-			long lastEdge = getLastEdge(fromNodeId, edge);
-			edges[((int) lastEdge)] = newOrExistingEdge;
-		} else {
-			nodes[((int) (nodePointer + N_EDGE_REF))] = newOrExistingEdge;
-		}
-	}
-
 	private long writeEdge(int edge, int nodeThis, int nodeOther, int nextEdge, int nextEdgeOther,
 						   double distance, int flags) {
 		if (nodeThis > nodeOther) {
@@ -261,10 +249,10 @@ public class LevelGraphStorage implements LevelGraph {
 	public EdgeSkipIterator edge(int a, int b, double distance, int flags) {
 		ensureNodeIndex(Math.max(a, b));
 		int edgeId = internalEdgeAdd(a, b, distance, flags);
-		EdgeSkipIteratorImpl iter = new EdgeSkipIteratorImpl(edgeId, a, false, false);
-		iter.next();
-		iter.setSkippedEdge(-1);
-		return iter;
+		EdgeSkipIteratorImpl it = new EdgeSkipIteratorImpl(edgeId, a, false, false);
+		it.next();
+		it.setSkippedEdge(-1);
+		return it;
 	}
 
 	@Override
@@ -279,6 +267,18 @@ public class LevelGraphStorage implements LevelGraph {
 			connectNewEdge(toNodeId, newOrExistingEdge);
 		writeEdge(newOrExistingEdge, fromNodeId, toNodeId, EdgeIterator.NO_EDGE, EdgeIterator.NO_EDGE, dist, flags);
 		return newOrExistingEdge;
+	}
+
+	private void connectNewEdge(int fromNodeId, int newOrExistingEdge) {
+		long nodePointer = (long) fromNodeId * nodeEntrySize;
+		int edge = nodes[((int) (nodePointer + N_EDGE_REF))];
+		if (edge > EdgeIterator.NO_EDGE) {
+			// append edge and overwrite EMPTY_LINK
+			long lastEdge = getLastEdge(fromNodeId, edge);
+			edges[((int) lastEdge)] = newOrExistingEdge;
+		} else {
+			nodes[((int) (nodePointer + N_EDGE_REF))] = newOrExistingEdge;
+		}
 	}
 
 	@Override
