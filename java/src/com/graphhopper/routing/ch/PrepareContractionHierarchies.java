@@ -95,16 +95,10 @@ public class PrepareContractionHierarchies extends AbstractAlgoPreparation<Prepa
 		int len = g.nodes();
 		// minor idea: 1. sort nodes randomly and 2. pre-init with endNode degree
 		for (int node = 0; node < len; node++) {
-			refs[node] = new WeightedNode(node, 0);
+			refs[node] = new WeightedNode(node, calculatePriority(node));
+			sortedNodes.add(refs[node]);
 		}
-
-		for (int node = 0; node < len; node++) {
-			WeightedNode wn = refs[node];
-			wn.priority = calculatePriority(node);
-			sortedNodes.add(wn);
-		}
-
-		return !sortedNodes.isEmpty();
+		return len > 0;
 	}
 
 	void contractNodes() {
