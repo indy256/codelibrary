@@ -149,27 +149,19 @@ public class LevelGraphStorage implements LevelGraph {
 
 	@Override
 	public RawEdgeIterator allEdges() {
-		return new AllEdgeIterator();
-	}
+		return new RawEdgeIterator() {
+			protected int edgePointer;
 
-	/**
-	 * Include all edges of this storage in the iterator.
-	 */
-	protected class AllEdgeIterator implements RawEdgeIterator {
+			@Override
+			public boolean next() {
+				return ++edgePointer < edgeCount;
+			}
 
-		protected long edgePointer = -edgeEntrySize;
-		private int maxEdges = edgeCount * edgeEntrySize;
-
-		@Override
-		public boolean next() {
-			edgePointer += edgeEntrySize;
-			return edgePointer < maxEdges;
-		}
-
-		@Override
-		public int edge() {
-			return (int) (edgePointer / edgeEntrySize);
-		}
+			@Override
+			public int edge() {
+				return edgePointer - 1;
+			}
+		};
 	}
 
 	protected class SingleEdge extends EdgeIteratorImpl {
