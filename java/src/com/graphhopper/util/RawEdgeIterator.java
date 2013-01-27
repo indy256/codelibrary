@@ -12,15 +12,5 @@ public interface RawEdgeIterator {
 
     boolean next();
 
-    double distance();
-
-    void distance(double dist);
-
-    int flags();
-
-    void flags(int flags);
-
     int edge();
-
-    boolean isEmpty();
 }

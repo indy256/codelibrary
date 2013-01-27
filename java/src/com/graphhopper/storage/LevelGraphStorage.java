@@ -60,7 +60,6 @@ public class LevelGraphStorage extends GraphStorage implements LevelGraph {
         return createEdgeIterable(node, false, true);
     }
 
-    @Override
     protected EdgeSkipIterator createEdgeIterable(int baseNode, boolean in, boolean out) {
         int edge = nodes.getInt((long) baseNode * nodeEntrySize + N_EDGE_REF);
         return new EdgeSkipIteratorImpl(edge, baseNode, in, out);

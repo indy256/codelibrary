@@ -4,6 +4,7 @@ import com.graphhopper.coll.MyBitSet;
 import com.graphhopper.coll.MyBitSetImpl;
 import com.graphhopper.routing.util.CarStreetType;
 import com.graphhopper.util.EdgeIterator;
+import com.graphhopper.util.EdgeSkipIterator;
 import com.graphhopper.util.GraphUtility;
 import com.graphhopper.util.RawEdgeIterator;
 
@@ -23,7 +24,7 @@ import java.io.IOException;
  * @see LevelGraphStorage
  * @author Peter Karich
  */
-public class GraphStorage implements Graph, Storable {
+public abstract class GraphStorage implements Graph {
 
     // distance of around +-1000 000 meter are ok
     private static final float INT_DIST_FACTOR = 1000f;
@@ -47,12 +48,7 @@ public class GraphStorage implements Graph, Storable {
     // problem: we exported this to external API => or should we change the edge count in order to 
     // have [0,n) based edge indices in outside API?
     private int nodeCount;
-    // remove markers are not yet persistent!
-    private MyBitSet removedNodes;
     private int edgeEntryIndex = -1, nodeEntryIndex = -1;
-    // length | nodeA | nextNode | ... | nodeB
-    // as we use integer index in 'egdes' area => 'geometry' area is limited to 2GB
-    private DataAccess geometry;
     // 0 stands for no separate geoRef
     private int maxGeoRef = 1;
     private boolean initialized = false;
@@ -60,7 +56,6 @@ public class GraphStorage implements Graph, Storable {
     public GraphStorage(Directory dir) {
         this.nodes = dir.findCreate("nodes");
         this.edges = dir.findCreate("egdes");
-        this.geometry = dir.findCreate("geometry");
         E_NODEA = nextEdgeEntryIndex();
         E_NODEB = nextEdgeEntryIndex();
         E_LINKA = nextEdgeEntryIndex();
@@ -100,7 +95,6 @@ public class GraphStorage implements Graph, Storable {
         initNodeRefs(0, nodes.capacity() / 4);
 
         edges.createNew((long) initBytes * edgeEntrySize);
-        geometry.createNew((long) initBytes);
         initialized = true;
         return this;
     }
@@ -148,8 +142,6 @@ public class GraphStorage implements Graph, Storable {
 
         long newBytesCapacity = incCapacity(nodes, deltaCap);
         initNodeRefs(oldNodes * nodeEntrySize, newBytesCapacity / 4);
-        if (removedNodes != null)
-            removedNodes().ensureCapacity((int) (newBytesCapacity / 4 / nodeEntrySize));
     }
 
     /**
@@ -172,15 +164,6 @@ public class GraphStorage implements Graph, Storable {
     @Override
     public EdgeIterator edge(int a, int b, double distance, boolean bothDirections) {
         return edge(a, b, distance, CarStreetType.flagsDefault(bothDirections));
-    }
-
-    @Override
-    public EdgeIterator edge(int a, int b, double distance, int flags) {
-        ensureNodeIndex(Math.max(a, b));
-        int edge = internalEdgeAdd(a, b, distance, flags);
-        EdgeIterable iter = new EdgeIterable(edge, a, false, false);
-        iter.next();
-        return iter;
     }
 
     /**
@@ -291,28 +274,8 @@ public class GraphStorage implements Graph, Storable {
             return edgePointer < maxEdges;
         }
 
-        @Override public double distance() {
-            return getDist(edgePointer);
-        }
-
-        @Override public void distance(double dist) {
-            edges.setInt(edgePointer + E_DIST, distToInt(dist));
-        }
-
-        @Override public int flags() {
-            return edges.getInt(edgePointer + E_FLAGS);
-        }
-
-        @Override public void flags(int flags) {
-            throw new UnsupportedOperationException("Not supported yet.");
-        }
-
         @Override public int edge() {
             return (int) (edgePointer / edgeEntrySize);
-        }
-
-        @Override public boolean isEmpty() {
-            return false;
         }
     }
 
@@ -340,9 +303,9 @@ public class GraphStorage implements Graph, Storable {
             return GraphUtility.EMPTY;
     }
 
-    protected SingleEdge createSingleEdge(int edgeId, int nodeId) {
-        return new SingleEdge(edgeId, nodeId);
-    }
+	protected abstract EdgeSkipIterator createEdgeIterable(int baseNode, boolean in, boolean out);
+
+    protected abstract SingleEdge createSingleEdge(int edgeId, int nodeId);
 
     protected class SingleEdge extends EdgeIterable {
 
@@ -354,36 +317,12 @@ public class GraphStorage implements Graph, Storable {
             flags = flags();
         }
 
-        @Override public boolean next() {
-            return false;
-        }
-
         @Override public int flags() {
             flags = edges.getInt(edgePointer + E_FLAGS);
             if (switchFlags)
                 return CarStreetType.swapDirection(flags);
             return flags;
         }
-    }
-
-    @Override
-    public EdgeIterator getEdges(int node) {
-        return createEdgeIterable(node, true, true);
-    }
-
-    @Override
-    public EdgeIterator getIncoming(int node) {
-        return createEdgeIterable(node, true, false);
-    }
-
-    @Override
-    public EdgeIterator getOutgoing(int node) {
-        return createEdgeIterable(node, false, true);
-    }
-
-    protected EdgeIterator createEdgeIterable(int baseNode, boolean in, boolean out) {
-        int edge = nodes.getInt((long) baseNode * nodeEntrySize + N_EDGE_REF);
-        return new EdgeIterable(edge, baseNode, in, out);
     }
 
     protected class EdgeIterable implements EdgeIterator {
@@ -483,19 +422,8 @@ public class GraphStorage implements Graph, Storable {
         }
     }
 
-    private MyBitSet removedNodes() {
-        if (removedNodes == null)
-            removedNodes = new MyBitSetImpl((int) (nodes.capacity() / 4));
-        return removedNodes;
-    }
-
     private void checkAlreadyInitialized() {
         if (initialized)
             throw new IllegalStateException("Already initialized GraphStorage.");
-    }
-
-    @Override
-    public long capacity() {
-        return edges.capacity() + nodes.capacity();
     }
 }
