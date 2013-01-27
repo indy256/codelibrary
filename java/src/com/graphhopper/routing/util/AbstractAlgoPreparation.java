@@ -10,11 +10,6 @@ public abstract class AbstractAlgoPreparation<T extends AlgorithmPreparation> im
     protected Graph _graph;
     private boolean prepared = false;
 
-    @Override public AlgorithmPreparation setGraph(Graph g) {
-        _graph = g;
-        return this;
-    }
-
     @SuppressWarnings("unchecked")
     @Override public T doWork() {
         if (prepared)

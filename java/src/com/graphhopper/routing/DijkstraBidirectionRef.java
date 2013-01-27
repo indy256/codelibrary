@@ -20,7 +20,7 @@ import java.util.PriorityQueue;
  * @see DijkstraBidirection for an optimized but more complicated version
  * @author Peter Karich,
  */
-public class DijkstraBidirectionRef extends AbstractRoutingAlgorithm {
+public abstract class DijkstraBidirectionRef extends AbstractRoutingAlgorithm {
 
     private int from, to;
     private MyBitSet visitedFrom;
@@ -102,17 +102,7 @@ public class DijkstraBidirectionRef extends AbstractRoutingAlgorithm {
         return shortest.extract();
     }
 
-    // http://www.cs.princeton.edu/courses/archive/spr06/cos423/Handouts/EPP%20shortest%20path%20algorithms.pdf
-    // a node from overlap may not be on the extractPath path!!
-    // => when scanning an arc (v, w) in the forward search and w is scanned in the reverse 
-    //    search, update extractPath = μ if df (v) + (v, w) + dr (w) < μ            
-    public boolean checkFinishCondition() {
-        if (currFrom == null)
-            return currTo.weight >= shortest.distance;
-        else if (currTo == null)
-            return currFrom.weight >= shortest.distance;
-        return currFrom.weight + currTo.weight >= shortest.distance;
-    }
+    public abstract boolean checkFinishCondition();
 
     void fillEdges(EdgeEntry curr, MyBitSet visitedMain, PriorityQueue<EdgeEntry> prioQueue,
             TIntObjectMap<EdgeEntry> shortestWeightMap, boolean out) {

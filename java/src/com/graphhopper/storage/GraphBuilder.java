@@ -7,8 +7,6 @@ package com.graphhopper.storage;
  */
 public class GraphBuilder {
 
-    private String location;
-    private boolean level;
     private int size = 100;
 
     public GraphBuilder() {
@@ -19,13 +17,7 @@ public class GraphBuilder {
      *
      * @see LevelGraph
      */
-    GraphBuilder levelGraph(boolean level) {
-        this.level = level;
-        return this;
-    }
-
-    public GraphBuilder size(int size) {
-        this.size = size;
+    GraphBuilder levelGraph() {
         return this;
     }
 
@@ -33,7 +25,7 @@ public class GraphBuilder {
      * Creates a LevelGraphStorage
      */
     public LevelGraphStorage levelGraphCreate() {
-        return (LevelGraphStorage) levelGraph(true).create();
+        return (LevelGraphStorage) levelGraph().create();
     }
 
     /**
@@ -43,7 +35,7 @@ public class GraphBuilder {
      */
     GraphStorage build() {
         Directory dir;
-        dir = new RAMDirectory(location, false);
+        dir = new RAMDirectory();
         GraphStorage graph = new LevelGraphStorage(dir);
         return graph;
     }

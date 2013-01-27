@@ -30,18 +30,8 @@ public class MyDataAccess implements DataAccess {
 	}
 
 	@Override
-	public DataAccess segmentSize(int bytes) {
-		return this;
-	}
-
-	@Override
 	public int segmentSize() {
 		return 4;
-	}
-
-	@Override
-	public int segments() {
-		return a.length / 4;
 	}
 
 	@Override
