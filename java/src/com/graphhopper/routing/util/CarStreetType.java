@@ -61,15 +61,8 @@ public class CarStreetType {
         return isBoth(flags2) || (flags1 & 3) == (flags2 & 3);
     }
 
-    /**
-     * returns the flags with an opposite direction if not both ways
-     */
     public static int swapDirection(int flags) {
-        if ((flags & 3) == 3)
-            return flags;
-
-        int speed = flags >>> 2;
-        return (speed << 2) | (~flags) & 3;
+		return (flags & 3) == 3 ? flags : flags ^ 3;
     }
 
     public static int getSpeedPart(int flags) {

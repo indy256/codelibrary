@@ -58,26 +58,6 @@ public class LevelGraphStorage implements LevelGraph {
 		nodeCount = Math.max(nodeCount, nodeIndex + 1);
 	}
 
-	/**
-	 * @return edgeIdPointer which is edgeId * edgeEntrySize
-	 */
-	int internalEdgeAdd(int fromNodeId, int toNodeId, double dist, int flags) {
-		int newOrExistingEdge = nextEdge();
-		connectNewEdge(fromNodeId, newOrExistingEdge);
-		if (fromNodeId != toNodeId)
-			connectNewEdge(toNodeId, newOrExistingEdge);
-		writeEdge(newOrExistingEdge, fromNodeId, toNodeId, EdgeIterator.NO_EDGE, EdgeIterator.NO_EDGE, dist, flags);
-		return newOrExistingEdge;
-	}
-
-	private int nextEdge() {
-		int nextEdge = edgeCount;
-		edgeCount++;
-		if (edgeCount < 0)
-			throw new IllegalStateException("too many edges. new edge id would be negative.");
-		return nextEdge;
-	}
-
 	private void connectNewEdge(int fromNodeId, int newOrExistingEdge) {
 		long nodePointer = (long) fromNodeId * nodeEntrySize;
 		int edge = nodes[((int) (nodePointer + N_EDGE_REF))];
@@ -162,25 +142,6 @@ public class LevelGraphStorage implements LevelGraph {
 				return edgePointer - 1;
 			}
 		};
-	}
-
-	protected class SingleEdge extends EdgeIteratorImpl {
-
-		protected boolean switchFlags;
-
-		public SingleEdge(int edgeId, int nodeId) {
-			super(edgeId, nodeId, false, false);
-			edgePointer = edgeId * edgeEntrySize;
-			flags = flags();
-		}
-
-		@Override
-		public int flags() {
-			flags = edges[((int) (edgePointer + E_FLAGS))];
-			if (switchFlags)
-				return CarStreetType.swapDirection(flags);
-			return flags;
-		}
 	}
 
 	protected class EdgeIteratorImpl implements EdgeIterator {
@@ -302,11 +263,6 @@ public class LevelGraphStorage implements LevelGraph {
 	}
 
 	@Override
-	public EdgeSkipIterator edge(int a, int b, double distance, boolean bothDir) {
-		return edge(a, b, distance, CarStreetType.flagsDefault(bothDir));
-	}
-
-	@Override
 	public EdgeSkipIterator edge(int a, int b, double distance, int flags) {
 		ensureNodeIndex(Math.max(a, b));
 		int edgeId = internalEdgeAdd(a, b, distance, flags);
@@ -314,6 +270,20 @@ public class LevelGraphStorage implements LevelGraph {
 		iter.next();
 		iter.setSkippedEdge(-1);
 		return iter;
+	}
+
+	@Override
+	public EdgeSkipIterator edge(int a, int b, double distance, boolean bothDir) {
+		return edge(a, b, distance, CarStreetType.flagsDefault(bothDir));
+	}
+
+	int internalEdgeAdd(int fromNodeId, int toNodeId, double dist, int flags) {
+		int newOrExistingEdge = edgeCount++;
+		connectNewEdge(fromNodeId, newOrExistingEdge);
+		if (fromNodeId != toNodeId)
+			connectNewEdge(toNodeId, newOrExistingEdge);
+		writeEdge(newOrExistingEdge, fromNodeId, toNodeId, EdgeIterator.NO_EDGE, EdgeIterator.NO_EDGE, dist, flags);
+		return newOrExistingEdge;
 	}
 
 	@Override
@@ -331,7 +301,7 @@ public class LevelGraphStorage implements LevelGraph {
 		return createEdgeIterable(node, false, true);
 	}
 
-	protected EdgeSkipIterator createEdgeIterable(int baseNode, boolean in, boolean out) {
+	private EdgeSkipIterator createEdgeIterable(int baseNode, boolean in, boolean out) {
 		int edge = nodes[((int) ((long) baseNode * nodeEntrySize + N_EDGE_REF))];
 		return new EdgeSkipIteratorImpl(edge, baseNode, in, out);
 	}
@@ -355,36 +325,40 @@ public class LevelGraphStorage implements LevelGraph {
 
 	@Override
 	public EdgeSkipIterator getEdgeProps(int edgeId, int endNode) {
-		if (edgeId <= EdgeIterator.NO_EDGE || edgeId > edgeCount)
-			throw new IllegalStateException("edgeId " + edgeId + " out of bounds [0," + edgeCount + "]");
-		if (endNode < 0)
-			throw new IllegalStateException("endNode " + endNode + " out of bounds [0," + nodeCount + "]");
 		long edgePointer = (long) edgeId * edgeEntrySize;
 		// a bit complex but faster
 		int nodeA = edges[((int) (edgePointer + E_NODEA))];
 		int nodeB = edges[((int) (edgePointer + E_NODEB))];
-		EdgeSkipIterator edge;
+		final EdgeSkipIterator edge;
 		if (endNode == nodeB) {
-			edge = createSingleEdge(edgeId, nodeA);
+			edge = new SingleLevelEdge(edgeId, nodeA);
 			((EdgeIteratorImpl) edge).node = nodeB;
 			return edge;
 		} else if (endNode == nodeA) {
-			edge = createSingleEdge(edgeId, nodeB);
+			edge = new SingleLevelEdge(edgeId, nodeB);
 			((EdgeIteratorImpl) edge).node = nodeA;
-			((SingleEdge) edge).switchFlags = true;
+			((SingleLevelEdge) edge).switchFlags = true;
 			return edge;
 		} else
 			return GraphUtility.EMPTY;
 	}
 
-	protected EdgeSkipIterator createSingleEdge(int edge, int nodeId) {
-		return new SingleLevelEdge(edge, nodeId);
-	}
+	class SingleLevelEdge extends EdgeIteratorImpl implements EdgeSkipIterator {
 
-	class SingleLevelEdge extends SingleEdge implements EdgeSkipIterator {
+		protected boolean switchFlags;
 
-		public SingleLevelEdge(int edge, int nodeId) {
-			super(edge, nodeId);
+		public SingleLevelEdge(int edgeId, int nodeId) {
+			super(edgeId, nodeId, false, false);
+			edgePointer = edgeId * edgeEntrySize;
+			flags = flags();
+		}
+
+		@Override
+		public int flags() {
+			flags = edges[((int) (edgePointer + E_FLAGS))];
+			if (switchFlags)
+				return CarStreetType.swapDirection(flags);
+			return flags;
 		}
 
 		@Override
@@ -397,5 +371,4 @@ public class LevelGraphStorage implements LevelGraph {
 			return edges[((int) (edgePointer + I_SKIP_EDGE))];
 		}
 	}
-
 }
