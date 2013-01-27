@@ -21,7 +21,7 @@ public class LevelGraphStorage implements LevelGraph {
 	private int edgeCount = 0;
 	private int nodeCount;
 
-	public LevelGraphStorage(int nodeCount) {
+	public LevelGraphStorage() {
 		int edgeEntryIndex = 0;
 		E_NODEA = edgeEntryIndex++;
 		E_NODEB = edgeEntryIndex++;
