@@ -17,9 +17,9 @@ import java.util.PriorityQueue;
  */
 public class DijkstraSimple extends AbstractRoutingAlgorithm {
 
-    protected BitSet visited = new BitSet();
-    private TIntObjectMap<EdgeEntry> map = new TIntObjectHashMap<EdgeEntry>();
-    private PriorityQueue<EdgeEntry> heap = new PriorityQueue<EdgeEntry>();
+    protected final BitSet visited = new BitSet();
+    private TIntObjectMap<EdgeEntry> map = new TIntObjectHashMap<>();
+    private PriorityQueue<EdgeEntry> heap = new PriorityQueue<>();
 
     public DijkstraSimple(Graph graph) {
         super(graph);

@@ -89,9 +89,8 @@ public class PrepareContractionHierarchies implements AlgorithmPreparation {
 	}
 
 	void prepareNodes() {
-		int len = g.nodes();
 		// minor idea: 1. sort nodes randomly and 2. pre-init with endNode degree
-		for (int node = 0; node < len; node++) {
+		for (int node = 0; node < g.nodes(); node++) {
 			nodes[node] = new WeightedNode(node, calculatePriority(node));
 			sortedNodes.add(nodes[node]);
 		}
@@ -229,7 +228,7 @@ public class PrepareContractionHierarchies implements AlgorithmPreparation {
 				continue;
 
 			// TODO instead of a weight-limit we could use a hop-limit
-			// and successively increasing it when mean-degree of setGraph increases
+			// and successively increasing it when mean-degree of graph increases
 			algo = new OneToManyDijkstraCH(g).setFilter(edgeFilter.setAvoidNode(v));
 			algo.setLimit(maxWeight).calcPath(u, goalNodes);
 			internalFindShortcuts(goalNodes, u, it1.edge());

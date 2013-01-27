@@ -8,7 +8,7 @@ import com.graphhopper.storage.Graph;
  */
 public abstract class AbstractRoutingAlgorithm implements RoutingAlgorithm {
 
-    protected Graph graph;
+    protected final Graph graph;
 
     public AbstractRoutingAlgorithm(Graph graph) {
         this.graph = graph;
