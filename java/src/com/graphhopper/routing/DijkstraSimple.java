@@ -1,12 +1,12 @@
 package com.graphhopper.routing;
 
-import com.graphhopper.coll.MyBitSet;
-import com.graphhopper.coll.MyTBitSet;
 import com.graphhopper.storage.EdgeEntry;
 import com.graphhopper.storage.Graph;
 import com.graphhopper.util.EdgeIterator;
 import gnu.trove.map.TIntObjectMap;
 import gnu.trove.map.hash.TIntObjectHashMap;
+
+import java.util.BitSet;
 import java.util.PriorityQueue;
 
 /**
@@ -17,7 +17,7 @@ import java.util.PriorityQueue;
  */
 public class DijkstraSimple extends AbstractRoutingAlgorithm {
 
-    protected MyBitSet visited = new MyTBitSet();
+    protected BitSet visited = new BitSet();
     private TIntObjectMap<EdgeEntry> map = new TIntObjectHashMap<EdgeEntry>();
     private PriorityQueue<EdgeEntry> heap = new PriorityQueue<EdgeEntry>();
 
@@ -28,14 +28,14 @@ public class DijkstraSimple extends AbstractRoutingAlgorithm {
     @Override
     public Path calcPath(int from, int to) {
         EdgeEntry fromEntry = new EdgeEntry(EdgeIterator.NO_EDGE, from, 0d);
-        visited.add(from);
+        visited.set(from);
         EdgeEntry currEdge = fromEntry;
         while (true) {
             int neighborNode = currEdge.endNode;
             EdgeIterator iter = neighbors(neighborNode);
             while (iter.next()) {
                 int tmpNode = iter.node();
-                if (visited.contains(tmpNode))
+                if (visited.get(tmpNode))
                     continue;
 
                 double tmpWeight = iter.distance() + currEdge.weight;
@@ -56,7 +56,7 @@ public class DijkstraSimple extends AbstractRoutingAlgorithm {
                 updateShortest(nEdge, neighborNode);
             }
 
-            visited.add(neighborNode);
+            visited.set(neighborNode);
             if (finished(currEdge, to))
                 break;
 

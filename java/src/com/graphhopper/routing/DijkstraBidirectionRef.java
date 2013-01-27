@@ -1,7 +1,5 @@
 package com.graphhopper.routing;
 
-import com.graphhopper.coll.MyBitSet;
-import com.graphhopper.coll.MyBitSetImpl;
 import com.graphhopper.routing.util.EdgeLevelFilter;
 import com.graphhopper.storage.EdgeEntry;
 import com.graphhopper.storage.Graph;
@@ -9,6 +7,8 @@ import com.graphhopper.util.EdgeIterator;
 import com.graphhopper.util.GraphUtility;
 import gnu.trove.map.TIntObjectMap;
 import gnu.trove.map.hash.TIntObjectHashMap;
+
+import java.util.BitSet;
 import java.util.PriorityQueue;
 
 /**
@@ -23,10 +23,10 @@ import java.util.PriorityQueue;
 public abstract class DijkstraBidirectionRef extends AbstractRoutingAlgorithm {
 
     private int from, to;
-    private MyBitSet visitedFrom;
+    private BitSet visitedFrom;
     private PriorityQueue<EdgeEntry> openSetFrom;
     private TIntObjectMap<EdgeEntry> shortestWeightMapFrom;
-    private MyBitSet visitedTo;
+    private BitSet visitedTo;
     private PriorityQueue<EdgeEntry> openSetTo;
     private TIntObjectMap<EdgeEntry> shortestWeightMapTo;
     private boolean alreadyRun;
@@ -42,11 +42,11 @@ public abstract class DijkstraBidirectionRef extends AbstractRoutingAlgorithm {
     }
 
     protected void initCollections(int nodes) {
-        visitedFrom = new MyBitSetImpl(nodes);
+        visitedFrom = new BitSet(nodes);
         openSetFrom = new PriorityQueue<EdgeEntry>(nodes / 10);
         shortestWeightMapFrom = new TIntObjectHashMap<EdgeEntry>(nodes / 10);
 
-        visitedTo = new MyBitSetImpl(nodes);
+        visitedTo = new BitSet(nodes);
         openSetTo = new PriorityQueue<EdgeEntry>(nodes / 10);
         shortestWeightMapTo = new TIntObjectHashMap<EdgeEntry>(nodes / 10);
     }
@@ -60,7 +60,7 @@ public abstract class DijkstraBidirectionRef extends AbstractRoutingAlgorithm {
         this.from = from;
         currFrom = new EdgeEntry(EdgeIterator.NO_EDGE, from, 0);
         shortestWeightMapFrom.put(from, currFrom);
-        visitedFrom.add(from);
+        visitedFrom.set(from);
         return this;
     }
 
@@ -68,7 +68,7 @@ public abstract class DijkstraBidirectionRef extends AbstractRoutingAlgorithm {
         this.to = to;
         currTo = new EdgeEntry(EdgeIterator.NO_EDGE, to, 0);
         shortestWeightMapTo.put(to, currTo);
-        visitedTo.add(to);
+        visitedTo.set(to);
         return this;
     }
 
@@ -104,7 +104,7 @@ public abstract class DijkstraBidirectionRef extends AbstractRoutingAlgorithm {
 
     public abstract boolean checkFinishCondition();
 
-    void fillEdges(EdgeEntry curr, MyBitSet visitedMain, PriorityQueue<EdgeEntry> prioQueue,
+    void fillEdges(EdgeEntry curr, BitSet visitedMain, PriorityQueue<EdgeEntry> prioQueue,
             TIntObjectMap<EdgeEntry> shortestWeightMap, boolean out) {
 
         int currNodeFrom = curr.endNode;                
@@ -114,7 +114,7 @@ public abstract class DijkstraBidirectionRef extends AbstractRoutingAlgorithm {
         
         while (iter.next()) {
             int neighborNode = iter.node();
-            if (visitedMain.contains(neighborNode))
+            if (visitedMain.get(neighborNode))
                 continue;
 
             double tmpWeight = iter.distance() + curr.weight;
@@ -164,7 +164,7 @@ public abstract class DijkstraBidirectionRef extends AbstractRoutingAlgorithm {
             currFrom = openSetFrom.poll();
             if (checkFinishCondition())
                 return false;
-            visitedFrom.add(currFrom.endNode);
+            visitedFrom.set(currFrom.endNode);
         } else if (currTo == null)
             return false;
         return true;
@@ -182,7 +182,7 @@ public abstract class DijkstraBidirectionRef extends AbstractRoutingAlgorithm {
             currTo = openSetTo.poll();
             if (checkFinishCondition())
                 return false;
-            visitedTo.add(currTo.endNode);
+            visitedTo.set(currTo.endNode);
         } else if (currFrom == null)
             return false;
         return true;
