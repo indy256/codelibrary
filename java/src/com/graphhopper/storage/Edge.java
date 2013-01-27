@@ -8,7 +8,7 @@ package com.graphhopper.storage;
 public class Edge implements Comparable<Edge> {
 
 	public int edge;
-	public int endNode;
+	public final int endNode;
 	public double weight;
 	public Edge parent;
 
