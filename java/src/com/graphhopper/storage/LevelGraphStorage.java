@@ -99,13 +99,6 @@ public class LevelGraphStorage implements LevelGraph {
 		return (int) (f * INT_DIST_FACTOR);
 	}
 
-	/**
-	 * returns distance (already translated from integer to double)
-	 */
-	private double getDist(long pointer) {
-		return (double) edges.getInt(pointer + E_DIST) / INT_DIST_FACTOR;
-	}
-
 	private long incCapacity(DataAccess da, long deltaCap) {
 		if (!initialized)
 			throw new IllegalStateException("Call createNew before or use the GraphBuilder class");
@@ -351,7 +344,7 @@ public class LevelGraphStorage implements LevelGraph {
 
 		@Override
 		public double distance() {
-			return getDist(edgePointer);
+			return (double) edges.getInt(edgePointer + E_DIST) / INT_DIST_FACTOR;
 		}
 
 		@Override
