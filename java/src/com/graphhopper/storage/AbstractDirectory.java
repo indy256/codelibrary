@@ -1,6 +1,5 @@
 package com.graphhopper.storage;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
