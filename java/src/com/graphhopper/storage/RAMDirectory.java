@@ -28,6 +28,7 @@ public class RAMDirectory extends AbstractDirectory {
 
     @Override
     protected DataAccess create(String id, String location) {
-        return new RAMDataAccess(id, location, store);
+        //return new RAMDataAccess(id, location);
+		return new MyDataAccess();
     }
 }

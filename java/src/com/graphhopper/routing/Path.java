@@ -119,7 +119,6 @@ public class Path {
      */
     public void calcWeight(EdgeIterator iter) {
         double dist = iter.distance();
-        int fl = iter.flags();
         weight += dist;
         distance += dist;
     }

@@ -350,7 +350,7 @@ public class PrepareContractionHierarchies extends AbstractAlgoPreparation<Prepa
 			while (iter.next()) {
 				if (EdgeIterator.Edge.isValid(iter.skippedEdge())
 						&& iter.node() == sc.to
-						&& CarStreetType.canBeOverwritten(iter.flags(), sc.flags)
+//						&& CarStreetType.canBeOverwritten(iter.flags(), sc.flags)
 						&& iter.distance() > sc.distance) {
 					iter.flags(sc.flags);
 					iter.skippedEdge(sc.skippedEdge);

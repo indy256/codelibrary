@@ -44,11 +44,7 @@ public class GraphBuilder {
     GraphStorage build() {
         Directory dir;
         dir = new RAMDirectory(location, false);
-        GraphStorage graph;
-        if (level)
-            graph = new LevelGraphStorage(dir);
-        else
-            graph = new GraphStorage(dir);
+        GraphStorage graph = new LevelGraphStorage(dir);
         return graph;
     }
 
