@@ -28,47 +28,33 @@ public class LevelGraphStorage implements LevelGraph {
 	protected final int E_NODEA, E_NODEB, E_LINKA, E_LINKB, E_DIST, E_FLAGS, I_SKIP_EDGE;
 	protected final int I_LEVEL, N_EDGE_REF;
 
-	protected int edgeEntrySize;
-	protected final DataAccess edges;
+	protected final int edgeEntrySize;
+	protected final MyDataAccess edges;
 
-	protected int nodeEntrySize;
-	protected final DataAccess nodes;
+	protected final int nodeEntrySize;
+	protected final MyDataAccess nodes;
 
 	private int edgeCount = 0;
-	// starting from 0 (inconsistent :/) => normal iteration and no internal correction is necessary.
-	// problem: we exported this to external API => or should we change the edge count in order to
-	// have [0,n) based edge indices in outside API?
 	private int nodeCount;
-	private int edgeEntryIndex, nodeEntryIndex;
 	private boolean initialized = false;
 
 	public LevelGraphStorage() {
 		nodes = new MyDataAccess();
 		edges = new MyDataAccess();
 
-		E_NODEA = nextEdgeEntryIndex();
-		E_NODEB = nextEdgeEntryIndex();
-		E_LINKA = nextEdgeEntryIndex();
-		E_LINKB = nextEdgeEntryIndex();
-		E_DIST = nextEdgeEntryIndex();
-		E_FLAGS = nextEdgeEntryIndex();
-		I_SKIP_EDGE = nextEdgeEntryIndex();
+		int edgeEntryIndex = 0;
+		E_NODEA = edgeEntryIndex++;
+		E_NODEB = edgeEntryIndex++;
+		E_LINKA = edgeEntryIndex++;
+		E_LINKB = edgeEntryIndex++;
+		E_DIST = edgeEntryIndex++;
+		E_FLAGS = edgeEntryIndex++;
+		I_SKIP_EDGE = edgeEntryIndex++;
 
-		I_LEVEL = nextNodeEntryIndex();
-		N_EDGE_REF = nextNodeEntryIndex();
+		int nodeEntryIndex = 0;
+		I_LEVEL = nodeEntryIndex++;
+		N_EDGE_REF = nodeEntryIndex++;
 
-		initNodeAndEdgeEntrySize();
-	}
-
-	protected final int nextEdgeEntryIndex() {
-		return edgeEntryIndex++;
-	}
-
-	protected final int nextNodeEntryIndex() {
-		return nodeEntryIndex++;
-	}
-
-	protected final void initNodeAndEdgeEntrySize() {
 		nodeEntrySize = nodeEntryIndex;
 		edgeEntrySize = edgeEntryIndex;
 	}
@@ -99,7 +85,7 @@ public class LevelGraphStorage implements LevelGraph {
 		return (int) (f * INT_DIST_FACTOR);
 	}
 
-	private long incCapacity(DataAccess da, long deltaCap) {
+	private long incCapacity(MyDataAccess da, long deltaCap) {
 		if (!initialized)
 			throw new IllegalStateException("Call createNew before or use the GraphBuilder class");
 		long newSeg = deltaCap / da.segmentSize();
@@ -277,13 +263,13 @@ public class LevelGraphStorage implements LevelGraph {
 
 	protected class EdgeIteratorImpl implements EdgeIterator {
 
-		long edgePointer;
-		boolean in;
-		boolean out;
-		// edge properties
-		int flags;
-		int node;
 		final int baseNode;
+		final boolean in;
+		final boolean out;
+
+		int flags;
+		long edgePointer;
+		int node;
 		int edgeId;
 		int nextEdge;
 
