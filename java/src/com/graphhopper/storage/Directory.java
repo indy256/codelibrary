@@ -1,7 +1,7 @@
 package com.graphhopper.storage;
 
 /**
- * Maintains a collection of DataAccess objects stored at the same location. One GraphStorage per
+ * Maintains a collection of DataAccess objects stored at the same location. One LevelGraphStorage per
  * Directory as we need one to maintain one DataAccess object for nodes, edges and location2id
  * index.
  *

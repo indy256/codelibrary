@@ -1,7 +1,7 @@
 package com.graphhopper.storage;
 
 /**
- * For now this is just a helper class to quickly create a GraphStorage.
+ * For now this is just a helper class to quickly create a LevelGraphStorage.
  *
  * @author Peter Karich
  */
@@ -29,22 +29,22 @@ public class GraphBuilder {
     }
 
     /**
-     * Default setGraph is a GraphStorage with an in memory directory and disabled
-     * storing on flush. Afterwards you'll need to call GraphStorage.createNew
+     * Default setGraph is a LevelGraphStorage with an in memory directory and disabled
+     * storing on flush. Afterwards you'll need to call LevelGraphStorage.createNew
      * to have a useable object. Better use create.
      */
-    GraphStorage build() {
+    LevelGraphStorage build() {
         Directory dir;
         dir = new RAMDirectory();
-        GraphStorage graph = new LevelGraphStorage(dir);
+        LevelGraphStorage graph = new LevelGraphStorage(dir);
         return graph;
     }
 
     /**
-     * Default setGraph is a GraphStorage with an in memory directory and disabled
+     * Default setGraph is a LevelGraphStorage with an in memory directory and disabled
      * storing on flush.
      */
-    public GraphStorage create() {
+    public LevelGraphStorage create() {
         return build().createNew(size);
     }
 }
