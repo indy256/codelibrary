@@ -25,31 +25,27 @@ public class LevelGraphStorage implements LevelGraph {
 	// distance of around +-1000 000 meter are ok
 	private static final float INT_DIST_FACTOR = 1000f;
 	// edge memory layout: nodeA,nodeB,linkA,linkB,dist,flags,geometryRef
-	protected final int E_NODEA, E_NODEB, E_LINKA, E_LINKB, E_DIST, E_FLAGS, I_SKIP_EDGE, I_LEVEL;
+	protected final int E_NODEA, E_NODEB, E_LINKA, E_LINKB, E_DIST, E_FLAGS, I_SKIP_EDGE;
+	protected final int I_LEVEL, N_EDGE_REF;
+
 	protected int edgeEntrySize;
-	protected DataAccess edges;
-	/**
-	 * specified how many entries (integers) are used per edge. starting from 1
-	 * => fresh int arrays do not need to be initialized with -1
-	 */
-	private int edgeCount = 0;
-	// node memory layout: edgeRef,lat,lon
-	protected final int N_EDGE_REF;
-	/**
-	 * specified how many entries (integers) are used per node
-	 */
+	protected final DataAccess edges;
+
 	protected int nodeEntrySize;
-	protected DataAccess nodes;
+	protected final DataAccess nodes;
+
+	private int edgeCount = 0;
 	// starting from 0 (inconsistent :/) => normal iteration and no internal correction is necessary.
 	// problem: we exported this to external API => or should we change the edge count in order to
 	// have [0,n) based edge indices in outside API?
 	private int nodeCount;
-	private int edgeEntryIndex = -1, nodeEntryIndex = -1;
+	private int edgeEntryIndex, nodeEntryIndex;
 	private boolean initialized = false;
 
-	public LevelGraphStorage(Directory dir) {
-		this.nodes = dir.findCreate("nodes");
-		this.edges = dir.findCreate("egdes");
+	public LevelGraphStorage() {
+		nodes = new MyDataAccess();
+		edges = new MyDataAccess();
+
 		E_NODEA = nextEdgeEntryIndex();
 		E_NODEB = nextEdgeEntryIndex();
 		E_LINKA = nextEdgeEntryIndex();
@@ -57,25 +53,24 @@ public class LevelGraphStorage implements LevelGraph {
 		E_DIST = nextEdgeEntryIndex();
 		E_FLAGS = nextEdgeEntryIndex();
 		I_SKIP_EDGE = nextEdgeEntryIndex();
-		I_LEVEL = nextNodeEntryIndex();
 
+		I_LEVEL = nextNodeEntryIndex();
 		N_EDGE_REF = nextNodeEntryIndex();
+
 		initNodeAndEdgeEntrySize();
 	}
 
 	protected final int nextEdgeEntryIndex() {
-		edgeEntryIndex++;
-		return edgeEntryIndex;
+		return edgeEntryIndex++;
 	}
 
 	protected final int nextNodeEntryIndex() {
-		nodeEntryIndex++;
-		return nodeEntryIndex;
+		return nodeEntryIndex++;
 	}
 
 	protected final void initNodeAndEdgeEntrySize() {
-		nodeEntrySize = nodeEntryIndex + 1;
-		edgeEntrySize = edgeEntryIndex + 1;
+		nodeEntrySize = nodeEntryIndex;
+		edgeEntrySize = edgeEntryIndex;
 	}
 
 	/**

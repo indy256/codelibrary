@@ -11,9 +11,14 @@ package com.graphhopper.storage;
  *
  * @author Peter Karich
  */
-public interface DataAccess extends Storable {
+public interface DataAccess {
 
-    /**
+	/**
+	 * @return the allocated storage size in bytes
+	 */
+	long capacity();
+
+	/**
      * Set 4 bytes at position 'index' to the specified value
      */
     void setInt(long index, int value);

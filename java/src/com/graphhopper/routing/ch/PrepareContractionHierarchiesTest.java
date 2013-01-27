@@ -9,7 +9,6 @@ import com.graphhopper.routing.util.CarStreetType;
 import com.graphhopper.storage.Graph;
 import com.graphhopper.storage.LevelGraph;
 import com.graphhopper.storage.LevelGraphStorage;
-import com.graphhopper.storage.RAMDirectory;
 import com.graphhopper.util.EdgeSkipIterator;
 import com.graphhopper.util.GraphUtility;
 import gnu.trove.list.array.TIntArrayList;
@@ -28,7 +27,7 @@ import static org.junit.Assert.*;
 public class PrepareContractionHierarchiesTest {
 
 	LevelGraph createGraph() {
-		return new LevelGraphStorage(new RAMDirectory()).createNew(100);
+		return new LevelGraphStorage().createNew(100);
 	}
 
 	LevelGraph createExampleGraph() {
@@ -52,9 +51,9 @@ public class PrepareContractionHierarchiesTest {
 
 	List<NodeCH> createGoals(int... gNodes) {
 		List<NodeCH> goals = new ArrayList<NodeCH>();
-		for (int i = 0; i < gNodes.length; i++) {
+		for (int gNode : gNodes) {
 			NodeCH n = new NodeCH();
-			n.endNode = gNodes[i];
+			n.endNode = gNode;
 			goals.add(n);
 		}
 		return goals;
