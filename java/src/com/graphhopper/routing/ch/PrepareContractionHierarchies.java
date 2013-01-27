@@ -39,7 +39,7 @@ public class PrepareContractionHierarchies extends AbstractAlgoPreparation<Prepa
 	private LevelGraph g;
 	// the most important nodes comes last
 	private TreeSet<WeightedNode> sortedNodes = new TreeSet<>();
-	private WeightedNode refs[];
+	private WeightedNode nodes[];
 	private TIntArrayList originalEdges;
 	// shortcut is one direction, speed is only involved while recalculating the endNode weights - see prepareEdges
 	static final int scOneDir = CarStreetType.flags(0, false);
@@ -71,7 +71,7 @@ public class PrepareContractionHierarchies extends AbstractAlgoPreparation<Prepa
 		originalEdges = new TIntArrayList(g.nodes() / 2, -1);
 		edgeFilter = new EdgeLevelFilterCH(this.g);
 		sortedNodes = new TreeSet<>();
-		refs = new WeightedNode[g.nodes()];
+		nodes = new WeightedNode[g.nodes()];
 		return this;
 	}
 
@@ -85,8 +85,8 @@ public class PrepareContractionHierarchies extends AbstractAlgoPreparation<Prepa
 		int len = g.nodes();
 		// minor idea: 1. sort nodes randomly and 2. pre-init with endNode degree
 		for (int node = 0; node < len; node++) {
-			refs[node] = new WeightedNode(node, calculatePriority(node));
-			sortedNodes.add(refs[node]);
+			nodes[node] = new WeightedNode(node, calculatePriority(node));
+			sortedNodes.add(nodes[node]);
 		}
 	}
 
@@ -116,7 +116,7 @@ public class PrepareContractionHierarchies extends AbstractAlgoPreparation<Prepa
 	}
 
 	void contractNodes() {
-		int level = 1;
+		int level = 0;
 		int newShortcuts = 0;
 		final int updateSize = Math.max(10, sortedNodes.size() / 10);
 		int counter = 0;
@@ -128,7 +128,7 @@ public class PrepareContractionHierarchies extends AbstractAlgoPreparation<Prepa
 				for (int node = 0; node < g.nodes(); node++) {
 					if (g.getLevel(node) != 0)
 						continue;
-					WeightedNode wNode = refs[node];
+					WeightedNode wNode = nodes[node];
 					sortedNodes.remove(wNode);
 					wNode.priority = calculatePriority(node);
 					sortedNodes.add(wNode);
@@ -139,35 +139,31 @@ public class PrepareContractionHierarchies extends AbstractAlgoPreparation<Prepa
 			WeightedNode wn = sortedNodes.pollFirst();
 			wn.priority = calculatePriority(wn.node);
 			if (!sortedNodes.isEmpty() && wn.priority > sortedNodes.first().priority) {
-				// endNode got more important => insert as new value and contract it later
 				sortedNodes.add(wn);
 				continue;
 			}
 
 			// contract!
 			newShortcuts += addShortcuts(wn.node);
-			g.setLevel(wn.node, level);
-			level++;
+			g.setLevel(wn.node, ++level);
 
 			// recompute priority of uncontracted neighbors
-			EdgeIterator iter = g.getEdges(wn.node);
-			while (iter.next()) {
-				if (g.getLevel(iter.node()) != 0)
+			for (EdgeIterator it = g.getEdges(wn.node); it.next(); ) {
+				if (g.getLevel(it.node()) != 0)
 					// already contracted no update necessary
 					continue;
 
-				int nn = iter.node();
-				WeightedNode neighborWn = refs[nn];
-				int newPriority = calculatePriority(nn);
-				if (neighborWn.priority != newPriority) {
-					sortedNodes.remove(neighborWn);
-					neighborWn.priority = newPriority;
-					sortedNodes.add(neighborWn);
+				WeightedNode neighbour = nodes[it.node()];
+				int newPriority = calculatePriority(it.node());
+
+				if (neighbour.priority != newPriority) {
+					sortedNodes.remove(neighbour);
+					neighbour.priority = newPriority;
+					sortedNodes.add(neighbour);
 				}
 			}
 		}
-		logger.info("new shortcuts " + newShortcuts + ", prioNodeCollection:" + sortedNodes);
-		// System.out.println("new shortcuts " + newShortcuts);
+		logger.info("new shortcuts " + newShortcuts);
 	}
 
 	static class EdgeLevelFilterCH extends EdgeLevelFilter {
@@ -255,7 +251,7 @@ public class PrepareContractionHierarchies extends AbstractAlgoPreparation<Prepa
 			// Hint: shortcuts are always one-way due to distinct level of every endNode but we don't
 			// know yet the levels so we need to determine the correct direction or if both directions
 
-			// minor improvement: if (shortcuts.containsKey((long) n.endNode * refs.length + u))
+			// minor improvement: if (shortcuts.containsKey((long) n.endNode * nodes.length + u))
 			// then two shortcuts with the same nodes (u<->n.endNode) exists => check current shortcut against both
 
 			boolean found = false;
