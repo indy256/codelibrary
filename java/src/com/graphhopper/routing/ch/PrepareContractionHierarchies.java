@@ -1,6 +1,5 @@
 package com.graphhopper.routing.ch;
 
-import com.graphhopper.coll.MySortedCollection;
 import com.graphhopper.routing.DijkstraBidirectionRef;
 import com.graphhopper.routing.DijkstraSimple;
 import com.graphhopper.routing.Path;
@@ -21,6 +20,7 @@ import gnu.trove.list.array.TIntArrayList;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.TreeSet;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,7 +43,7 @@ public class PrepareContractionHierarchies extends AbstractAlgoPreparation<Prepa
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	private LevelGraph g;
 	// the most important nodes comes last
-	private MySortedCollection sortedNodes;
+	private TreeSet<WeightedNode> sortedNodes = new TreeSet<>();
 	private WeightedNode refs[];
 	private TIntArrayList originalEdges;
 	// shortcut is one direction, speed is only involved while recalculating the endNode weights - see prepareEdges
@@ -77,7 +77,7 @@ public class PrepareContractionHierarchies extends AbstractAlgoPreparation<Prepa
 	PrepareContractionHierarchies initFromGraph() {
 		originalEdges = new TIntArrayList(g.nodes() / 2, -1);
 		edgeFilter = new EdgeLevelFilterCH(this.g);
-		sortedNodes = new MySortedCollection();
+		sortedNodes = new TreeSet<>();
 		refs = new WeightedNode[g.nodes()];
 		return this;
 	}
@@ -101,7 +101,7 @@ public class PrepareContractionHierarchies extends AbstractAlgoPreparation<Prepa
 		for (int node = 0; node < len; node++) {
 			WeightedNode wn = refs[node];
 			wn.priority = calculatePriority(node);
-			sortedNodes.insert(wn.node, wn.priority);
+			sortedNodes.add(wn);
 		}
 
 		return !sortedNodes.isEmpty();
@@ -126,9 +126,9 @@ public class PrepareContractionHierarchies extends AbstractAlgoPreparation<Prepa
 						WeightedNode wNode = refs[node];
 						if (g.getLevel(node) != 0)
 							continue;
-						int old = wNode.priority;
+						sortedNodes.remove(wNode);
 						wNode.priority = calculatePriority(node);
-						sortedNodes.update(node, old, wNode.priority);
+						sortedNodes.add(wNode);
 					}
 					sw.stop();
 				}
@@ -140,13 +140,14 @@ public class PrepareContractionHierarchies extends AbstractAlgoPreparation<Prepa
 			}
 
 			counter++;
-			WeightedNode wn = refs[sortedNodes.pollKey()];
+			//WeightedNode wn = refs[sortedNodes.pollKey()];
+			WeightedNode wn = refs[sortedNodes.pollFirst().node];
 
 			// update priority of current endNode via simulating 'addShortcuts'
 			wn.priority = calculatePriority(wn.node);
-			if (!sortedNodes.isEmpty() && wn.priority > sortedNodes.peekValue()) {
+			if (!sortedNodes.isEmpty() && wn.priority > sortedNodes.first().priority) {
 				// endNode got more important => insert as new value and contract it later
-				sortedNodes.insert(wn.node, wn.priority);
+				sortedNodes.add(wn);
 				continue;
 			}
 
@@ -164,10 +165,11 @@ public class PrepareContractionHierarchies extends AbstractAlgoPreparation<Prepa
 
 				int nn = iter.node();
 				WeightedNode neighborWn = refs[nn];
-				int tmpOld = neighborWn.priority;
-				neighborWn.priority = calculatePriority(nn);
-				if (neighborWn.priority != tmpOld) {
-					sortedNodes.update(nn, tmpOld, neighborWn.priority);
+				int newPriority = calculatePriority(nn);
+				if (neighborWn.priority != newPriority) {
+					sortedNodes.remove(neighborWn);
+					neighborWn.priority = newPriority;
+					sortedNodes.add(neighborWn);
 				}
 			}
 		}
@@ -464,14 +466,20 @@ public class PrepareContractionHierarchies extends AbstractAlgoPreparation<Prepa
 		}
 	}
 
-	private static class WeightedNode {
-
-		int node;
+	private static class WeightedNode implements Comparable<WeightedNode> {
+		final int node;
 		int priority;
 
 		public WeightedNode(int node, int priority) {
 			this.node = node;
 			this.priority = priority;
+		}
+
+		@Override
+		public int compareTo(WeightedNode o) {
+			int d = Integer.compare(priority, o.priority);
+			if (d != 0) return d;
+			return Integer.compare(node, o.node);
 		}
 	}
 
