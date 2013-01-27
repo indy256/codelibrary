@@ -108,10 +108,10 @@ public class DijkstraBidirectionRef extends AbstractRoutingAlgorithm {
     //    search, update extractPath = μ if df (v) + (v, w) + dr (w) < μ            
     public boolean checkFinishCondition() {
         if (currFrom == null)
-            return currTo.weight >= shortest.weight;
+            return currTo.weight >= shortest.distance;
         else if (currTo == null)
-            return currFrom.weight >= shortest.weight;
-        return currFrom.weight + currTo.weight >= shortest.weight;
+            return currFrom.weight >= shortest.distance;
+        return currFrom.weight + currTo.weight >= shortest.distance;
     }
 
     void fillEdges(EdgeEntry curr, MyBitSet visitedMain, PriorityQueue<EdgeEntry> prioQueue,
@@ -154,11 +154,11 @@ public class DijkstraBidirectionRef extends AbstractRoutingAlgorithm {
 
         // update μ
         double newShortest = shortestDE.weight + entryOther.weight;
-        if (newShortest < shortest.weight) {
+        if (newShortest < shortest.distance) {
             shortest.switchToFrom(shortestWeightMapFrom == shortestWeightMapOther);
             shortest.edgeEntry = shortestDE;
             shortest.edgeTo = entryOther;
-            shortest.weight = newShortest;
+            shortest.distance = newShortest;
         }
     }
 

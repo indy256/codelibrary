@@ -17,7 +17,6 @@ public class Path {
 
     protected final static double INIT_VALUE = Double.MAX_VALUE;
     protected Graph graph;
-    protected double weight;
     protected double distance;
     protected boolean found;
     // we go upwards (via EdgeEntry.parent) from the goal node to the origin node
@@ -84,13 +83,6 @@ public class Path {
     }
 
     /**
-     * The final weight which is the sum from the weights of the used edges.
-     */
-    public double weight() {
-        return weight;
-    }
-
-    /**
      * Extracts the Path from the shortest-path-tree determined by edgeEntry.
      */
     public Path extract() {
@@ -119,7 +111,6 @@ public class Path {
      */
     public void calcWeight(EdgeIterator iter) {
         double dist = iter.distance();
-        weight += dist;
         distance += dist;
     }
 
@@ -164,9 +155,5 @@ public class Path {
             }
         });
         return nodes;
-    }
-
-    @Override public String toString() {
-        return "weight:" + weight() + ", edges:" + edgeIds.size();
     }
 }

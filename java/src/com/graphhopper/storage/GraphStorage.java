@@ -49,8 +49,6 @@ public abstract class GraphStorage implements Graph {
     // have [0,n) based edge indices in outside API?
     private int nodeCount;
     private int edgeEntryIndex = -1, nodeEntryIndex = -1;
-    // 0 stands for no separate geoRef
-    private int maxGeoRef = 1;
     private boolean initialized = false;
 
     public GraphStorage(Directory dir) {

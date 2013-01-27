@@ -36,7 +36,6 @@ public class Path4CH extends PathBidirRef {
     @Override
     public void calcWeight(EdgeIterator mainIter) {
         double dist = mainIter.distance();
-        weight += dist;
         distance += dist;
     }
 

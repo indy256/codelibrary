@@ -17,7 +17,7 @@ public class PathBidirRef extends Path {
 
     public PathBidirRef(Graph g) {
         super(g);
-        weight = INIT_VALUE;
+        distance = INIT_VALUE;
     }
 
     public PathBidirRef switchToFrom(boolean b) {
@@ -30,7 +30,7 @@ public class PathBidirRef extends Path {
      */
     @Override
     public Path extract() {
-        weight = 0;
+        distance = 0;
         if (edgeEntry == null || edgeTo == null)
             return this;
 

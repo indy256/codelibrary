@@ -298,7 +298,7 @@ public class PrepareContractionHierarchies extends AbstractAlgoPreparation<Prepa
 		for (NodeCH n : goalNodes) {
 			if (n.entry != null) {
 				Path path = algo.extractPath(n.entry);
-				if (path.found() && path.weight() <= n.distance) {
+				if (path.found() && path.distance() <= n.distance) {
 					// FOUND witness path, so do not add shortcut
 					continue;
 				}
@@ -395,10 +395,10 @@ public class PrepareContractionHierarchies extends AbstractAlgoPreparation<Prepa
 			public boolean checkFinishCondition() {
 				// changed finish condition for CH
 				if (currFrom == null)
-					return currTo.weight >= shortest.weight();
+					return currTo.weight >= shortest.distance();
 				else if (currTo == null)
-					return currFrom.weight >= shortest.weight();
-				return currFrom.weight >= shortest.weight() && currTo.weight >= shortest.weight();
+					return currFrom.weight >= shortest.distance();
+				return currFrom.weight >= shortest.distance() && currTo.weight >= shortest.distance();
 			}
 
 			@Override
