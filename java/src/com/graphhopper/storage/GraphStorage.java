@@ -20,12 +20,12 @@ import com.graphhopper.util.RawEdgeIterator;
  *      (Level)GraphStorage
  * @see LevelGraphStorage
  */
-public abstract class GraphStorage implements Graph {
+public abstract class GraphStorage implements LevelGraph {
 
 	// distance of around +-1000 000 meter are ok
 	private static final float INT_DIST_FACTOR = 1000f;
 	// edge memory layout: nodeA,nodeB,linkA,linkB,dist,flags,geometryRef
-	protected final int E_NODEA, E_NODEB, E_LINKA, E_LINKB, E_DIST, E_FLAGS;
+	protected final int E_NODEA, E_NODEB, E_LINKA, E_LINKB, E_DIST, E_FLAGS, I_SKIP_EDGE, I_LEVEL;
 	protected int edgeEntrySize;
 	protected DataAccess edges;
 	/**
@@ -56,6 +56,8 @@ public abstract class GraphStorage implements Graph {
 		E_LINKB = nextEdgeEntryIndex();
 		E_DIST = nextEdgeEntryIndex();
 		E_FLAGS = nextEdgeEntryIndex();
+		I_SKIP_EDGE = nextEdgeEntryIndex();
+		I_LEVEL = nextNodeEntryIndex();
 
 		N_EDGE_REF = nextNodeEntryIndex();
 		initNodeAndEdgeEntrySize();
@@ -149,11 +151,6 @@ public abstract class GraphStorage implements Graph {
 			return;
 
 		incCapacity(edges, deltaCap);
-	}
-
-	@Override
-	public EdgeIterator edge(int a, int b, double distance, boolean bothDirections) {
-		return edge(a, b, distance, CarStreetType.flagsDefault(bothDirections));
 	}
 
 	/**
@@ -270,34 +267,6 @@ public abstract class GraphStorage implements Graph {
 			return (int) (edgePointer / edgeEntrySize);
 		}
 	}
-
-	@Override
-	public EdgeIterator getEdgeProps(int edgeId, final int endNode) {
-		if (edgeId <= EdgeIterator.NO_EDGE || edgeId > edgeCount)
-			throw new IllegalStateException("edgeId " + edgeId + " out of bounds [0," + edgeCount + "]");
-		if (endNode < 0)
-			throw new IllegalStateException("endNode " + endNode + " out of bounds [0," + nodeCount + "]");
-		long edgePointer = (long) edgeId * edgeEntrySize;
-		// a bit complex but faster
-		int nodeA = edges.getInt(edgePointer + E_NODEA);
-		int nodeB = edges.getInt(edgePointer + E_NODEB);
-		SingleEdge edge;
-		if (endNode == nodeB) {
-			edge = createSingleEdge(edgeId, nodeA);
-			edge.node = nodeB;
-			return edge;
-		} else if (endNode == nodeA) {
-			edge = createSingleEdge(edgeId, nodeB);
-			edge.node = nodeA;
-			edge.switchFlags = true;
-			return edge;
-		} else
-			return GraphUtility.EMPTY;
-	}
-
-	protected abstract EdgeSkipIterator createEdgeIterable(int baseNode, boolean in, boolean out);
-
-	protected abstract SingleEdge createSingleEdge(int edgeId, int nodeId);
 
 	protected class SingleEdge extends EdgeIteratorImpl {
 
@@ -423,4 +392,112 @@ public abstract class GraphStorage implements Graph {
 			return false;
 		}
 	}
+
+	@Override
+	public final void setLevel(int index, int level) {
+		ensureNodeIndex(index);
+		nodes.setInt((long) index * nodeEntrySize + I_LEVEL, level);
+	}
+
+	@Override
+	public final int getLevel(int index) {
+		ensureNodeIndex(index);
+		return nodes.getInt((long) index * nodeEntrySize + I_LEVEL);
+	}
+
+	@Override
+	public EdgeSkipIterator edge(int a, int b, double distance, boolean bothDir) {
+		return edge(a, b, distance, CarStreetType.flagsDefault(bothDir));
+	}
+
+	@Override
+	public EdgeSkipIterator edge(int a, int b, double distance, int flags) {
+		ensureNodeIndex(Math.max(a, b));
+		int edgeId = internalEdgeAdd(a, b, distance, flags);
+		EdgeSkipIteratorImpl iter = new EdgeSkipIteratorImpl(edgeId, a, false, false);
+		iter.next();
+		iter.setSkippedEdge(-1);
+		return iter;
+	}
+
+	@Override
+	public EdgeSkipIterator getEdges(int node) {
+		return createEdgeIterable(node, true, true);
+	}
+
+	@Override
+	public EdgeSkipIterator getIncoming(int node) {
+		return createEdgeIterable(node, true, false);
+	}
+
+	@Override
+	public EdgeSkipIterator getOutgoing(int node) {
+		return createEdgeIterable(node, false, true);
+	}
+
+	protected EdgeSkipIterator createEdgeIterable(int baseNode, boolean in, boolean out) {
+		int edge = nodes.getInt((long) baseNode * nodeEntrySize + N_EDGE_REF);
+		return new EdgeSkipIteratorImpl(edge, baseNode, in, out);
+	}
+
+	class EdgeSkipIteratorImpl extends EdgeIteratorImpl implements EdgeSkipIterator {
+
+		public EdgeSkipIteratorImpl(int edge, int node, boolean in, boolean out) {
+			super(edge, node, in, out);
+		}
+
+		@Override
+		public int getSkippedEdge() {
+			return edges.getInt(edgePointer + I_SKIP_EDGE);
+		}
+
+		@Override
+		public void setSkippedEdge(int edgeId) {
+			edges.setInt(edgePointer + I_SKIP_EDGE, edgeId);
+		}
+	}
+
+	@Override
+	public EdgeSkipIterator getEdgeProps(int edgeId, int endNode) {
+		if (edgeId <= EdgeIterator.NO_EDGE || edgeId > edgeCount)
+			throw new IllegalStateException("edgeId " + edgeId + " out of bounds [0," + edgeCount + "]");
+		if (endNode < 0)
+			throw new IllegalStateException("endNode " + endNode + " out of bounds [0," + nodeCount + "]");
+		long edgePointer = (long) edgeId * edgeEntrySize;
+		// a bit complex but faster
+		int nodeA = edges.getInt(edgePointer + E_NODEA);
+		int nodeB = edges.getInt(edgePointer + E_NODEB);
+		EdgeSkipIterator edge;
+		if (endNode == nodeB) {
+			edge = createSingleEdge(edgeId, nodeA);
+			((EdgeIteratorImpl)edge).node = nodeB;
+			return edge;
+		} else if (endNode == nodeA) {
+			edge = createSingleEdge(edgeId, nodeB);
+			((EdgeIteratorImpl)edge).node = nodeA;
+			((SingleEdge)edge).switchFlags = true;
+			return edge;
+		} else
+			return GraphUtility.EMPTY;
+	}
+
+	protected EdgeSkipIterator createSingleEdge(int edge, int nodeId) {
+		return new SingleLevelEdge(edge, nodeId);
+	}
+
+	class SingleLevelEdge extends SingleEdge implements EdgeSkipIterator {
+
+		public SingleLevelEdge(int edge, int nodeId) {
+			super(edge, nodeId);
+		}
+
+		@Override public void setSkippedEdge(int node) {
+			edges.setInt(edgePointer + I_SKIP_EDGE, node);
+		}
+
+		@Override public int getSkippedEdge() {
+			return edges.getInt(edgePointer + I_SKIP_EDGE);
+		}
+	}
+
 }
