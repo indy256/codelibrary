@@ -58,7 +58,7 @@ public class LevelGraphStorage implements LevelGraph {
 		nodeCount = Math.max(nodeCount, nodeIndex + 1);
 	}
 
-	private long writeEdge(int edge, int nodeThis, int nodeOther, int nextEdge, int nextEdgeOther,
+	private long writeEdge(int edgeId, int nodeThis, int nodeOther, int nextEdge, int nextEdgeOther,
 						   double distance, int flags) {
 		if (nodeThis > nodeOther) {
 			int tmp = nodeThis;
@@ -72,7 +72,7 @@ public class LevelGraphStorage implements LevelGraph {
 			flags = CarStreetType.swapDirection(flags);
 		}
 
-		long edgePointer = (long) edge * edgeEntrySize;
+		long edgePointer = (long) edgeId * edgeEntrySize;
 		edges[((int) (edgePointer + E_NODEA))] = nodeThis;
 		edges[((int) (edgePointer + E_NODEB))] = nodeOther;
 		edges[((int) (edgePointer + E_LINKA))] = nextEdge;
