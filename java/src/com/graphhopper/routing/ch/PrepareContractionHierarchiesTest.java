@@ -94,6 +94,15 @@ public class PrepareContractionHierarchiesTest {
 	}
 
 	@Test
+	public void testAddShortcuts2() {
+		LevelGraph g = new LevelGraphStorage();
+		g.edge(0, 1, 1, true);
+		g.edge(0, 2, 1, true);
+		//g.edge(1, 2, 1, false);
+		System.out.println(GraphUtility.count(g.allEdges()));
+	}
+
+	@Test
 	public void testAddShortcuts() {
 		LevelGraph g = createExampleGraph();
 		int old = GraphUtility.count(g.allEdges());
