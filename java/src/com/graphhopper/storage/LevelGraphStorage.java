@@ -86,26 +86,6 @@ public class LevelGraphStorage implements LevelGraph {
 		return nodeThis <= nodeOther ? edgePointer + E_LINKA : edgePointer + E_LINKB;
 	}
 
-	private long getLastEdge(int nodeThis, long edgePointer) {
-		long lastLink = -1;
-		int i = 0;
-		int otherNode = -1;
-		for (; i < 1000; i++) {
-			edgePointer *= edgeEntrySize;
-			otherNode = getOtherNode(nodeThis, edgePointer);
-			lastLink = getLinkPosInEdgeArea(nodeThis, otherNode, edgePointer);
-			edgePointer = edges[((int) lastLink)];
-			if (edgePointer == EdgeIterator.NO_EDGE)
-				break;
-		}
-
-		if (i >= 1000)
-			throw new IllegalStateException("endless loop? edge count of " + nodeThis
-					+ " is probably not higher than " + i
-					+ ", edgePointer:" + edgePointer + ", otherNode:" + otherNode);
-		return lastLink;
-	}
-
 	private int getOtherNode(int nodeThis, long edgePointer) {
 		return edges[((int) (edgePointer + E_NODEA))] + edges[((int) (edgePointer + E_NODEB))] - nodeThis;
 	}
@@ -274,6 +254,26 @@ public class LevelGraphStorage implements LevelGraph {
 		} else {
 			nodes[((int) (nodePointer + N_EDGE_REF))] = newOrExistingEdge;
 		}
+	}
+
+	private long getLastEdge(int nodeThis, long edgePointer) {
+		long lastLink = -1;
+		int i = 0;
+		int otherNode = -1;
+		for (; i < 1000; i++) {
+			edgePointer *= edgeEntrySize;
+			otherNode = getOtherNode(nodeThis, edgePointer);
+			lastLink = getLinkPosInEdgeArea(nodeThis, otherNode, edgePointer);
+			edgePointer = edges[((int) lastLink)];
+			if (edgePointer == EdgeIterator.NO_EDGE)
+				break;
+		}
+
+		if (i >= 1000)
+			throw new IllegalStateException("endless loop? edge count of " + nodeThis
+					+ " is probably not higher than " + i
+					+ ", edgePointer:" + edgePointer + ", otherNode:" + otherNode);
+		return lastLink;
 	}
 
 	@Override
