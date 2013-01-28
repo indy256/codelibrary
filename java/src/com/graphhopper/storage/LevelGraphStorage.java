@@ -107,12 +107,7 @@ public class LevelGraphStorage implements LevelGraph {
 	}
 
 	private int getOtherNode(int nodeThis, long edgePointer) {
-		int nodeA = edges[((int) (edgePointer + E_NODEA))];
-		if (nodeA == nodeThis)
-			// return b
-			return edges[((int) (edgePointer + E_NODEB))];
-		// return a
-		return nodeA;
+		return edges[((int) (edgePointer + E_NODEA))] + edges[((int) (edgePointer + E_NODEB))] - nodeThis;
 	}
 
 	@Override
@@ -271,10 +266,10 @@ public class LevelGraphStorage implements LevelGraph {
 
 	private void connectNewEdge(int fromNodeId, int newOrExistingEdge) {
 		long nodePointer = (long) fromNodeId * nodeEntrySize;
-		int edge = nodes[((int) (nodePointer + N_EDGE_REF))];
-		if (edge > EdgeIterator.NO_EDGE) {
-			// append edge and overwrite EMPTY_LINK
-			long lastEdge = getLastEdge(fromNodeId, edge);
+		int edgeId = nodes[((int) (nodePointer + N_EDGE_REF))];
+		if (edgeId > EdgeIterator.NO_EDGE) {
+			// append edgeId and overwrite EMPTY_LINK
+			long lastEdge = getLastEdge(fromNodeId, edgeId);
 			edges[((int) lastEdge)] = newOrExistingEdge;
 		} else {
 			nodes[((int) (nodePointer + N_EDGE_REF))] = newOrExistingEdge;
