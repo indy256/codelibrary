@@ -221,6 +221,11 @@ public class LevelGraphStorage implements LevelGraph {
 	}
 
 	@Override
+	public EdgeSkipIterator edge(int a, int b, double distance, boolean bothDir) {
+		return edge(a, b, distance, CarStreetType.flagsDefault(bothDir));
+	}
+
+	@Override
 	public EdgeSkipIterator edge(int a, int b, double distance, int flags) {
 		ensureNodeIndex(Math.max(a, b));
 		int edgeId = internalEdgeAdd(a, b, distance, flags);
@@ -228,11 +233,6 @@ public class LevelGraphStorage implements LevelGraph {
 		it.next();
 		it.setSkippedEdge(-1);
 		return it;
-	}
-
-	@Override
-	public EdgeSkipIterator edge(int a, int b, double distance, boolean bothDir) {
-		return edge(a, b, distance, CarStreetType.flagsDefault(bothDir));
 	}
 
 	int internalEdgeAdd(int fromNodeId, int toNodeId, double dist, int flags) {
@@ -330,7 +330,7 @@ public class LevelGraphStorage implements LevelGraph {
 			((SingleLevelEdge) edge).switchFlags = true;
 			return edge;
 		} else
-			return GraphUtility.EMPTY;
+			return null;
 	}
 
 	class SingleLevelEdge extends EdgeIteratorImpl implements EdgeSkipIterator {

@@ -34,66 +34,6 @@ public class GraphUtility {
 	 * idea?
 	 */
 	public static EdgeIterator getEdges(Graph graph, int index, boolean out) {
-		if (out)
-			return graph.getOutgoing(index);
-		else
-			return graph.getIncoming(index);
+		return out ? graph.getOutgoing(index) : graph.getIncoming(index);
 	}
-
-	public static final EdgeSkipIterator EMPTY = new EdgeSkipIterator() {
-		@Override
-		public int getSkippedEdge() {
-			throw new UnsupportedOperationException("Not supported. Edge is empty.");
-		}
-
-		@Override
-		public void setSkippedEdge(int node) {
-			throw new UnsupportedOperationException("Not supported. Edge is empty.");
-		}
-
-		@Override
-		public void distance(double dist) {
-			throw new UnsupportedOperationException("Not supported. Edge is empty.");
-		}
-
-		@Override
-		public void flags(int flags) {
-			throw new UnsupportedOperationException("Not supported. Edge is empty.");
-		}
-
-		@Override
-		public boolean next() {
-			throw new UnsupportedOperationException("Not supported. Edge is empty.");
-		}
-
-		@Override
-		public int edge() {
-			throw new UnsupportedOperationException("Not supported. Edge is empty.");
-		}
-
-		@Override
-		public int baseNode() {
-			throw new UnsupportedOperationException("Not supported. Edge is empty.");
-		}
-
-		@Override
-		public int node() {
-			throw new UnsupportedOperationException("Not supported. Edge is empty.");
-		}
-
-		@Override
-		public double distance() {
-			throw new UnsupportedOperationException("Not supported. Edge is empty.");
-		}
-
-		@Override
-		public int flags() {
-			throw new UnsupportedOperationException("Not supported. Edge is empty.");
-		}
-
-		@Override
-		public boolean isEmpty() {
-			return true;
-		}
-	};
 }

@@ -70,7 +70,7 @@ public class Path4CH extends PathBidirRef {
             }
         } else {
             EdgeSkipIterator iter = (EdgeSkipIterator) graph.getEdgeProps(skippedEdge, to);
-            if (iter.isEmpty()) {
+            if (iter == null) {
                 iter = (EdgeSkipIterator) graph.getEdgeProps(skippedEdge, from);
                 int skippedNode = iter.baseNode();
                 expandEdge(iter, true);
