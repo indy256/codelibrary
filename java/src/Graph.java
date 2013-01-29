@@ -5,7 +5,7 @@ public class Graph {
 
 	public void addNode(int u) {
 		if (!edges.containsKey(u)) {
-			edges.put(u, new TreeSet<>());
+			edges.put(u, new TreeSet<Integer>());
 		}
 	}
 

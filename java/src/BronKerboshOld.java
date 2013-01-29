@@ -55,7 +55,7 @@ public class BronKerboshOld {
 			allVertices.add(i);
 		}
 		Set<Integer> resultedMaxSet = new HashSet<>();
-		findIndependentSet(new HashSet<>(), new HashSet<>(), allVertices, graph, resultedMaxSet);
+		findIndependentSet(new HashSet<Integer>(), new HashSet<Integer>(), allVertices, graph, resultedMaxSet);
 		return resultedMaxSet;
 	}
 

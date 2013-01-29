@@ -8,12 +8,12 @@ import com.graphhopper.util.RawEdgeIterator;
 
 public class LevelGraphStorage implements LevelGraph {
 
-	private static final float INT_DIST_FACTOR = 1000f;
-	protected final int E_NODEA, E_NODEB, E_LINKA, E_LINKB, E_DIST, E_FLAGS, I_SKIP_EDGE;
+	public static final float INT_DIST_FACTOR = 1000f;
+	public final int E_NODEA, E_NODEB, E_LINKA, E_LINKB, E_DIST, E_FLAGS, I_SKIP_EDGE;
 	protected final int I_LEVEL, N_EDGE_REF;
 
-	protected final int edgeEntrySize;
-	final int[] edges = new int[1000_000];
+	public final int edgeEntrySize;
+	public final int[] edges = new int[1000_000];
 
 	protected final int nodeEntrySize;
 	final int[] nodes = new int[1000_000];
@@ -319,15 +319,15 @@ public class LevelGraphStorage implements LevelGraph {
 		// a bit complex but faster
 		int nodeA = edges[((int) (edgePointer + E_NODEA))];
 		int nodeB = edges[((int) (edgePointer + E_NODEB))];
-		final EdgeSkipIterator edge;
+		final SingleLevelEdge edge;
 		if (endNode == nodeB) {
 			edge = new SingleLevelEdge(edgeId, nodeA);
-			((EdgeIteratorImpl) edge).node = nodeB;
+			edge.node = nodeB;
 			return edge;
 		} else if (endNode == nodeA) {
 			edge = new SingleLevelEdge(edgeId, nodeB);
-			((EdgeIteratorImpl) edge).node = nodeA;
-			((SingleLevelEdge) edge).switchFlags = true;
+			edge.node = nodeA;
+			edge.switchFlags = true;
 			return edge;
 		} else
 			return null;

@@ -2,6 +2,7 @@ package com.graphhopper.routing;
 
 import com.graphhopper.storage.Edge;
 import com.graphhopper.storage.Graph;
+import com.graphhopper.storage.LevelGraphStorage;
 import com.graphhopper.util.EdgeIterator;
 import gnu.trove.list.TIntList;
 import gnu.trove.list.array.TIntArrayList;
@@ -23,15 +24,13 @@ public class Path {
     protected boolean reverse = true;
     protected Edge edge;
     private int fromNode = EdgeIterator.NO_EDGE;
-    private TIntList edgeIds;
+    private TIntList edgeIds = new TIntArrayList();
 
-    Path() {
-        this(null);
+	public Path() {
     }
 
     public Path(Graph graph) {
         this.graph = graph;
-        this.edgeIds = new TIntArrayList();
     }
 
     public Path edgeEntry(Edge edge) {
@@ -101,24 +100,20 @@ public class Path {
      * Calls calcWeight and adds the edgeId.
      */
     protected void processWeight(int edgeId, int endNode) {
-        calcWeight(graph.getEdgeProps(edgeId, endNode));
+//        calcWeight(graph.getEdgeProps(edgeId, endNode));
+		LevelGraphStorage lg = (LevelGraphStorage) graph;
+		distance += lg.edges[((int) (edgeId*lg.edgeEntrySize + lg.E_DIST))] / LevelGraphStorage.INT_DIST_FACTOR;
         addEdge(edgeId);
     }
 
-    /**
-     * This method calculates not only the weight but also the distance in
-     * kilometer for the specified edge.
-     */
     public void calcWeight(EdgeIterator iter) {
-        double dist = iter.distance();
-        distance += dist;
+		distance += iter.distance();
     }
 
     /**
      * Used in combination with forEveryEdge.
      */
     public static interface EdgeVisitor {
-
         void next(EdgeIterator iter);
     }
 

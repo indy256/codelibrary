@@ -26,7 +26,7 @@ public class TreeForest {
 	}
 
 	static Node lca(Node v, Node w) {
-		Set<Node> s = Collections.<Node>newSetFromMap(new IdentityHashMap<>());
+		Set<Node> s = Collections.<Node>newSetFromMap(new IdentityHashMap());
 		for (; v != null; v = v.parent)
 			s.add(v);
 
