@@ -4,200 +4,106 @@ import java.util.*;
  * @author Andrey Naumenko
  */
 public class ContractionHierarchies {
-/*
-	int calculatePriority(List<Integer>[] g, List<Integer>[] rg, int v) {
 
-		// set of shortcuts that would be added if endNode v would be contracted next.
-		Collection<Shortcut> tmpShortcuts = findShortcuts(g, rg, v);
-		// from shortcuts we can compute the edgeDifference
+	final int NODES = 1000;
+	final int EDGES = 1000;
 
-		// # low influence: with it the shortcut creation is slightly faster
-		//
-		// |shortcuts(v)| − |{(u, v) | v uncontracted}| − |{(v, w) | v uncontracted}|
-		// meanDegree is used instead of outDegree+inDegree as if one endNode is in both directions
-		// only one bucket memory is used. Additionally one shortcut could also stand for two directions.
-		int degree = 0;//GraphUtility.count(g.getEdges(v));
-		int edgeDifference = tmpShortcuts.size() - degree;
+	int[] levels = new int[NODES];
+	int[] tail = new int[NODES];
+	int[] rtail = new int[NODES];
 
-		// # huge influence: the bigger the less shortcuts gets created and the faster is the preparation
-		//
-		// every endNode has an 'original edge' number associated. initially it is r=1
-		// when a new shortcut is introduced then r of the associated edges is summed up:
-		// r(u,w)=r(u,v)+r(v,w) now we can define
-		// originalEdgesCount = σ(v) := sum_{ (u,w) ∈ shortcuts(v) } of r(u, w)
-		int originalEdgesCount = 0;
-		for (Shortcut sc : tmpShortcuts) {
-			originalEdgesCount += sc.originalEdges;
-		}
+	int[] len = new int[EDGES];
+	int[] u = new int[EDGES];
+	int[] v = new int[EDGES];
+	int[] prev = new int[EDGES];
 
-		// # lowest influence on preparation speed or shortcut creation count
-		// (but according to paper should speed up queries)
-		//
-		// number of already contracted neighbors of v
-		int contractedNeighbors = 0;
-//		EdgeSkipIterator iter = g.getEdges(v);
-//		while (iter.next()) {
-//			if (iter.setSkippedEdge() >= 0)
-//				contractedNeighbors++;
-//		}
+	int[] rlen = new int[EDGES];
+	int[] ru = new int[EDGES];
+	int[] rv = new int[EDGES];
+	int[] rprev = new int[EDGES];
 
-		// unterfranken example
-		// 10, 50, 1 => 180s preparation, q 3.3ms
-		//  2,  4, 1 => 200s preparation, q 3.0ms
-		// according to the paper do a simple linear combination of the properties to get the priority
-		return 10 * edgeDifference + 50 * originalEdgesCount + contractedNeighbors;
+	{
+		Arrays.fill(prev, -1);
+		Arrays.fill(rprev, -1);
+		Arrays.fill(tail, -1);
+		Arrays.fill(rtail, -1);
+		for (int i = 0; i < levels.length; i++)
+			levels[i] = i;
 	}
 
-	Collection<Shortcut> findShortcuts(int[][] g, int[][] rg, int[][] dist, int v) {
-		final int[] incoming = rg[v];
-		final int[] outgoing = rg[v];
+	int edges = 0;
+	int nodes = 0;
 
-		for (int i = 0; i < incoming.length; i++) {
-			int u = incoming[i];
-			int distUV = dist[u][i];
+	public void addEdge(int u, int v, int len) {
+		nodes = Math.max(nodes, u + 1);
+		nodes = Math.max(nodes, v + 1);
 
+		// add (u,v) to normal graph
+		this.u[edges] = u;
+		this.v[edges] = v;
+		this.len[edges] = len;
+		prev[edges] = tail[u];
+		tail[u] = edges;
 
-		}
+		// add (v,u) to reverse graph
+		ru[edges] = v;
+		rv[edges] = u;
+		rlen[edges] = len;
+		rprev[edges] = rtail[v];
+		rtail[v] = edges;
 
-
-		// we can use distance instead of weight, see prepareEdges where distance is overwritten by weight!
-		List<NodeCH> goalNodes = new ArrayList<NodeCH>();
-		Map<Long, Shortcut> shortcuts = new HashMap<Long, Shortcut>();
-		//shortcuts.clear();
-		EdgeWriteIterator iter1 = g.getIncoming(v);
-		// TODO PERFORMANCE collect outgoing nodes (goalnodes) only once and just skip u
-		while (iter1.next()) {
-			int u = iter1.node();
-			int lu = g.getLevel(u);
-			if (lu != 0)
-				continue;
-
-			double v_u_weight = iter1.distance();
-
-			// one-to-many shortest path
-			goalNodes.clear();
-			EdgeWriteIterator iter2 = g.getOutgoing(v);
-			double maxWeight = 0;
-			while (iter2.next()) {
-				int w = iter2.node();
-				int lw = g.getLevel(w);
-				if (w == u || lw != 0)
-					continue;
-
-				NodeCH n = new NodeCH();
-				n.endNode = w;
-				n.originalEdges = getOrigEdges(iter2.edge());
-				n.distance = v_u_weight + iter2.distance();
-				goalNodes.add(n);
-
-				if (maxWeight < n.distance)
-					maxWeight = n.distance;
-			}
-
-			if (goalNodes.isEmpty())
-				continue;
-
-			// TODO instead of a weight-limit we could use a hop-limit
-			// and successively increasing it when mean-degree of setGraph increases
-			algo = new OneToManyDijkstraCH(g).setFilter(edgeFilter.setSkipNode(v));
-			algo.setLimit(maxWeight).calcPath(u, goalNodes);
-			internalFindShortcuts(goalNodes, u, iter1.edge());
-		}
-		return shortcuts.values();
+		++edges;
 	}
 
-	void internalFindShortcuts(List<NodeCH> goalNodes, int u, int uEdgeId) {
-		int uOrigEdge = getOrigEdges(uEdgeId);
-		for (NodeCH n : goalNodes) {
-			if (n.entry != null) {
-				Path path = algo.extractPath(n.entry);
-				if (path.found() && path.weight() <= n.distance) {
-					// FOUND witness path, so do not add shortcut
+	public void preprocess() {
+		for (int v = 0; v < nodes - 2; v++) {
+			for (int vw = tail[v]; vw != -1; vw = prev[vw]) {
+				int w = this.v[vw];
+				if (levels[w] <= levels[v])
 					continue;
+				for (int uv = rtail[v]; uv != -1; uv = rprev[uv]) {
+					int u = rv[uv];
+					if (levels[u] <= levels[v] || u == w)
+						continue;
+
+					addEdge(u, v, rlen[uv] + len[vw]);
+					System.out.println("(" + u + "," + v + ")");
 				}
 			}
-
-			// FOUND shortcut but be sure that it is the only shortcut in the collection
-			// and also in the setGraph for u->w. If existing AND identical length => update flags
-			// Hint: shortcuts are always one-way due to distinct level of every endNode but we don't
-			// know yet the levels so we need to determine the correct direction or if both directions
-			long edgeId = (long) u * refs.length + n.endNode;
-			Shortcut sc = shortcuts.get(edgeId);
-			if (sc == null)
-				sc = shortcuts.get((long) n.endNode * refs.length + u);
-
-			// minor improvement: if (shortcuts.containsKey((long) n.endNode * refs.length + u))
-			// then two shortcuts with the same nodes (u<->n.endNode) exists => check current shortcut against both
-			if (sc == null || !NumHelper.equals(sc.distance, n.distance)) {
-				sc = new Shortcut(u, n.endNode, n.distance);
-				shortcuts.put(edgeId, sc);
-				sc.edge = uEdgeId;
-				sc.originalEdges = uOrigEdge + n.originalEdges;
-			} else {
-				// the shortcut already exists in the current collection (different direction)
-				// but has identical length so change the flags!
-				sc.flags = scBothDir;
-			}
 		}
 	}
 
-	static class Shortcut {
+	public int shortestPath(int s, int t) {
+		int[] prio1 = new int[nodes];
+		int[] prio2 = new int[nodes];
+		Arrays.fill(prio1, Integer.MAX_VALUE/2);
+		Arrays.fill(prio2, Integer.MAX_VALUE/2);
+		prio1[s] = 0;
+		prio2[t] = 0;
+		PriorityQueue<Long> q1 = new PriorityQueue<Long>();
+		q1.add((long) s);
+		PriorityQueue<Long> q2 = new PriorityQueue<Long>();
+		q2.add((long) t);
+		int res = Integer.MAX_VALUE;
+		while (!q1.isEmpty() || !q2.isEmpty()) {
+			PriorityQueue<Long> q = q2.isEmpty() || !q1.isEmpty() && q1.peek() < q2.peek() ? q1 : q2;
+			long cur = q.poll();
+			if (res < cur >>> 32)
+				break;
+			int curu = (int) cur;
+			res = Math.min(res, prio1[curu] + prio2[curu]);
 
-		final int from;
-		final int to;
-		final double distance;
-		int edge;
-		int originalEdges;
 
-		public Shortcut(int from, int to, double distance) {
-			this.from = from;
-			this.to = to;
-			this.distance = distance;
+
 		}
 
-		public String toString() {
-			return from + "->" + to + ", dist:" + distance;
-		}
-
-	}
-
-	static class NodeCH {
-
-		int endNode;
-
-		int originalEdges;
-		//Edge entry;
-		double distance;
-
-		public String toString() {
-			return "" + endNode;
-		}
-	}
-
-	static class Edge {
-		final int t;
-		final double dist;
-
-		Edge(int t, double dist) {
-			this.t = t;
-			this.dist = dist;
-		}
+		return res;
 	}
 
 	public static void main(String[] args) {
-		int n = 3;
-		List<Edge>[] g = new List[n];
-		for (int i = 0; i < n; i++)
-			g[i] = new ArrayList<>();
-		g[2].add(new Edge(0, 1));
-		g[2].add(new Edge(1, 1));
-		g[0].add(new Edge(1, 1));
-		List<Edge>[] rg = new List[n];
-		for (int i = 0; i < n; i++)
-			rg[i] = new ArrayList<>();
-		for (int i = 0; i < n; i++)
-			for (Edge e : g[i])
-				rg[e.t].add(new Edge(i, e.dist));
+		ContractionHierarchies ch = new ContractionHierarchies();
+		ch.addEdge(0, 1, 1);
+		ch.addEdge(2, 0, 1);
+		ch.preprocess();
 	}
-	*/
 }

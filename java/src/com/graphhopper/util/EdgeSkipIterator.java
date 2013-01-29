@@ -12,5 +12,5 @@ public interface EdgeSkipIterator extends EdgeIterator {
 
     int getSkippedEdge();
 
-    void setSkippedEdge(int node);
+    void setSkippedEdge(int edgeId);
 }

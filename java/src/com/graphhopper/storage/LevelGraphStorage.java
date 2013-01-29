@@ -97,7 +97,7 @@ public class LevelGraphStorage implements LevelGraph {
 
 			@Override
 			public boolean next() {
-				return ++edgePointer < edgeCount;
+				return edgePointer++ < edgeCount;
 			}
 
 			@Override
