@@ -33,6 +33,13 @@ public class ContractionHierarchies {
 		nodes = Math.max(nodes, s + 1);
 		nodes = Math.max(nodes, t + 1);
 
+		for (int edge = tail[0][s]; edge != -1; edge = prev[0][edge]) {
+			if (v[edge] == t) {
+				this.len[edge] = Math.min(this.len[edge], len);
+				return;
+			}
+		}
+
 		this.len[edges] = len;
 		u[edges] = s;
 		v[edges] = t;
@@ -60,7 +67,7 @@ public class ContractionHierarchies {
 						continue;
 
 					addEdge(u, w, len[uv] + len[vw]);
-					System.out.println("(" + u + "," + v + ")");
+					System.out.println("(" + u + "," + w + ") -> " + (len[uv] + len[vw]));
 				}
 			}
 		}
@@ -109,11 +116,36 @@ public class ContractionHierarchies {
 	}
 
 	public static void main(String[] args) {
+//		ContractionHierarchies ch = new ContractionHierarchies();
+//		ch.addEdge(0, 1, 1);
+//		ch.addEdge(2, 0, 1);
+//		ch.preprocess();
+//		ch.debug();
+//		System.out.println(ch.shortestPath(2, 1));
+
 		ContractionHierarchies ch = new ContractionHierarchies();
-		ch.addEdge(0, 1, 1);
-		ch.addEdge(2, 0, 1);
+		ch.addEdge(0, 1, 2);
+		ch.addEdge(1, 0, 2);
+
+		ch.addEdge(0, 2, 2);
+		ch.addEdge(2, 0, 2);
+
+		ch.addEdge(0, 3, 2);
+		ch.addEdge(3, 0, 2);
+
+		ch.addEdge(0, 4, 2);
+		ch.addEdge(4, 0, 2);
+
+		ch.addEdge(1, 2, 1);
+		ch.addEdge(2, 1, 1);
+
+		ch.addEdge(2, 3, 2);
+		ch.addEdge(3, 2, 2);
+
+		ch.addEdge(3, 4, 2);
+		ch.addEdge(4, 3, 2);
 		ch.preprocess();
 		ch.debug();
-		System.out.println(ch.shortestPath(2, 1));
+		System.out.println(ch.shortestPath(1, 4));
 	}
 }
