@@ -59,7 +59,7 @@ public class ContractionHierarchies {
 					if (levels[u] <= levels[v] || u == w)
 						continue;
 
-					addEdge(u, v, len[uv] + len[vw]);
+					addEdge(u, w, len[uv] + len[vw]);
 					System.out.println("(" + u + "," + v + ")");
 				}
 			}
@@ -86,7 +86,9 @@ public class ContractionHierarchies {
 			res = Math.min(res, prio[dir][u] + prio[1 - dir][u]);
 
 			for (int edge = tail[dir][u]; edge != -1; edge = prev[dir][edge]) {
-				int v = this.v[edge];
+				int v = dir == 0 ? this.v[edge] : this.u[edge];
+				if (levels[u] >= levels[v])
+					continue;
 				int nprio = prio[dir][u] + len[edge];
 				if (prio[dir][v] > nprio) {
 					prio[dir][v] = nprio;
@@ -100,11 +102,18 @@ public class ContractionHierarchies {
 		return res;
 	}
 
+	void debug() {
+		for (int edge = 0; edge < edges; edge++) {
+			System.out.println("(" + u[edge] + "," + v[edge] + ") = " + len[edge]);
+		}
+	}
+
 	public static void main(String[] args) {
 		ContractionHierarchies ch = new ContractionHierarchies();
 		ch.addEdge(0, 1, 1);
 		ch.addEdge(2, 0, 1);
 		ch.preprocess();
+		ch.debug();
 		System.out.println(ch.shortestPath(2, 1));
 	}
 }
