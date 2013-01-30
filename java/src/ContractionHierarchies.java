@@ -37,11 +37,11 @@ public class ContractionHierarchies {
 		u[edges] = s;
 		v[edges] = t;
 
-		// add (s,t) to normal graph
+		// add outgoing arc
 		prev[0][edges] = tail[0][s];
 		tail[0][s] = edges;
 
-		// add (t,s) to reverse graph
+		// add incoming arc
 		prev[1][edges] = tail[1][t];
 		tail[1][t] = edges;
 
@@ -76,16 +76,13 @@ public class ContractionHierarchies {
 		q[0].add((long) s);
 		q[1].add((long) t);
 		int res = Integer.MAX_VALUE;
-		for (int dir = 0; !q[0].isEmpty() || !q[1].isEmpty(); ) {
-			long min1 = q[0].isEmpty() ? Long.MAX_VALUE : q[0].peek();
-			long min2 = q[1].isEmpty() ? Long.MAX_VALUE : q[1].peek();
-			long min = Math.min(min1, min2);
-			if (res < min)
+		for (int dir = 0; ; ) {
+			if (res <= Math.min(q[0].isEmpty() ? Integer.MAX_VALUE : q[0].peek() >>> 32, q[1].isEmpty() ? Integer.MAX_VALUE : q[1].peek() >>> 32))
 				break;
 			long cur = q[dir].poll();
-			if (res < cur >>> 32)
-				break;
 			int u = (int) cur;
+			if (cur >>> 32 != prio[dir][u])
+				continue;
 			res = Math.min(res, prio[dir][u] + prio[1 - dir][u]);
 
 			for (int edge = tail[dir][u]; edge != -1; edge = prev[dir][edge]) {
@@ -108,5 +105,6 @@ public class ContractionHierarchies {
 		ch.addEdge(0, 1, 1);
 		ch.addEdge(2, 0, 1);
 		ch.preprocess();
+		System.out.println(ch.shortestPath(2, 1));
 	}
 }
