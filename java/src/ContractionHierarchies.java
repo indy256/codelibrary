@@ -44,11 +44,11 @@ public class ContractionHierarchies {
 		u[edges] = s;
 		v[edges] = t;
 
-		// add outgoing arc
+		// outgoing arc
 		prev[0][edges] = tail[0][s];
 		tail[0][s] = edges;
 
-		// add incoming arc
+		// incoming arc
 		prev[1][edges] = tail[1][t];
 		tail[1][t] = edges;
 
