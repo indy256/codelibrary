@@ -94,7 +94,7 @@ public class ContractionHierarchies {
 
 			for (int edge = tail[dir][u]; edge != -1; edge = prev[dir][edge]) {
 				int v = dir == 0 ? this.v[edge] : this.u[edge];
-				if (levels[u] >= levels[v])
+				if (levels[v] <= levels[u])
 					continue;
 				int nprio = prio[dir][u] + len[edge];
 				if (prio[dir][v] > nprio) {
