@@ -5,8 +5,8 @@ import java.util.*;
  */
 public class ContractionHierarchies {
 
-	final int NODES = 1000;
-	final int EDGES = 1000;
+	final int NODES = 10000;
+	final int EDGES = 10000;
 
 	int[] levels = new int[NODES];
 
@@ -67,7 +67,7 @@ public class ContractionHierarchies {
 						continue;
 
 					addEdge(u, w, len[uv] + len[vw]);
-					System.out.println("(" + u + "," + w + ") -> " + (len[uv] + len[vw]));
+//					System.out.println("(" + u + "," + w + ") -> " + (len[uv] + len[vw]));
 				}
 			}
 		}
@@ -83,10 +83,10 @@ public class ContractionHierarchies {
 		q[0].add((long) s);
 		q[1].add((long) t);
 		int res = Integer.MAX_VALUE;
-		for (int dir = 0; ; ) {
+		for (int dir = 0; ; dir = !q[1 - dir].isEmpty() ? 1 - dir : dir) {
 			if (res <= Math.min(q[0].isEmpty() ? Integer.MAX_VALUE : q[0].peek() >>> 32, q[1].isEmpty() ? Integer.MAX_VALUE : q[1].peek() >>> 32))
 				break;
-			long cur = q[dir].poll();
+			long cur = q[dir].remove();
 			int u = (int) cur;
 			if (cur >>> 32 != prio[dir][u])
 				continue;
@@ -102,8 +102,6 @@ public class ContractionHierarchies {
 					q[dir].add(((long) nprio << 32) + v);
 				}
 			}
-			if (!q[1 - dir].isEmpty())
-				dir = 1 - dir;
 		}
 
 		return res;
@@ -115,6 +113,34 @@ public class ContractionHierarchies {
 		}
 	}
 
+	static final int[][] generateStronglyConnectedDigraph(int V, int E, Random rnd) {
+		List<Integer> p = new ArrayList<>();
+		for (int i = 0; i < V; i++)
+			p.add(i);
+		while (p.size() < E)
+			p.add(rnd.nextInt(V));
+		Collections.shuffle(p, rnd);
+		for (int i = 0; i < p.size(); i++) {
+			int a = p.get((i + p.size() - 1) % p.size());
+			int b = p.get(i);
+			int c = p.get((i + 1) % p.size());
+			while (b == a || b == c)
+				b = (b + 1) % V;
+			p.set(i, b);
+		}
+		int[][] d = new int[V][V];
+		for (int i = 0; i < V; i++) {
+			Arrays.fill(d[i], Integer.MAX_VALUE / 2);
+			d[i][i] = 0;
+		}
+		for (int i = 0; i < p.size(); i++) {
+			int a = p.get(i);
+			int b = p.get((i + 1) % p.size());
+			d[a][b] = rnd.nextInt(10);
+		}
+		return d;
+	}
+
 	public static void main(String[] args) {
 //		ContractionHierarchies ch = new ContractionHierarchies();
 //		ch.addEdge(0, 1, 1);
@@ -123,7 +149,39 @@ public class ContractionHierarchies {
 //		ch.debug();
 //		System.out.println(ch.shortestPath(2, 1));
 
-		ContractionHierarchies ch = new ContractionHierarchies();
+		Random rnd = new Random(1);
+
+		for (int step = 0; step < 1000; step++) {
+			ContractionHierarchies ch = new ContractionHierarchies();
+			int V = rnd.nextInt(50) + 2;
+			int E = V + rnd.nextInt(V * (V - 1) - V + 1);
+			int[][] d = generateStronglyConnectedDigraph(V, E, rnd);
+			for (int i = 0; i < V; i++) {
+				for (int j = 0; j < V; j++) {
+					if (d[i][j] != Integer.MAX_VALUE / 2)
+						ch.addEdge(i, j, d[i][j]);
+				}
+			}
+
+			for (int k = 0; k < V; k++)
+				for (int i = 0; i < V; i++)
+					for (int j = 0; j < V; j++)
+						d[i][j] = Math.min(d[i][j], d[i][k] + d[k][j]);
+
+			ch.preprocess();
+//			ch.debug();
+			for (int step1 = 0; step1 < 100; step1++) {
+				int a = rnd.nextInt(V);
+				int b = rnd.nextInt(V);
+
+				final int res1 = ch.shortestPath(a, b);
+				final int res2 = d[a][b];
+				if (res1 != res2)
+					System.out.println(res1 + " " + res2);
+			}
+		}
+
+		/*
 		ch.addEdge(0, 1, 2);
 		ch.addEdge(1, 0, 2);
 
@@ -147,5 +205,6 @@ public class ContractionHierarchies {
 		ch.preprocess();
 		ch.debug();
 		System.out.println(ch.shortestPath(1, 4));
+		*/
 	}
 }
