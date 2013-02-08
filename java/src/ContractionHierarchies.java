@@ -13,17 +13,21 @@ public class ContractionHierarchies {
 	int[] len = new int[EDGES];
 	int[] u = new int[EDGES];
 	int[] v = new int[EDGES];
+	int[] inDegree = new int[NODES];
+	int[] outDegree = new int[NODES];
 
 	int[][] tail = {new int[NODES], new int[NODES]};
 	int[][] prev = {new int[EDGES], new int[EDGES]};
+
+	PriorityQueue<Long> priorities = new PriorityQueue<>();
 
 	{
 		Arrays.fill(prev[0], -1);
 		Arrays.fill(prev[1], -1);
 		Arrays.fill(tail[0], -1);
 		Arrays.fill(tail[1], -1);
-		for (int i = 0; i < levels.length; i++)
-			levels[i] = i;
+//		for (int i = 0; i < levels.length; i++)
+//			levels[i] = i;
 	}
 
 	int edges = 0;
@@ -32,6 +36,9 @@ public class ContractionHierarchies {
 	public void addEdge(int s, int t, int len) {
 		nodes = Math.max(nodes, s + 1);
 		nodes = Math.max(nodes, t + 1);
+
+		++outDegree[s];
+		++inDegree[t];
 
 		for (int edge = tail[0][s]; edge != -1; edge = prev[0][edge]) {
 			if (v[edge] == t) {
@@ -55,18 +62,18 @@ public class ContractionHierarchies {
 		++edges;
 	}
 
-	int[] dijkstra(int s, boolean[] targets) {
+	Map<Integer, Integer> dijkstra(int s, boolean[] targets) {
 		int targetCount = 0;
 		for (boolean target : targets) if (target) ++targetCount;
-		int[] prio = new int[nodes];
-		Arrays.fill(prio, Integer.MAX_VALUE);
-		prio[s] = 0;
-		PriorityQueue<Long> q = new PriorityQueue<Long>();
+		Map<Integer, Integer> prio = new HashMap<>();
+		prio.put(s, 0);
+		PriorityQueue<Long> q = new PriorityQueue<>();
 		q.add((long) s);
 		while (!q.isEmpty()) {
 			long cur = q.remove();
 			int u = (int) cur;
-			if (cur >>> 32 != prio[u])
+			int priou = prio.get(u);
+			if (cur >>> 32 != priou)
 				continue;
 
 			if (targets[u]) {
@@ -77,11 +84,12 @@ public class ContractionHierarchies {
 
 			for (int edge = tail[0][u]; edge != -1; edge = prev[0][edge]) {
 				int v = this.v[edge];
-				if (levels[v] <= levels[s])
+				if (levels[v] < levels[s])
 					continue;
-				int nprio = prio[u] + len[edge];
-				if (prio[v] > nprio) {
-					prio[v] = nprio;
+				int nprio = priou + len[edge];
+				final Integer priov = prio.get(v);
+				if (priov == null || priov > nprio) {
+					prio.put(v, nprio);
 					q.add(((long) nprio << 32) + v);
 				}
 			}
@@ -89,34 +97,54 @@ public class ContractionHierarchies {
 		return prio;
 	}
 
-	public void preprocess() {
+	int calculatePriority(int v) {
+		int shortcuts = addShortcuts(v, false, -1);
+		int degree = inDegree[v] + outDegree[v];
+		int edgeDifference = shortcuts - degree;
+		return edgeDifference;
+	}
+
+	void calcPriorities() {
+		for (int v = 0; v < nodes; v++) {
+			int p = calculatePriority(v);
+			priorities.add(((long) p << 32) + v);
+		}
+	}
+
+	public int addShortcuts(int v, boolean nonSimulate, int level) {
 		boolean[] targets = new boolean[nodes];
-		for (int v = 0; v < nodes - 2; v++) {
-			for (int uv = tail[1][v]; uv != -1; uv = prev[1][uv]) {
-				int u = this.u[uv];
-				if (levels[u] <= levels[v])
+		int shortcuts = 0;
+		for (int uv = tail[1][v]; uv != -1; uv = prev[1][uv]) {
+			int u = this.u[uv];
+			if (levels[u] < levels[v])
+				continue;
+
+			for (int vw = tail[0][v]; vw != -1; vw = prev[0][vw]) {
+				int w = this.v[vw];
+				if (levels[w] < levels[v] || u == w)
 					continue;
+				targets[w] = true;
+			}
 
-				for (int vw = tail[0][v]; vw != -1; vw = prev[0][vw]) {
-					int w = this.v[vw];
-					if (levels[w] <= levels[v] || u == w)
-						continue;
+			Map<Integer, Integer> prio = dijkstra(u, targets);
 
-					targets[w] = true;
-				}
-				int[] prio = dijkstra(u, targets);
+			for (int vw = tail[0][v]; vw != -1; vw = prev[0][vw]) {
+				int w = this.v[vw];
+				if (levels[w] < levels[v] || u == w)
+					continue;
+				targets[w] = false;
 
-				for (int vw = tail[0][v]; vw != -1; vw = prev[0][vw]) {
-					int w = this.v[vw];
-					if (levels[w] <= levels[v] || u == w)
-						continue;
-
-					if (prio[w] > len[uv] + len[vw])
+				final Integer priow = prio.get(w);
+				if (priow == null || priow > len[uv] + len[vw]) {
+					if (nonSimulate) {
 						addEdge(u, w, len[uv] + len[vw]);
-//					System.out.println("(" + u + "," + w + ") -> " + (len[uv] + len[vw]));
+						++shortcuts;
+//						System.out.println("(" + u + "," + w + ") -> " + (len[uv] + len[vw]));
+					}
 				}
 			}
 		}
+		return shortcuts;
 	}
 
 	public int shortestPath(int s, int t) {
@@ -140,7 +168,7 @@ public class ContractionHierarchies {
 
 			for (int edge = tail[dir][u]; edge != -1; edge = prev[dir][edge]) {
 				int v = dir == 0 ? this.v[edge] : this.u[edge];
-				if (levels[v] <= levels[u])
+				if (levels[v] < levels[u])
 					continue;
 				int nprio = prio[dir][u] + len[edge];
 				if (prio[dir][v] > nprio) {
@@ -159,7 +187,7 @@ public class ContractionHierarchies {
 		}
 	}
 
-	static final int[][] generateStronglyConnectedDigraph(int V, int E, Random rnd) {
+	static int[][] generateStronglyConnectedDigraph(int V, int E, Random rnd) {
 		List<Integer> p = new ArrayList<>();
 		for (int i = 0; i < V; i++)
 			p.add(i);
@@ -200,12 +228,14 @@ public class ContractionHierarchies {
 		for (int step = 0; step < 1000; step++) {
 			ContractionHierarchies ch = new ContractionHierarchies();
 			int V = rnd.nextInt(50) + 2;
+//			V = 5;
 			int E = V + rnd.nextInt(V * (V - 1) - V + 1);
 			int[][] d = generateStronglyConnectedDigraph(V, E, rnd);
 			for (int i = 0; i < V; i++) {
 				for (int j = 0; j < V; j++) {
-					if (d[i][j] != Integer.MAX_VALUE / 2)
+					if (i != j && d[i][j] != Integer.MAX_VALUE / 2) {
 						ch.addEdge(i, j, d[i][j]);
+					}
 				}
 			}
 
@@ -214,8 +244,25 @@ public class ContractionHierarchies {
 					for (int j = 0; j < V; j++)
 						d[i][j] = Math.min(d[i][j], d[i][k] + d[k][j]);
 
+			for (int i = 0; i < V; i++)
+				for (int j = 0; j < V; j++)
+					if (d[i][j] == Integer.MAX_VALUE / 2) throw new RuntimeException();
+
 			int shortcuts = ch.edges;
-			ch.preprocess();
+			ch.calcPriorities();
+			List<Long> list = new ArrayList<>();
+			int level = 0;
+			while (!ch.priorities.isEmpty()) {
+				long cur = ch.priorities.remove();
+				ch.levels[(int) cur] = level++;
+				list.add(cur);
+			}
+			ch.priorities.addAll(list);
+			for (int i = 0; i < ch.nodes - 2; i++) {
+				long cur = ch.priorities.remove();
+				int v = (int) cur;
+				ch.addShortcuts(v, true, i);
+			}
 			shortcuts = ch.edges - shortcuts;
 			System.out.println("edges = " + (ch.edges - shortcuts) + " shortcuts = " + shortcuts);
 
@@ -226,8 +273,7 @@ public class ContractionHierarchies {
 
 				final int res1 = ch.shortestPath(a, b);
 				final int res2 = d[a][b];
-				if (res1 != res2)
-					System.out.println(res1 + " " + res2);
+				if (res1 != res2) throw new RuntimeException(res1 + " " + res2);
 			}
 		}
 
