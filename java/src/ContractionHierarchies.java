@@ -62,7 +62,7 @@ public class ContractionHierarchies {
 		++edges;
 	}
 
-	Map<Integer, Integer> dijkstra(int s, boolean[] targets) {
+	Map<Integer, Integer> findWitness(int s, boolean[] targets) {
 		int targetCount = 0;
 		for (boolean target : targets) if (target) ++targetCount;
 		Map<Integer, Integer> prio = new HashMap<>();
@@ -126,7 +126,7 @@ public class ContractionHierarchies {
 				targets[w] = true;
 			}
 
-			Map<Integer, Integer> prio = dijkstra(u, targets);
+			Map<Integer, Integer> prio = findWitness(u, targets);
 
 			for (int vw = tail[0][v]; vw != -1; vw = prev[0][vw]) {
 				int w = this.v[vw];
@@ -148,6 +148,7 @@ public class ContractionHierarchies {
 	}
 
 	public int shortestPath(int s, int t) {
+		int iterations = 0;
 		int[][] prio = {new int[nodes], new int[nodes]};
 		Arrays.fill(prio[0], Integer.MAX_VALUE / 2);
 		Arrays.fill(prio[1], Integer.MAX_VALUE / 2);
@@ -158,6 +159,7 @@ public class ContractionHierarchies {
 		q[1].add((long) t);
 		int res = Integer.MAX_VALUE;
 		for (int dir = 0; ; dir = !q[1 - dir].isEmpty() ? 1 - dir : dir) {
+			++iterations;
 			if (res <= Math.min(q[0].isEmpty() ? Integer.MAX_VALUE : q[0].peek() >>> 32, q[1].isEmpty() ? Integer.MAX_VALUE : q[1].peek() >>> 32))
 				break;
 			long cur = q[dir].remove();
@@ -178,6 +180,7 @@ public class ContractionHierarchies {
 			}
 		}
 
+//		System.out.println(iterations);
 		return res;
 	}
 
@@ -264,7 +267,7 @@ public class ContractionHierarchies {
 				ch.addShortcuts(v, true, i);
 			}
 			shortcuts = ch.edges - shortcuts;
-			System.out.println("edges = " + (ch.edges - shortcuts) + " shortcuts = " + shortcuts);
+			System.out.println("edges = " + (ch.edges - shortcuts) + " shortcuts = " + shortcuts + " nodes = " + ch.nodes);
 
 //			ch.debug();
 			for (int step1 = 0; step1 < 100; step1++) {
