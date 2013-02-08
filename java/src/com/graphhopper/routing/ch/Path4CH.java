@@ -101,13 +101,12 @@ public class Path4CH extends PathBidirRef {
 	}
 
 	static int sum(int n) {
+		++n;
 		int res = 0;
-		for (int i = 1, d = 10; i <= 9; i++, d *= 10) {
-			int blocks = (n + 1) / d;
-			res += blocks * (d / 10) * 45;
-			int subBlocks = (n % d + 1) / (d / 10) % (d / 10);
-			res += subBlocks * (subBlocks - 1) / 2 * (d / 10);
-			res += ((n + 1) % (d / 10)) * Math.max(0, subBlocks - 1);
+		for (int d = 1; d <= 100_000_000; d *= 10) {
+			int blocks = n / (d * 10);
+			int subBlocks = n % (d * 10) / d % 10;
+			res += blocks * d * 45 + subBlocks * (subBlocks - 1) / 2 * d + n % d * subBlocks;
 		}
 		return res;
 	}
@@ -118,5 +117,14 @@ public class Path4CH extends PathBidirRef {
 			for (char x : ("" + i).toCharArray())
 				res += x - '0';
 		return res;
+	}
+
+	public static void main(String[] args) {
+		for (int i = 1; i < 2000; i++) {
+			int res1 = sum(i);
+			int res2 = sum2(i);
+			if (res1 != res2)
+				System.out.println(i + " " + res1 + " " + res2);
+		}
 	}
 }
