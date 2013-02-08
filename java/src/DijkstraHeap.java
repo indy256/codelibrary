@@ -9,7 +9,7 @@ public class DijkstraHeap {
 		PriorityQueue<Long> q = new PriorityQueue<Long>();
 		q.add((long) s);
 		while (!q.isEmpty()) {
-			long cur = q.poll();
+			long cur = q.remove();
 			int curu = (int) cur;
 			if (cur >>> 32 != prio[curu])
 				continue;
