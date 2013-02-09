@@ -217,7 +217,7 @@ public class ContractionHierarchies {
 			}
 		}
 
-//		System.out.println(iterations);
+		System.out.println(iterations);
 		return res;
 	}
 
@@ -228,8 +228,9 @@ public class ContractionHierarchies {
 
 		for (int step = 0; step < 100; step++) {
 			ContractionHierarchies ch = new ContractionHierarchies();
-			int V = rnd.nextInt(50) + 2;
-			int E = V + rnd.nextInt(V * (V - 1) - V + 1);
+			int V = rnd.nextInt(100) + 100;
+			//int E = V + rnd.nextInt(V * (V - 1) - V + 1);
+			int E = 5*V;
 			int[][] d = generateStronglyConnectedDigraph(V, E, rnd);
 			for (int i = 0; i < V; i++) {
 				for (int j = 0; j < V; j++) {
@@ -254,10 +255,9 @@ public class ContractionHierarchies {
 			ch.preprocess();
 			shortcuts = ch.edges - shortcuts;
 			totalShortcuts += shortcuts;
-			System.out.println("edges = " + (ch.edges - shortcuts) + " shortcuts = " + shortcuts);
+			System.out.println("edges = " + (ch.edges - shortcuts) + " shortcuts = " + shortcuts + " nodes = " + ch.nodes);
 
-//			ch.debug();
-			for (int step1 = 0; step1 < 100; step1++) {
+			for (int step1 = 0; step1 < 10; step1++) {
 				int a = rnd.nextInt(V);
 				int b = rnd.nextInt(V);
 
