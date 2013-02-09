@@ -63,7 +63,7 @@ public class ContractionHierarchies {
 		return edges++;
 	}
 
-	private Map<Integer, Integer> findWitness(int s, boolean[] targets, int upperBound) {
+	private Map<Integer, Integer> findWitness(int s, int forbidden, boolean[] targets, int upperBound) {
 		int targetCount = 0;
 		for (boolean target : targets) if (target) ++targetCount;
 		Map<Integer, Integer> prio = new HashMap<>();
@@ -74,10 +74,10 @@ public class ContractionHierarchies {
 			long cur = q.remove();
 			int u = (int) cur;
 			int priou = prio.get(u);
+			if (priou > upperBound)
+				break;
 			if (cur >>> 32 != priou)
 				continue;
-			if(priou > upperBound)
-				break;
 
 			if (targets[u]) {
 				targets[u] = false;
@@ -87,7 +87,7 @@ public class ContractionHierarchies {
 
 			for (int edge = tail[0][u]; edge != -1; edge = prev[0][edge]) {
 				int v = this.v[edge];
-				if (levels[v] < levels[s])
+				if (levels[v] < levels[forbidden] || v == forbidden)
 					continue;
 				int nprio = priou + len[edge];
 				Integer priov = prio.get(v);
@@ -110,7 +110,7 @@ public class ContractionHierarchies {
 		}
 	}
 
-	private ShortcutsInfo addShortcuts(int v, boolean nonSimulate) {
+	private ShortcutsInfo addShortcuts(int v, boolean realRun) {
 		boolean[] targets = new boolean[nodes];
 		int shortcuts = 0;
 		int totalOriginalEdges = 0;
@@ -119,17 +119,17 @@ public class ContractionHierarchies {
 			if (levels[u] < levels[v])
 				continue;
 
-			int maxShortcutLen = 0;
+			int maxLenVW = 0;
 
 			for (int vw = tail[0][v]; vw != -1; vw = prev[0][vw]) {
 				int w = this.v[vw];
 				if (levels[w] < levels[v] || u == w)
 					continue;
 				targets[w] = true;
-				maxShortcutLen = Math.max(maxShortcutLen, len[uv] + len[vw]);
+				maxLenVW = Math.max(maxLenVW, len[vw]);
 			}
 
-			Map<Integer, Integer> prio = findWitness(u, targets, maxShortcutLen);
+			Map<Integer, Integer> distu = findWitness(u, v, targets, len[uv] + maxLenVW);
 
 			for (int vw = tail[0][v]; vw != -1; vw = prev[0][vw]) {
 				int w = this.v[vw];
@@ -137,11 +137,11 @@ public class ContractionHierarchies {
 					continue;
 				targets[w] = false;
 
-				final Integer priow = prio.get(w);
-				if (priow == null || priow > len[uv] + len[vw]) {
+				final Integer distuw = distu.get(w);
+				if (distuw == null || distuw > len[uv] + len[vw]) {
 					++shortcuts;
 					totalOriginalEdges += originalEdges[uv] + originalEdges[vw];
-					if (nonSimulate) {
+					if (realRun) {
 						int edge = addEdge(u, w, len[uv] + len[vw]);
 						originalEdges[edge] = originalEdges[uv] + originalEdges[vw];
 						restore[edge] = ((long) uv << 32) + vw;
@@ -155,7 +155,7 @@ public class ContractionHierarchies {
 
 	private int getPriority(int v) {
 		ShortcutsInfo shortcutsInfo = addShortcuts(v, false);
-		int edgeDifference = shortcutsInfo.shortcuts - degree[v];
+		int edgeDifference = degree[v]-shortcutsInfo.shortcuts;
 		int contractedNeighbors = 0;
 		for (int vw = tail[0][v]; vw != -1; vw = prev[0][vw])
 			if (levels[this.v[vw]] != Integer.MAX_VALUE)
@@ -163,7 +163,7 @@ public class ContractionHierarchies {
 		for (int uv = tail[1][v]; uv != -1; uv = prev[1][uv])
 			if (levels[this.u[uv]] != Integer.MAX_VALUE)
 				++contractedNeighbors;
-		return -1* edgeDifference + 0 * shortcutsInfo.originalEdges + 0*contractedNeighbors;
+		return 10 * edgeDifference + 50 * shortcutsInfo.originalEdges + 1 * contractedNeighbors;
 	}
 
 	private void preprocess() {
@@ -266,8 +266,8 @@ public class ContractionHierarchies {
 				if (res1 != res2) throw new RuntimeException(res1 + " " + res2);
 			}
 		}
-		System.out.println("totalShortcuts = " +totalShortcuts);
-		System.out.println("time = " +(System.currentTimeMillis()-time));
+		System.out.println("totalShortcuts = " + totalShortcuts);
+		System.out.println("time = " + (System.currentTimeMillis() - time));
 	}
 
 	void debug() {
