@@ -105,8 +105,8 @@ public class Path4CH extends PathBidirRef {
 		int res = 0;
 		for (int d = 1; d <= 100_000_000; d *= 10) {
 			int blocks = n / (d * 10);
-			int subBlocks = n % (d * 10) / d % 10;
-			res += blocks * d * 45 + subBlocks * (subBlocks - 1) / 2 * d + n % d * subBlocks;
+			int lastdigit = n % (d * 10) / d;
+			res += blocks * d * 45 + lastdigit * (lastdigit - 1) / 2 * d + n % d * lastdigit;
 		}
 		return res;
 	}
