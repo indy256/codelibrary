@@ -70,6 +70,8 @@ public class ContractionHierarchies {
 		for (boolean target : targets) if (target) ++targetCount;
 		Map<Integer, Integer> prio = new HashMap<>();
 		prio.put(s, 0);
+		Map<Integer, Integer> hops = new HashMap<>();
+		hops.put(s, 0);
 		PriorityQueue<Long> q = new PriorityQueue<>();
 		q.add((long) s);
 		while (!q.isEmpty()) {
@@ -91,10 +93,12 @@ public class ContractionHierarchies {
 				int v = this.v[edge];
 				if (levels[v] < levels[forbidden] || v == forbidden)
 					continue;
+				int nhops = hops.get(u) + 1;
 				int nprio = priou + len[edge];
 				Integer priov = prio.get(v);
-				if (priov == null || priov > nprio) {
+				if ((priov == null || priov > nprio) && nhops <= 8) {
 					prio.put(v, nprio);
+					hops.put(v, nhops);
 					q.add(((long) nprio << 32) + v);
 				}
 			}
