@@ -155,7 +155,7 @@ public class ContractionHierarchies {
 
 	private int getPriority(int v) {
 		ShortcutsInfo shortcutsInfo = addShortcuts(v, false);
-		int edgeDifference = degree[v]-shortcutsInfo.shortcuts;
+		int edgeDifference = degree[v] - shortcutsInfo.shortcuts;
 		int contractedNeighbors = 0;
 		for (int vw = tail[0][v]; vw != -1; vw = prev[0][vw])
 			if (levels[this.v[vw]] != Integer.MAX_VALUE)
@@ -170,6 +170,7 @@ public class ContractionHierarchies {
 		for (int v = 0; v < nodes; v++)
 			priorities.add(((long) getPriority(v) << 32) + v);
 		Arrays.fill(levels, Integer.MAX_VALUE);
+
 		for (int i = 0; i < nodes - 2; i++) {
 			long cur = priorities.remove();
 			int v = (int) cur;
@@ -217,7 +218,7 @@ public class ContractionHierarchies {
 			}
 		}
 
-		System.out.println(iterations);
+//		System.out.println(iterations);
 		return res;
 	}
 
@@ -228,9 +229,9 @@ public class ContractionHierarchies {
 
 		for (int step = 0; step < 100; step++) {
 			ContractionHierarchies ch = new ContractionHierarchies();
-			int V = rnd.nextInt(100) + 100;
-			//int E = V + rnd.nextInt(V * (V - 1) - V + 1);
-			int E = 5*V;
+			int V = rnd.nextInt(50) + 40;
+//			int E = V + rnd.nextInt(V * (V - 1) - V + 1);
+			int E = 3 * V;
 			int[][] d = generateStronglyConnectedDigraph(V, E, rnd);
 			for (int i = 0; i < V; i++) {
 				for (int j = 0; j < V; j++) {
@@ -271,9 +272,8 @@ public class ContractionHierarchies {
 	}
 
 	void debug() {
-		for (int edge = 0; edge < edges; edge++) {
+		for (int edge = 0; edge < edges; edge++)
 			System.out.println("(" + u[edge] + "," + v[edge] + ") = " + len[edge]);
-		}
 	}
 
 	static int[][] generateStronglyConnectedDigraph(int V, int upperBoundE, Random rnd) {
