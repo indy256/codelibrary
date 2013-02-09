@@ -15,6 +15,7 @@ public class ContractionHierarchies {
 	int[] v = new int[EDGES];
 	int[] originalEdges = new int[EDGES];
 	int[] degree = new int[NODES];
+	long[] restore = new long[NODES];
 
 	int[][] tail = {new int[NODES], new int[NODES]};
 	int[][] prev = {new int[EDGES], new int[EDGES]};
@@ -26,6 +27,7 @@ public class ContractionHierarchies {
 		Arrays.fill(prev[1], -1);
 		Arrays.fill(tail[0], -1);
 		Arrays.fill(tail[1], -1);
+		Arrays.fill(restore, -1);
 	}
 
 	int edges = 0;
@@ -61,7 +63,7 @@ public class ContractionHierarchies {
 		return edges++;
 	}
 
-	private Map<Integer, Integer> findWitness(int s, boolean[] targets) {
+	private Map<Integer, Integer> findWitness(int s, boolean[] targets, int upperBound) {
 		int targetCount = 0;
 		for (boolean target : targets) if (target) ++targetCount;
 		Map<Integer, Integer> prio = new HashMap<>();
@@ -74,6 +76,8 @@ public class ContractionHierarchies {
 			int priou = prio.get(u);
 			if (cur >>> 32 != priou)
 				continue;
+			if(priou > upperBound)
+				break;
 
 			if (targets[u]) {
 				targets[u] = false;
@@ -96,19 +100,17 @@ public class ContractionHierarchies {
 		return prio;
 	}
 
-	private static class PriorityInfo {
+	private static class ShortcutsInfo {
 		final int shortcuts;
 		final int originalEdges;
-		final int contractedNeighbors;
 
-		PriorityInfo(int shortcuts, int originalEdges, int contractedNeighbors) {
+		ShortcutsInfo(int shortcuts, int originalEdges) {
 			this.shortcuts = shortcuts;
 			this.originalEdges = originalEdges;
-			this.contractedNeighbors = contractedNeighbors;
 		}
 	}
 
-	private PriorityInfo addShortcuts(int v, boolean nonSimulate) {
+	private ShortcutsInfo addShortcuts(int v, boolean nonSimulate) {
 		boolean[] targets = new boolean[nodes];
 		int shortcuts = 0;
 		int totalOriginalEdges = 0;
@@ -117,14 +119,17 @@ public class ContractionHierarchies {
 			if (levels[u] < levels[v])
 				continue;
 
+			int maxShortcutLen = 0;
+
 			for (int vw = tail[0][v]; vw != -1; vw = prev[0][vw]) {
 				int w = this.v[vw];
 				if (levels[w] < levels[v] || u == w)
 					continue;
 				targets[w] = true;
+				maxShortcutLen = Math.max(maxShortcutLen, len[uv] + len[vw]);
 			}
 
-			Map<Integer, Integer> prio = findWitness(u, targets);
+			Map<Integer, Integer> prio = findWitness(u, targets, maxShortcutLen);
 
 			for (int vw = tail[0][v]; vw != -1; vw = prev[0][vw]) {
 				int w = this.v[vw];
@@ -134,40 +139,36 @@ public class ContractionHierarchies {
 
 				final Integer priow = prio.get(w);
 				if (priow == null || priow > len[uv] + len[vw]) {
+					++shortcuts;
+					totalOriginalEdges += originalEdges[uv] + originalEdges[vw];
 					if (nonSimulate) {
 						int edge = addEdge(u, w, len[uv] + len[vw]);
 						originalEdges[edge] = originalEdges[uv] + originalEdges[vw];
-						++shortcuts;
+						restore[edge] = ((long) uv << 32) + vw;
 //						System.out.println("(" + u + "," + w + ") -> " + (len[uv] + len[vw]));
-					} else {
-						totalOriginalEdges += originalEdges[uv] + originalEdges[vw];
 					}
 				}
 			}
 		}
-		return new PriorityInfo(shortcuts, totalOriginalEdges, 0);
+		return new ShortcutsInfo(shortcuts, totalOriginalEdges);
 	}
 
 	private int getPriority(int v) {
-		PriorityInfo priorityInfo = addShortcuts(v, false);
-		int shortcuts = priorityInfo.shortcuts;
-		int degree = this.degree[v];
-		int edgeDifference = shortcuts - degree;
+		ShortcutsInfo shortcutsInfo = addShortcuts(v, false);
+		int edgeDifference = shortcutsInfo.shortcuts - degree[v];
 		int contractedNeighbors = 0;
-		for (int uv = tail[1][v]; uv != -1; uv = prev[1][uv])
-			if (levels[this.u[uv]] != Integer.MAX_VALUE)
-				++contractedNeighbors;
 		for (int vw = tail[0][v]; vw != -1; vw = prev[0][vw])
 			if (levels[this.v[vw]] != Integer.MAX_VALUE)
 				++contractedNeighbors;
-		return 10 * edgeDifference + 50 * priorityInfo.originalEdges + contractedNeighbors;
+		for (int uv = tail[1][v]; uv != -1; uv = prev[1][uv])
+			if (levels[this.u[uv]] != Integer.MAX_VALUE)
+				++contractedNeighbors;
+		return -1* edgeDifference + 0 * shortcutsInfo.originalEdges + 0*contractedNeighbors;
 	}
 
 	private void preprocess() {
-		for (int v = 0; v < nodes; v++) {
-			int prio = getPriority(v);
-			priorities.add(((long) prio << 32) + v);
-		}
+		for (int v = 0; v < nodes; v++)
+			priorities.add(((long) getPriority(v) << 32) + v);
 		Arrays.fill(levels, Integer.MAX_VALUE);
 		for (int i = 0; i < nodes - 2; i++) {
 			long cur = priorities.remove();
@@ -221,9 +222,11 @@ public class ContractionHierarchies {
 	}
 
 	public static void main(String[] args) {
+		long time = System.currentTimeMillis();
 		Random rnd = new Random(1);
+		int totalShortcuts = 0;
 
-		for (int step = 0; step < 1000; step++) {
+		for (int step = 0; step < 100; step++) {
 			ContractionHierarchies ch = new ContractionHierarchies();
 			int V = rnd.nextInt(50) + 2;
 			int E = V + rnd.nextInt(V * (V - 1) - V + 1);
@@ -250,7 +253,8 @@ public class ContractionHierarchies {
 			int shortcuts = ch.edges;
 			ch.preprocess();
 			shortcuts = ch.edges - shortcuts;
-			System.out.println("edges = " + (ch.edges - shortcuts) + " shortcuts = " + shortcuts + " nodes = " + ch.nodes);
+			totalShortcuts += shortcuts;
+			System.out.println("edges = " + (ch.edges - shortcuts) + " shortcuts = " + shortcuts);
 
 //			ch.debug();
 			for (int step1 = 0; step1 < 100; step1++) {
@@ -262,6 +266,8 @@ public class ContractionHierarchies {
 				if (res1 != res2) throw new RuntimeException(res1 + " " + res2);
 			}
 		}
+		System.out.println("totalShortcuts = " +totalShortcuts);
+		System.out.println("time = " +(System.currentTimeMillis()-time));
 	}
 
 	void debug() {
