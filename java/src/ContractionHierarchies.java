@@ -15,7 +15,8 @@ public class ContractionHierarchies {
 	int[] v = new int[EDGES];
 	int[] originalEdges = new int[EDGES];
 	int[] degree = new int[NODES];
-	long[] restore = new long[NODES];
+	int[] restore0 = new int[NODES];
+	int[] restore1 = new int[NODES];
 
 	int[][] tail = {new int[NODES], new int[NODES]};
 	int[][] prev = {new int[EDGES], new int[EDGES]};
@@ -27,7 +28,8 @@ public class ContractionHierarchies {
 		Arrays.fill(prev[1], -1);
 		Arrays.fill(tail[0], -1);
 		Arrays.fill(tail[1], -1);
-		Arrays.fill(restore, -1);
+		Arrays.fill(restore0, -1);
+		Arrays.fill(restore1, -1);
 	}
 
 	int edges = 0;
@@ -144,7 +146,8 @@ public class ContractionHierarchies {
 					if (realRun) {
 						int edge = addEdge(u, w, len[uv] + len[vw]);
 						originalEdges[edge] = originalEdges[uv] + originalEdges[vw];
-						restore[edge] = ((long) uv << 32) + vw;
+						restore0[edge] = uv;
+						restore1[edge] = vw;
 //						System.out.println("(" + u + "," + w + ") -> " + (len[uv] + len[vw]));
 					}
 				}
@@ -185,17 +188,31 @@ public class ContractionHierarchies {
 		}
 	}
 
-	public int shortestPath(int s, int t) {
+	public static class PathInfo {
+		public final int len;
+		public final List<Integer> edges;
+
+		public PathInfo(int len, List<Integer> edges) {
+			this.len = len;
+			this.edges = edges;
+		}
+	}
+
+	public PathInfo shortestPath(int s, int t) {
 		int iterations = 0;
 		int[][] prio = {new int[nodes], new int[nodes]};
 		Arrays.fill(prio[0], Integer.MAX_VALUE / 2);
 		Arrays.fill(prio[1], Integer.MAX_VALUE / 2);
 		prio[0][s] = 0;
 		prio[1][t] = 0;
+		int[][] pred = {new int[nodes], new int[nodes]};
+		Arrays.fill(pred[0], -1);
+		Arrays.fill(pred[1], -1);
 		PriorityQueue<Long>[] q = new PriorityQueue[]{new PriorityQueue<Long>(), new PriorityQueue<Long>()};
 		q[0].add((long) s);
 		q[1].add((long) t);
 		int res = Integer.MAX_VALUE;
+		int top = -1;
 		for (int dir = 0; ; dir = !q[1 - dir].isEmpty() ? 1 - dir : dir) {
 			++iterations;
 			if (res <= Math.min(q[0].isEmpty() ? Integer.MAX_VALUE : (int) (q[0].peek() >>> 32), q[1].isEmpty() ? Integer.MAX_VALUE : (int) (q[1].peek() >>> 32)))
@@ -204,7 +221,12 @@ public class ContractionHierarchies {
 			int u = (int) cur;
 			if (cur >>> 32 != prio[dir][u])
 				continue;
-			res = Math.min(res, prio[dir][u] + prio[1 - dir][u]);
+
+			int curLen = prio[dir][u] + prio[1 - dir][u];
+			if (res > curLen) {
+				res = curLen;
+				top = u;
+			}
 
 			for (int edge = tail[dir][u]; edge != -1; edge = prev[dir][edge]) {
 				int v = dir == 0 ? this.v[edge] : this.u[edge];
@@ -213,12 +235,32 @@ public class ContractionHierarchies {
 				int nprio = prio[dir][u] + len[edge];
 				if (prio[dir][v] > nprio) {
 					prio[dir][v] = nprio;
+					pred[dir][v] = edge;
 					q[dir].add(((long) nprio << 32) + v);
 				}
 			}
 		}
 
+		List<Integer> path = new ArrayList<>();
+		for (int edge0 = pred[0][top]; edge0 != -1; edge0 = pred[0][this.u[edge0]]) {
+			List<Integer> p = restorePath(edge0);
+			Collections.reverse(p);
+			path.addAll(p);
+		}
+		Collections.reverse(path);
+		for (int edge1 = pred[1][top]; edge1 != -1; edge1 = pred[1][this.v[edge1]])
+			path.addAll(restorePath(edge1));
+
 //		System.out.println(iterations);
+		return new PathInfo(res, path);
+	}
+
+	private List<Integer> restorePath(int edge) {
+		if (restore0[edge] == -1)
+			return Collections.singletonList(edge);
+		List<Integer> res = new ArrayList<>();
+		res.addAll(restorePath(restore0[edge]));
+		res.addAll(restorePath(restore1[edge]));
 		return res;
 	}
 
@@ -262,9 +304,17 @@ public class ContractionHierarchies {
 				int a = rnd.nextInt(V);
 				int b = rnd.nextInt(V);
 
-				int res1 = ch.shortestPath(a, b);
+				PathInfo pathInfo = ch.shortestPath(a, b);
+				int res0 = 0;
+				int prev = -1;
+				for (int edge : pathInfo.edges) {
+					res0 += ch.len[edge];
+					if (prev != -1 && prev != ch.u[edge]) throw new RuntimeException();
+					prev = ch.v[edge];
+				}
+				int res1 = pathInfo.len;
 				int res2 = d[a][b];
-				if (res1 != res2) throw new RuntimeException(res1 + " " + res2);
+				if (res1 != res2 || res0 != res2) throw new RuntimeException(res0 + " " + res1 + " " + res2);
 			}
 		}
 		System.out.println("totalShortcuts = " + totalShortcuts);
