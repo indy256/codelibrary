@@ -21,9 +21,7 @@ public class ContractionHierarchies {
 	int[][] tail = {new int[NODES], new int[NODES]};
 	int[][] prev = {new int[EDGES], new int[EDGES]};
 
-	//	PriorityQueue<Long> prioritiesSet = new PriorityQueue<>();
-	SortedSet<Long> prioritiesSet = new TreeSet<>();
-	int[] priorities = new int[NODES];
+	PriorityQueue<Long> priorities = new PriorityQueue<>();
 
 	{
 		Arrays.fill(prev[0], -1);
@@ -176,20 +174,18 @@ public class ContractionHierarchies {
 	}
 
 	private void preprocess() {
-		for (int v = 0; v < nodes; v++) {
-			priorities[v] = getPriority(v);
-			prioritiesSet.add(((long) priorities[v] << 32) + v);
-		}
+		for (int v = 0; v < nodes; v++)
+			priorities.add(((long) getPriority(v) << 32) + v);
 		Arrays.fill(levels, Integer.MAX_VALUE);
 
 		for (int i = 0; i < nodes - 2; i++) {
-			long cur = prioritiesSet.first();
-			prioritiesSet.remove(cur);
+			while (levels[priorities.peek().intValue()] != Integer.MAX_VALUE) priorities.remove();
+			long cur = priorities.remove();
 			int v = (int) cur;
 			int prio = getPriority(v);
-			if (prio > prioritiesSet.first() >>> 32) {
-				priorities[v] = prio;
-				prioritiesSet.add(((long) prio << 32) + v);
+			while (levels[priorities.peek().intValue()] != Integer.MAX_VALUE) priorities.remove();
+			if (prio > priorities.peek() >>> 32) {
+				priorities.add(((long) prio << 32) + v);
 				--i;
 				continue;
 			}
@@ -198,17 +194,13 @@ public class ContractionHierarchies {
 
 			for (int edge = tail[0][v]; edge != -1; edge = prev[0][edge]) {
 				int w = this.v[edge];
-				if (prioritiesSet.remove(((long) priorities[w] << 32) + w)) {
-					priorities[w] = getPriority(w);
-					prioritiesSet.add(((long) priorities[w] << 32) + w);
-				}
+				if (levels[w] == Integer.MAX_VALUE)
+					priorities.add(((long) getPriority(w) << 32) + w);
 			}
 			for (int edge = tail[1][v]; edge != -1; edge = prev[1][edge]) {
 				int u = this.u[edge];
-				if (prioritiesSet.remove(((long) priorities[u] << 32) + u)) {
-					priorities[u] = getPriority(u);
-					prioritiesSet.add(((long) priorities[u] << 32) + u);
-				}
+				if (levels[u] == Integer.MAX_VALUE)
+					priorities.add(((long) getPriority(u) << 32) + u);
 			}
 		}
 	}
