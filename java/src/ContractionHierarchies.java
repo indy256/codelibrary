@@ -304,6 +304,81 @@ public class ContractionHierarchies {
 		return new PathInfo(res, buildPath(pred, top));
 	}
 
+	public int[][] manyToMany(int[] s, int[] t) {
+
+		List<Long> buckets[] = new List[nodes];
+		for (int i = 0; i < nodes; i++) {
+			buckets[nodes] = new ArrayList<>();
+		}
+
+		for (int i = 0; i < t.length; i++) {
+			int target = t[i];
+			int[] prio = new int[nodes];
+			Arrays.fill(prio, Integer.MAX_VALUE / 2);
+			prio[target] = 0;
+			PriorityQueue<Long> q = new PriorityQueue<>();
+			q.add((long) target);
+			while (!q.isEmpty()) {
+				long cur = q.remove();
+				int u = (int) cur;
+				int priou = prio[u];
+				if (cur >>> 32 != priou)
+					continue;
+				buckets[u].add(((long) priou << 32) + target);
+
+				for (int edge = tail[1][u]; edge != -1; edge = prev[1][edge]) {
+					int v = this.u[edge];
+					if (levels[v] < levels[u])
+						continue;
+					int nprio = priou + len[edge];
+					if (prio[v] > nprio) {
+						prio[v] = nprio;
+						q.add(((long) nprio << 32) + i);
+					}
+				}
+			}
+		}
+
+		int[][] d = new int[s.length][t.length];
+
+		for (int i = 0; i < s.length; i++) {
+			int source = s[i];
+			Arrays.fill(d[i], Integer.MAX_VALUE);
+			int[] prio = new int[nodes];
+			Arrays.fill(prio, Integer.MAX_VALUE / 2);
+			prio[source] = 0;
+			PriorityQueue<Long> q = new PriorityQueue<>();
+			q.add((long) source);
+			while (!q.isEmpty()) {
+				long cur = q.remove();
+				int u = (int) cur;
+				int priou = prio[u];
+				if (cur >>> 32 != priou)
+					continue;
+
+				for (long x : buckets[u]) {
+					int j = (int) x;
+					int priov = (int) (x >>> 32);
+
+					d[i][j] = Math.min(d[i][j], priou + priov);
+				}
+
+				for (int edge = tail[0][u]; edge != -1; edge = prev[0][edge]) {
+					int v = this.v[edge];
+					if (levels[v] < levels[u])
+						continue;
+					int nprio = priou + len[edge];
+					if (prio[v] > nprio) {
+						prio[v] = nprio;
+						q.add(((long) nprio << 32) + v);
+					}
+				}
+			}
+		}
+
+		return d;
+	}
+
 	public static void main(String[] args) {
 		long time = System.currentTimeMillis();
 		Random rnd = new Random(1);
