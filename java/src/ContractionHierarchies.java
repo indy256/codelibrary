@@ -21,6 +21,8 @@ public class ContractionHierarchies {
 	int[][] tail = {new int[NODES], new int[NODES]};
 	int[][] prev = {new int[EDGES], new int[EDGES]};
 
+	static int reduction;
+
 	PriorityQueue<Long> priorities = new PriorityQueue<>();
 
 	{
@@ -137,6 +139,13 @@ public class ContractionHierarchies {
 
 			Map<Integer, Integer> distu = findWitness(u, v, targets, len[uv] + maxLenVW);
 
+			for (int ux = tail[0][u]; ux != -1; ux = prev[0][ux]) {
+				int x = this.v[ux];
+				Integer distux = distu.get(x);
+				if (distux != null && len[ux] > distux && realRun)
+					++reduction;
+			}
+
 			for (int vw = tail[0][v]; vw != -1; vw = prev[0][vw]) {
 				int w = this.v[vw];
 				if (levels[w] < levels[v] || u == w)
@@ -174,6 +183,7 @@ public class ContractionHierarchies {
 	}
 
 	private void preprocess() {
+		reduction = 0;
 		for (int v = 0; v < nodes; v++)
 			priorities.add(((long) getPriority(v) << 32) + v);
 		Arrays.fill(levels, Integer.MAX_VALUE);
@@ -203,6 +213,7 @@ public class ContractionHierarchies {
 					priorities.add(((long) getPriority(u) << 32) + u);
 			}
 		}
+		System.out.println(reduction);
 	}
 
 	public static class PathInfo {
