@@ -216,16 +216,6 @@ public class ContractionHierarchies {
 //		System.out.println(reduction);
 	}
 
-	public static class PathInfo {
-		public final int len;
-		public final List<Integer> edges;
-
-		public PathInfo(int len, List<Integer> edges) {
-			this.len = len;
-			this.edges = edges;
-		}
-	}
-
 	private List<Integer> extractEdges(int edge) {
 		if (firstEdge[edge] == -1) // edge is not a shortcut
 			return Collections.singletonList(edge);
@@ -246,6 +236,16 @@ public class ContractionHierarchies {
 		for (int edge1 = pred[1][top]; edge1 != -1; edge1 = pred[1][this.v[edge1]])
 			path.addAll(extractEdges(edge1));
 		return path;
+	}
+
+	public static class PathInfo {
+		public final int len;
+		public final List<Integer> edges;
+
+		public PathInfo(int len, List<Integer> edges) {
+			this.len = len;
+			this.edges = edges;
+		}
 	}
 
 	public PathInfo shortestPath(int s, int t) {
