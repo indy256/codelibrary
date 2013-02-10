@@ -9,17 +9,16 @@ public class ContractionHierarchies {
 	final int EDGES = 100000;
 
 	int[] levels = new int[NODES];
-
+	int[] firstEdge = new int[NODES];
+	int[] secondEdge = new int[NODES];
 	int[] len = new int[EDGES];
 	int[] u = new int[EDGES];
 	int[] v = new int[EDGES];
-	int[] originalEdges = new int[EDGES];
-	int[] degree = new int[NODES];
-	int[] restore0 = new int[NODES];
-	int[] restore1 = new int[NODES];
-
 	int[][] tail = {new int[NODES], new int[NODES]};
 	int[][] prev = {new int[EDGES], new int[EDGES]};
+
+	int[] originalEdges = new int[EDGES];
+	int[] degree = new int[NODES];
 
 	static int reduction;
 
@@ -30,8 +29,8 @@ public class ContractionHierarchies {
 		Arrays.fill(prev[1], -1);
 		Arrays.fill(tail[0], -1);
 		Arrays.fill(tail[1], -1);
-		Arrays.fill(restore0, -1);
-		Arrays.fill(restore1, -1);
+		Arrays.fill(firstEdge, -1);
+		Arrays.fill(secondEdge, -1);
 	}
 
 	int edges = 0;
@@ -160,8 +159,8 @@ public class ContractionHierarchies {
 					if (realRun) {
 						int edge = addEdge(u, w, len[uv] + len[vw]);
 						originalEdges[edge] = originalEdges[uv] + originalEdges[vw];
-						restore0[edge] = uv;
-						restore1[edge] = vw;
+						firstEdge[edge] = uv;
+						secondEdge[edge] = vw;
 //						System.out.println("(" + u + "," + w + ") -> " + (len[uv] + len[vw]));
 					}
 				}
@@ -228,11 +227,11 @@ public class ContractionHierarchies {
 	}
 
 	private List<Integer> extractEdges(int edge) {
-		if (restore0[edge] == -1) // edge is not a shortcut
+		if (firstEdge[edge] == -1) // edge is not a shortcut
 			return Collections.singletonList(edge);
 		List<Integer> res = new ArrayList<>();
-		res.addAll(extractEdges(restore0[edge]));
-		res.addAll(extractEdges(restore1[edge]));
+		res.addAll(extractEdges(firstEdge[edge]));
+		res.addAll(extractEdges(secondEdge[edge]));
 		return res;
 	}
 
@@ -262,7 +261,7 @@ public class ContractionHierarchies {
 		PriorityQueue<Long>[] q = new PriorityQueue[]{new PriorityQueue<Long>(), new PriorityQueue<Long>()};
 		q[0].add((long) s);
 		q[1].add((long) t);
-		int res = Integer.MAX_VALUE;
+		int res = Integer.MAX_VALUE - 1;
 		int top = -1;
 		m1:
 		for (int dir = 0; ; dir = !q[1 - dir].isEmpty() ? 1 - dir : dir) {
@@ -343,7 +342,7 @@ public class ContractionHierarchies {
 
 		for (int i = 0; i < s.length; i++) {
 			int source = s[i];
-			Arrays.fill(d[i], Integer.MAX_VALUE);
+			Arrays.fill(d[i], Integer.MAX_VALUE - 1);
 			int[] prio = new int[nodes];
 			Arrays.fill(prio, Integer.MAX_VALUE / 2);
 			prio[source] = 0;
