@@ -308,7 +308,7 @@ public class ContractionHierarchies {
 
 		List<Long> buckets[] = new List[nodes];
 		for (int i = 0; i < nodes; i++) {
-			buckets[nodes] = new ArrayList<>();
+			buckets[i] = new ArrayList<>();
 		}
 
 		for (int i = 0; i < t.length; i++) {
@@ -324,7 +324,7 @@ public class ContractionHierarchies {
 				int priou = prio[u];
 				if (cur >>> 32 != priou)
 					continue;
-				buckets[u].add(((long) priou << 32) + target);
+				buckets[u].add(((long) priou << 32) + i);
 
 				for (int edge = tail[1][u]; edge != -1; edge = prev[1][edge]) {
 					int v = this.u[edge];
@@ -333,7 +333,7 @@ public class ContractionHierarchies {
 					int nprio = priou + len[edge];
 					if (prio[v] > nprio) {
 						prio[v] = nprio;
-						q.add(((long) nprio << 32) + i);
+						q.add(((long) nprio << 32) + v);
 					}
 				}
 			}
@@ -415,10 +415,15 @@ public class ContractionHierarchies {
 			totalShortcuts += shortcuts;
 			System.out.println("edges = " + (ch.edges - shortcuts) + " shortcuts = " + shortcuts + " nodes = " + ch.nodes);
 
-			for (int step1 = 0; step1 < 10000; step1++) {
+			int[] vertices = new int[V];
+			for (int i = 0; i < V; i++) vertices[i] = i;
+			int[][] d2 = ch.manyToMany(vertices, vertices);
+
+			for (int step1 = 0; step1 < 1000; step1++) {
 				int a = rnd.nextInt(V);
 				int b = rnd.nextInt(V);
 
+				int res3 = d2[a][b];
 				PathInfo pathInfo = ch.shortestPath(a, b);
 				int res0 = 0;
 				int prev = -1;
@@ -429,7 +434,8 @@ public class ContractionHierarchies {
 				}
 				int res1 = pathInfo.len;
 				int res2 = d[a][b];
-				if (res1 != res2 || res0 != res2) throw new RuntimeException(res0 + " " + res1 + " " + res2);
+				if (res0 != res1 || res0 != res2 || res0 != res3)
+					throw new RuntimeException(res0 + " " + res1 + " " + res2 + " " + res3);
 			}
 		}
 		System.out.println("totalShortcuts = " + totalShortcuts);
