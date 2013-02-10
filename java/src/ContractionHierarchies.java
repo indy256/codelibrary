@@ -311,9 +311,9 @@ public class ContractionHierarchies {
 
 		for (int step = 0; step < 100; step++) {
 			ContractionHierarchies ch = new ContractionHierarchies();
-			int V = rnd.nextInt(50) + 40;
+			int V = rnd.nextInt(50) + 2;
 //			int E = V + rnd.nextInt(V * (V - 1) - V + 1);
-			int E = 3 * V;
+			int E = Math.max(V, Math.min(V * (V - 1), 5 * V));
 			int[][] d = generateStronglyConnectedDigraph(V, E, rnd);
 			for (int i = 0; i < V; i++) {
 				for (int j = 0; j < V; j++) {
