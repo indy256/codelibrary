@@ -227,6 +227,28 @@ public class ContractionHierarchies {
 		}
 	}
 
+	private List<Integer> extractEdges(int edge) {
+		if (restore0[edge] == -1) // edge is not a shortcut
+			return Collections.singletonList(edge);
+		List<Integer> res = new ArrayList<>();
+		res.addAll(extractEdges(restore0[edge]));
+		res.addAll(extractEdges(restore1[edge]));
+		return res;
+	}
+
+	private List<Integer> buildPath(int[][] pred, int top) {
+		List<Integer> path = new ArrayList<>();
+		for (int edge0 = pred[0][top]; edge0 != -1; edge0 = pred[0][this.u[edge0]]) {
+			List<Integer> p = extractEdges(edge0);
+			Collections.reverse(p);
+			path.addAll(p);
+		}
+		Collections.reverse(path);
+		for (int edge1 = pred[1][top]; edge1 != -1; edge1 = pred[1][this.v[edge1]])
+			path.addAll(extractEdges(edge1));
+		return path;
+	}
+
 	public PathInfo shortestPath(int s, int t) {
 		int iterations = 0;
 		int[][] prio = {new int[nodes], new int[nodes]};
@@ -280,28 +302,6 @@ public class ContractionHierarchies {
 
 //		System.out.println(iterations);
 		return new PathInfo(res, buildPath(pred, top));
-	}
-
-	private List<Integer> buildPath(int[][] pred, int top) {
-		List<Integer> path = new ArrayList<>();
-		for (int edge0 = pred[0][top]; edge0 != -1; edge0 = pred[0][this.u[edge0]]) {
-			List<Integer> p = extractEdges(edge0);
-			Collections.reverse(p);
-			path.addAll(p);
-		}
-		Collections.reverse(path);
-		for (int edge1 = pred[1][top]; edge1 != -1; edge1 = pred[1][this.v[edge1]])
-			path.addAll(extractEdges(edge1));
-		return path;
-	}
-
-	private List<Integer> extractEdges(int edge) {
-		if (restore0[edge] == -1) // edge is not a shortcut
-			return Collections.singletonList(edge);
-		List<Integer> res = new ArrayList<>();
-		res.addAll(extractEdges(restore0[edge]));
-		res.addAll(extractEdges(restore1[edge]));
-		return res;
 	}
 
 	public static void main(String[] args) {
