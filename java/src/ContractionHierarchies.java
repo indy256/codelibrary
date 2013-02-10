@@ -80,7 +80,7 @@ public class ContractionHierarchies {
 			long cur = q.remove();
 			int u = (int) cur;
 			int priou = prio.get(u);
-			if (priou > upperBound)
+			if (priou >= upperBound)
 				break;
 			if (cur >>> 32 != priou)
 				continue;
@@ -139,6 +139,7 @@ public class ContractionHierarchies {
 
 			Map<Integer, Integer> distu = findWitness(u, v, targets, len[uv] + maxLenVW);
 
+			// edge reduction
 			for (int ux = tail[0][u]; ux != -1; ux = prev[0][ux]) {
 				int x = this.v[ux];
 				Integer distux = distu.get(x);
@@ -169,9 +170,9 @@ public class ContractionHierarchies {
 		return new ShortcutsInfo(shortcuts, totalOriginalEdges);
 	}
 
-	private int getPriority(int v) {
+	private int calcPriority(int v) {
 		ShortcutsInfo shortcutsInfo = addShortcuts(v, false);
-		int edgeDifference = degree[v] - shortcutsInfo.shortcuts;
+		int edgeDifference = shortcutsInfo.shortcuts - degree[v];
 		int contractedNeighbors = 0;
 		for (int vw = tail[0][v]; vw != -1; vw = prev[0][vw])
 			if (levels[this.v[vw]] != Integer.MAX_VALUE)
@@ -185,14 +186,14 @@ public class ContractionHierarchies {
 	private void preprocess() {
 		reduction = 0;
 		for (int v = 0; v < nodes; v++)
-			priorities.add(((long) getPriority(v) << 32) + v);
+			priorities.add(((long) calcPriority(v) << 32) + v);
 		Arrays.fill(levels, Integer.MAX_VALUE);
 
 		for (int i = 0; i < nodes - 2; i++) {
 			while (levels[priorities.peek().intValue()] != Integer.MAX_VALUE) priorities.remove();
 			long cur = priorities.remove();
 			int v = (int) cur;
-			int prio = getPriority(v);
+			int prio = calcPriority(v);
 			while (levels[priorities.peek().intValue()] != Integer.MAX_VALUE) priorities.remove();
 			if (prio > priorities.peek() >>> 32) {
 				priorities.add(((long) prio << 32) + v);
@@ -205,15 +206,15 @@ public class ContractionHierarchies {
 			for (int edge = tail[0][v]; edge != -1; edge = prev[0][edge]) {
 				int w = this.v[edge];
 				if (levels[w] == Integer.MAX_VALUE)
-					priorities.add(((long) getPriority(w) << 32) + w);
+					priorities.add(((long) calcPriority(w) << 32) + w);
 			}
 			for (int edge = tail[1][v]; edge != -1; edge = prev[1][edge]) {
 				int u = this.u[edge];
 				if (levels[u] == Integer.MAX_VALUE)
-					priorities.add(((long) getPriority(u) << 32) + u);
+					priorities.add(((long) calcPriority(u) << 32) + u);
 			}
 		}
-		System.out.println(reduction);
+//		System.out.println(reduction);
 	}
 
 	public static class PathInfo {
@@ -241,6 +242,7 @@ public class ContractionHierarchies {
 		q[1].add((long) t);
 		int res = Integer.MAX_VALUE;
 		int top = -1;
+		m1:
 		for (int dir = 0; ; dir = !q[1 - dir].isEmpty() ? 1 - dir : dir) {
 			++iterations;
 			if (res <= Math.min(q[0].isEmpty() ? Integer.MAX_VALUE : (int) (q[0].peek() >>> 32), q[1].isEmpty() ? Integer.MAX_VALUE : (int) (q[1].peek() >>> 32)))
@@ -249,6 +251,13 @@ public class ContractionHierarchies {
 			int u = (int) cur;
 			if (cur >>> 32 != prio[dir][u])
 				continue;
+
+			// stall-on-demand
+			for (int edge = tail[1 - dir][u]; edge != -1; edge = prev[1 - dir][edge]) {
+				int v = dir == 0 ? this.u[edge] : this.v[edge];
+				if (prio[dir][u] > prio[dir][v] + len[edge])
+					continue m1;
+			}
 
 			int curLen = prio[dir][u] + prio[1 - dir][u];
 			if (res > curLen) {
@@ -269,26 +278,29 @@ public class ContractionHierarchies {
 			}
 		}
 
+//		System.out.println(iterations);
+		return new PathInfo(res, buildPath(pred, top));
+	}
+
+	private List<Integer> buildPath(int[][] pred, int top) {
 		List<Integer> path = new ArrayList<>();
 		for (int edge0 = pred[0][top]; edge0 != -1; edge0 = pred[0][this.u[edge0]]) {
-			List<Integer> p = restorePath(edge0);
+			List<Integer> p = extractEdges(edge0);
 			Collections.reverse(p);
 			path.addAll(p);
 		}
 		Collections.reverse(path);
 		for (int edge1 = pred[1][top]; edge1 != -1; edge1 = pred[1][this.v[edge1]])
-			path.addAll(restorePath(edge1));
-
-//		System.out.println(iterations);
-		return new PathInfo(res, path);
+			path.addAll(extractEdges(edge1));
+		return path;
 	}
 
-	private List<Integer> restorePath(int edge) {
-		if (restore0[edge] == -1)
+	private List<Integer> extractEdges(int edge) {
+		if (restore0[edge] == -1) // edge is not a shortcut
 			return Collections.singletonList(edge);
 		List<Integer> res = new ArrayList<>();
-		res.addAll(restorePath(restore0[edge]));
-		res.addAll(restorePath(restore1[edge]));
+		res.addAll(extractEdges(restore0[edge]));
+		res.addAll(extractEdges(restore1[edge]));
 		return res;
 	}
 
@@ -328,7 +340,7 @@ public class ContractionHierarchies {
 			totalShortcuts += shortcuts;
 			System.out.println("edges = " + (ch.edges - shortcuts) + " shortcuts = " + shortcuts + " nodes = " + ch.nodes);
 
-			for (int step1 = 0; step1 < 10; step1++) {
+			for (int step1 = 0; step1 < 10000; step1++) {
 				int a = rnd.nextInt(V);
 				int b = rnd.nextInt(V);
 
