@@ -37,8 +37,8 @@ public class ContractionHierarchies {
 	int nodes = 0;
 
 	public int addEdge(int s, int t, int len) {
-		nodes = Math.max(nodes, s + 1);
-		nodes = Math.max(nodes, t + 1);
+//		nodes = Math.max(nodes, s + 1);
+//		nodes = Math.max(nodes, t + 1);
 
 		++degree[s];
 		++degree[t];
@@ -66,9 +66,9 @@ public class ContractionHierarchies {
 		return edges++;
 	}
 
+	//	int[] hops = new int[NODES];
 	boolean[] targets = new boolean[NODES];
 	int[] prio = new int[NODES];
-//	int[] hops = new int[NODES];
 
 	{
 		Arrays.fill(prio, Integer.MAX_VALUE);
@@ -326,11 +326,14 @@ public class ContractionHierarchies {
 			buckets[i] = new ArrayList<>();
 		}
 
+		int[] prio = new int[nodes];
+		Arrays.fill(prio, Integer.MAX_VALUE / 2);
+
 		for (int i = 0; i < t.length; i++) {
 			int target = t[i];
-			int[] prio = new int[nodes];
-			Arrays.fill(prio, Integer.MAX_VALUE / 2);
 			prio[target] = 0;
+			List<Integer> visited = new ArrayList<>();
+			visited.add(target);
 			PriorityQueue<Long> q = new PriorityQueue<>();
 			q.add((long) target);
 			while (!q.isEmpty()) {
@@ -348,9 +351,13 @@ public class ContractionHierarchies {
 					int nprio = priou + len[edge];
 					if (prio[v] > nprio) {
 						prio[v] = nprio;
+						visited.add(v);
 						q.add(((long) nprio << 32) + v);
 					}
 				}
+			}
+			for (int v : visited) {
+				prio[v] = Integer.MAX_VALUE / 2;
 			}
 		}
 
@@ -359,9 +366,11 @@ public class ContractionHierarchies {
 		for (int i = 0; i < s.length; i++) {
 			int source = s[i];
 			Arrays.fill(d[i], Integer.MAX_VALUE - 1);
-			int[] prio = new int[nodes];
-			Arrays.fill(prio, Integer.MAX_VALUE / 2);
+//			int[] prio = new int[nodes];
+//			Arrays.fill(prio, Integer.MAX_VALUE / 2);
 			prio[source] = 0;
+			List<Integer> visited = new ArrayList<>();
+			visited.add(source);
 			PriorityQueue<Long> q = new PriorityQueue<>();
 			q.add((long) source);
 			while (!q.isEmpty()) {
@@ -385,9 +394,13 @@ public class ContractionHierarchies {
 					int nprio = priou + len[edge];
 					if (prio[v] > nprio) {
 						prio[v] = nprio;
+						visited.add(v);
 						q.add(((long) nprio << 32) + v);
 					}
 				}
+			}
+			for (int v : visited) {
+				prio[v] = Integer.MAX_VALUE / 2;
 			}
 		}
 
@@ -401,10 +414,11 @@ public class ContractionHierarchies {
 
 		for (int step = 0; step < 100; step++) {
 			ContractionHierarchies ch = new ContractionHierarchies();
-			int V = rnd.nextInt(50) + 2;
-//			int E = V + rnd.nextInt(V * (V - 1) - V + 1);
+			int V = rnd.nextInt(100) + 2;
+//			int E = V == 1 ? 0 : V + rnd.nextInt(V * (V - 1) - V + 1);
 			int E = Math.max(V, Math.min(V * (V - 1), 5 * V));
 			int[][] d = generateStronglyConnectedDigraph(V, E, rnd);
+			ch.nodes = V;
 			for (int i = 0; i < V; i++) {
 				for (int j = 0; j < V; j++) {
 					if (i != j && d[i][j] != Integer.MAX_VALUE / 2) {
@@ -425,16 +439,20 @@ public class ContractionHierarchies {
 					if (d[i][j] == Integer.MAX_VALUE / 2) throw new RuntimeException();
 
 			int shortcuts = ch.edges;
+			long time1 = System.currentTimeMillis();
 			ch.preprocess();
+//			System.out.println("1 " + (System.currentTimeMillis() - time1));
 			shortcuts = ch.edges - shortcuts;
 			totalShortcuts += shortcuts;
 			System.out.println("edges = " + (ch.edges - shortcuts) + " shortcuts = " + shortcuts + " nodes = " + ch.nodes);
 
 			int[] vertices = new int[V];
 			for (int i = 0; i < V; i++) vertices[i] = i;
+			time1 = System.currentTimeMillis();
 			int[][] d2 = ch.manyToMany(vertices, vertices);
+//			System.out.println("2 " + (System.currentTimeMillis() - time1));
 
-			for (int step1 = 0; step1 < 1000; step1++) {
+			for (int step1 = 0; step1 < 10; step1++) {
 				int a = rnd.nextInt(V);
 				int b = rnd.nextInt(V);
 
@@ -463,6 +481,7 @@ public class ContractionHierarchies {
 	}
 
 	static int[][] generateStronglyConnectedDigraph(int V, int upperBoundE, Random rnd) {
+		if (upperBoundE == 0) return new int[][]{{0}};
 		List<Integer> p = new ArrayList<>();
 		for (int i = 0; i < V; i++)
 			p.add(i);
