@@ -206,8 +206,7 @@ public class ContractionHierarchies {
 
 		for (int i = 0; i < nodes - 2; i++) {
 			while (levels[priorities.peek().intValue()] != Integer.MAX_VALUE) priorities.remove();
-			long cur = priorities.remove();
-			int v = (int) cur;
+			int v = priorities.remove().intValue();
 			int prio = calcPriority(v);
 			while (levels[priorities.peek().intValue()] != Integer.MAX_VALUE) priorities.remove();
 			if (prio > priorities.peek() >>> 32) {
