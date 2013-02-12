@@ -198,7 +198,7 @@ public class ContractionHierarchies {
 		return 10 * edgeDifference + 50 * shortcutsInfo.originalEdges + 1 * contractedNeighbors;
 	}
 
-	private void preprocess() {
+	public void preprocess() {
 		reduction = 0;
 		for (int v = 0; v < nodes; v++)
 			priorities.add(((long) calcPriority(v) << 32) + v);
