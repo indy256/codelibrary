@@ -5,12 +5,12 @@ import java.util.*;
  */
 public class ContractionHierarchies {
 
-	final int NODES = 100000;
-	final int EDGES = 100000;
+	final int NODES = 10000;
+	final int EDGES = 10000;
 
 	int[] levels = new int[NODES];
-	int[] firstEdge = new int[NODES];
-	int[] secondEdge = new int[NODES];
+	int[] firstEdge = new int[EDGES];
+	int[] secondEdge = new int[EDGES];
 	int[] len = new int[EDGES];
 	int[] u = new int[EDGES];
 	int[] v = new int[EDGES];
@@ -66,19 +66,29 @@ public class ContractionHierarchies {
 		return edges++;
 	}
 
-	private Map<Integer, Integer> findWitness(int s, int forbidden, boolean[] targets, int upperBound) {
+	int[] prio = new int[NODES];
+
+	{
+		Arrays.fill(prio, Integer.MAX_VALUE );
+	}
+
+	private /*Map<Integer, Integer>*/ List<Integer> findWitness(int s, int forbidden, boolean[] targets, int upperBound) {
 		int targetCount = 0;
 		for (boolean target : targets) if (target) ++targetCount;
-		Map<Integer, Integer> prio = new HashMap<>();
-		prio.put(s, 0);
-		Map<Integer, Integer> hops = new HashMap<>();
-		hops.put(s, 0);
+//		Map<Integer, Integer> prio = new HashMap<>();
+//		prio.put(s, 0);
+//		Map<Integer, Integer> hops = new HashMap<>();
+//		hops.put(s, 0);
 		PriorityQueue<Long> q = new PriorityQueue<>();
 		q.add((long) s);
+		prio[s] = 0;
+		List<Integer> visited = new ArrayList<>();
+		visited.add(s);
 		while (!q.isEmpty()) {
 			long cur = q.remove();
 			int u = (int) cur;
-			int priou = prio.get(u);
+//			int priou = prio.get(u);
+			int priou = prio[u];
 			if (priou >= upperBound)
 				break;
 			if (cur >>> 32 != priou)
@@ -94,17 +104,20 @@ public class ContractionHierarchies {
 				int v = this.v[edge];
 				if (levels[v] < levels[forbidden] || v == forbidden)
 					continue;
-				int nhops = hops.get(u) + 1;
+//				int nhops = hops.get(u) + 1;
 				int nprio = priou + len[edge];
-				Integer priov = prio.get(v);
-				if ((priov == null || priov > nprio) && nhops <= 8) {
-					prio.put(v, nprio);
-					hops.put(v, nhops);
+//				Integer priov = prio.get(v);
+				int priov = prio[v];
+				if ((/*priov == null || */priov > nprio) /*&& nhops <= 8*/) {
+//					prio.put(v, nprio);
+					prio[v] = nprio;
+					visited.add(v);
+//					hops.put(v, nhops);
 					q.add(((long) nprio << 32) + v);
 				}
 			}
 		}
-		return prio;
+		return visited;
 	}
 
 	private static class ShortcutsInfo {
@@ -117,8 +130,9 @@ public class ContractionHierarchies {
 		}
 	}
 
+	boolean[] targets = new boolean[NODES];
+
 	private ShortcutsInfo addShortcuts(int v, boolean realRun) {
-		boolean[] targets = new boolean[nodes];
 		int shortcuts = 0;
 		int totalOriginalEdges = 0;
 		for (int uv = tail[1][v]; uv != -1; uv = prev[1][uv]) {
@@ -132,17 +146,26 @@ public class ContractionHierarchies {
 				int w = this.v[vw];
 				if (levels[w] < levels[v] || u == w)
 					continue;
-				targets[w] = true;
 				maxLenVW = Math.max(maxLenVW, len[vw]);
 			}
 
-			Map<Integer, Integer> distu = findWitness(u, v, targets, len[uv] + maxLenVW);
+			/*Map<Integer, Integer> distu = */
+			List<Integer> visited = findWitness(u, v, targets, len[uv] + maxLenVW);
+			int[] distu = prio;
+
+			for (int vw = tail[0][v]; vw != -1; vw = prev[0][vw]) {
+				int w = this.v[vw];
+				if (levels[w] < levels[v] || u == w)
+					continue;
+				targets[w] = false;
+			}
 
 			// edge reduction
 			for (int ux = tail[0][u]; ux != -1; ux = prev[0][ux]) {
 				int x = this.v[ux];
-				Integer distux = distu.get(x);
-				if (distux != null && len[ux] > distux && realRun)
+//				Integer distux = distu.get(x);
+				int distux = distu[x];
+				if (/*distux != null && */len[ux] > distux && realRun)
 					++reduction;
 			}
 
@@ -152,8 +175,9 @@ public class ContractionHierarchies {
 					continue;
 				targets[w] = false;
 
-				final Integer distuw = distu.get(w);
-				if (distuw == null || distuw > len[uv] + len[vw]) {
+//				final Integer distuw = distu.get(w);
+				int distuw = distu[w];
+				if (/*distuw == null || */distuw > len[uv] + len[vw]) {
 					++shortcuts;
 					totalOriginalEdges += originalEdges[uv] + originalEdges[vw];
 					if (realRun) {
@@ -164,6 +188,9 @@ public class ContractionHierarchies {
 //						System.out.println("(" + u + "," + w + ") -> " + (len[uv] + len[vw]));
 					}
 				}
+			}
+			for (int x : visited) {
+				prio[x] = Integer.MAX_VALUE;
 			}
 		}
 		return new ShortcutsInfo(shortcuts, totalOriginalEdges);
