@@ -59,8 +59,10 @@ public class QuadTree {
 	public static void main(String[] args) {
 		QuadTree t = new QuadTree();
 
-		t.insert(10, 10);
-		t.insert(11, 10);
-		System.out.println(2 == t.count(5, 5, 100, 100));
+		t.insert(0, 0);
+		t.insert(1, 0);
+		t.insert(2, 0);
+		t.insert(3, 0);
+		System.out.println(4 == t.count(0, 0, 3, 0));
 	}
 }
