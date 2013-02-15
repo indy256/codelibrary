@@ -204,36 +204,36 @@ public class ContractionHierarchies {
 		PriorityQueue<Long> priorities = new PriorityQueue<>();
 		//	int[] hops = new int[NODES];
 		boolean[] targets = new boolean[g.nodes];
-		int[] prio2 = new int[g.nodes];
-		Arrays.fill(prio2, Integer.MAX_VALUE);
+		int[] prio = new int[g.nodes];
+		Arrays.fill(prio, Integer.MAX_VALUE);
 
 		for (int v = 0; v < g.nodes; v++) {
-			priorities.add(((long) calcPriority(g, v, targets, prio2) << 32) | v);
+			priorities.add(((long) calcPriority(g, v, targets, prio) << 32) | v);
 		}
 		Arrays.fill(g.levels, Integer.MAX_VALUE);
 
 		for (int i = 0; i < g.nodes - 2; i++) {
 			while (g.levels[priorities.peek().intValue()] != Integer.MAX_VALUE) priorities.remove();
 			int v = priorities.remove().intValue();
-			int prio = calcPriority(g, v, targets, prio2);
+			int priority = calcPriority(g, v, targets, prio);
 			while (g.levels[priorities.peek().intValue()] != Integer.MAX_VALUE) priorities.remove();
-			if (prio > priorities.peek() >>> 32) {
-				priorities.add(((long) prio << 32) | v);
+			if (priority > priorities.peek() >>> 32) {
+				priorities.add(((long) priority << 32) | v);
 				--i;
 				continue;
 			}
 			g.levels[v] = i;
-			addShortcuts(g, v, true, targets, prio2);
+			addShortcuts(g, v, true, targets, prio);
 
 			for (int edge = g.tail[0][v]; edge != -1; edge = g.prev[0][edge]) {
 				int w = g.v[edge];
 				if (g.levels[w] == Integer.MAX_VALUE)
-					priorities.add(((long) calcPriority(g, w, targets, prio2) << 32) | w);
+					priorities.add(((long) calcPriority(g, w, targets, prio) << 32) | w);
 			}
 			for (int edge = g.tail[1][v]; edge != -1; edge = g.prev[1][edge]) {
 				int u = g.u[edge];
 				if (g.levels[u] == Integer.MAX_VALUE)
-					priorities.add(((long) calcPriority(g, u, targets, prio2) << 32) | u);
+					priorities.add(((long) calcPriority(g, u, targets, prio) << 32) | u);
 			}
 		}
 //		System.out.println(reduction);
@@ -273,7 +273,6 @@ public class ContractionHierarchies {
 	}
 
 	public static PathInfo shortestPath(Graph g, int s, int t) {
-		int iterations = 0;
 		int[][] prio = {new int[g.nodes], new int[g.nodes]};
 		Arrays.fill(prio[0], Integer.MAX_VALUE / 2);
 		Arrays.fill(prio[1], Integer.MAX_VALUE / 2);
@@ -289,7 +288,6 @@ public class ContractionHierarchies {
 		int top = -1;
 		m1:
 		for (int dir = 0; ; dir = !q[1 - dir].isEmpty() ? 1 - dir : dir) {
-			++iterations;
 			if (res <= Math.min(q[0].isEmpty() ? Integer.MAX_VALUE : (int) (q[0].peek() >>> 32), q[1].isEmpty() ? Integer.MAX_VALUE : (int) (q[1].peek() >>> 32)))
 				break;
 			long cur = q[dir].remove();
@@ -323,12 +321,10 @@ public class ContractionHierarchies {
 			}
 		}
 
-//		System.out.println(iterations);
 		return new PathInfo(res, buildPath(g, pred, top));
 	}
 
 	public static int[][] manyToMany(Graph g, int[] s, int[] t) {
-
 		List<Long> buckets[] = new List[g.nodes];
 		for (int i = 0; i < g.nodes; i++) {
 			buckets[i] = new ArrayList<>();
