@@ -69,8 +69,9 @@ public class ContractionHierarchies {
 		@Override
 		protected Object clone() throws CloneNotSupportedException {
 			Graph g = new Graph(nodes, len.length);
+			g.edges = edges;
 			int[][] arrays1 = {levels, firstEdge, secondEdge, len, u, v, tail[0], tail[1], prev[0], prev[1], degree, originalEdges};
-			int[][] arrays2 = {g.levels, g.firstEdge, g.secondEdge, g.len, g.u, g.v, g.tail[0], g.tail[1], g.prev[0], g.prev[1], degree, originalEdges};
+			int[][] arrays2 = {g.levels, g.firstEdge, g.secondEdge, g.len, g.u, g.v, g.tail[0], g.tail[1], g.prev[0], g.prev[1], g.degree, g.originalEdges};
 			for (int i = 0; i < arrays1.length; i++) {
 				System.arraycopy(arrays1[i], 0, arrays2[i], 0, arrays2[i].length);
 			}
@@ -149,7 +150,6 @@ public class ContractionHierarchies {
 				maxLenVW = Math.max(maxLenVW, g.len[vw]);
 			}
 
-			System.out.println(u+" "+v);
 			List<Integer> visited = findWitness(g, u, v, prio, targets, targetCount, g.len[uv] + maxLenVW);
 
 			// edge reduction
@@ -213,10 +213,6 @@ public class ContractionHierarchies {
 		Arrays.fill(g.levels, Integer.MAX_VALUE);
 
 		for (int i = 0; i < g.nodes - 2; i++) {
-			System.out.println(i);
-			if(i==6){
-				int z=1;
-			}
 			while (g.levels[priorities.peek().intValue()] != Integer.MAX_VALUE) priorities.remove();
 			int v = priorities.remove().intValue();
 			int prio = calcPriority(g, v, targets, prio2);
