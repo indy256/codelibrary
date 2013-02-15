@@ -37,9 +37,6 @@ public class ContractionHierarchies {
 	int nodes = 0;
 
 	public int addEdge(int s, int t, int len) {
-//		nodes = Math.max(nodes, s + 1);
-//		nodes = Math.max(nodes, t + 1);
-
 		++degree[s];
 		++degree[t];
 
@@ -106,7 +103,7 @@ public class ContractionHierarchies {
 					prio[v] = nprio;
 					visited.add(v);
 //					hops[v] = hops[u] + 1;
-					q.add(((long) nprio << 32) + v);
+					q.add(((long) nprio << 32) | v);
 				}
 			}
 		}
@@ -138,19 +135,14 @@ public class ContractionHierarchies {
 				int w = this.v[vw];
 				if (levels[w] < levels[v] || u == w)
 					continue;
-				targets[w] = true;
-				++targetCount;
+				if (!targets[w]) {
+					targets[w] = true;
+					++targetCount;
+				}
 				maxLenVW = Math.max(maxLenVW, len[vw]);
 			}
 
 			List<Integer> visited = findWitness(u, v, targets, targetCount, len[uv] + maxLenVW);
-
-			for (int vw = tail[0][v]; vw != -1; vw = prev[0][vw]) {
-				int w = this.v[vw];
-				if (levels[w] < levels[v] || u == w)
-					continue;
-				targets[w] = false;
-			}
 
 			// edge reduction
 			for (int ux = tail[0][u]; ux != -1; ux = prev[0][ux]) {
@@ -201,7 +193,7 @@ public class ContractionHierarchies {
 	public void preprocess() {
 		reduction = 0;
 		for (int v = 0; v < nodes; v++)
-			priorities.add(((long) calcPriority(v) << 32) + v);
+			priorities.add(((long) calcPriority(v) << 32) | v);
 		Arrays.fill(levels, Integer.MAX_VALUE);
 
 		for (int i = 0; i < nodes - 2; i++) {
@@ -210,7 +202,7 @@ public class ContractionHierarchies {
 			int prio = calcPriority(v);
 			while (levels[priorities.peek().intValue()] != Integer.MAX_VALUE) priorities.remove();
 			if (prio > priorities.peek() >>> 32) {
-				priorities.add(((long) prio << 32) + v);
+				priorities.add(((long) prio << 32) | v);
 				--i;
 				continue;
 			}
@@ -220,12 +212,12 @@ public class ContractionHierarchies {
 			for (int edge = tail[0][v]; edge != -1; edge = prev[0][edge]) {
 				int w = this.v[edge];
 				if (levels[w] == Integer.MAX_VALUE)
-					priorities.add(((long) calcPriority(w) << 32) + w);
+					priorities.add(((long) calcPriority(w) << 32) | w);
 			}
 			for (int edge = tail[1][v]; edge != -1; edge = prev[1][edge]) {
 				int u = this.u[edge];
 				if (levels[u] == Integer.MAX_VALUE)
-					priorities.add(((long) calcPriority(u) << 32) + u);
+					priorities.add(((long) calcPriority(u) << 32) | u);
 			}
 		}
 //		System.out.println(reduction);
@@ -309,7 +301,7 @@ public class ContractionHierarchies {
 				if (prio[dir][v] > nprio) {
 					prio[dir][v] = nprio;
 					pred[dir][v] = edge;
-					q[dir].add(((long) nprio << 32) + v);
+					q[dir].add(((long) nprio << 32) | v);
 				}
 			}
 		}
@@ -341,7 +333,7 @@ public class ContractionHierarchies {
 				int priou = prio[u];
 				if (cur >>> 32 != priou)
 					continue;
-				buckets[u].add(((long) priou << 32) + i);
+				buckets[u].add(((long) priou << 32) | i);
 
 				for (int edge = tail[1][u]; edge != -1; edge = prev[1][edge]) {
 					int v = this.u[edge];
@@ -351,7 +343,7 @@ public class ContractionHierarchies {
 					if (prio[v] > nprio) {
 						prio[v] = nprio;
 						visited.add(v);
-						q.add(((long) nprio << 32) + v);
+						q.add(((long) nprio << 32) | v);
 					}
 				}
 			}
@@ -365,8 +357,6 @@ public class ContractionHierarchies {
 		for (int i = 0; i < s.length; i++) {
 			int source = s[i];
 			Arrays.fill(d[i], Integer.MAX_VALUE - 1);
-//			int[] prio = new int[nodes];
-//			Arrays.fill(prio, Integer.MAX_VALUE / 2);
 			prio[source] = 0;
 			List<Integer> visited = new ArrayList<>();
 			visited.add(source);
@@ -394,7 +384,7 @@ public class ContractionHierarchies {
 					if (prio[v] > nprio) {
 						prio[v] = nprio;
 						visited.add(v);
-						q.add(((long) nprio << 32) + v);
+						q.add(((long) nprio << 32) | v);
 					}
 				}
 			}
