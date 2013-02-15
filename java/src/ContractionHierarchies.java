@@ -67,7 +67,7 @@ public class ContractionHierarchies {
 		}
 
 		@Override
-		protected Object clone() throws CloneNotSupportedException {
+		public Object clone() {
 			Graph g = new Graph(nodes, len.length);
 			g.edges = edges;
 			int[][] arrays1 = {levels, firstEdge, secondEdge, len, u, v, tail[0], tail[1], prev[0], prev[1], degree, originalEdges};
@@ -198,7 +198,7 @@ public class ContractionHierarchies {
 		return 10 * edgeDifference + 50 * shortcutsInfo.originalEdges + 1 * contractedNeighbors;
 	}
 
-	public static Graph preprocess(Graph origGraph) throws CloneNotSupportedException {
+	public static Graph preprocess(Graph origGraph) {
 		Graph g = (Graph) origGraph.clone();
 
 		PriorityQueue<Long> priorities = new PriorityQueue<>();
@@ -409,7 +409,7 @@ public class ContractionHierarchies {
 		return d;
 	}
 
-	public static void main(String[] args) throws CloneNotSupportedException {
+	public static void main(String[] args) {
 		long time = System.currentTimeMillis();
 		Random rnd = new Random(1);
 		int totalShortcuts = 0;
