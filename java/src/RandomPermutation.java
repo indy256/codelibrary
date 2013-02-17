@@ -17,13 +17,24 @@ public class RandomPermutation {
 		return res;
 	}
 
-	public static int[] getRandomCombination(int n, int m, Random rnd) {
+	public static int[] getRandomArrangement(int n, int m, Random rnd) {
 		int[] res = new int[n];
 		for (int i = 0; i < n; i++)
 			res[i] = i;
 		for (int i = 0; i < m; i++)
 			swap(res, i, i + rnd.nextInt(n - i));
 		return Arrays.copyOf(res, m);
+	}
+
+	public static int[] getRandomArrangement2(int n, int m, Random rnd) {
+		Set<Integer> set = new HashSet<>();
+		int[] res = new int[m];
+		while (set.size() < m) {
+			int x = rnd.nextInt(n);
+			if (set.add(x))
+				res[set.size() - 1] = x;
+		}
+		return res;
 	}
 
 	// Usage example

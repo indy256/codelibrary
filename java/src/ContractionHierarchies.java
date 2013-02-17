@@ -5,7 +5,7 @@ import java.util.*;
  */
 public class ContractionHierarchies {
 
-	public static class Graph implements Cloneable {
+	public static class LayerGraph implements Cloneable {
 		final int nodes;
 		int edges = 0;
 		final int[] levels;
@@ -17,7 +17,7 @@ public class ContractionHierarchies {
 		final int[][] tail;
 		final int[][] prev;
 
-		public Graph(int nodes, int maxEdges) {
+		public LayerGraph(int nodes, int maxEdges) {
 			this.nodes = nodes;
 			levels = new int[nodes];
 			firstEdge = new int[maxEdges];
@@ -60,7 +60,7 @@ public class ContractionHierarchies {
 
 		@Override
 		public Object clone() {
-			Graph g = new Graph(nodes, len.length);
+			LayerGraph g = new LayerGraph(nodes, len.length);
 			g.edges = edges;
 			int[][] arrays1 = {levels, firstEdge, secondEdge, len, u, v, tail[0], tail[1], prev[0], prev[1]};
 			int[][] arrays2 = {g.levels, g.firstEdge, g.secondEdge, g.len, g.u, g.v, g.tail[0], g.tail[1], g.prev[0], g.prev[1]};
@@ -70,8 +70,8 @@ public class ContractionHierarchies {
 			return g;
 		}
 
-		public Graph compact() {
-			Graph g = new Graph(nodes, edges);
+		public LayerGraph compact() {
+			LayerGraph g = new LayerGraph(nodes, edges);
 			g.edges = edges;
 			System.arraycopy(levels, 0, g.levels, 0, g.levels.length);
 			System.arraycopy(len, 0, g.len, 0, edges);
@@ -96,8 +96,8 @@ public class ContractionHierarchies {
 		}
 	}
 
-	private static List<Integer> findWitness(Graph g, int s, int forbidden, int[] prio, boolean[] targets, int targetCount, int upperBound) {
-//		hops[s]=0;
+	private static List<Integer> findWitness(LayerGraph g, int s, int forbidden, int[] prio, boolean[] targets, int targetCount, int[] hops, int upperBound) {
+		hops[s] = 0;
 		PriorityQueue<Long> q = new PriorityQueue<>();
 		q.add((long) s);
 		prio[s] = 0;
@@ -116,8 +116,8 @@ public class ContractionHierarchies {
 				if (--targetCount == 0)
 					break;
 			}
-//			if (hops[u] == 8)
-//				continue;
+			if (hops[u] == 8)
+				continue;
 
 			for (int edge = g.tail[0][u]; edge != -1; edge = g.prev[0][edge]) {
 				int v = g.v[edge];
@@ -127,7 +127,7 @@ public class ContractionHierarchies {
 				if (prio[v] > nprio) {
 					prio[v] = nprio;
 					visited.add(v);
-//					hops[v] = hops[u] + 1;
+					hops[v] = hops[u] + 1;
 					q.add(((long) nprio << 32) | v);
 				}
 			}
@@ -145,7 +145,7 @@ public class ContractionHierarchies {
 		}
 	}
 
-	private static ShortcutsInfo addShortcuts(Graph g, int v, boolean realRun, boolean[] targets, int[] prio, int[] degree, int[] originalEdges, int[] depth) {
+	private static ShortcutsInfo addShortcuts(LayerGraph g, int v, boolean realRun, int[] prio, boolean[] targets, int[] hops, int[] degree, int[] originalEdges) {
 		int shortcuts = 0;
 		int totalOriginalEdges = 0;
 		for (int uv = g.tail[1][v]; uv != -1; uv = g.prev[1][uv]) {
@@ -167,7 +167,7 @@ public class ContractionHierarchies {
 				maxLenVW = Math.max(maxLenVW, g.len[vw]);
 			}
 
-			List<Integer> visited = findWitness(g, u, v, prio, targets, targetCount, g.len[uv] + maxLenVW);
+			List<Integer> visited = findWitness(g, u, v, prio, targets, targetCount, hops, g.len[uv] + maxLenVW);
 
 			// edge reduction
 //			for (int ux = g.tail[0][u]; ux != -1; ux = g.prev[0][ux]) {
@@ -190,8 +190,6 @@ public class ContractionHierarchies {
 					if (realRun) {
 						int edge = g.addEdge(u, w, g.len[uv] + g.len[vw]);
 						originalEdges[edge] = originalEdges[uv] + originalEdges[vw];
-						depth[u] = Math.max(depth[u], depth[v] + 1);
-						depth[w] = Math.max(depth[w], depth[v] + 1);
 						++degree[u];
 						++degree[w];
 						g.firstEdge[edge] = uv;
@@ -201,13 +199,14 @@ public class ContractionHierarchies {
 			}
 			for (int x : visited) {
 				prio[x] = Integer.MAX_VALUE;
+				hops[x] = 0;
 			}
 		}
 		return new ShortcutsInfo(shortcuts, totalOriginalEdges);
 	}
 
-	private static int calcPriority(Graph g, int v, boolean[] targets, int[] prio, int[] degree, int[] originalEdges, int[] depth) {
-		ShortcutsInfo shortcutsInfo = addShortcuts(g, v, false, targets, prio, degree, originalEdges, depth);
+	private static int calcPriority(LayerGraph g, int v, int[] prio, boolean[] targets, int[] hops, int[] degree, int[] originalEdges) {
+		ShortcutsInfo shortcutsInfo = addShortcuts(g, v, false, prio, targets, hops, degree, originalEdges);
 		int edgeDifference = shortcutsInfo.shortcuts - degree[v];
 		int contractedNeighbors = 0;
 		for (int vw = g.tail[0][v]; vw != -1; vw = g.prev[0][vw])
@@ -216,14 +215,14 @@ public class ContractionHierarchies {
 		for (int uv = g.tail[1][v]; uv != -1; uv = g.prev[1][uv])
 			if (g.levels[g.u[uv]] != Integer.MAX_VALUE)
 				++contractedNeighbors;
-		return 50 * edgeDifference + 40 * shortcutsInfo.originalEdges + 1 * contractedNeighbors + 5 * depth[v];
+		return 40 * edgeDifference + 60 * shortcutsInfo.originalEdges + 2 * contractedNeighbors;
 	}
 
-	public static Graph preprocess(Graph origGraph) {
-		Graph g = (Graph) origGraph.clone();
+	public static LayerGraph preprocess(LayerGraph origGraph) {
+		LayerGraph g = (LayerGraph) origGraph.clone();
 
 		PriorityQueue<Long> priorities = new PriorityQueue<>();
-		//	int[] hops = new int[NODES];
+		int[] hops = new int[g.nodes];
 		boolean[] targets = new boolean[g.nodes];
 		int[] prio = new int[g.nodes];
 		Arrays.fill(prio, Integer.MAX_VALUE);
@@ -234,16 +233,15 @@ public class ContractionHierarchies {
 		}
 		int[] originalEdges = new int[g.len.length];
 		Arrays.fill(originalEdges, 0, g.edges, 1);
-		int[] depth = new int[g.nodes];
 
 		for (int v = 0; v < g.nodes; v++)
-			priorities.add(((long) calcPriority(g, v, targets, prio, degree, originalEdges, depth) << 32) | v);
+			priorities.add(((long) calcPriority(g, v, prio, targets, hops, degree, originalEdges) << 32) | v);
 		Arrays.fill(g.levels, Integer.MAX_VALUE);
 
 		for (int i = 0; i < g.nodes - 2; i++) {
 			while (g.levels[priorities.peek().intValue()] != Integer.MAX_VALUE) priorities.remove();
 			int v = priorities.remove().intValue();
-			int priority = calcPriority(g, v, targets, prio, degree, originalEdges, depth);
+			int priority = calcPriority(g, v, prio, targets, hops, degree, originalEdges);
 			while (g.levels[priorities.peek().intValue()] != Integer.MAX_VALUE) priorities.remove();
 			if (priority > priorities.peek() >>> 32) {
 				priorities.add(((long) priority << 32) | v);
@@ -251,24 +249,24 @@ public class ContractionHierarchies {
 				continue;
 			}
 			g.levels[v] = i;
-			addShortcuts(g, v, true, targets, prio, degree, originalEdges, depth);
+			addShortcuts(g, v, true, prio, targets, hops, degree, originalEdges);
 
 			for (int edge = g.tail[0][v]; edge != -1; edge = g.prev[0][edge]) {
 				int w = g.v[edge];
 				if (g.levels[w] == Integer.MAX_VALUE)
-					priorities.add(((long) calcPriority(g, w, targets, prio, degree, originalEdges, depth) << 32) | w);
+					priorities.add(((long) calcPriority(g, w, prio, targets, hops, degree, originalEdges) << 32) | w);
 			}
 			for (int edge = g.tail[1][v]; edge != -1; edge = g.prev[1][edge]) {
 				int u = g.u[edge];
 				if (g.levels[u] == Integer.MAX_VALUE)
-					priorities.add(((long) calcPriority(g, u, targets, prio, degree, originalEdges, depth) << 32) | u);
+					priorities.add(((long) calcPriority(g, u, prio, targets, hops, degree, originalEdges) << 32) | u);
 			}
 		}
 //		System.out.println(reduction);
 		return g;
 	}
 
-	private static List<Integer> extractEdges(Graph g, int edge) {
+	private static List<Integer> extractEdges(LayerGraph g, int edge) {
 		if (g.firstEdge[edge] == -1) // edge is not a shortcut
 			return Collections.singletonList(edge);
 		List<Integer> res = new ArrayList<>();
@@ -277,7 +275,7 @@ public class ContractionHierarchies {
 		return res;
 	}
 
-	private static List<Integer> buildPath(Graph g, int[][] pred, int top) {
+	private static List<Integer> buildPath(LayerGraph g, int[][] pred, int top) {
 		List<Integer> path = new ArrayList<>();
 		for (int edge0 = pred[0][top]; edge0 != -1; edge0 = pred[0][g.u[edge0]]) {
 			List<Integer> p = extractEdges(g, edge0);
@@ -300,7 +298,7 @@ public class ContractionHierarchies {
 		}
 	}
 
-	public static PathInfo shortestPath(Graph g, int s, int t) {
+	public static PathInfo shortestPath(LayerGraph g, int s, int t) {
 		int[][] prio = {new int[g.nodes], new int[g.nodes]};
 		Arrays.fill(prio[0], Integer.MAX_VALUE / 2);
 		Arrays.fill(prio[1], Integer.MAX_VALUE / 2);
@@ -350,7 +348,7 @@ public class ContractionHierarchies {
 		return new PathInfo(res, buildPath(g, pred, top));
 	}
 
-	public static int[][] manyToMany(Graph g, int[] s, int[] t) {
+	public static int[][] manyToMany(LayerGraph g, int[] s, int[] t) {
 		List<Long> bucketLists[] = new List[g.nodes];
 
 		int[] prio = new int[g.nodes];
@@ -464,7 +462,7 @@ public class ContractionHierarchies {
 //			int E = V == 1 ? 0 : V + rnd.nextInt(V * (V - 1) - V + 1);
 			int E = Math.max(V, Math.min(V * (V - 1), 5 * V));
 			int[][] d = generateStronglyConnectedDigraph(V, E, rnd);
-			Graph origGraph = new Graph(V, 100000);
+			LayerGraph origGraph = new LayerGraph(V, 100000);
 			for (int i = 0; i < V; i++) {
 				for (int j = 0; j < V; j++) {
 					if (i != j && d[i][j] != Integer.MAX_VALUE / 2) {
@@ -485,7 +483,7 @@ public class ContractionHierarchies {
 					if (d[i][j] == Integer.MAX_VALUE / 2) throw new RuntimeException();
 
 			long time1 = System.currentTimeMillis();
-			Graph g = preprocess(origGraph);
+			LayerGraph g = preprocess(origGraph);
 //			System.out.println("1 " + (System.currentTimeMillis() - time1));
 			int shortcuts = g.edges - origGraph.edges;
 			totalShortcuts += shortcuts;
@@ -520,7 +518,7 @@ public class ContractionHierarchies {
 		System.out.println("time = " + (System.currentTimeMillis() - time));
 	}
 
-	static void debug(Graph g) {
+	static void debug(LayerGraph g) {
 		for (int edge = 0; edge < g.edges; edge++)
 			System.out.println("(" + g.u[edge] + "," + g.v[edge] + ") = " + g.len[edge]);
 	}
