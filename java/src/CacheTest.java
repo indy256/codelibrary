@@ -76,11 +76,13 @@ public class CacheTest {
         }
         for (int i = 0; i + 1 < list.size(); i++) if (list.get(i) >= list.get(i + 1)) throw new RuntimeException();
         final int steps = 1000;
-//        list.clear();
-//        Random rnd = new Random(1);
-//        for (int i = 0; i < 200000; i++) {
-//            list.add(rnd.nextInt(n));
-//        }
+        Random rnd = new Random(1);
+        Set<Integer> set = new HashSet<Integer>();
+        for (int i = 0; i < 200000; i++) {
+            set.add(rnd.nextInt(1000000));
+        }
+        list.clear();
+        list.addAll(set);
 
         Collections.sort(list);
         List<Integer> list2 = new ArrayList<>(list);
@@ -117,7 +119,7 @@ public class CacheTest {
         }
 
         long time = System.currentTimeMillis();
-        Object[] objects2 = new Object[200000];
+        Object[] objects2 = new Object[1000000];
         for (int i = 0; i < objects2.length; i++) objects2[i] = i;
         for (int step = 0; step < steps; step++) {
             for (int i = 0; i < ids.length; i++) {
