@@ -20,49 +20,49 @@ public class CacheTest {
     }
 
     public static class BinarySearchCache {
-        final int[] ids;
-        final Object[] objects;
+        final int[] keys;
+        final Object[] values;
 
-        public BinarySearchCache(int[] ids, Object[] objects) {
-            this.ids = ids.clone();
-            this.objects = objects;
+        public BinarySearchCache(int[] keys, Object[] values) {
+            this.keys = keys.clone();
+            this.values = values;
         }
 
-        public Object get(int id) {
-            int pos = Arrays.binarySearch(ids, id);
-            return pos >= 0 ? objects[pos] : null;
+        public Object get(int key) {
+            int pos = Arrays.binarySearch(keys, key);
+            return pos >= 0 ? values[pos] : null;
         }
     }
 
     public static class SortedBucketsCache {
         final int[] cnt;
         final int[] a;
-        final Object[] objects;
+        final Object[] storage;
         final int mask;
 
-        public SortedBucketsCache(int[] ids, Object[] obj) {
+        public SortedBucketsCache(int[] keys, Object[] values) {
             int n = 1;
-            while (n < ids.length)
+            while (n < keys.length)
                 n *= 2;
             mask = n - 1;
             cnt = new int[n + 1];
-            for (int id : ids)
+            for (int id : keys)
                 ++cnt[id & mask];
             for (int i = 1; i < cnt.length; i++)
                 cnt[i] += cnt[i - 1];
-            a = new int[ids.length];
-            objects = new Object[obj.length];
-            for (int i = ids.length - 1; i >= 0; i--) {
-                int id = ids[i];
+            a = new int[keys.length];
+            storage = new Object[values.length];
+            for (int i = keys.length - 1; i >= 0; i--) {
+                int id = keys[i];
                 a[--cnt[id & mask]] = id;
-                objects[cnt[id & mask]] = obj[i];
+                storage[cnt[id & mask]] = values[i];
             }
         }
 
-        public Object get(int id) {
-            int bucket = id & mask;
-            int pos = Arrays.binarySearch(a, cnt[bucket], cnt[bucket + 1], id);
-            return pos >= 0 ? objects[pos] : null;
+        public Object get(int key) {
+            int bucket = key & mask;
+            int pos = Arrays.binarySearch(a, cnt[bucket], cnt[bucket + 1], key);
+            return pos >= 0 ? storage[pos] : null;
         }
     }
 
