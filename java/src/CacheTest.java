@@ -11,9 +11,7 @@ public class CacheTest {
 
         public ArrayCache(int[] keys, Object[] values) {
             storage = new Object[keys[keys.length - 1] + 1];
-            for (int i = 0; i < keys.length; i++) {
-                storage[keys[i]] = values[i];
-            }
+            for (int i = 0; i < keys.length; i++) storage[keys[i]] = values[i];
         }
 
         public Object get(int key) {
