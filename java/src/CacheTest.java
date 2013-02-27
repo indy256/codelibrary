@@ -7,17 +7,17 @@ import java.util.*;
 public class CacheTest {
 
     public static class ArrayCache {
-        final Object[] objects;
+        final Object[] values;
 
-        public ArrayCache(int[] ids, Object[] objects) {
-            this.objects = new Object[ids[ids.length - 1] + 1];
-            for (int i = 0; i < ids.length; i++) {
-                this.objects[ids[i]] = objects[i];
+        public ArrayCache(int[] keys, Object[] values) {
+            this.values = new Object[keys[keys.length - 1] + 1];
+            for (int i = 0; i < keys.length; i++) {
+                this.values[keys[i]] = values[i];
             }
         }
 
-        public Object get(int id) {
-            return id < objects.length ? objects[id] : null;
+        public Object get(int key) {
+            return key < values.length ? values[key] : null;
         }
     }
 

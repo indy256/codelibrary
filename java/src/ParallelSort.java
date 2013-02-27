@@ -18,7 +18,7 @@ public class ParallelSort {
 		System.out.println(System.currentTimeMillis() - time);
 		double[] b2 = a.clone();
 		time = System.currentTimeMillis();
-		Arrays.parallelSort(b2);
+//		Arrays.parallelSort(b2);
 		System.out.println(System.currentTimeMillis() - time);
 	}
 }
