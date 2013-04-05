@@ -36,7 +36,7 @@ public class MinCostFlow {
 		for (int qh = 0; (qh - qt) % n != 0; qh++) {
 			int u = q[qh % n];
 			inqueue[u] = false;
-			for (int i = 0; i < (int) graph[u].size(); i++) {
+			for (int i = 0; i < graph[u].size(); i++) {
 				Edge e = graph[u].get(i);
 				if (e.cap <= e.f)
 					continue;
