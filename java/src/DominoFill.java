@@ -7,10 +7,10 @@ public class DominoFill {
 		for (int r = 0; r < R; r++) {
 			for (int c = 0; c < C; c++) {
 				for (int mask = 0; mask < 1 << C; mask++) {
-					int cur = c > 0 ? dp[r][c - 1][mask] : r > 0 ? dp[r - 1][C - 1][mask] : mask == (1 << C) - 1 ? 1 : 0;
-					dp[r][c][mask ^ (1 << c)] += cur;
-					if (c + 1 < C && (mask & (1 << c)) != 0 && (mask & (1 << (c + 1))) != 0) {
-						dp[r][c + 1][mask] += cur;
+					int prev = c > 0 ? dp[r][c - 1][mask] : r > 0 ? dp[r - 1][C - 1][mask] : mask == (1 << C) - 1 ? 1 : 0;
+					dp[r][c][mask ^ 1 << c] += prev;
+					if ((mask & 1 << c) != 0 && (mask & 1 << (c + 1)) != 0) {
+						dp[r][c + 1][mask] += prev;
 					}
 				}
 			}
