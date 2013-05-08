@@ -1,4 +1,5 @@
 public class FenwickTree3D {
+
 	public static void add(int[][][] t, int x, int y, int z, int value) {
 		for (int i = x; i < t.length; i += (i + 1) & -(i + 1))
 			for (int j = y; j < t[0].length; j += (j + 1) & -(j + 1))
@@ -18,8 +19,8 @@ public class FenwickTree3D {
 
 	public static void main(String[] args) {
 		int[][][] t = new int[10][20][30];
-		add(t, 1, 1, 1, 2);
-		add(t, 2, 2, 2, 3);
-		System.out.println(5 == sum(t, 9, 19, 29));
+		add(t, 0, 0, 0, 1);
+		add(t, 9, 19, 29, -2);
+		System.out.println(-1 == sum(t, 9, 19, 29));
 	}
 }

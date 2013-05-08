@@ -2,7 +2,7 @@ import java.util.*;
 
 public class NthElement {
 
-	static Random rnd = new Random(1);
+	static Random rnd = new Random();
 
 	// analog of C++ nth_element()
 	public static int nth_element(int[] a, int low, int high, int n) {

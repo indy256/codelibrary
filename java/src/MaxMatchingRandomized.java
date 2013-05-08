@@ -43,7 +43,7 @@ public class MaxMatchingRandomized {
 	public static int maxMatching(boolean[][] d) {
 		int n = d.length;
 		int[][] a = new int[n][n];
-		Random rnd = new Random(1);
+		Random rnd = new Random();
 		for (int i = 0; i < n; i++) {
 			for (int j = 0; j < i; j++) {
 				if (d[i][j]) {

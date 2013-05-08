@@ -18,10 +18,11 @@ public class DisjointSets {
 			p[a] = b;
 	}
 
+	// Usage example
 	public static void main(String[] args) {
 		int[] p = createSets(10);
-		System.out.println(false == (root(p, 0) == root(p, 3)));
-		unite(p, 0, 3);
-		System.out.println(true == (root(p, 0) == root(p, 3)));
+		System.out.println(false == (root(p, 0) == root(p, 9)));
+		unite(p, 0, 9);
+		System.out.println(true == (root(p, 0) == root(p, 9)));
 	}
 }

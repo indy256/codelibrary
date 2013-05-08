@@ -47,7 +47,7 @@ public class KdTreePointQuery {
 		return q;
 	}
 
-	static final Random rnd = new Random(1);
+	static final Random rnd = new Random();
 
 	static int randomizedPartition(Point[] a, int low, int high, boolean divX) {
 		swap(a, low + rnd.nextInt(high - low), high - 1);

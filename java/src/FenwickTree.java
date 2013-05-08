@@ -16,7 +16,8 @@ public class FenwickTree {
 	// Usage example
 	public static void main(String[] args) {
 		int[] t = new int[10];
-		add(t, 1, 2);
-		System.out.println(2 == sum(t, 3));
+		add(t, 0, 1);
+		add(t, 9, -2);
+		System.out.println(-1 == sum(t, 9));
 	}
 }

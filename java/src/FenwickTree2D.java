@@ -30,8 +30,9 @@ public class FenwickTree2D {
 
 	// Usage example
 	public static void main(String[] args) {
-		int[][] t = new int[10][10];
-		add(t, 1, 2, 2);
-		System.out.println(2 == sum(t, 0, 0, 9, 9));
+		int[][] t = new int[10][20];
+		add(t, 0, 0, 1);
+		add(t, 9, 19, -2);
+		System.out.println(-1 == sum(t, 0, 0, 9, 19));
 	}
 }
