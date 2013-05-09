@@ -3,12 +3,12 @@ import java.util.function.IntPredicate;
 
 public class BinarySearch {
 
-	public static int integerBinarySearchFirstTrue(IntPredicate p, int from, int to) {
+	public static int integerBinarySearchFirstTrue(IntPredicate predicate, int from, int to) {
 		int lo = from - 1;
 		int hi = to + 1;
 		while (hi - lo > 1) {
 			int mid = (lo + hi) / 2;
-			if (!p.test(mid)) {
+			if (!predicate.test(mid)) {
 				lo = mid;
 			} else {
 				hi = mid;
@@ -17,10 +17,10 @@ public class BinarySearch {
 		return hi;
 	}
 
-	public static double doubleBinarySearchFirstTrue(DoublePredicate p, double lo, double hi) {
+	public static double doubleBinarySearchFirstTrue(DoublePredicate predicate, double lo, double hi) {
 		for (int step = 0; step < 1000; step++) {
 			double mid = (lo + hi) / 2;
-			if (!p.test(mid)) {
+			if (!predicate.test(mid)) {
 				lo = mid;
 			} else {
 				hi = mid;
