@@ -21,10 +21,7 @@ public class Pair implements Comparable<Pair> {
 	}
 
 	public int compareTo(Pair other) {
-		if (u != other.u)
-			return u < other.u ? -1 : 1;
-
-		return v < other.v ? -1 : v > other.v ? 1 : 0;
+		return Long.compare(u, other.u) != 0 ? Long.compare(u, other.u) : Long.compare(v, other.v);
 	}
 
 	public String toString() {

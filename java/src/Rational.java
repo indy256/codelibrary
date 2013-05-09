@@ -27,7 +27,7 @@ public class Rational implements Comparable<Rational> {
 				den = den.divide(gcd);
 			}
 		}
-		if (den.signum() < 0 || den.signum() == 0 && num.signum() < 0) {
+		if (den.signum() < 0) {
 			num = num.negate();
 			den = den.negate();
 		}

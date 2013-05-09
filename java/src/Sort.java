@@ -154,10 +154,10 @@ public class Sort {
 		for (int step = 0; step < 1000; step++) {
 			int n = rnd.nextInt(100) + 1;
 			int[] a = new int[n];
-			int[] s = new int[n];
 			for (int i = 0; i < n; i++) {
-				s[i] = a[i] = rnd.nextInt(1000);
+				a[i] = rnd.nextInt(1000);
 			}
+			int[] s = a.clone();
 			Arrays.sort(s);
 
 			int[] b = a.clone();
@@ -184,10 +184,10 @@ public class Sort {
 		for (int step = 0; step < 10; step++) {
 			int n = rnd.nextInt(50000) + 100000;
 			int[] a = new int[n];
-			int[] s = new int[n];
 			for (int i = 0; i < n; i++) {
-				s[i] = a[i] = rnd.nextInt();
+				a[i] = rnd.nextInt();
 			}
+			int[] s = a.clone();
 			Arrays.sort(s);
 
 			int[] b = a.clone();

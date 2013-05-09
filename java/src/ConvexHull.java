@@ -1,4 +1,4 @@
-import java.util.*;
+import java.util.Arrays;
 
 public class ConvexHull {
 
@@ -11,8 +11,7 @@ public class ConvexHull {
 		}
 
 		public int compareTo(Point o) {
-			int sx = Long.signum(x - o.x);
-			return sx != 0 ? sx : Long.signum(y - o.y);
+			return Long.compare(x, o.x) != 0 ? Long.compare(x, o.x) : Long.compare(y, o.y);
 		}
 	}
 

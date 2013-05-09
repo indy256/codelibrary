@@ -23,11 +23,8 @@ public class PairFull<U extends Comparable<U>, V extends Comparable<V>> implemen
 	}
 
 	public int compareTo(PairFull<U, V> b) {
-		int cmp = u.compareTo(b.u);
-		if (cmp != 0)
-			return cmp;
-
-		return v.compareTo(b.v);
+		int cmpU = u.compareTo(b.u);
+		return cmpU != 0 ? cmpU : v.compareTo(b.v);
 	}
 
 	// Usage example
