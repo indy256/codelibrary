@@ -1,5 +1,3 @@
-package obsolete;
-
 import java.util.*;
 
 // Search for maximum independent set

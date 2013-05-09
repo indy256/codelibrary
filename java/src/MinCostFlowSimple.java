@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class MinCostFlowSimple3 {
+public class MinCostFlowSimple {
 
 	public static int[] minCostFlow(int[][] cap, int[][] cost, int s, int t) {
 		int n = cap.length;
@@ -26,10 +26,10 @@ public class MinCostFlowSimple3 {
 		}
 	}
 
-	public static void addEdge(int[][] cap, int[][] cost, int u, int v, int capv, int costv) {
-		cap[u][v] = capv;
-		cost[u][v] = costv;
-		cost[v][u] = -costv;
+	public static void addEdge(int[][] cap, int[][] cost, int u, int v, int edgeCapacity, int edgeCost) {
+		cap[u][v] = edgeCapacity;
+		cost[u][v] = edgeCost;
+		cost[v][u] = -edgeCost;
 	}
 
 	// Usage example
