@@ -1,5 +1,5 @@
 import java.math.BigInteger;
-import java.util.*;
+import java.util.Arrays;
 
 public class BinomialAndCombinations {
 
@@ -11,21 +11,18 @@ public class BinomialAndCombinations {
 		return c;
 	}
 
-	static long gcd(long a, long b) {
-		return b == 0 ? Math.abs(a) : gcd(b, a % b);
-	}
-
 	public static long binomial(long n, long m) {
 		if (n < m || m < 0 || n < 0)
 			return 0;
 		long res = 1;
 		for (long i = 0; i < Math.min(m, n - m); i++) {
-			res = res / gcd(res, i + 1) * ((n - i) / ((i + 1) / gcd(res, i + 1)));
-			// res = res * (n - i) / (i + 1);
+			res = res * (n - i) / (i + 1);
+//			res = res / gcd(res, i + 1) * ((n - i) / ((i + 1) / gcd(res, i + 1)));
 		}
 		return res;
 	}
 
+	// n! % mod
 	public static int factorial(int n, int mod) {
 		long result = 1;
 		for (int i = 2; i <= n; i++)
@@ -33,7 +30,7 @@ public class BinomialAndCombinations {
 		return (int) (result % mod);
 	}
 
-	// p - prime, p*log(n) complexity
+	// n! mod p, p - prime, p*log(n) complexity
 	int factorial2(int n, int p) {
 		int res = 1;
 		while (n > 1) {
@@ -98,7 +95,7 @@ public class BinomialAndCombinations {
 	static boolean nextPermutation(int[] p) {
 		for (int a = p.length - 2; a >= 0; --a)
 			if (p[a] < p[a + 1])
-				for (int b = p.length - 1;; --b)
+				for (int b = p.length - 1; ; --b)
 					if (p[b] > p[a]) {
 						int t = p[a];
 						p[a] = p[b];
@@ -115,21 +112,17 @@ public class BinomialAndCombinations {
 
 	// Usage example
 	public static void main(String[] args) {
-		int[] p = { 0, 1 };
-		boolean hasNext = nextCombination(p, 2);
-		System.out.println(false == hasNext);
-		System.out.println(true == Arrays.equals(new int[] { 0, 1 }, p));
+		int[] p = {0, 1};
+		System.out.println(false == nextCombination(p, 2));
+		System.out.println(true == Arrays.equals(new int[]{0, 1}, p));
 
-		p = new int[] { 0, 0 };
-		hasNext = nextCombinationWithRepeats(p, 2);
-		System.out.println(true == hasNext);
-		System.out.println(true == Arrays.equals(new int[] { 0, 1 }, p));
+		p = new int[]{0, 0};
+		System.out.println(true == nextCombinationWithRepeats(p, 2));
+		System.out.println(true == Arrays.equals(new int[]{0, 1}, p));
 
-		hasNext = nextCombinationWithRepeats(p, 2);
-		System.out.println(true == hasNext);
-		System.out.println(true == Arrays.equals(new int[] { 1, 1 }, p));
+		System.out.println(true == nextCombinationWithRepeats(p, 2));
+		System.out.println(true == Arrays.equals(new int[]{1, 1}, p));
 
-		hasNext = nextCombinationWithRepeats(p, 2);
-		System.out.println(false == hasNext);
+		System.out.println(false == nextCombinationWithRepeats(p, 2));
 	}
 }

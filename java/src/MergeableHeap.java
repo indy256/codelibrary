@@ -3,7 +3,7 @@ import java.util.*;
 public class MergeableHeap {
 	static Random random = new Random();
 
-	static class Heap {
+	public static class Heap {
 		int value;
 		Heap left;
 		Heap right;
@@ -13,7 +13,7 @@ public class MergeableHeap {
 		}
 	}
 
-	static Heap merge(Heap a, Heap b) {
+	public static Heap merge(Heap a, Heap b) {
 		if (a == null)
 			return b;
 		if (b == null)
@@ -32,11 +32,11 @@ public class MergeableHeap {
 		return a;
 	}
 
-	static Heap add(Heap h, int value) {
+	public static Heap add(Heap h, int value) {
 		return merge(h, new Heap(value));
 	}
 
-	static class HeapAndResult {
+	public static class HeapAndResult {
 		Heap heap;
 		int value;
 
@@ -46,7 +46,7 @@ public class MergeableHeap {
 		}
 	}
 
-	static HeapAndResult remove(Heap h) {
+	public static HeapAndResult removeMin(Heap h) {
 		return new HeapAndResult(merge(h.left, h.right), h.value);
 	}
 
@@ -57,7 +57,7 @@ public class MergeableHeap {
 		h = add(h, 1);
 		h = add(h, 2);
 		while (h != null) {
-			HeapAndResult hv = remove(h);
+			HeapAndResult hv = removeMin(h);
 			System.out.println(hv.value);
 			h = hv.heap;
 		}

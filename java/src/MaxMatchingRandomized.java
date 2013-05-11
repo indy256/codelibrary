@@ -52,7 +52,7 @@ public class MaxMatchingRandomized {
 				}
 			}
 		}
-		return rank(a) >> 1;
+		return rank(a) / 2;
 	}
 
 	// Usage example

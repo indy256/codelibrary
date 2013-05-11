@@ -2,11 +2,11 @@ import java.util.*;
 
 public class MaxMatching {
 
-	static boolean findPath(int u1, boolean[][] d, int[] matching, boolean[] vis) {
+	static boolean findPath(boolean[][] graph, int u1, int[] matching, boolean[] vis) {
 		vis[u1] = true;
 		for (int v = 0; v < matching.length; ++v) {
 			int u2 = matching[v];
-			if (d[u1][v] && (u2 == -1 || !vis[u2] && findPath(u2, d, matching, vis))) {
+			if (graph[u1][v] && (u2 == -1 || !vis[u2] && findPath(graph, u2, matching, vis))) {
 				matching[v] = u1;
 				return true;
 			}
@@ -14,14 +14,14 @@ public class MaxMatching {
 		return false;
 	}
 
-	public static int maxMatching(boolean[][] d) {
-		int n1 = d.length;
-		int n2 = n1 == 0 ? 0 : d[0].length;
+	public static int maxMatching(boolean[][] graph) {
+		int n1 = graph.length;
+		int n2 = n1 == 0 ? 0 : graph[0].length;
 		int[] matching = new int[n2];
 		Arrays.fill(matching, -1);
 		int matches = 0;
 		for (int u = 0; u < n1; u++)
-			if (findPath(u, d, matching, new boolean[n1]))
+			if (findPath(graph, u, matching, new boolean[n1]))
 				++matches;
 		return matches;
 	}
