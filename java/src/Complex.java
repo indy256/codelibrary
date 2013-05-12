@@ -1,9 +1,10 @@
 public class Complex {
-	double x;
-	double y;
+	final double x;
+	final double y;
 
 	public Complex(double x) {
 		this.x = x;
+		this.y = 0;
 	}
 
 	public Complex(double x, double y) {

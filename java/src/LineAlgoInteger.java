@@ -189,7 +189,7 @@ public class LineAlgoInteger {
 	}
 
 	public static enum Position {
-		LEFT, RIGHT, BEHIND, BEYOND, ORIGIN, DESTINATION, BETWEEN;
+		LEFT, RIGHT, BEHIND, BEYOND, ORIGIN, DESTINATION, BETWEEN
 	}
 
 	public static Position classify(Point a, Point b, Point p) {

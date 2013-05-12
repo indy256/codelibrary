@@ -1,22 +1,14 @@
 import java.util.*;
 
-public class PolygonAlgo {
-	static final double eps = 1e-9;
+public class LineAlgo {
+	static final double eps = 1e-8;
 
 	public static int sign(double a) {
 		return Math.abs(a) < eps ? 0 : a < 0 ? -1 : 1;
 	}
 
-	public static double sqr(double x) {
-		return x * x;
-	}
-
-	public static double quickHypot(double x, double y) {
-		return Math.sqrt(x * x + y * y);
-	}
-
 	public static class Point implements Comparable<Point> {
-		double x, y;
+		public final double x, y;
 
 		public Point(double x, double y) {
 			this.x = x;
@@ -35,73 +27,69 @@ public class PolygonAlgo {
 			return x * b.x + y * b.y;
 		}
 
+		public Point rotate(double angle) { // counterclockwise
+			return new Point(x * Math.cos(angle) - y * Math.sin(angle), x * Math.sin(angle) + y * Math.cos(angle));
+		}
+
 		public int compareTo(Point o) {
-			int comp = sign(x - o.x);
-			if (comp != 0)
-				return comp;
-			return sign(y - o.y);
+			return Double.compare(x, o.x) != 0 ? Double.compare(x, o.x) : Double.compare(y, o.y);
 		}
 	}
 
 	public static class Line {
-		double a, b, c;
-
-		void norm() {
-			double d = Math.sqrt(a * a + b * b);
-			a /= d;
-			b /= d;
-			c /= d;
-			if (a < -eps || a < eps && b < 0) {
-				a = -a;
-				b = -b;
-				c = -c;
-			}
-		}
+		public final double a, b, c;
 
 		public Line(double a, double b, double c) {
 			this.a = a;
 			this.b = b;
 			this.c = c;
-			norm();
 		}
 
 		public Line(Point p1, Point p2) {
 			a = +(p1.y - p2.y);
 			b = -(p1.x - p2.x);
 			c = p1.x * p2.y - p2.x * p1.y;
-			norm();
 		}
 
-		public boolean parallel(Line line) {
-			return sign(det(a, b, line.a, line.b)) == 0;
+		public Point intersect(Line other) {
+			double a1 = a;
+			double b1 = b;
+			double c1 = c;
+			double a2 = other.a;
+			double b2 = other.b;
+			double c2 = other.c;
+			double det = a1 * b2 - a2 * b1;
+			if (sign(det) == 0) { // parallel or coincide
+				return null;
+			}
+			double x = -(c1 * b2 - c2 * b1) / det;
+			double y = -(a1 * c2 - a2 * c1) / det;
+			return new Point(x, y);
 		}
+	}
 
-		public boolean equivalent(Line line) {
-			return sign(det(a, b, line.a, line.b)) == 0 && sign(det(a, c, line.a, line.c)) == 0
-			/* && sign(det(b, c, line.b, line.c)) == 0 */;
-		}
+	public static double sqr(double x) {
+		return x * x;
+	}
 
-		public double angle() {
-			return Math.atan2(-a, b);
-		}
+	public static double quickHypot(double x, double y) {
+		return Math.sqrt(x * x + y * y);
 	}
 
 	public static double det(double a, double b, double c, double d) {
 		return a * d - b * c;
 	}
 
-	public static double angle(Point a, Point p, Point b) {
-		a = a.sub(p);
-		b = b.sub(p);
+	public static double angle(Point a, Point b) {
 		return Math.atan2(a.cross(b), a.dot(b));
 	}
 
-	public static double cross(Point a, Point b, Point c) {
-		return b.sub(a).cross(c.sub(a));
+	public static double angle(Line line) {
+		return Math.atan2(-line.a, line.b);
 	}
 
 	public static int crossop(Point a, Point b, Point c) {
-		return sign(cross(a, b, c));
+		return sign(b.sub(a).cross(c.sub(a)));
 	}
 
 	public static boolean cw(Point a, Point b, Point c) {
@@ -156,27 +144,7 @@ public class PolygonAlgo {
 		for (int i = 0; i < n; i++) {
 			s += (x[(i + 1) % n] - x[i]) * (y[(i + 1) % n] + y[i]);
 		}
-		return s;
-	}
-
-	public static Point getIntersection(Point p1, Point p2, Point q1, Point q2) {
-		return getIntersection(new Line(p1, p2), new Line(q1, q2));
-	}
-
-	public static Point getIntersection(Line A, Line B) {
-		double a1 = A.a;
-		double b1 = A.b;
-		double c1 = A.c;
-		double a2 = B.a;
-		double b2 = B.b;
-		double c2 = B.c;
-		double det = a1 * b2 - a2 * b1;
-		if (sign(det) == 0) {
-			return null;
-		}
-		double x = -(c1 * b2 - c2 * b1) / det;
-		double y = -(a1 * c2 - a2 * c1) / det;
-		return new Point(x, y);
+		return s / 2;
 	}
 
 	public static double pointToLineDistance(Point p, Line line) {
@@ -203,8 +171,8 @@ public class PolygonAlgo {
 		double s12 = sqr(a.x - b.x) + sqr(a.y - b.y);
 		double s1 = sqr(p.x - a.x) + sqr(p.y - a.y);
 		double s2 = sqr(p.x - b.x) + sqr(p.y - b.y);
-		if (s12 > eps && Math.abs(s1 - s2) <= s12)
-			return Math.abs(cross(p, a, b)) / Math.sqrt(s12);
+		if (s12 > eps * eps && Math.abs(s1 - s2) <= s12)
+			return Math.abs(a.sub(p).cross(b.sub(p))) / Math.sqrt(s12);
 		else
 			return Math.sqrt(Math.min(s1, s2));
 	}
@@ -234,13 +202,13 @@ public class PolygonAlgo {
 			if (d1 >= 0)
 				res.add(poly[i]);
 			if (d1 * d2 < 0)
-				res.add(getIntersection(p1, p2, poly[i], poly[j]));
+				res.add(new Line(p1, p2).intersect(new Line(poly[i], poly[j])));
 		}
 		return res.toArray(new Point[0]);
 	}
 
 	public static enum Location {
-		BOUNDARY, INTERIOR, EXTERIOR;
+		BOUNDARY, INTERIOR, EXTERIOR
 	}
 
 	public static Location pointInPolygon(Point p0, Point[] poly) {
@@ -266,15 +234,15 @@ public class PolygonAlgo {
 	}
 
 	public static enum Position {
-		LEFT, RIGHT, BEHIND, BEYOND, ORIGIN, DESTINATION, BETWEEN;
+		LEFT, RIGHT, BEHIND, BEYOND, ORIGIN, DESTINATION, BETWEEN
 	}
 
 	public static Position classify(Point a, Point b, Point p) {
 		int s = crossop(a, b, p);
-		if (s > eps) {
+		if (s > 0) {
 			return Position.LEFT;
 		}
-		if (s < -eps) {
+		if (s < 0) {
 			return Position.RIGHT;
 		}
 		if (sign(p.x - a.x) == 0 && sign(p.y - a.y) == 0) {

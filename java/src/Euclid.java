@@ -20,6 +20,7 @@ public class Euclid {
 		return Math.abs(a / gcd(a, b) * b);
 	}
 
+	// returns { gcd(a,b), x, y } such that gcd(a,b) = a*x + b*y
 	public static long[] euclid(long a, long b) {
 		long x = 1, y = 0, x1 = 0, y1 = 1, t;
 		while (b != 0) {
@@ -34,14 +35,14 @@ public class Euclid {
 			b = a - q * b;
 			a = t;
 		}
-		return a > 0 ? new long[] { a, x, y } : new long[] { -a, -x, -y };
+		return a > 0 ? new long[]{a, x, y} : new long[]{-a, -x, -y};
 	}
 
 	public static long[] euclid2(long a, long b) {
 		if (b == 0)
-			return a > 0 ? new long[] { a, 1, 0 } : new long[] { -a, -1, 0 };
+			return a > 0 ? new long[]{a, 1, 0} : new long[]{-a, -1, 0};
 		long[] r = euclid2(b, a % b);
-		return new long[] { r[0], r[2], r[1] - a / b * r[2] };
+		return new long[]{r[0], r[2], r[1] - a / b * r[2]};
 	}
 
 	// precondition: m > 0
@@ -50,13 +51,13 @@ public class Euclid {
 		return a >= 0 ? a : a + m;
 	}
 
-	// precondition: m > 0 && (a, m) = 1
+	// precondition: m > 0 && gcd(a, m) = 1
 	public static long modInverse(long a, long m) {
 		a = mod(a, m);
 		return a == 0 ? 0 : mod((1 - modInverse(m % a, a) * m) / a, m);
 	}
 
-	// precondition: m > 0 && (a, m) = 1
+	// precondition: m > 0 && gcd(a, m) = 1
 	public static long modInverse2(long a, long m) {
 		return (euclid(a, m)[1] % m + m) % m;
 	}
@@ -70,31 +71,32 @@ public class Euclid {
 		return res;
 	}
 
-	public static int simpleRestore(int[] mod, int[] p) {
-		int res = mod[0];
+	// solve x = a[i] (mod p[i]), where gcd(p[i], p[j]) == 1
+	public static int simpleRestore(int[] a, int[] p) {
+		int res = a[0];
 		int m = 1;
-		for (int i = 1; i < mod.length; i++) {
+		for (int i = 1; i < a.length; i++) {
 			m *= p[i - 1];
-			while (res % p[i] != mod[i])
+			while (res % p[i] != a[i])
 				res += m;
 		}
 		return res;
 	}
 
-	public static int garnerRestore(int[] mod, int[] p) {
-		int[] x = new int[mod.length];
+	public static int garnerRestore(int[] a, int[] p) {
+		int[] x = new int[a.length];
 		for (int i = 0; i < x.length; ++i) {
-			x[i] = mod[i];
+			x[i] = a[i];
 			for (int j = 0; j < i; ++j) {
 				x[i] = (int) modInverse(p[j], p[i]) * (x[i] - x[j]);
 				x[i] = (x[i] % p[i] + p[i]) % p[i];
 			}
 		}
 		int res = x[0];
-		int add = p[0];
-		for (int i = 1; i < mod.length; i++) {
-			res += x[i] * add;
-			add *= p[i];
+		int m = 1;
+		for (int i = 1; i < a.length; i++) {
+			m *= p[i - 1];
+			res += x[i] * m;
 		}
 		return res;
 	}

@@ -12,7 +12,7 @@ public class PointInPolygon {
 	}
 
 	public static enum Location {
-		BOUNDARY, INTERIOR, EXTERIOR;
+		BOUNDARY, INTERIOR, EXTERIOR
 	}
 
 	public static Location pointInPolygon(Point[] p, long x0, long y0) {

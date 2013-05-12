@@ -209,7 +209,7 @@ struct bigint {
     }
 
     void trim() {
-        while (!a.empty() && !a.back())
+        while (!a.empty() && a.back() == 0)
             a.pop_back();
         if (a.empty())
             sign = 1;
@@ -297,7 +297,7 @@ struct bigint {
             }
         }
         res.push_back((int) cur);
-        while (!res.empty() && !res.back())
+        while (!res.empty() && res.back() == 0)
             res.pop_back();
         return res;
     }
