@@ -34,6 +34,7 @@ public class LineGeometry {
 
 		@Override
 		public int compareTo(Point o) {
+			// return Double.compare(Math.atan2(y, x), Math.atan2(o.y, o.x));
 			return Double.compare(x, o.x) != 0 ? Double.compare(x, o.x) : Double.compare(y, o.y);
 		}
 	}
@@ -200,8 +201,8 @@ public class LineGeometry {
 			p[i] = poly[i].minus(p0);
 		int cnt = 0;
 		for (int i = 0, j = n - 1; i < n; j = i++) {
-			if (sign(p[i].y) == 0
-					&& (sign(p[i].x) == 0 || sign(p[j].y) == 0 && (sign(p[i].x) < 0) != (sign(p[j].x) < 0)))
+			if (sign(p[i].x) == 0 && sign(p[i].y) == 0
+					|| sign(p[i].y) == 0 && sign(p[j].y) == 0 && (sign(p[i].x) < 0) != (sign(p[j].x) < 0))
 				return Location.BOUNDARY;
 
 			if (sign(p[i].y) > 0 != sign(p[j].y) > 0) {
