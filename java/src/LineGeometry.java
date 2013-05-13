@@ -55,11 +55,16 @@ public class LineGeometry {
 
 		public Point intersect(Line line) {
 			double d = a * line.b - line.a * b;
-			return sign(d) == 0 ? null : new Point(-(c * line.b - line.c * b) / d, -(a * line.c - line.a * c) / d);
+			if (sign(d) == 0) {
+				return null;
+			}
+			double x = -(c * line.b - line.c * b) / d;
+			double y = -(a * line.c - line.a * c) / d;
+			return new Point(x, y);
 		}
 	}
 
-	// -1 / 0 / 1 for clockwise / straight line / counterclockwise
+	// Returns -1 for clockwise, 0 for straight line, -1 for counterclockwise
 	public static int orientation(Point a, Point b, Point c) {
 		Point AB = b.minus(a);
 		Point AC = c.minus(a);
@@ -91,13 +96,13 @@ public class LineGeometry {
 	}
 
 	public static double pointToSegmentDistance(Point p, Point a, Point b) {
-		double s12 = sqr(a.x - b.x) + sqr(a.y - b.y);
-		double s1 = sqr(p.x - a.x) + sqr(p.y - a.y);
-		double s2 = sqr(p.x - b.x) + sqr(p.y - b.y);
-		if (s12 > EPS && Math.abs(s1 - s2) <= s12)
-			return Math.abs(a.minus(p).cross(b.minus(p))) / Math.sqrt(s12);
+		double ab = sqr(a.x - b.x) + sqr(a.y - b.y);
+		double pa = sqr(p.x - a.x) + sqr(p.y - a.y);
+		double pb = sqr(p.x - b.x) + sqr(p.y - b.y);
+		if (ab > EPS && Math.abs(pa - pb) <= ab)
+			return Math.abs(a.minus(p).cross(b.minus(p))) / Math.sqrt(ab);
 		else
-			return Math.sqrt(Math.min(s1, s2));
+			return Math.sqrt(Math.min(pa, pb));
 	}
 
 	public static double quickHypot(double x, double y) {
@@ -169,7 +174,7 @@ public class LineGeometry {
 		return Arrays.copyOf(q, k - 1 - (q[0].compareTo(q[1]) == 0 ? 1 : 0));
 	}
 
-	// cuts left part of poly
+	// cuts right part of poly
 	public static Point[] convexCut(Point[] poly, Point p1, Point p2) {
 		int n = poly.length;
 		List<Point> res = new ArrayList<>();
