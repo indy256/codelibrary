@@ -1,3 +1,5 @@
+package obsolete;
+
 public class PointToSegmentDistance {
 	public static double pointToSegmentDistance(double x, double y, double x1, double y1, double x2, double y2) {
 		double dx = x2 - x1;

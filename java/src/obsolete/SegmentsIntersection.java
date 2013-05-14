@@ -1,3 +1,5 @@
+package obsolete;
+
 public class SegmentsIntersection {
 	public static boolean segmentsIntersect(long x1, long y1, long x2, long y2, long x3, long y3, long x4, long y4) {
 		if (Math.max(x1, x2) < Math.min(x3, x4) || Math.max(x3, x4) < Math.min(x1, x2)

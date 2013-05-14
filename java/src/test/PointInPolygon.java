@@ -1,6 +1,8 @@
+package test;
+
 import java.util.*;
 
-public class PointInPolygon2 {
+public class PointInPolygon {
 
 	static class Point {
 		long x, y;
@@ -15,34 +17,7 @@ public class PointInPolygon2 {
 		BOUNDARY, INTERIOR, EXTERIOR
 	}
 
-	public static Location pointInPolygon(Point[] p, long x, long y) {
-		int cnt = 0;
-		int n = p.length;
-		for (int i = 0; i < n; i++) {
-			if (x == p[i].x && y == p[i].y)
-				return Location.BOUNDARY;
-			int j = (i + 1) % n;
-			if (p[i].y == p[j].y) {
-				if (y == p[i].y && (p[i].x < x) != (p[j].x < x))
-					return Location.BOUNDARY;
-				continue;
-			}
-			long ymin = Math.min(p[i].y, p[j].y);
-			long ymax = Math.max(p[i].y, p[j].y);
-			if (y == ymax && (p[i].y == ymax && p[i].x > x || p[j].y == ymax && p[j].x > x))
-				++cnt;
-			if (y > ymin && y < ymax) {
-				long cross = (x - p[i].x) * (p[j].y - p[i].y) - (p[j].x - p[i].x) * (y - p[i].y);
-				if (cross == 0)
-					return Location.BOUNDARY;
-				if (p[j].y - p[i].y > 0 != cross > 0)
-					++cnt;
-			}
-		}
-		return cnt % 2 == 0 ? Location.EXTERIOR : Location.INTERIOR;
-	}
-
-	public static Location pointInPolygon2(Point[] p, long x0, long y0) {
+	public static Location pointInPolygon(Point[] p, long x0, long y0) {
 		int n = p.length;
 		long[] x = new long[n], y = new long[n];
 		for (int i = 0; i < p.length; i++) {
@@ -50,15 +25,11 @@ public class PointInPolygon2 {
 			y[i] = p[i].y - y0;
 		}
 		int cnt = 0;
-		for (int i = 0; i < n; i++) {
-			int j = (i + 1) % n;
-			if (x[i] == 0 && y[i] == 0)
-				return Location.BOUNDARY;
-			
-			if (y[i] == 0 && y[j] == 0 && (x[i] < 0) != (x[j] < 0))
+		for (int i = 0, j = n - 1; i < n; j = i++) {
+			if (y[i] == 0 && (x[i] == 0 || y[j] == 0 && (x[i] < 0) != (x[j] < 0)))
 				return Location.BOUNDARY;
 
-			if (y[i] > 0 == y[j] <= 0) {
+			if (y[i] > 0 != y[j] > 0) {
 				long det = x[i] * y[j] - x[j] * y[i];
 				if (det == 0)
 					return Location.BOUNDARY;
@@ -69,50 +40,37 @@ public class PointInPolygon2 {
 		return cnt % 2 == 0 ? Location.EXTERIOR : Location.INTERIOR;
 	}
 
-	public static Location pointInPolygon3(Point[] p, long x0, long y0) {
-		int n = p.length;
-		long[] x = new long[n], y = new long[n];
-		for (int i = 0; i < p.length; i++) {
-			x[i] = p[i].x - x0;
-			y[i] = p[i].y - y0;
-		}
-		int rcnt = 0, lcnt = 0;
-		for (int i = 0; i < n; i++) {
-			int j = (i + 1) % n;
-			if (y[i] == 0 && y[j] == 0 && (x[i] == 0 || x[j] == 0 || (x[i] < 0) != (x[j] < 0)))
-				return Location.BOUNDARY;
-			boolean rstrad = (y[i] > 0) != (y[j] > 0);
-			boolean lstrad = (y[i] < 0) != (y[j] < 0);
-			if (rstrad || lstrad) {
-				long det = x[i] * y[j] - x[j] * y[i];
-				if (det == 0)
-					return Location.BOUNDARY;
-				boolean f = (det > 0) == (y[j] - y[i] > 0);
-				if (rstrad && f)
-					++rcnt;
-				if (lstrad && !f)
-					++lcnt;
-			}
-		}
-		if ((rcnt - lcnt) % 2 != 0)
-			return Location.BOUNDARY;
-		return rcnt % 2 == 0 ? Location.EXTERIOR : Location.INTERIOR;
-	}
-
-	static Location pointInPolygon4(Point[] p, long x, long y) {
+	static Location pointInPolygon2(Point[] p, long x, long y) {
 		Random rnd = new Random(1);
-		long x2 = rnd.nextInt(1000) + 1000;
-		long y2 = rnd.nextInt(1000) + 1000;
+		long x2 = rnd.nextInt(1000000) + 1000000;
+		long y2 = rnd.nextInt(1000000) + 1000000;
 		int n = p.length;
 		int cnt = 0;
-		for (int i = 0; i < n; i++) {
-			int j = (i + 1) % n;
+		for (int i = 0, j = n - 1; i < n; j = i++) {
 			if (isMiddle(p[i], new Point(x, y), p[j]))
 				return Location.BOUNDARY;
 			if (isIntersect(x, y, x2, y2, p[i].x, p[i].y, p[j].x, p[j].y))
 				++cnt;
 		}
 		return cnt % 2 == 0 ? Location.EXTERIOR : Location.INTERIOR;
+	}
+
+	static Location pointInPolygon3(Point[] p, Point q) {
+		double a = 0;
+		for (int i = 0, j = p.length - 1; i < p.length; j = i++) {
+			if (isMiddle(p[i], q, p[j]))
+				return Location.BOUNDARY;
+			a += angle(p[i], q, p[j]);
+		}
+		return Math.abs(a) < 1e-9 ? Location.EXTERIOR : Location.INTERIOR;
+	}
+
+	public static double angle(Point a, Point p, Point b) {
+		long x1 = a.x - p.x;
+		long y1 = a.y - p.y;
+		long x2 = b.x - p.x;
+		long y2 = b.y - p.y;
+		return Math.atan2(x1 * y2 - y1 * x2, x1 * x2 + y1 * y2);
 	}
 
 	static long cross(long ax, long ay, long bx, long by, long cx, long cy) {
@@ -177,6 +135,8 @@ public class PointInPolygon2 {
 
 																		Location res1 = pointInPolygon(poly, x, y);
 																		Location res2 = pointInPolygon2(poly, x, y);
+																		// Location res2 = pointInPolygon3(poly,
+																		// new Point(x, y));
 
 																		if (res1 != res2) {
 																			System.out.println(res1 + " " + res2);
