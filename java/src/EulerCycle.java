@@ -18,6 +18,23 @@ public class EulerCycle {
 		return res;
 	}
 
+	public static List<Integer> eulerCycle2(List<Integer>[] graph, int v) {
+		int[] curEdge = new int[graph.length];
+		List<Integer> res = new ArrayList<>();
+		Stack<Integer> stack = new Stack<>();
+		stack.add(v);
+		while (!stack.isEmpty()) {
+			v = stack.pop();
+			while (curEdge[v] < graph[v].size()) {
+				stack.push(v);
+				v = graph[v].get(curEdge[v]++);
+			}
+			res.add(v);
+		}
+		Collections.reverse(res);
+		return res;
+	}
+
 	// Usage example
 	public static void main(String[] args) {
 		int n = 5;
@@ -33,7 +50,7 @@ public class EulerCycle {
 		g[3].add(4);
 		g[4].add(1);
 
-		List<Integer> res = eulerCycle(g);
-		System.out.println(res);
+		System.out.println(eulerCycle(g));
+		System.out.println(eulerCycle2(g, 0));
 	}
 }
