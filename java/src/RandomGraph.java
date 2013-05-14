@@ -116,6 +116,20 @@ public class RandomGraph {
 		return Arrays.copyOf(res, m);
 	}
 
+	// Usage example
+	public static void main(String[] args) {
+		System.out.println(Arrays.toString(pruferCode2Tree(new int[]{3, 3, 3, 4})));
+		System.out.println(Arrays.toString(pruferCode2Tree(new int[]{0, 0})));
+
+		Random rnd = new Random(1);
+		for (int step = 0; step < 1000; step++) {
+			int V = rnd.nextInt(50) + 2;
+			checkGraph(V, V - 1, rnd);
+			checkGraph(V, V * (V - 1) / 2, rnd);
+			checkGraph(V, rnd.nextInt(V * (V - 1) / 2 - (V - 1) + 1) + V - 1, rnd);
+		}
+	}
+
 	static void checkGraph(int V, int E, Random rnd) {
 		List<Integer>[] g = getRandomUndirectedConnectedGraph(V, E, rnd);
 		int n = g.length;
@@ -139,19 +153,6 @@ public class RandomGraph {
 					throw new RuntimeException();
 				}
 			}
-		}
-	}
-
-	public static void main(String[] args) {
-		System.out.println(Arrays.toString(pruferCode2Tree(new int[] { 3, 3, 3, 4 })));
-		System.out.println(Arrays.toString(pruferCode2Tree(new int[] { 0, 0 })));
-
-		Random rnd = new Random(1);
-		for (int step = 0; step < 1000; step++) {
-			int V = rnd.nextInt(50) + 2;
-			checkGraph(V, V - 1, rnd);
-			checkGraph(V, V * (V - 1) / 2, rnd);
-			checkGraph(V, rnd.nextInt(V * (V - 1) / 2 - (V - 1) + 1) + V - 1, rnd);
 		}
 	}
 }

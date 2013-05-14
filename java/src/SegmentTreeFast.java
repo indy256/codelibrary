@@ -2,20 +2,28 @@ import java.util.*;
 
 public class SegmentTreeFast {
 
-	// specific code
-	static final int INIT_VALUE = 0;
-	static final int NEUTRAL_VALUE = Integer.MIN_VALUE;
-	static final int NEUTRAL_DELTA = 0;
+	// Modify these 6 methods to implement your custom operation on the tree
+	int getInitValue() {
+		return 0;
+	}
 
-	static int joinValues(int leftValue, int rightValue) {
+	int getNeutralValue() {
+		return Integer.MIN_VALUE;
+	}
+
+	int getNeutralDelta() {
+		return 0;
+	}
+
+	int joinValues(int leftValue, int rightValue) {
 		return Math.max(leftValue, rightValue);
 	}
 
-	static int joinDeltas(int oldDelta, int newDelta) {
+	int joinDeltas(int oldDelta, int newDelta) {
 		return oldDelta + newDelta;
 	}
 
-	static int joinValueWithDelta(int value, int delta, int length) {
+	int joinValueWithDelta(int value, int delta, int length) {
 		return value + delta;
 	}
 
@@ -27,12 +35,12 @@ public class SegmentTreeFast {
 	public SegmentTreeFast(int n) {
 		value = new int[2 * n];
 		for (int i = 0; i < n; i++)
-			value[i + n] = INIT_VALUE;
+			value[i + n] = getInitValue();
 		for (int i = 2 * n - 1; i > 1; i -= 2)
 			value[i >> 1] = joinValues(value[i], value[i ^ 1]);
 
 		delta = new int[2 * n];
-		Arrays.fill(delta, NEUTRAL_DELTA);
+		Arrays.fill(delta, getNeutralDelta());
 
 		len = new int[2 * n];
 		Arrays.fill(len, n, 2 * n, 1);
@@ -53,7 +61,7 @@ public class SegmentTreeFast {
 			int x = i >> d;
 			applyDelta(x, delta[x >> 1]);
 			applyDelta(x ^ 1, delta[x >> 1]);
-			delta[x >> 1] = NEUTRAL_DELTA;
+			delta[x >> 1] = getNeutralDelta();
 		}
 	}
 
@@ -87,7 +95,7 @@ public class SegmentTreeFast {
 		b += value.length >> 1;
 		pushDelta(a);
 		pushDelta(b);
-		int res = NEUTRAL_VALUE;
+		int res = getNeutralValue();
 		for (; a <= b; a = (a + 1) >> 1, b = (b - 1) >> 1) {
 			if ((a & 1) != 0)
 				res = joinValues(res, value[a]);
@@ -103,8 +111,8 @@ public class SegmentTreeFast {
 		for (int step = 0; step < 1000; step++) {
 			int n = rnd.nextInt(50) + 1;
 			int[] x = new int[n];
-			Arrays.fill(x, INIT_VALUE);
 			SegmentTreeFast t = new SegmentTreeFast(n);
+			Arrays.fill(x, t.getInitValue());
 			for (int i = 0; i < 1000; i++) {
 				int b = rnd.nextInt(n);
 				int a = rnd.nextInt(b + 1);
@@ -113,12 +121,12 @@ public class SegmentTreeFast {
 					int delta = rnd.nextInt(100) - 50;
 					t.modify(a, b, delta);
 					for (int j = a; j <= b; j++)
-						x[j] = joinValueWithDelta(x[j], delta, 1);
+						x[j] = t.joinValueWithDelta(x[j], delta, 1);
 				} else if (cmd == 1) {
 					int res1 = t.query(a, b);
 					int res2 = x[a];
 					for (int j = a + 1; j <= b; j++)
-						res2 = joinValues(res2, x[j]);
+						res2 = t.joinValues(res2, x[j]);
 					if (res1 != res2)
 						throw new RuntimeException("error");
 

@@ -2,9 +2,14 @@ import java.util.*;
 
 public class TreapIndexedList {
 
-	// specific code
-	static final int NEUTRAL_VALUE = Integer.MIN_VALUE;
-	static final int NEUTRAL_DELTA = 0;
+	// Modify these 5 methods to implement your custom operation on the tree
+	static int getNeutralValue() {
+		return Integer.MIN_VALUE;
+	}
+
+	static int getNeutralDelta() {
+		return 0;
+	}
 
 	static int joinValues(int leftValue, int rightValue) {
 		return Math.max(leftValue, rightValue);
@@ -21,7 +26,7 @@ public class TreapIndexedList {
 	// generic code
 	static Random random = new Random();
 
-	static class Treap {
+	public static class Treap {
 		int nodeValue;
 		int subTreeValue;
 		int delta;
@@ -33,7 +38,7 @@ public class TreapIndexedList {
 		Treap(int value) {
 			nodeValue = value;
 			subTreeValue = value;
-			delta = NEUTRAL_DELTA;
+			delta = getNeutralDelta();
 			count = 1;
 			prio = random.nextLong();
 		}
@@ -57,7 +62,7 @@ public class TreapIndexedList {
 			return;
 		applyDelta(root.left, root.delta);
 		applyDelta(root.right, root.delta);
-		root.delta = NEUTRAL_DELTA;
+		root.delta = getNeutralDelta();
 	}
 
 	static int getCount(Treap root) {
@@ -65,10 +70,10 @@ public class TreapIndexedList {
 	}
 
 	static int getSubTreeValue(Treap root) {
-		return root == null ? NEUTRAL_VALUE : root.subTreeValue;
+		return root == null ? getNeutralValue() : root.subTreeValue;
 	}
 
-	static class TreapPair {
+	public static class TreapPair {
 		Treap left;
 		Treap right;
 
@@ -78,7 +83,7 @@ public class TreapIndexedList {
 		}
 	}
 
-	static TreapPair split(Treap root, int minRight) {
+	public static TreapPair split(Treap root, int minRight) {
 		if (root == null)
 			return new TreapPair(null, null);
 		pushDelta(root);
@@ -97,7 +102,7 @@ public class TreapIndexedList {
 		}
 	}
 
-	static Treap merge(Treap left, Treap right) {
+	public static Treap merge(Treap left, Treap right) {
 		pushDelta(left);
 		pushDelta(right);
 		if (left == null)
@@ -115,24 +120,24 @@ public class TreapIndexedList {
 		}
 	}
 
-	static Treap insert(Treap root, int index, int value) {
+	public static Treap insert(Treap root, int index, int value) {
 		TreapPair t = split(root, index);
 		return merge(merge(t.left, new Treap(value)), t.right);
 	}
 
-	static Treap remove(Treap root, int index) {
+	public static Treap remove(Treap root, int index) {
 		TreapPair t = split(root, index);
 		return merge(t.left, split(t.right, index + 1 - getCount(t.left)).right);
 	}
 
-	static Treap modify(Treap root, int a, int b, int delta) {
+	public static Treap modify(Treap root, int a, int b, int delta) {
 		TreapPair t1 = split(root, b + 1);
 		TreapPair t2 = split(t1.left, a);
 		applyDelta(t2.right, delta);
 		return merge(merge(t2.left, t2.right), t1.right);
 	}
 
-	static class TreapAndResult {
+	public static class TreapAndResult {
 		Treap treap;
 		int value;
 
@@ -142,14 +147,14 @@ public class TreapIndexedList {
 		}
 	}
 
-	static TreapAndResult query(Treap root, int a, int b) {
+	public static TreapAndResult query(Treap root, int a, int b) {
 		TreapPair t1 = split(root, b + 1);
 		TreapPair t2 = split(t1.left, a);
 		int value = getSubTreeValue(t2.right);
 		return new TreapAndResult(merge(merge(t2.left, t2.right), t1.right), value);
 	}
 
-	static void print(Treap root) {
+	public static void print(Treap root) {
 		if (root == null)
 			return;
 		pushDelta(root);

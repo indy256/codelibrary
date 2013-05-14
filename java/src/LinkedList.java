@@ -8,9 +8,9 @@ public class LinkedList {
 		prev = new int[maxSize + 1];
 	}
 
-	public void insert(int x, int p) {
-		prev[x] = p;
-		next[x] = next[p];
+	public void insert(int x, int pos) {
+		prev[x] = pos;
+		next[x] = next[pos];
 		prev[next[x]] = x;
 		next[prev[x]] = x;
 	}

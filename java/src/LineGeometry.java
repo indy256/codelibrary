@@ -93,7 +93,7 @@ public class LineGeometry {
 	}
 
 	public static double pointToLineDistance(Point p, Line line) {
-		return Math.abs(line.a * p.x + line.b * p.y + line.c) / quickHypot(line.a, line.b);
+		return Math.abs(line.a * p.x + line.b * p.y + line.c) / fastHypot(line.a, line.b);
 	}
 
 	public static double pointToSegmentDistance(Point p, Point a, Point b) {
@@ -106,7 +106,7 @@ public class LineGeometry {
 			return Math.sqrt(Math.min(pa, pb));
 	}
 
-	public static double quickHypot(double x, double y) {
+	public static double fastHypot(double x, double y) {
 		return Math.sqrt(x * x + y * y);
 	}
 

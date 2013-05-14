@@ -22,13 +22,13 @@ public class BellmanFord {
 		for (int step = 0; step < n; step++) {
 			updated = false;
 			for (int u = 0; u < n; u++) {
-				if (dist[u] < INF) {
-					for (Edge e : graph[u]) {
-						if (dist[e.v] > dist[u] + e.cost) {
-							dist[e.v] = Math.max(dist[u] + e.cost, -INF);
-							pred[e.v] = u;
-							updated = true;
-						}
+				if (dist[u] == INF) continue;
+				for (Edge e : graph[u]) {
+					if (dist[e.v] > dist[u] + e.cost) {
+						dist[e.v] = dist[u] + e.cost;
+						dist[e.v] = Math.max(dist[e.v], -INF);
+						pred[e.v] = u;
+						updated = true;
 					}
 				}
 			}
@@ -48,9 +48,11 @@ public class BellmanFord {
 		for (int step = 0; step < n; step++) {
 			last = -1;
 			for (int u = 0; u < n; u++) {
+				if (dist[u] == INF) continue;
 				for (Edge e : graph[u]) {
 					if (dist[e.v] > dist[u] + e.cost) {
 						dist[e.v] = Math.max(dist[u] + e.cost, -INF);
+						dist[e.v] = Math.max(dist[e.v], -INF);
 						pred[e.v] = u;
 						last = e.v;
 					}

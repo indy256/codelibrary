@@ -8,7 +8,7 @@ public class CircleGeometry {
 		return x * x;
 	}
 
-	public static double quickHypot(double x, double y) {
+	public static double fastHypot(double x, double y) {
 		return Math.sqrt(x * x + y * y);
 	}
 
@@ -31,14 +31,14 @@ public class CircleGeometry {
 		}
 
 		public boolean contains(Point p) {
-			return quickHypot(p.x - x, p.y - y) < r + EPS;
+			return fastHypot(p.x - x, p.y - y) < r + EPS;
 		}
 	}
 
 	public static Circle getCircumCircle(Point a, Point b) {
 		double x = (a.x + b.x) / 2.;
 		double y = (a.y + b.y) / 2.;
-		double r = quickHypot(a.x - x, a.y - y);
+		double r = fastHypot(a.x - x, a.y - y);
 		return new Circle(x, y, r);
 	}
 
@@ -54,7 +54,7 @@ public class CircleGeometry {
 		double cy = Bx * z2 - Cx * z1;
 		double x = cx / d;
 		double y = cy / d;
-		double r = quickHypot(x, y);
+		double r = fastHypot(x, y);
 		return new Circle(x + a.x, y + a.y, r);
 	}
 
@@ -144,7 +144,7 @@ public class CircleGeometry {
 	}
 
 	public static List<Point> circleCircleIntersection(Circle c1, Circle c2) {
-		if (quickHypot(c1.x - c2.x, c1.y - c2.y) < EPS) {
+		if (fastHypot(c1.x - c2.x, c1.y - c2.y) < EPS) {
 			if (Math.abs(c1.r - c2.r) < EPS) {
 				// infinity intersection points
 				return null;
@@ -167,7 +167,7 @@ public class CircleGeometry {
 	public static double circleCircleIntersectionArea(Circle c1, Circle c2) {
 		double r = Math.min(c1.r, c2.r);
 		double R = Math.max(c1.r, c2.r);
-		double d = quickHypot(c1.x - c2.x, c1.y - c2.y);
+		double d = fastHypot(c1.x - c2.x, c1.y - c2.y);
 		if (d < R - r + EPS) {
 			return Math.PI * r * r;
 		}

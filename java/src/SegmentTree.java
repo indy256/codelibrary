@@ -2,20 +2,28 @@ import java.util.*;
 
 public class SegmentTree {
 
-	// Modify this constants/methods to implement your custom operation on the tree
-	static final int INIT_VALUE = 0;
-	static final int NEUTRAL_VALUE = Integer.MIN_VALUE;
-	static final int NEUTRAL_DELTA = 0;
+	// Modify these 6 methods to implement your custom operation on the tree
+	int getInitValue() {
+		return 0;
+	}
 
-	static int joinValues(int leftValue, int rightValue) {
+	int getNeutralValue() {
+		return Integer.MIN_VALUE;
+	}
+
+	int getNeutralDelta() {
+		return 0;
+	}
+
+	int joinValues(int leftValue, int rightValue) {
 		return Math.max(leftValue, rightValue);
 	}
 
-	static int joinDeltas(int oldDelta, int newDelta) {
+	int joinDeltas(int oldDelta, int newDelta) {
 		return oldDelta + newDelta;
 	}
 
-	static int joinValueWithDelta(int value, int delta, int length) {
+	int joinValueWithDelta(int value, int delta, int length) {
 		return value + delta;
 	}
 
@@ -31,15 +39,15 @@ public class SegmentTree {
 		init(0, 0, n - 1);
 	}
 
-	public void init(int root, int left, int right) {
+	void init(int root, int left, int right) {
 		if (left == right) {
-			value[root] = INIT_VALUE;
-			delta[root] = NEUTRAL_DELTA;
+			value[root] = getInitValue();
+			delta[root] = getNeutralDelta();
 		} else {
 			init(2 * root + 1, left, (left + right) / 2);
 			init(2 * root + 2, (left + right) / 2 + 1, right);
 			value[root] = joinValues(value[2 * root + 1], value[2 * root + 2]);
-			delta[root] = NEUTRAL_DELTA;
+			delta[root] = getNeutralDelta();
 		}
 	}
 
@@ -52,7 +60,7 @@ public class SegmentTree {
 		int middle = (left + right) / 2;
 		applyDelta(2 * root + 1, delta[root], middle - left + 1);
 		applyDelta(2 * root + 2, delta[root], right - middle);
-		delta[root] = NEUTRAL_DELTA;
+		delta[root] = getNeutralDelta();
 	}
 
 	public int query(int a, int b) {
@@ -61,7 +69,7 @@ public class SegmentTree {
 
 	int query(int a, int b, int root, int left, int right) {
 		if (a > right || b < left)
-			return NEUTRAL_VALUE;
+			return getNeutralValue();
 		if (a <= left && right <= b)
 			return value[root];
 		pushDelta(root, left, right);
@@ -92,8 +100,8 @@ public class SegmentTree {
 		for (int step = 0; step < 1000; step++) {
 			int n = rnd.nextInt(50) + 1;
 			int[] x = new int[n];
-			Arrays.fill(x, INIT_VALUE);
 			SegmentTree t = new SegmentTree(n);
+			Arrays.fill(x, t.getInitValue());
 			for (int i = 0; i < 1000; i++) {
 				int b = rnd.nextInt(n);
 				int a = rnd.nextInt(b + 1);
@@ -102,12 +110,12 @@ public class SegmentTree {
 					int delta = rnd.nextInt(100) - 50;
 					t.modify(a, b, delta);
 					for (int j = a; j <= b; j++)
-						x[j] = joinValueWithDelta(x[j], delta, 1);
+						x[j] = t.joinValueWithDelta(x[j], delta, 1);
 				} else if (cmd == 1) {
 					int res1 = t.query(a, b);
 					int res2 = x[a];
 					for (int j = a + 1; j <= b; j++)
-						res2 = joinValues(res2, x[j]);
+						res2 = t.joinValues(res2, x[j]);
 					if (res1 != res2)
 						throw new RuntimeException("error");
 				} else {

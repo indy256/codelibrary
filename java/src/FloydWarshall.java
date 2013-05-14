@@ -17,7 +17,8 @@ public class FloydWarshall {
 					if (d[k][j] == INF)
 						continue;
 					if (d[i][j] > d[i][k] + d[k][j]) {
-						d[i][j] = Math.max(d[i][k] + d[k][j], -INF);
+						d[i][j] = d[i][k] + d[k][j];
+						d[i][j] = Math.max(d[i][j], -INF);
 						pred[i][j] = pred[k][j];
 					}
 				}
@@ -31,7 +32,7 @@ public class FloydWarshall {
 
 	// Usage example
 	public static void main(String[] args) {
-		int[][] dist = { { 0, 3, 2 }, { 0, 0, 1 }, { INF, 0, 0 } };
+		int[][] dist = {{0, 3, 2}, {0, 0, 1}, {INF, 0, 0}};
 		int[][] pred = floydWarshall(dist);
 
 		System.out.println(0 == dist[0][0]);
