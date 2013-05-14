@@ -12,21 +12,22 @@ public class SCCKosaraju {
 
 	public static List<List<Integer>> scc(List<Integer>[] graph) {
 		int n = graph.length;
-		List<Integer>[] reverseGraph = new List[n];
-		for (int i = 0; i < n; i++)
-			reverseGraph[i] = new ArrayList<>();
-		for (int i = 0; i < n; i++)
-			for (int j : graph[i])
-				reverseGraph[j].add(i);
 		boolean[] used = new boolean[n];
 		List<Integer> order = new ArrayList<>();
 		for (int i = 0; i < n; i++)
 			if (!used[i])
 				dfs(graph, used, order, i);
 
-		Collections.reverse(order);
+		List<Integer>[] reverseGraph = new List[n];
+		for (int i = 0; i < n; i++)
+			reverseGraph[i] = new ArrayList<>();
+		for (int i = 0; i < n; i++)
+			for (int j : graph[i])
+				reverseGraph[j].add(i);
+
 		List<List<Integer>> components = new ArrayList<>();
 		Arrays.fill(used, false);
+		Collections.reverse(order);
 
 		for (int u : order)
 			if (!used[u]) {

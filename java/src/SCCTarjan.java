@@ -1,5 +1,6 @@
 import java.util.*;
 
+// optimized version of http://en.wikipedia.org/wiki/Tarjan's_strongly_connected_components_algorithm
 public class SCCTarjan {
 
 	int time;
@@ -16,7 +17,6 @@ public class SCCTarjan {
 		used = new boolean[n];
 		stack = new ArrayList<>();
 		components = new ArrayList<>();
-		time = 0;
 
 		for (int u = 0; u < n; u++)
 			if (!used[u])
@@ -29,18 +29,18 @@ public class SCCTarjan {
 		lowlink[u] = time++;
 		used[u] = true;
 		stack.add(u);
-		boolean isRoot = true;
+		boolean isComponentRoot = true;
 
 		for (int v : graph[u]) {
 			if (!used[v])
 				dfs(v);
 			if (lowlink[u] > lowlink[v]) {
 				lowlink[u] = lowlink[v];
-				isRoot = false;
+				isComponentRoot = false;
 			}
 		}
 
-		if (isRoot) {
+		if (isComponentRoot) {
 			List<Integer> component = new ArrayList<>();
 			while (true) {
 				int k = stack.remove(stack.size() - 1);
@@ -59,10 +59,9 @@ public class SCCTarjan {
 		for (int i = 0; i < g.length; i++) {
 			g[i] = new ArrayList<>();
 		}
-		g[2].add(0);
-		g[2].add(1);
 		g[0].add(1);
-		g[1].add(0);
+		g[0].add(2);
+		g[2].add(1);
 
 		List<List<Integer>> components = new SCCTarjan().scc(g);
 		System.out.println(components);

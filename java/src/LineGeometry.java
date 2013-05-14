@@ -65,7 +65,7 @@ public class LineGeometry {
 		}
 	}
 
-	// Returns -1 for clockwise, 0 for straight line, -1 for counterclockwise
+	// Returns -1 for clockwise, 0 for straight line, 1 for counterclockwise
 	public static int orientation(Point a, Point b, Point c) {
 		Point AB = b.minus(a);
 		Point AC = c.minus(a);
