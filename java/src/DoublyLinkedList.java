@@ -1,9 +1,9 @@
-public class DoubleLinkedList {
+public class DoublyLinkedList {
 
 	int[] next;
 	int[] prev;
 
-	public DoubleLinkedList(int maxSize) {
+	public DoublyLinkedList(int maxSize) {
 		next = new int[maxSize + 1];
 		prev = new int[maxSize + 1];
 	}
@@ -23,7 +23,7 @@ public class DoubleLinkedList {
 	// Usage example
 	public static void main(String[] args) {
 		int n = 10;
-		DoubleLinkedList list = new DoubleLinkedList(n);
+		DoublyLinkedList list = new DoublyLinkedList(n);
 		for (int i = 1; i <= n; i++) {
 			list.insert(i, 0);
 		}
