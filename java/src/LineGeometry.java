@@ -65,7 +65,7 @@ public class LineGeometry {
 		}
 	}
 
-	// Returns -1 for clockwise, 0 for straight line, 1 for counterclockwise
+	// Returns -1 for clockwise, 0 for straight line, 1 for counterclockwise order
 	public static int orientation(Point a, Point b, Point c) {
 		Point AB = b.minus(a);
 		Point AC = c.minus(a);
@@ -84,7 +84,7 @@ public class LineGeometry {
 		return orientation(a, b, c) * orientation(a, b, d) < 0 && orientation(c, d, a) * orientation(c, d, b) < 0;
 	}
 
-	public static boolean isIntersect(Point a, Point b, Point c, Point d) {
+	public static boolean isCrossOrTouchIntersect(Point a, Point b, Point c, Point d) {
 		if (Math.max(a.x, b.x) < Math.min(c.x, d.x) - EPS || Math.max(c.x, d.x) < Math.min(a.x, b.x) - EPS
 				|| Math.max(a.y, b.y) < Math.min(c.y, d.y) - EPS || Math.max(c.y, d.y) < Math.min(a.y, b.y) - EPS) {
 			return false;
@@ -135,7 +135,7 @@ public class LineGeometry {
 		LEFT, RIGHT, BEHIND, BEYOND, ORIGIN, DESTINATION, BETWEEN
 	}
 
-	// classifies point p against vector a
+	// Classifies position of point p against vector a
 	public static Position classify(Point p, Point a) {
 		int s = sign(a.cross(p));
 		if (s > 0) {
