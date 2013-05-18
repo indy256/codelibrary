@@ -5,7 +5,7 @@ public class FenwickTreeExtended {
 			t[i] += value;
 	}
 
-	// sum[0,i]
+	// sum[0..i]
 	public static int sum(int[] t, int i) {
 		int res = 0;
 		for (; i >= 0; i -= (i + 1) & -(i + 1))
@@ -24,7 +24,7 @@ public class FenwickTreeExtended {
 		return res;
 	}
 
-	// sum[a,b]
+	// sum[a..b]
 	public static int sum(int[] t, int a, int b) {
 		return sum(t, b) - sum(t, a - 1);
 	}

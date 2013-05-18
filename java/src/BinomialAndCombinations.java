@@ -17,7 +17,6 @@ public class BinomialAndCombinations {
 		long res = 1;
 		for (long i = 0; i < Math.min(m, n - m); i++) {
 			res = res * (n - i) / (i + 1);
-//			res = res / gcd(res, i + 1) * ((n - i) / ((i + 1) / gcd(res, i + 1)));
 		}
 		return res;
 	}
