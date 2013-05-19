@@ -1,5 +1,4 @@
-import java.util.function.DoublePredicate;
-import java.util.function.IntPredicate;
+import java.util.function.*;
 
 public class BinarySearch {
 
@@ -7,7 +6,7 @@ public class BinarySearch {
 		int lo = from - 1;
 		int hi = to + 1;
 		while (hi - lo > 1) {
-			int mid = (lo + hi) / 2;
+			int mid = lo + (hi - lo) / 2;
 			if (!predicate.test(mid)) {
 				lo = mid;
 			} else {
