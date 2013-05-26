@@ -2,7 +2,7 @@ package obsolete;
 
 import java.util.*;
 
-public class SuffixArray1 {
+public class SuffixArrayOld {
 
 	// suffix array in O(n*log(n))
 	public static int[] suffixArray(CharSequence str) {

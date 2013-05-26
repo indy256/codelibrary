@@ -1,7 +1,7 @@
 package obsolete;
 import java.util.*;
 
-public class Treap {
+public class TreapOld {
 
 	static class Node {
 		int cnt;
@@ -134,7 +134,7 @@ public class Treap {
 
 	// Usage example
 	public static void main(String[] args) {
-		Treap treap = new Treap();
+		TreapOld treap = new TreapOld();
 		treap.add(0, 1);
 		treap.add(0, 2);
 		treap.add(0, 3);

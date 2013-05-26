@@ -15,7 +15,7 @@ public class MaxFlowTest {
 		List<Integer>[] g = RandomGraph.getRandomUndirectedConnectedGraph(V, E, rnd);
 //		MaxFlowDinic f1 = new MaxFlowDinic();
 		MaxFlowDinicMatrix f2 = new MaxFlowDinicMatrix();
-		MaxFlowPreflow f3 = new MaxFlowPreflow();
+		MaxFlowPreflowN3 f3 = new MaxFlowPreflowN3();
 		MaxFlowRetreat f4 = new MaxFlowRetreat();
 
 		System.out.println("starting");

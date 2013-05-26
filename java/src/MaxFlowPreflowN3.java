@@ -1,4 +1,4 @@
-public class MaxFlowPreflow {
+public class MaxFlowPreflowN3 {
 
 	int[][] cap;
 
@@ -77,7 +77,7 @@ public class MaxFlowPreflow {
 	public static void main(String[] args) {
 		int[][] capacity = { { 0, 3, 2 }, { 0, 0, 2 }, { 0, 0, 0 } };
 		int n = capacity.length;
-		MaxFlowPreflow flow = new MaxFlowPreflow();
+		MaxFlowPreflowN3 flow = new MaxFlowPreflowN3();
 		flow.init(n);
 		for (int i = 0; i < n; i++)
 			for (int j = 0; j < n; j++)

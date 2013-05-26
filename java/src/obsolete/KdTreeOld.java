@@ -2,7 +2,7 @@ package obsolete;
 import java.awt.geom.Point2D;
 import java.util.*;
 
-public class KdTree {
+public class KdTreeOld {
 
 	public static class Node {
 		Point2D.Double p;
@@ -24,7 +24,7 @@ public class KdTree {
 
 	Node root;
 
-	public KdTree(Point2D.Double[] points) {
+	public KdTreeOld(Point2D.Double[] points) {
 		root = buildTree(0, points.length, true, points);
 	}
 
@@ -78,8 +78,8 @@ public class KdTree {
 		for (int i = 0; i < points.length; i++) {
 			points[i] = new Point2D.Double(x[i], y[i]);
 		}
-		KdTree kdTree = new KdTree(points);
-		KdTree.Node res = kdTree.findNearest(6, 3);
+		KdTreeOld kdTree = new KdTreeOld(points);
+		KdTreeOld.Node res = kdTree.findNearest(6, 3);
 		System.out.println(res.p == points[3]);
 	}
 }

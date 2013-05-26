@@ -1,3 +1,5 @@
+package experimental;
+
 import java.util.*;
 
 // Search for maximum independent set
@@ -65,10 +67,10 @@ public class BronKerboshOld {
 		int V = 70;
 		int E = V * (V - 1) / 2 / 5;
 		System.out.println(V + " " + E);
-		List<Integer>[] graph = RandomGraph.getRandomUndirectedConnectedGraph(V, E, rnd);
-		long time = System.currentTimeMillis();
-		Set<Integer> mis = maximumIndependentSet(graph);
-		System.out.println(System.currentTimeMillis() - time);
-		System.out.println(mis.size() + " " + mis);
+//		List<Integer>[] graph = RandomGraph.getRandomUndirectedConnectedGraph(V, E, rnd);
+//		long time = System.currentTimeMillis();
+//		Set<Integer> mis = maximumIndependentSet(graph);
+//		System.out.println(System.currentTimeMillis() - time);
+//		System.out.println(mis.size() + " " + mis);
 	}
 }

@@ -1,16 +1,19 @@
+package experimental.spoj;
+
 import java.io.File;
 import java.io.PrintWriter;
 import java.util.Random;
 
-public class DYNACON1_Checker {
+
+public class DYNALCA_Checker {
 
 	static Random rnd = new Random(1);
 
 	static void genCase(PrintWriter pw) {
 		int n = rnd.nextInt(20) + 3;
-		LinkCutTreeConnectivity.Node[] nodes = new LinkCutTreeConnectivity.Node[n];
+		LinkCutTreeLca.Node[] nodes = new LinkCutTreeLca.Node[n];
 		for (int i = 0; i < nodes.length; i++) {
-			nodes[i] = new LinkCutTreeConnectivity.Node();
+			nodes[i] = new LinkCutTreeLca.Node();
 		}
 		int q = 100000;
 		pw.println(n + " " + q);
@@ -28,13 +31,13 @@ public class DYNACON1_Checker {
 					if (x == y)
 						continue;
 					try {
-						LinkCutTreeConnectivity.link(nodes[x], nodes[y]);
+						LinkCutTreeLca.link(nodes[x], nodes[y]);
 						break;
 					} catch (RuntimeException e) {
 					}
 				}
 				++links;
-				pw.println("add " + (x + 1) + " " + (y + 1));
+				pw.println("link " + (x + 1) + " " + (y + 1));
 				if (--q == 0)
 					break m1;
 				if (--cnt == 0)
@@ -44,20 +47,16 @@ public class DYNACON1_Checker {
 			cnt = rnd.nextInt(n / 2) + 1;
 			while (links > 0) {
 				int x;
-				int y;
 				while (true) {
 					x = rnd.nextInt(n);
-					y = rnd.nextInt(n);
-					if (x == y)
-						continue;
 					try {
-						LinkCutTreeConnectivity.cut(nodes[x], nodes[y]);
+						LinkCutTreeLca.cut(nodes[x]);
 						break;
 					} catch (RuntimeException e) {
 					}
 				}
 				--links;
-				pw.println("rem " + (x + 1) + " " + (y + 1));
+				pw.println("cut " + (x + 1));
 				if (--q == 0)
 					break m1;
 				if (--cnt == 0)
@@ -71,9 +70,14 @@ public class DYNACON1_Checker {
 					y = rnd.nextInt(n);
 					if (x == y)
 						continue;
-					break;
+					try {
+						LinkCutTreeLca.lca(nodes[x], nodes[y]);
+						break;
+					} catch (RuntimeException e) {
+
+					}
 				}
-				pw.println("conn " + (x + 1) + " " + (y + 1));
+				pw.println("lca " + (x + 1) + " " + (y + 1));
 				if (--q == 0)
 					break m1;
 			}
@@ -82,23 +86,21 @@ public class DYNACON1_Checker {
 
 	public static void main(String[] args) throws Exception {
 		for (int i = 0;; i++) {
-			String inputName = "D:\\dynacon1_input.txt";
-			String outputName = "D:\\dynacon1_output.txt";
+			String inputName = "D:\\dynalca_input.txt";
+			String outputName = "D:\\dynalca_output.txt";
 			PrintWriter pw = new PrintWriter(inputName);
 			genCase(pw);
 			pw.close();
-			Process p1 = new ProcessBuilder("D:\\projects\\cpp\\spoj-stuff\\DYNACON1\\lc.exe")
+			Process p1 = new ProcessBuilder("D:\\projects\\cpp\\spoj-stuff\\DYNALCA\\lc.exe")
 					.redirectInput(new File(inputName)).redirectOutput(new File(outputName + "1")).start();
 			p1.waitFor();
-//			String name = "D:\\projects\\cpp\\spoj-stuff\\DYNACON1\\" + (i % 20) + ".exe";
-			 String name = "D:\\projects\\cpp\\spoj-stuff\\DYNACON1\\a.bat";
-			Process p2 = new ProcessBuilder(name, inputName, outputName + "2")/*.redirectInput(new File(inputName))
-					.redirectOutput(new File(outputName + "2"))*/.start();
+			String name = "D:\\projects\\cpp\\spoj-stuff\\DYNALCA\\" + (i % 39) + ".exe";
+			Process p2 = new ProcessBuilder(name).redirectInput(new File(inputName))
+					.redirectOutput(new File(outputName + "2")).start();
 			p2.waitFor();
 
 			Process p3 = Runtime.getRuntime().exec("fc " + outputName + "1" + " " + outputName + "2");
 			p3.waitFor();
-			System.out.println(name);
 			if (p3.exitValue() != 0) {
 				System.err.println("error: " + name);
 				return;

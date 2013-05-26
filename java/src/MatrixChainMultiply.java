@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class MatrixMultiply {
+public class MatrixChainMultiply {
 
 	static final int INF = Integer.MAX_VALUE / 3;
 
