@@ -13,24 +13,26 @@ public class SuffixArray {
 		Arrays.sort(order, (a, b) -> str.charAt(a) - str.charAt(b));
 
 		// sa[i] - suffix on i'th position after sorting by first len characters
-		// rank[i] - position of the i'th suffix after sorting by first len characters
+		// classes[i] - position of the i'th suffix after sorting by first len characters
 		int[] sa = new int[n];
-		int[] rank = new int[n];
+		int[] classes = new int[n];
 		for (int i = 0; i < n; i++) {
 			sa[i] = order[i];
-			rank[i] = str.charAt(i);
+			classes[i] = str.charAt(i);
 		}
 
 		for (int len = 1; len < n; len *= 2) {
-			// Suffixes are already sorted by first len characters.
-			// Now sort suffixes by first len * 2 characters.
-			int[] r = rank.clone();
-			rank[sa[0]] = 0;
+			int[] r = classes.clone();
+			classes[sa[0]] = 0;
 			for (int i = 1; i < n; i++) {
 				int s1 = sa[i - 1];
 				int s2 = sa[i];
-				rank[s2] = r[s1] == r[s2] && Math.max(s1, s2) + len < n && r[s1 + len / 2] == r[s2 + len / 2] ? rank[s1] : i;
+				// condition s1 + len < n simulates '\0'-symbol at the end
+				// a separate class is created for each suffix of length <= len that is followed by '\0'-symbol
+				classes[s2] = r[s1] == r[s2] && s1 + len < n && r[s1 + len / 2] == r[s2 + len / 2] ? classes[s1] : i;
 			}
+			// Suffixes are already sorted by first len characters
+			// Now sort suffixes by first len * 2 characters
 			int[] cnt = new int[n];
 			for (int i = 0; i < n; i++)
 				cnt[i] = i;
@@ -39,8 +41,9 @@ public class SuffixArray {
 				// s[i] - order of suffixes sorted by first len characters
 				// (s[i] - len) - order of suffixes sorted only by second len characters
 				int s1 = s[i] - len;
+				// sort only suffixes of length > len, others are already sorted
 				if (s1 >= 0)
-					sa[cnt[rank[s1]]++] = s1;
+					sa[cnt[classes[s1]]++] = s1;
 			}
 		}
 		return sa;
@@ -77,7 +80,7 @@ public class SuffixArray {
 		System.out.println("lcp = " + Arrays.toString(lcp(sa1, s1)));
 
 		// random test
-		Random rnd = new Random();
+		Random rnd = new Random(1);
 		for (int step = 0; step < 100000; step++) {
 			int n = rnd.nextInt(100) + 1;
 			StringBuilder s = new StringBuilder();

@@ -5,7 +5,7 @@ import java.util.*;
 // Search for maximum independent set
 // Based on http://web.cecs.pdx.edu/~mperkows/temp/HOM1/findMaxClique.pdf
 public class BronKerboshSort {
-
+/*
 	static long time;
 
 	static void findMaximumIndependentSet(List<Integer> cur, List<Integer> result, boolean[][] graph, int[] oldSet,
@@ -152,4 +152,5 @@ public class BronKerboshSort {
 		}
 		return a;
 	}
+	*/
 }

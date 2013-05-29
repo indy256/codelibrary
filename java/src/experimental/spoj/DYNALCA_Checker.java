@@ -8,7 +8,7 @@ import java.util.Random;
 public class DYNALCA_Checker {
 
 	static Random rnd = new Random(1);
-
+ /*
 	static void genCase(PrintWriter pw) {
 		int n = rnd.nextInt(20) + 3;
 		LinkCutTreeLca.Node[] nodes = new LinkCutTreeLca.Node[n];
@@ -107,4 +107,5 @@ public class DYNALCA_Checker {
 			}
 		}
 	}
+	*/
 }
