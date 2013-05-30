@@ -10,26 +10,23 @@ public class SuffixArray {
 			order[i] = n - 1 - i;
 
 		// stable sort of characters. java8 lambda syntax
-		Arrays.sort(order, (a, b) -> str.charAt(a) - str.charAt(b));
+		Arrays.sort(order, (a, b) -> Character.compare(str.charAt(a), str.charAt(b)));
 
 		// sa[i] - suffix on i'th position after sorting by first len characters
-		// classes[i] - position of the i'th suffix after sorting by first len characters
+		// rank[i] - position of the i'th suffix after sorting by first len characters
 		int[] sa = new int[n];
-		int[] classes = new int[n];
+		int[] rank = new int[n];
 		for (int i = 0; i < n; i++) {
 			sa[i] = order[i];
-			classes[i] = str.charAt(i);
+			rank[i] = str.charAt(i);
 		}
 
 		for (int len = 1; len < n; len *= 2) {
-			int[] r = classes.clone();
-			classes[sa[0]] = 0;
-			for (int i = 1; i < n; i++) {
-				int s1 = sa[i - 1];
-				int s2 = sa[i];
+			int[] r = rank.clone();
+			for (int i = 0; i < n; i++) {
 				// condition s1 + len < n simulates '\0'-symbol at the end
 				// a separate class is created for each suffix of length <= len that is followed by '\0'-symbol
-				classes[s2] = r[s1] == r[s2] && s1 + len < n && r[s1 + len / 2] == r[s2 + len / 2] ? classes[s1] : i;
+				rank[sa[i]] = i > 0 && r[sa[i - 1]] == r[sa[i]] && sa[i - 1] + len < n && r[sa[i - 1] + len / 2] == r[sa[i] + len / 2] ? rank[sa[i - 1]] : i;
 			}
 			// Suffixes are already sorted by first len characters
 			// Now sort suffixes by first len * 2 characters
@@ -43,7 +40,7 @@ public class SuffixArray {
 				int s1 = s[i] - len;
 				// sort only suffixes of length > len, others are already sorted
 				if (s1 >= 0)
-					sa[cnt[classes[s1]]++] = s1;
+					sa[cnt[rank[s1]]++] = s1;
 			}
 		}
 		return sa;
