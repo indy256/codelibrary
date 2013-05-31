@@ -24,8 +24,8 @@ public class SuffixArray {
 		for (int len = 1; len < n; len *= 2) {
 			int[] r = rank.clone();
 			for (int i = 0; i < n; i++) {
-				// condition s1 + len < n simulates '\0'-symbol at the end
-				// a separate class is created for each suffix of length <= len that is followed by '\0'-symbol
+				// condition s1 + len < n simulates 0-symbol at the end of the string
+				// a separate class is created for each suffix followed by 0-symbol
 				rank[sa[i]] = i > 0 && r[sa[i - 1]] == r[sa[i]] && sa[i - 1] + len < n && r[sa[i - 1] + len / 2] == r[sa[i] + len / 2] ? rank[sa[i - 1]] : i;
 			}
 			// Suffixes are already sorted by first len characters
