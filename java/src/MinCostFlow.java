@@ -53,7 +53,7 @@ public class MinCostFlow {
 		}
 	}
 
-	static int[] minCostFlow(List<Edge>[] graph, int s, int t, int maxf) {
+	public static int[] minCostFlow(List<Edge>[] graph, int s, int t, int maxf) {
 		int n = graph.length;
 		int[] prio = new int[n];
 		int[] curflow = new int[n];

@@ -13,65 +13,62 @@ public class MinCostFlowBF {
 		}
 	}
 
-	static List<Edge>[] graph;
-	static int[] prio, curflow, prevedge, prevnode, q;
-	static boolean[] inqueue;
-	static int nodes;
-
-	static void init(int n) {
-		nodes = n;
-		graph = new List[n];
-		for (int i = 0; i < n; i++) {
-			graph[i] = new ArrayList<>();
-		}
-		prio = new int[n];
-		curflow = new int[n];
-		prevedge = new int[n];
-		prevnode = new int[n];
-		q = new int[n];
-		inqueue = new boolean[n];
+	public static List<Edge>[] createGraph(int n) {
+		List<Edge>[] graph = new List[n];
+		for (int i = 0; i < n; i++)
+			graph[i] = new ArrayList<Edge>();
+		return graph;
 	}
 
-	static void addEdge(int s, int t, int cap, int cost) {
+	public static void addEdge(List<Edge>[] graph, int s, int t, int cap, int cost) {
 		graph[s].add(new Edge(t, cap, cost, graph[t].size()));
 		graph[t].add(new Edge(s, 0, -cost, graph[s].size() - 1));
 	}
 
-	static void bellmanFord(int s) {
-		Arrays.fill(prio, 0, nodes, Integer.MAX_VALUE);
-		prio[s] = 0;
+	static void bellmanFord(List<Edge>[] graph, int s, int[] dist, int[] prevnode, int[] prevedge, int[] curflow) {
+		int n = graph.length;
+		Arrays.fill(dist, 0, n, Integer.MAX_VALUE);
+		dist[s] = 0;
+		curflow[s] = Integer.MAX_VALUE;
+		boolean[] inqueue = new boolean[n];
+		int[] q = new int[n];
 		int qt = 0;
 		q[qt++] = s;
-		for (int qh = 0; (qh - qt) % nodes != 0; qh++) {
-			int u = q[qh % nodes];
+		for (int qh = 0; (qh - qt) % n != 0; qh++) {
+			int u = q[qh % n];
 			inqueue[u] = false;
 			for (int i = 0; i < (int) graph[u].size(); i++) {
 				Edge e = graph[u].get(i);
 				if (e.cap <= e.f)
 					continue;
 				int v = e.to;
-				int ndist = prio[u] + e.cost;
-				if (prio[v] > ndist) {
-					prio[v] = ndist;
+				int ndist = dist[u] + e.cost;
+				if (dist[v] > ndist) {
+					dist[v] = ndist;
 					prevnode[v] = u;
 					prevedge[v] = i;
 					curflow[v] = Math.min(curflow[u], e.cap - e.f);
 					if (!inqueue[v]) {
 						inqueue[v] = true;
-						q[qt++ % nodes] = v;
+						q[qt++ % n] = v;
 					}
 				}
 			}
 		}
 	}
 
-	static int[] minCostFlow(int s, int t, int maxf) {
+	public static int[] minCostFlow(List<Edge>[] graph, int s, int t, int maxf) {
+		int n = graph.length;
+		int[] dist = new int[n];
+		int[] curflow = new int[n];
+		int[] prevedge = new int[n];
+		int[] prevnode = new int[n];
+
 		int flow = 0;
 		int flowCost = 0;
 		while (flow < maxf) {
-			curflow[s] = Integer.MAX_VALUE;
-			bellmanFord(s);
-			if (prio[t] == Integer.MAX_VALUE)
+			bellmanFord(graph, s, dist, prevnode, prevedge, curflow);
+			if (dist[t] == Integer.MAX_VALUE)
 				break;
 			int df = Math.min(curflow[t], maxf - flow);
 			flow += df;
@@ -82,21 +79,16 @@ public class MinCostFlowBF {
 				flowCost += df * e.cost;
 			}
 		}
-		return new int[] { flow, flowCost };
+		return new int[]{flow, flowCost};
 	}
 
 	// Usage example
 	public static void main(String[] args) {
-		int[][] capacity = { { 0, 3, 2 }, { 0, 0, 2 }, { 0, 0, 0 } };
-		int n = capacity.length;
-		init(n);
-		for (int i = 0; i < n; i++)
-			for (int j = 0; j < n; j++)
-				if (capacity[i][j] != 0)
-					addEdge(i, j, capacity[i][j], 1);
-		int s = 0;
-		int t = 2;
-		int[] res = minCostFlow(s, t, Integer.MAX_VALUE);
+		List<Edge>[] graph = createGraph(3);
+		addEdge(graph, 0, 1, 3, 1);
+		addEdge(graph, 0, 2, 2, 1);
+		addEdge(graph, 1, 2, 2, 1);
+		int[] res = minCostFlow(graph, 0, 2, Integer.MAX_VALUE);
 		int flow = res[0];
 		int flowCost = res[1];
 		System.out.println(4 == flow);
