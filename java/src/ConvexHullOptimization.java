@@ -12,12 +12,12 @@ public class ConvexHullOptimization {
 			--len;
 			A[len - 1] = a;
 			B[len - 1] = b;
-		} while (len >= 3 && (B[len - 1] - B[len - 2]) * (A[len - 3] - A[len - 2]) < (B[len - 2] - B[len - 3]) * (A[len - 2] - A[len - 1]));
+		} while (len >= 3 && (B[len - 1] - B[len - 2]) * (A[len - 3] - A[len - 2]) <= (B[len - 2] - B[len - 3]) * (A[len - 2] - A[len - 1]));
 	}
 
 	// x ascends
 	public long minValue(int x) {
-		while (ptr + 1 < len && A[ptr] * x + B[ptr] > A[ptr + 1] * x + B[ptr + 1]) {
+		while (ptr + 1 < len && A[ptr] * x + B[ptr] >= A[ptr + 1] * x + B[ptr + 1]) {
 			++ptr;
 		}
 		return A[ptr] * x + B[ptr];
