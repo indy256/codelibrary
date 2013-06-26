@@ -17,6 +17,7 @@ public class ConvexHullOptimization {
 
 	// x ascends
 	public long minValue(int x) {
+		ptr = Math.min(ptr, len - 1);
 		while (ptr + 1 < len && A[ptr] * x + B[ptr] >= A[ptr + 1] * x + B[ptr + 1]) {
 			++ptr;
 		}
