@@ -23,12 +23,16 @@ public class ConvexHullOptimization {
 		return A[ptr] * x + B[ptr];
 	}
 
+	// Usage example
 	public static void main(String[] args) {
 		ConvexHullOptimization h = new ConvexHullOptimization();
-		h.addLine(10, 1);
-		h.addLine(5, 2);
-		h.addLine(3, 1);
-		h.addLine(1, 1);
+		h.addLine(3, 0);
+		h.addLine(2, 1);
+		h.addLine(3, 2);
+		h.addLine(0, 6);
+		System.out.println(h.minValue(0));
+		System.out.println(h.minValue(1));
+		System.out.println(h.minValue(2));
 		System.out.println(h.minValue(3));
 	}
 }
