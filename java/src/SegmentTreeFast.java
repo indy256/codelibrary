@@ -29,7 +29,7 @@ public class SegmentTreeFast {
 
 	// generic code
 	int[] value;
-	int[] delta;
+	int[] delta; // delta[i] affects value[2*i+1], value[2*i+2], delta[2*i+1] and delta[2*i+2]
 	int[] len;
 
 	public SegmentTreeFast(int n) {

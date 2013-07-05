@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class SegmentTree {
+public class SegmentTree2 {
 
 	// Modify these 6 methods to implement your custom operation on the tree
 	int getInitValue() {
@@ -30,9 +30,9 @@ public class SegmentTree {
 	// generic tree code
 	int n;
 	int[] value;
-	int[] delta; // delta[i] affects value[i], delta[2*i+1] and delta[2*i+2]
+	int[] delta; // delta[i] affects value[2*i+1], value[2*i+2], delta[2*i+1] and delta[2*i+2]
 
-	public SegmentTree(int n) {
+	public SegmentTree2(int n) {
 		this.n = n;
 		value = new int[4 * n];
 		delta = new int[4 * n];
@@ -51,10 +51,15 @@ public class SegmentTree {
 		}
 	}
 
+	void applyDelta(int root, int delta, int length) {
+		value[root] = joinValueWithDelta(value[root], delta, length);
+		this.delta[root] = joinDeltas(this.delta[root], delta);
+	}
+
 	void pushDelta(int root, int left, int right) {
-		value[root] = joinValueWithDelta(value[root], delta[root], right - left + 1);
-		delta[2 * root + 1] = joinDeltas(delta[2 * root + 1], delta[root]);
-		delta[2 * root + 2] = joinDeltas(delta[2 * root + 2], delta[root]);
+		int middle = (left + right) / 2;
+		applyDelta(2 * root + 1, delta[root], middle - left + 1);
+		applyDelta(2 * root + 2, delta[root], right - middle);
 		delta[root] = getNeutralDelta();
 	}
 
@@ -66,7 +71,7 @@ public class SegmentTree {
 		if (a > right || b < left)
 			return getNeutralValue();
 		if (a <= left && right <= b)
-			return joinValueWithDelta(value[root], delta[root], right - left + 1);
+			return value[root];
 		pushDelta(root, left, right);
 		return joinValues(query(a, b, root * 2 + 1, left, (left + right) / 2),
 				query(a, b, root * 2 + 2, (left + right) / 2 + 1, right));
@@ -80,15 +85,13 @@ public class SegmentTree {
 		if (a > right || b < left)
 			return;
 		if (a <= left && right <= b) {
-			this.delta[root] = joinDeltas(this.delta[root], delta);
+			applyDelta(root, delta, right - left + 1);
 			return;
 		}
 		pushDelta(root, left, right);
-		int middle = (left + right) / 2;
-		modify(a, b, delta, 2 * root + 1, left, middle);
-		modify(a, b, delta, 2 * root + 2, middle + 1, right);
-		value[root] = joinValues(joinValueWithDelta(value[2 * root + 1], this.delta[2 * root + 1], middle - left + 1),
-				joinValueWithDelta(value[2 * root + 2], this.delta[2 * root + 2], right - middle));
+		modify(a, b, delta, 2 * root + 1, left, (left + right) / 2);
+		modify(a, b, delta, 2 * root + 2, (left + right) / 2 + 1, right);
+		value[root] = joinValues(value[2 * root + 1], value[2 * root + 2]);
 	}
 
 	// Random test
@@ -97,7 +100,7 @@ public class SegmentTree {
 		for (int step = 0; step < 1000; step++) {
 			int n = rnd.nextInt(50) + 1;
 			int[] x = new int[n];
-			SegmentTree t = new SegmentTree(n);
+			SegmentTree2 t = new SegmentTree2(n);
 			Arrays.fill(x, t.getInitValue());
 			for (int i = 0; i < 1000; i++) {
 				int b = rnd.nextInt(n);
