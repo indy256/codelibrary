@@ -23,6 +23,7 @@ public class SegmentTree {
 		return oldDelta + newDelta;
 	}
 
+	// don't forget about length!
 	int joinValueWithDelta(int value, int delta, int length) {
 		return value + delta;
 	}
