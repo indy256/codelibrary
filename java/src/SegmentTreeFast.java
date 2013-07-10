@@ -23,9 +23,8 @@ public class SegmentTreeFast {
 		return oldDelta + newDelta;
 	}
 
-	// don't forget about length!
 	int joinValueWithDelta(int value, int delta, int length) {
-		return value + delta;
+		return value + delta; // value + delta * length (for sum)
 	}
 
 	// generic code
