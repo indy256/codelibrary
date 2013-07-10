@@ -87,7 +87,7 @@ public class LinkCutTreeConnectivity {
 		return x;
 	}
 
-	// prerequisite: x and y are in distinct trees
+	// prerequisite: x and y are in different trees
 	public static void link(Node x, Node y) {
 		if (findRoot(x) == findRoot(y))
 			throw new RuntimeException("error: x and y are connected");
