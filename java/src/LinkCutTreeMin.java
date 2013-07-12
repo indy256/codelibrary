@@ -127,7 +127,7 @@ public class LinkCutTreeMin {
 
 		Random rnd = new Random(1);
 		for (int step = 0; step < 1000; step++) {
-			int n = rnd.nextInt(100) + 1;
+			int n = rnd.nextInt(2) + 1;
 			Node[] nodes1 = new Node[n];
 			TreeForestValue.Node[] nodes2 = new TreeForestValue.Node[n];
 
@@ -142,6 +142,18 @@ public class LinkCutTreeMin {
 					link(nodes1[v], nodes1[u]);
 					TreeForestValue.link(nodes2[v], nodes2[u]);
 				}
+				for (int i = 0; i < n; i++) {
+					int min1 = min(nodes1[i]);
+					int min2 = TreeForestValue.min(nodes2[i]);
+					if (min1 != min2) {
+						throw new RuntimeException();
+					}
+				}
+			}
+			for (int u = 0; u < n; u++) {
+				if (TreeForestValue.isRoot(nodes2[u])) continue;
+				cut(nodes1[u]);
+				TreeForestValue.cut(nodes2[u]);
 				for (int i = 0; i < n; i++) {
 					int min1 = min(nodes1[i]);
 					int min2 = TreeForestValue.min(nodes2[i]);
