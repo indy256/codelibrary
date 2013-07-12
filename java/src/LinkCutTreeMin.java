@@ -1,3 +1,7 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 public class LinkCutTreeMin {
 
 	public static class Node {
@@ -109,16 +113,70 @@ public class LinkCutTreeMin {
 
 	// Usage example
 	public static void main(String[] args) {
-		Node n1 = new Node(1);
-		Node n2 = new Node(2);
-		Node n3 = new Node(3);
-		Node n4 = new Node(4);
-		Node n5 = new Node(5);
+//		Node n1 = new Node(1);
+//		Node n2 = new Node(2);
+//		Node n3 = new Node(3);
+//		Node n4 = new Node(4);
+//		Node n5 = new Node(5);
+//
+//		link(n2, n1);
+//		link(n3, n1);
+//		link(n4, n3);
+//
+//		System.out.println(min(n4));
 
-		link(n2, n1);
-		link(n3, n1);
-		link(n4, n3);
+		Random rnd = new Random(1);
+		for (int step = 0; step < 1000; step++) {
+			int n = rnd.nextInt(100) + 1;
+			Node[] nodes1 = new Node[n];
+			TreeForestValue.Node[] nodes2 = new TreeForestValue.Node[n];
 
-		System.out.println(min(n4));
+			for (int i = 0; i < n; i++) {
+				nodes1[i] = new Node(i);
+				nodes2[i] = new TreeForestValue.Node(i);
+			}
+
+			final List<Integer>[] tree = getRandomTree(n, rnd);
+			for (int u = 0; u < n; u++) {
+				for (int v : tree[u]) {
+					link(nodes1[v], nodes1[u]);
+					TreeForestValue.link(nodes2[v], nodes2[u]);
+				}
+				for (int i = 0; i < n; i++) {
+					int min1 = min(nodes1[i]);
+					int min2 = TreeForestValue.min(nodes2[i]);
+					if (min1 != min2) {
+						throw new RuntimeException();
+					}
+				}
+			}
+		}
+	}
+
+	public static List<Integer>[] getRandomTree(int n, Random rnd) {
+		List<Integer>[] t = new List[n];
+		for (int i = 0; i < n; i++)
+			t[i] = new ArrayList<>();
+		int[] p = getRandomPermutation(n, rnd);
+		for (int i = 1; i < n; i++) {
+			int parent = p[rnd.nextInt(i)];
+			t[parent].add(p[i]);
+//			t[p[i]].add(parent);
+		}
+		return t;
+	}
+
+	static int[] getRandomPermutation(int n, Random rnd) {
+		int[] res = new int[n];
+		for (int i = 0; i < n; i++) {
+			res[i] = i;
+		}
+		for (int i = res.length - 1; i > 0; i--) {
+			int j = rnd.nextInt(i + 1);
+			int t = res[i];
+			res[i] = res[j];
+			res[j] = t;
+		}
+		return res;
 	}
 }

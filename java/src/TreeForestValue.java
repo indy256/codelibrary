@@ -1,11 +1,6 @@
-import java.util.Collections;
-import java.util.IdentityHashMap;
-import java.util.Set;
-
 public class TreeForestValue {
 
-	static class Node {
-		Set<Node> children = Collections.<Node>newSetFromMap(new IdentityHashMap());
+	public static class Node {
 		Node parent;
 		int value;
 
@@ -14,27 +9,32 @@ public class TreeForestValue {
 		}
 	}
 
-	static Node findRoot(Node v) {
+	public static Node findRoot(Node v) {
 		for (; v.parent != null; v = v.parent)
 			;
 		return v;
 	}
 
-	// prerequisite: v is a root node
-	static void link(Node v, Node w) {
-		w.children.add(v);
+	public static boolean isRoot(Node v) {
+		return v.parent == null;
+	}
+
+	// v is a root node
+	public static void link(Node v, Node w) {
 		v.parent = w;
 	}
 
 	// v is not a root node
-	static void cut(Node v) {
-		v.parent.children.remove(v);
+	public static void cut(Node v) {
 		v.parent = null;
 	}
 
-	static int min(Node v) {
-
-
+	public static int min(Node v) {
+		int res = Integer.MAX_VALUE;
+		for (; v != null; v = v.parent) {
+			res = Math.min(res, v.value);
+		}
+		return res;
 	}
 
 	// Usage example
