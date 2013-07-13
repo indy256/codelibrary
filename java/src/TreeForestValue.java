@@ -37,6 +37,12 @@ public class TreeForestValue {
 		return res;
 	}
 
+	public static void add(Node v, int delta) {
+		for (; v != null; v = v.parent) {
+			v.value += delta;
+		}
+	}
+
 	// Usage example
 	public static void main(String[] args) {
 		Node n1 = new Node(1);

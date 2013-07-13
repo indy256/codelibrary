@@ -10,14 +10,30 @@ public class LinkCutTreeMin {
 		Node parent;
 
 		int value;
+		int delta;
 		int min;
 
 		void update() {
 			min = value;
+			if (delta != 0) throw new RuntimeException();
 			if (left != null)
-				min = Math.min(min, left.min);
+				min = Math.min(min, left.min + delta * 0);
 			if (right != null)
-				min = Math.min(min, right.min);
+				min = Math.min(min, right.min + delta * 0);
+		}
+
+		void applyDelta(int delta) {
+			this.delta += delta;
+			this.value += delta;
+			this.min += delta;
+		}
+
+		void pushDelta() {
+			if (left != null)
+				left.applyDelta(delta);
+			if (right != null)
+				right.applyDelta(delta);
+			delta = 0;
 		}
 
 		public Node(int value) {
@@ -44,6 +60,8 @@ public class LinkCutTreeMin {
 	static void rotate(Node x) {
 		Node p = x.parent;
 		Node g = p.parent;
+		p.pushDelta();
+		x.pushDelta();
 		boolean isRootP = isRoot(p);
 		boolean leftChildX = (x == p.left);
 
@@ -65,6 +83,7 @@ public class LinkCutTreeMin {
 				rotate((x == p.left) == (p == g.left) ? p : x);
 			rotate(x);
 		}
+		x.pushDelta();
 		x.update();
 	}
 
@@ -111,23 +130,25 @@ public class LinkCutTreeMin {
 		return x.min;
 	}
 
+	public static void add(Node x, int delta) {
+		expose(x);
+		x.applyDelta(delta);
+	}
+
 	// Usage example
 	public static void main(String[] args) {
+//		Node n0 = new Node(0);
 //		Node n1 = new Node(1);
-//		Node n2 = new Node(2);
-//		Node n3 = new Node(3);
-//		Node n4 = new Node(4);
-//		Node n5 = new Node(5);
-//
-//		link(n2, n1);
-//		link(n3, n1);
-//		link(n4, n3);
-//
-//		System.out.println(min(n4));
+//		link(n0, n1);
+//		add(n0, 1);
+//		add(n1, 1);
+//		System.out.println(min(n0));
+//		System.out.println(min(n1));
+//		System.exit(0);
 
 		Random rnd = new Random(1);
-		for (int step = 0; step < 1000; step++) {
-			int n = rnd.nextInt(2) + 1;
+		for (int step = 0; step < 10000; step++) {
+			int n = rnd.nextInt(30) + 1;
 			Node[] nodes1 = new Node[n];
 			TreeForestValue.Node[] nodes2 = new TreeForestValue.Node[n];
 
@@ -141,6 +162,11 @@ public class LinkCutTreeMin {
 				for (int v : tree[u]) {
 					link(nodes1[v], nodes1[u]);
 					TreeForestValue.link(nodes2[v], nodes2[u]);
+				}
+				for (int i = 0; i < n; i++) {
+					int v = rnd.nextInt(10) + 1;
+					add(nodes1[i], v);
+					TreeForestValue.add(nodes2[i], v);
 				}
 				for (int i = 0; i < n; i++) {
 					int min1 = min(nodes1[i]);
@@ -163,6 +189,7 @@ public class LinkCutTreeMin {
 				}
 			}
 		}
+		System.out.println("Tests passed");
 	}
 
 	public static List<Integer>[] getRandomTree(int n, Random rnd) {
