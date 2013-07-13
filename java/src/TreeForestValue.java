@@ -3,8 +3,10 @@ public class TreeForestValue {
 	public static class Node {
 		Node parent;
 		int value;
+		int id;
 
-		Node(int value) {
+		Node(int id, int value) {
+			this.id = id;
 			this.value = value;
 		}
 	}
@@ -37,6 +39,18 @@ public class TreeForestValue {
 		return res;
 	}
 
+	public static int minId(Node v) {
+		int res = Integer.MAX_VALUE;
+		int minId = -1;
+		for (; v != null; v = v.parent) {
+			if (res >= v.value) {
+				res = v.value;
+				minId = v.id;
+			}
+		}
+		return minId;
+	}
+
 	public static void add(Node v, int delta) {
 		for (; v != null; v = v.parent) {
 			v.value += delta;
@@ -45,10 +59,10 @@ public class TreeForestValue {
 
 	// Usage example
 	public static void main(String[] args) {
-		Node n1 = new Node(1);
-		Node n2 = new Node(2);
-		Node n3 = new Node(3);
-		Node n4 = new Node(4);
+		Node n1 = new Node(1, 1);
+		Node n2 = new Node(2, 2);
+		Node n3 = new Node(3, 3);
+		Node n4 = new Node(4, 4);
 
 		link(n1, n2);
 		link(n3, n2);

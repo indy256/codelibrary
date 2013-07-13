@@ -9,17 +9,24 @@ public class LinkCutTreeMin {
 		Node right;
 		Node parent;
 
+		int id;
+		int minId;
 		int value;
 		int delta;
 		int min;
 
 		void update() {
 			min = value;
+			minId = id;
 			if (delta != 0) throw new RuntimeException();
-			if (left != null)
-				min = Math.min(min, left.min + delta * 0);
-			if (right != null)
-				min = Math.min(min, right.min + delta * 0);
+			if (left != null && min > left.min) {
+				min = left.min;
+				minId = left.minId;
+			}
+			if (right != null && min >= right.min) {
+				min = right.min;
+				minId = right.minId;
+			}
 		}
 
 		void applyDelta(int delta) {
@@ -36,9 +43,10 @@ public class LinkCutTreeMin {
 			delta = 0;
 		}
 
-		public Node(int value) {
+		public Node(int id, int value) {
+			this.id = id;
 			this.value = value;
-			this.min = value;
+			update();
 		}
 	}
 
@@ -130,6 +138,11 @@ public class LinkCutTreeMin {
 		return x.min;
 	}
 
+	public static int minId(Node x) {
+		expose(x);
+		return x.minId;
+	}
+
 	public static void add(Node x, int delta) {
 		expose(x);
 		x.applyDelta(delta);
@@ -153,8 +166,8 @@ public class LinkCutTreeMin {
 			TreeForestValue.Node[] nodes2 = new TreeForestValue.Node[n];
 
 			for (int i = 0; i < n; i++) {
-				nodes1[i] = new Node(i);
-				nodes2[i] = new TreeForestValue.Node(i);
+				nodes1[i] = new Node(i, i);
+				nodes2[i] = new TreeForestValue.Node(i, i);
 			}
 
 			final List<Integer>[] tree = getRandomTree(n, rnd);
@@ -169,8 +182,8 @@ public class LinkCutTreeMin {
 					TreeForestValue.add(nodes2[i], v);
 				}
 				for (int i = 0; i < n; i++) {
-					int min1 = min(nodes1[i]);
-					int min2 = TreeForestValue.min(nodes2[i]);
+					int min1 = minId(nodes1[i]);
+					int min2 = TreeForestValue.minId(nodes2[i]);
 					if (min1 != min2) {
 						throw new RuntimeException();
 					}
@@ -181,8 +194,8 @@ public class LinkCutTreeMin {
 				cut(nodes1[u]);
 				TreeForestValue.cut(nodes2[u]);
 				for (int i = 0; i < n; i++) {
-					int min1 = min(nodes1[i]);
-					int min2 = TreeForestValue.min(nodes2[i]);
+					int min1 = minId(nodes1[i]);
+					int min2 = TreeForestValue.minId(nodes2[i]);
 					if (min1 != min2) {
 						throw new RuntimeException();
 					}
