@@ -21,7 +21,7 @@ public class MaxFlowDinic {
 
 	public static void addEdge(List<Edge>[] graph, int s, int t, int cap) {
 		graph[s].add(new Edge(t, graph[t].size(), cap));
-		graph[t].add(new Edge(t, graph[s].size() - 1, 0));
+		graph[t].add(new Edge(s, graph[s].size() - 1, 0));
 	}
 
 	static boolean dinicBfs(List<Edge>[] graph, int src, int dest, int[] dist) {

@@ -3,7 +3,9 @@ public class TreeForestValue {
 	public static class Node {
 		Node parent;
 		int value;
+		int savedValue;
 		int id;
+		Object o;
 
 		Node(int id, int value) {
 			this.id = id;
@@ -26,9 +28,18 @@ public class TreeForestValue {
 		v.parent = w;
 	}
 
+	// v is a root node
+	public static void link(Node v, Node w, int newValue, Object o) {
+		v.parent = w;
+		v.value = newValue;
+		v.o = o;
+	}
+
 	// v is not a root node
 	public static void cut(Node v) {
 		v.parent = null;
+		v.savedValue = v.value;
+		v.value = Integer.MAX_VALUE;
 	}
 
 	public static int min(Node v) {
