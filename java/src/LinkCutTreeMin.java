@@ -11,9 +11,12 @@ public class LinkCutTreeMin {
 
 		int id;
 		int minId;
-		int value;
-		int delta;
-		int min;
+		long value;
+		long delta;
+		long min;
+
+		Object o;
+		long savedValue;
 
 		void update() {
 			min = value;
@@ -29,7 +32,7 @@ public class LinkCutTreeMin {
 			}
 		}
 
-		void applyDelta(int delta) {
+		void applyDelta(long delta) {
 			this.delta += delta;
 			this.value += delta;
 			this.min += delta;
@@ -116,13 +119,16 @@ public class LinkCutTreeMin {
 	}
 
 	// prerequisite: x is a root node, y is in another tree
-	public static void link(Node x, Node y) {
+	public static void link(Node x, Node y, int newValue, Object o) {
 		if (findRoot(x) == findRoot(y))
 			throw new RuntimeException("error: x and y are connected");
 		expose(x);
 		if (x.right != null)
 			throw new RuntimeException("error: x is not a root node");
 		x.parent = y;
+		x.value = newValue;
+		x.update();
+		x.o = o;
 	}
 
 	public static void cut(Node x) {
@@ -131,9 +137,11 @@ public class LinkCutTreeMin {
 			throw new RuntimeException("error: x is a root node");
 		x.right.parent = null;
 		x.right = null;
+		x.savedValue = x.value;
+		x.value = Integer.MAX_VALUE;
 	}
 
-	public static int min(Node x) {
+	public static long min(Node x) {
 		expose(x);
 		return x.min;
 	}
@@ -143,7 +151,7 @@ public class LinkCutTreeMin {
 		return x.minId;
 	}
 
-	public static void add(Node x, int delta) {
+	public static void add(Node x, long delta) {
 		expose(x);
 		x.applyDelta(delta);
 	}
@@ -173,7 +181,7 @@ public class LinkCutTreeMin {
 			final List<Integer>[] tree = getRandomTree(n, rnd);
 			for (int u = 0; u < n; u++) {
 				for (int v : tree[u]) {
-					link(nodes1[v], nodes1[u]);
+					link(nodes1[v], nodes1[u], 0, null);
 					TreeForestValue.link(nodes2[v], nodes2[u]);
 				}
 				for (int i = 0; i < n; i++) {

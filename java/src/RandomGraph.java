@@ -1,4 +1,11 @@
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.PriorityQueue;
+import java.util.Random;
+import java.util.Set;
 
 public class RandomGraph {
 
@@ -80,6 +87,34 @@ public class RandomGraph {
 			long e = edges.get(x);
 			int u = (int) (e >>> 32);
 			int v = (int) e;
+			g[u].add(v);
+			g[v].add(u);
+		}
+		for (int i = 0; i < V; i++)
+			Collections.sort(g[i]);
+		return g;
+	}
+
+	// precondition: V >= 2, V-1 <= E <= V*(V-1)/2
+	public static List<Integer>[] getRandomUndirectedConnectedGraph2(int V, int E, Random rnd) {
+		List<Integer>[] g = getRandomTree(V, rnd);
+		Set<Long> edgeSet = new LinkedHashSet<>();
+		for (int i = 0; i < V; i++) {
+			for (int j : g[i]) {
+				edgeSet.add(((long) i << 32) + j);
+			}
+		}
+		for (int i = 0; i < E - (V - 1); i++) {
+			int u;
+			int v;
+			long edge;
+			while (true) {
+				u = rnd.nextInt(V);
+				v = rnd.nextInt(V);
+				edge = ((long) u << 32) + v;
+				if (u < v && !edgeSet.contains(edge)) break;
+			}
+			edgeSet.add(edge);
 			g[u].add(v);
 			g[v].add(u);
 		}
