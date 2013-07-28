@@ -31,18 +31,6 @@ public class SegmentTree {
 	}
 
 	// generic tree code
-	int joinValues(int leftValue, int rightValue) {
-		return queryOperation(leftValue, rightValue);
-	}
-
-	int joinDeltas(int oldDelta, int newDelta) {
-		return modifyOperation(oldDelta, newDelta);
-	}
-
-	int joinValueWithDelta(int value, int delta, int length) {
-		return modifyOperation(value, totalDeltaEffect(delta, length));
-	}
-
 	int n;
 	int[] value;
 	int[] delta; // delta[i] affects value[i], delta[2*i+1] and delta[2*i+2]
@@ -61,15 +49,15 @@ public class SegmentTree {
 		} else {
 			init(2 * root + 1, left, (left + right) / 2);
 			init(2 * root + 2, (left + right) / 2 + 1, right);
-			value[root] = joinValues(value[2 * root + 1], value[2 * root + 2]);
+			value[root] = queryOperation(value[2 * root + 1], value[2 * root + 2]);
 			delta[root] = getNeutralDelta();
 		}
 	}
 
 	void pushDelta(int root, int left, int right) {
-		value[root] = joinValueWithDelta(value[root], delta[root], right - left + 1);
-		delta[2 * root + 1] = joinDeltas(delta[2 * root + 1], delta[root]);
-		delta[2 * root + 2] = joinDeltas(delta[2 * root + 2], delta[root]);
+		value[root] = modifyOperation(value[root], totalDeltaEffect(delta[root], right - left + 1));
+		delta[2 * root + 1] = modifyOperation(delta[2 * root + 1], delta[root]);
+		delta[2 * root + 2] = modifyOperation(delta[2 * root + 2], delta[root]);
 		delta[root] = getNeutralDelta();
 	}
 
@@ -81,10 +69,9 @@ public class SegmentTree {
 		if (a > right || b < left)
 			return getNeutralValue();
 		if (a <= left && right <= b)
-			return joinValueWithDelta(value[root], delta[root], right - left + 1);
+			return modifyOperation(value[root], totalDeltaEffect(delta[root], right - left + 1));
 		pushDelta(root, left, right);
-		return joinValues(query(a, b, root * 2 + 1, left, (left + right) / 2),
-				query(a, b, root * 2 + 2, (left + right) / 2 + 1, right));
+		return queryOperation(query(a, b, root * 2 + 1, left, (left + right) / 2), query(a, b, root * 2 + 2, (left + right) / 2 + 1, right));
 	}
 
 	public void modify(int a, int b, int delta) {
@@ -95,15 +82,14 @@ public class SegmentTree {
 		if (a > right || b < left)
 			return;
 		if (a <= left && right <= b) {
-			this.delta[root] = joinDeltas(this.delta[root], delta);
+			this.delta[root] = modifyOperation(this.delta[root], delta);
 			return;
 		}
 		pushDelta(root, left, right);
 		int middle = (left + right) / 2;
 		modify(a, b, delta, 2 * root + 1, left, middle);
 		modify(a, b, delta, 2 * root + 2, middle + 1, right);
-		value[root] = joinValues(joinValueWithDelta(value[2 * root + 1], this.delta[2 * root + 1], middle - left + 1),
-				joinValueWithDelta(value[2 * root + 2], this.delta[2 * root + 2], right - middle));
+		value[root] = queryOperation(modifyOperation(value[2 * root + 1], totalDeltaEffect(this.delta[2 * root + 1], middle - left + 1)), modifyOperation(value[2 * root + 2], totalDeltaEffect(this.delta[2 * root + 2], right - middle)));
 	}
 
 	// Random test
@@ -122,12 +108,12 @@ public class SegmentTree {
 					int delta = rnd.nextInt(100) - 50;
 					t.modify(a, b, delta);
 					for (int j = a; j <= b; j++)
-						x[j] = t.joinValueWithDelta(x[j], delta, 1);
+						x[j] = t.modifyOperation(x[j], t.totalDeltaEffect(delta, 1));
 				} else if (cmd == 1) {
 					int res1 = t.query(a, b);
 					int res2 = x[a];
 					for (int j = a + 1; j <= b; j++)
-						res2 = t.joinValues(res2, x[j]);
+						res2 = t.queryOperation(res2, x[j]);
 					if (res1 != res2)
 						throw new RuntimeException("error");
 				} else {
