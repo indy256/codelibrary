@@ -11,8 +11,8 @@ public class SegmentTree {
 		return x + y;
 	}
 
-	int effectiveDelta(int delta, int count) {
-		// contract: effectiveDelta(delta, count) == queryOperation(delta, queryOperation(delta, ...count times))
+	int totalDeltaEffect(int delta, int count) {
+		// contract: totalDeltaEffect(delta, count) == queryOperation(delta, queryOperation(delta, ...count times))
 		return delta; // delta * count (for sum queryOperation)
 	}
 
@@ -40,7 +40,7 @@ public class SegmentTree {
 	}
 
 	int joinValueWithDelta(int value, int delta, int length) {
-		return modifyOperation(value, effectiveDelta(delta, length));
+		return modifyOperation(value, totalDeltaEffect(delta, length));
 	}
 
 	int n;
