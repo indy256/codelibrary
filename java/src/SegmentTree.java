@@ -2,32 +2,47 @@ import java.util.*;
 
 public class SegmentTree {
 
-	// Modify these 6 methods to implement your custom operation on the tree
-	int getInitValue() {
-		return 0;
+	// Modify the following 6 methods to implement your custom operations on the tree. Pay attention to contracts
+	int queryOperation(int x, int y) {
+		return Math.max(x, y);
+	}
+
+	int modifyOperation(int x, int y) {
+		return x + y;
+	}
+
+	int effectiveDelta(int delta, int count) {
+		// contract: effectiveDelta(delta, count) == queryOperation(delta, queryOperation(delta, ...count times))
+		return delta; // delta * count (for sum queryOperation)
 	}
 
 	int getNeutralValue() {
+		// contract: queryOperation(x, getNeutralValue()) == x
 		return Integer.MIN_VALUE;
 	}
 
 	int getNeutralDelta() {
+		// contract: modifyOperation(x, getNeutralDelta()) == x
 		return 0;
 	}
 
-	int joinValues(int leftValue, int rightValue) {
-		return Math.max(leftValue, rightValue);
-	}
-
-	int joinDeltas(int oldDelta, int newDelta) {
-		return oldDelta + newDelta;
-	}
-
-	int joinValueWithDelta(int value, int delta, int length) {
-		return value + delta; // value + delta * length (for sum)
+	int getInitValue() {
+		return 0;
 	}
 
 	// generic tree code
+	int joinValues(int leftValue, int rightValue) {
+		return queryOperation(leftValue, rightValue);
+	}
+
+	int joinDeltas(int oldDelta, int newDelta) {
+		return modifyOperation(oldDelta, newDelta);
+	}
+
+	int joinValueWithDelta(int value, int delta, int length) {
+		return modifyOperation(value, effectiveDelta(delta, length));
+	}
+
 	int n;
 	int[] value;
 	int[] delta; // delta[i] affects value[i], delta[2*i+1] and delta[2*i+2]
