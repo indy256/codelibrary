@@ -71,7 +71,9 @@ public class SegmentTree {
 		if (a <= left && right <= b)
 			return modifyOperation(value[root], totalDeltaEffect(delta[root], right - left + 1));
 		pushDelta(root, left, right);
-		return queryOperation(query(a, b, root * 2 + 1, left, (left + right) / 2), query(a, b, root * 2 + 2, (left + right) / 2 + 1, right));
+		return queryOperation(
+				query(a, b, root * 2 + 1, left, (left + right) / 2),
+				query(a, b, root * 2 + 2, (left + right) / 2 + 1, right));
 	}
 
 	public void modify(int a, int b, int delta) {
@@ -89,7 +91,9 @@ public class SegmentTree {
 		int middle = (left + right) / 2;
 		modify(a, b, delta, 2 * root + 1, left, middle);
 		modify(a, b, delta, 2 * root + 2, middle + 1, right);
-		value[root] = queryOperation(modifyOperation(value[2 * root + 1], totalDeltaEffect(this.delta[2 * root + 1], middle - left + 1)), modifyOperation(value[2 * root + 2], totalDeltaEffect(this.delta[2 * root + 2], right - middle)));
+		value[root] = queryOperation(
+				modifyOperation(value[2 * root + 1], totalDeltaEffect(this.delta[2 * root + 1], middle - left + 1)),
+				modifyOperation(value[2 * root + 2], totalDeltaEffect(this.delta[2 * root + 2], right - middle)));
 	}
 
 	// Random test
