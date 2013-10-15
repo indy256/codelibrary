@@ -8,7 +8,7 @@ public class SegmentTree {
 	}
 
 	int modifyOperation(int x, int y) {
-		return x + y;
+		return x + y; // return y == getNeutralDelta() ? x : y; (for set modifyOperation)
 	}
 
 	int totalDeltaEffect(int delta, int count) {
