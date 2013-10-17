@@ -8,12 +8,12 @@ public class SegmentTree {
 	}
 
 	int modifyOperation(int x, int y) {
-		return x + y; // return y == getNeutralDelta() ? x : y; (for set modifyOperation)
+		return x + y; // return y == getNeutralDelta() ? x : y; (for modifyOperation "set")
 	}
 
 	int totalDeltaEffect(int delta, int count) {
 		// contract: totalDeltaEffect(delta, count) == queryOperation(delta, queryOperation(delta, ...count times))
-		return delta; // delta * count (for sum queryOperation)
+		return delta; // delta * count (for queryOperation "sum")
 	}
 
 	int getNeutralValue() {
