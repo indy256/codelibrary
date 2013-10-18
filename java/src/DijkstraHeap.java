@@ -6,7 +6,7 @@ public class DijkstraHeap {
 		Arrays.fill(pred, -1);
 		Arrays.fill(prio, Integer.MAX_VALUE);
 		prio[s] = 0;
-		PriorityQueue<Long> q = new PriorityQueue<Long>();
+		PriorityQueue<Long> q = new PriorityQueue<>();
 		q.add((long) s);
 		while (!q.isEmpty()) {
 			long cur = q.remove();
