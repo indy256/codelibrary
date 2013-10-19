@@ -175,7 +175,7 @@ public class LineGeometry {
 		return Arrays.copyOf(q, k - 1 - (q[0].compareTo(q[1]) == 0 ? 1 : 0));
 	}
 
-	// cuts right part of poly
+	// cuts right part of poly (returns left part)
 	public static Point[] convexCut(Point[] poly, Point p1, Point p2) {
 		int n = poly.length;
 		List<Point> res = new ArrayList<>();
