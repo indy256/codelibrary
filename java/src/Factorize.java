@@ -2,32 +2,33 @@ import java.util.*;
 
 public class Factorize {
 
+    // returns map: prime_divisor -> power
 	public static TreeMap<Long, Integer> factorize(long n) {
 		TreeMap<Long, Integer> factors = new TreeMap<>();
-		for (long d = 2; n > 1; ) {
-			int cnt = 0;
-			while (n % d == 0) {
-				cnt++;
-				n /= d;
+		for (long divisor = 2; n > 1; ) {
+			int power = 0;
+			while (n % divisor == 0) {
+				++power;
+				n /= divisor;
 			}
-			if (cnt > 0) {
-				factors.put(d, cnt);
+			if (power > 0) {
+				factors.put(divisor, power);
 			}
-			d += (d == 2) ? 1 : 2;
-			if (d * d > n) {
-				d = n;
+			++divisor;
+			if (divisor * divisor > n) {
+				divisor = n;
 			}
 		}
 		return factors;
 	}
 
-	public static int[] getDivisors(int n) {
+	public static int[] getAllDivisors(int n) {
 		List<Integer> list = new ArrayList<>();
-		for (int i = 1; (long) i * i <= n; i++)
-			if (n % i == 0) {
-				list.add(i);
-				if (i * i != n)
-					list.add(n / i);
+		for (int divisor = 1; divisor * divisor <= n; divisor++)
+			if (n % divisor == 0) {
+				list.add(divisor);
+				if (divisor * divisor != n)
+					list.add(n / divisor);
 			}
 		int[] res = new int[list.size()];
 		for (int i = 0; i < res.length; i++)
@@ -40,6 +41,6 @@ public class Factorize {
 	public static void main(String[] args) {
 		TreeMap<Long, Integer> f = factorize(24);
 		System.out.println(f);
-		System.out.println(Arrays.toString(getDivisors(16)));
+		System.out.println(Arrays.toString(getAllDivisors(16)));
 	}
 }
