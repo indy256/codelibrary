@@ -1,4 +1,4 @@
-public class KNightDistance {
+public class KnightDistance1 {
 
 	public static int dist(int x1, int y1, int x2, int y2) {
 		int dx = Math.abs(x2 - x1);
