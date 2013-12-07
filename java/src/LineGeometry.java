@@ -127,6 +127,7 @@ public class LineGeometry {
 		double area = 0;
 		for (int i = 0, j = n - 1; i < n; j = i++) {
 			area += (points[i].x - points[j].x) * (points[i].y + points[j].y);
+			// area += points[i].x * points[j].y - points[j].x * points[i].y;
 		}
 		return area / 2;
 	}
