@@ -23,16 +23,16 @@ public class Factorize {
 	}
 
 	public static int[] getAllDivisors(int n) {
-		List<Integer> list = new ArrayList<>();
-		for (int divisor = 1; divisor * divisor <= n; divisor++)
-			if (n % divisor == 0) {
-				list.add(divisor);
-				if (divisor * divisor != n)
-					list.add(n / divisor);
+		List<Integer> divisors = new ArrayList<>();
+		for (int d = 1; d * d <= n; d++)
+			if (n % d == 0) {
+				divisors.add(d);
+				if (d * d != n)
+					divisors.add(n / d);
 			}
-		int[] res = new int[list.size()];
+		int[] res = new int[divisors.size()];
 		for (int i = 0; i < res.length; i++)
-			res[i] = list.get(i);
+			res[i] = divisors.get(i);
 		Arrays.sort(res);
 		return res;
 	}
