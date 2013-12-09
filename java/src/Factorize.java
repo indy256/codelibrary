@@ -2,7 +2,7 @@ import java.util.*;
 
 public class Factorize {
 
-    // returns map: prime_divisor -> power
+	// prime_divisor -> power
 	public static Map<Long, Integer> factorize(long n) {
 		Map<Long, Integer> factors = new LinkedHashMap<>();
 		for (long d = 2; n > 1; ) {
