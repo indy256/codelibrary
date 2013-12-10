@@ -26,5 +26,5 @@ def get_all_divisors(n):
     return sorted(divisors)
 
 
-print(factorize(24))
-print(get_all_divisors(16))
+assert factorize(24) == {2:3, 3:1}
+assert get_all_divisors(16) == [1, 2, 4, 8, 16]
