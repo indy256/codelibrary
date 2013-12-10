@@ -1,14 +1,14 @@
 public class BinaryHeap {
-	int[] h;
+	int[] heap;
 	int size;
 
 	public BinaryHeap(int n) {
-		h = new int[n];
+		heap = new int[n];
 	}
 
 	// build heap in O(n)
 	public BinaryHeap(int[] keys) {
-		h = keys.clone();
+		heap = keys.clone();
 		size = keys.length;
 		for (int pos = size / 2 - 1; pos >= 0; pos--) {
 			moveDown(pos);
@@ -16,13 +16,13 @@ public class BinaryHeap {
 	}
 
 	public void add(int node) {
-		h[size++] = node;
-		moveUp(h[size - 1]);
+		heap[size++] = node;
+		moveUp(heap[size - 1]);
 	}
 
 	public int remove() {
-		int removed = h[0];
-		h[0] = h[--size];
+		int removed = heap[0];
+		heap[0] = heap[--size];
 		moveDown(0);
 		return removed;
 	}
@@ -30,10 +30,10 @@ public class BinaryHeap {
 	void moveUp(int pos) {
 		while (pos > 0) {
 			int parent = (pos - 1) / 2;
-			if (h[pos] >= h[parent]) {
+			if (heap[pos] >= heap[parent]) {
 				break;
 			}
-			swap(h, pos, parent);
+			swap(heap, pos, parent);
 			pos = parent;
 		}
 	}
@@ -41,13 +41,13 @@ public class BinaryHeap {
 	void moveDown(int pos) {
 		while (pos < size / 2) {
 			int child = 2 * pos + 1;
-			if (child + 1 < size && h[child] > h[child + 1]) {
+			if (child + 1 < size && heap[child] > heap[child + 1]) {
 				++child;
 			}
-			if (h[pos] <= h[child]) {
+			if (heap[pos] <= heap[child]) {
 				break;
 			}
-			swap(h, pos, child);
+			swap(heap, pos, child);
 			pos = child;
 		}
 	}
