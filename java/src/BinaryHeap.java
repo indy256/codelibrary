@@ -8,7 +8,7 @@ public class BinaryHeap {
 
 	// build heap in O(n)
 	public BinaryHeap(int[] keys) {
-		System.arraycopy(keys, 0, h, 0, keys.length);
+		h = keys.clone();
 		size = keys.length;
 		for (int pos = size / 2 - 1; pos >= 0; pos--) {
 			moveDown(pos);
@@ -22,11 +22,8 @@ public class BinaryHeap {
 
 	public int remove() {
 		int removed = h[0];
-		--size;
-		if (size > 0) {
-			h[0] = h[size];
-			moveDown(0);
-		}
+		h[0] = h[--size];
+		moveDown(0);
 		return removed;
 	}
 
