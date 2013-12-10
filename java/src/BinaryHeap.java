@@ -21,13 +21,13 @@ public class BinaryHeap {
 	}
 
 	public int remove() {
-		int removedNode = h[0];
-		int lastNode = h[--size];
-		if (size != 0) {
-			h[0] = lastNode;
+		int removed = h[0];
+		--size;
+		if (size > 0) {
+			h[0] = h[size];
 			moveDown(0);
 		}
-		return removedNode;
+		return removed;
 	}
 
 	void moveUp(int pos) {
