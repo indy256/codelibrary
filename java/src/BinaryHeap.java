@@ -20,7 +20,7 @@ public class BinaryHeap {
 		moveUp(heap[size - 1]);
 	}
 
-	public int remove() {
+	public int removeMin() {
 		int removed = heap[0];
 		heap[0] = heap[--size];
 		moveDown(0);
@@ -67,7 +67,7 @@ public class BinaryHeap {
 
 		// print elements in sorted order
 		while (heap.size > 0) {
-			int x = heap.remove();
+			int x = heap.removeMin();
 			System.out.println(x);
 		}
 	}
