@@ -36,6 +36,7 @@ struct bigint {
         sign = 1;
         if (v < 0)
             sign = -1, v = -v;
+        a.clear();
         for (; v > 0; v = v / base)
             a.push_back(v % base);
     }
@@ -372,4 +373,8 @@ int main() {
     clock_t start = clock();
     bigint c = a / b;
     fprintf(stderr, "time=%.3lfsec\n", 0.001 * (clock() - start));
+
+    bigint x = 5;
+    x = 6;
+    cout << x << endl;
 }
