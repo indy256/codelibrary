@@ -5,6 +5,7 @@
 #include <string>
 #include <complex>
 #include <ctime>
+#include <cstdio>
 using namespace std;
 
 // base and base_digits must be consistent
