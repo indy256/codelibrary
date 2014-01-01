@@ -2,31 +2,47 @@ import java.util.*;
 
 public class RandomPermutation {
 
-	static void swap(int[] a, int i, int j) {
-		int t = a[i];
-		a[i] = a[j];
-		a[j] = t;
+	public static void shuffle(int[] a) {
+		Random rnd = new Random();
+		for (int i = a.length - 1; i >= 1; i--) {
+			int j = rnd.nextInt(i + 1);
+			int t = a[i];
+			a[i] = a[j];
+			a[j] = t;
+		}
 	}
 
-	public static int[] getRandomPermutation(int n, Random rnd) {
+	public static int[] getRandomPermutation(int n) {
+		Random rnd = new Random();
 		int[] res = new int[n];
 		for (int i = 0; i < n; i++)
 			res[i] = i;
-		for (int i = 0; i < n; i++)
-			swap(res, i, i + rnd.nextInt(n - i));
+		for (int i = n - 1; i >= 1; i--) {
+			int j = rnd.nextInt(i + 1);
+			int t = res[i];
+			res[i] = res[j];
+			res[j] = t;
+		}
 		return res;
 	}
 
-	public static int[] getRandomArrangement(int n, int m, Random rnd) {
+	public static int[] getRandomArrangement(int n, int m) {
+		Random rnd = new Random();
 		int[] res = new int[n];
 		for (int i = 0; i < n; i++)
 			res[i] = i;
-		for (int i = 0; i < m; i++)
-			swap(res, i, i + rnd.nextInt(n - i));
+		for (int i = 0; i < m; i++) {
+			int j = i + rnd.nextInt(n - i);
+			int t = res[i];
+			res[i] = res[j];
+			res[j] = t;
+		}
 		return Arrays.copyOf(res, m);
 	}
 
-	public static int[] getRandomArrangement2(int n, int m, Random rnd) {
+	// for small m
+	public static int[] getRandomArrangement2(int n, int m) {
+		Random rnd = new Random();
 		Set<Integer> set = new HashSet<>();
 		int[] res = new int[m];
 		while (set.size() < m) {
@@ -39,8 +55,6 @@ public class RandomPermutation {
 
 	// Usage example
 	public static void main(String[] args) {
-		Random rnd = new Random();
-		int[] p = getRandomPermutation(5, rnd);
-		System.out.println(Arrays.toString(p));
+		System.out.println(Arrays.toString(getRandomPermutation(5)));
 	}
 }
