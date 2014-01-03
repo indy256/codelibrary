@@ -15,13 +15,10 @@ public class RandomPermutation {
 	public static int[] getRandomPermutation(int n) {
 		Random rnd = new Random();
 		int[] res = new int[n];
-		for (int i = 0; i < n; i++)
-			res[i] = i;
-		for (int i = n - 1; i >= 1; i--) {
+		for (int i = 0; i < n; i++) {
 			int j = rnd.nextInt(i + 1);
-			int t = res[i];
 			res[i] = res[j];
-			res[j] = t;
+			res[j] = i;
 		}
 		return res;
 	}
