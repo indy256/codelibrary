@@ -59,7 +59,7 @@ public class SegmentTreeIntervalAddSum {
 			res += sum(a, b, node * 2, left, mid);
 		if (b > mid)
 			res += sum(a, b, node * 2 + 1, mid + 1, right);
-		pop(node, left, right);
+//		pop(node, left, right);
 		return res;
 	}
 
@@ -73,7 +73,7 @@ public class SegmentTreeIntervalAddSum {
 			return tsum[node];
 		int mid = (left + right) >> 1;
 		int res = i <= mid ? get(i, node * 2, left, mid) : get(i, node * 2 + 1, mid + 1, right);
-		pop(node, left, right);
+//		pop(node, left, right);
 		return res;
 	}
 
