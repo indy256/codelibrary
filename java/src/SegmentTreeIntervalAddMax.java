@@ -4,6 +4,13 @@ public class SegmentTreeIntervalAddMax {
 	int[] tmax;
 	int[] tadd; // tadd[i] affects tmax[i], tadd[2*i+1] and tadd[2*i+2]
 
+	void push(int root) {
+		tmax[root] += tadd[root];
+		tadd[2 * root + 1] += tadd[root];
+		tadd[2 * root + 2] += tadd[root];
+		tadd[root] = 0;
+	}
+
 	public SegmentTreeIntervalAddMax(int n) {
 		this.n = n;
 		tmax = new int[4 * n];
@@ -20,20 +27,17 @@ public class SegmentTreeIntervalAddMax {
 		}
 		push(root);
 		int mid = (left + right) >> 1;
-		int res1 = 0;
-		if (a <= mid)
-			res1 = max(a, Math.min(b, mid), 2 * root + 1, left, mid);
-		int res2 = 0;
-		if (b > mid)
-			res2 = max(Math.max(a, mid + 1), b, 2 * root + 2, mid + 1, right);
-		return Math.max(res1, res2);
-	}
-
-	void push(int root) {
-		tmax[root] += tadd[root];
-		tadd[2 * root + 1] += tadd[root];
-		tadd[2 * root + 2] += tadd[root];
-		tadd[root] = 0;
+		if (a <= mid && b > mid) {
+			return Math.max(
+					max(a, Math.min(b, mid), 2 * root + 1, left, mid),
+					max(Math.max(a, mid + 1), b, 2 * root + 2, mid + 1, right)
+			);
+		} else if (a <= mid) {
+			return max(a, Math.min(b, mid), 2 * root + 1, left, mid);
+		} else if (b > mid) {
+			return max(Math.max(a, mid + 1), b, 2 * root + 2, mid + 1, right);
+		}
+		throw new RuntimeException();
 	}
 
 	public void add(int a, int b, int delta) {

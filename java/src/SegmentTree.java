@@ -2,28 +2,32 @@ import java.util.*;
 
 public class SegmentTree {
 
-	// Modify the following 6 methods to implement your custom operations on the tree. Pay attention to contracts
+	// Modify the following 5 methods to implement your custom operations on the tree.
+	// This example implements Add/Max operations. Operations like Add/Sum, Color/Max can also be implemented.
+	int modifyOperation(int x, int y) {
+		if (x == getNeutralDelta()) {
+			return y;
+		}
+		if (y == getNeutralDelta()) {
+			return x;
+		}
+		return x + y;
+	}
+
 	int queryOperation(int x, int y) {
 		return Math.max(x, y);
 	}
 
-	int modifyOperation(int x, int y) {
-		return x + y; // return y == getNeutralDelta() ? x : y; (for modifyOperation "set")
-	}
-
-	int totalDeltaEffect(int delta, int count) {
-		// contract: totalDeltaEffect(delta, count) == queryOperation(delta, queryOperation(delta, ...count times))
-		return delta; // delta * count (for queryOperation "sum")
-	}
-
-	int getNeutralValue() {
-		// contract: queryOperation(x, getNeutralValue()) == x
-		return Integer.MIN_VALUE;
+	int deltaEffectOnSegment(int delta, int segmentLength) {
+		// Here you must write a fast equivalent of following slow code:
+		// int result = delta;
+		// for (int i = 0; i < segmentLength - 1; i++) result = queryOperation(result, delta);
+		// return result;
+		return delta;
 	}
 
 	int getNeutralDelta() {
-		// contract: modifyOperation(x, getNeutralDelta()) == x
-		return 0;
+		return Integer.MIN_VALUE;
 	}
 
 	int getInitValue() {
@@ -47,15 +51,16 @@ public class SegmentTree {
 			value[root] = getInitValue();
 			delta[root] = getNeutralDelta();
 		} else {
-			init(2 * root + 1, left, (left + right) / 2);
-			init(2 * root + 2, (left + right) / 2 + 1, right);
+			int mid = (left + right) >> 1;
+			init(2 * root + 1, left, mid);
+			init(2 * root + 2, mid + 1, right);
 			value[root] = queryOperation(value[2 * root + 1], value[2 * root + 2]);
 			delta[root] = getNeutralDelta();
 		}
 	}
 
 	void pushDelta(int root, int left, int right) {
-		value[root] = modifyOperation(value[root], totalDeltaEffect(delta[root], right - left + 1));
+		value[root] = modifyOperation(value[root], deltaEffectOnSegment(delta[root], right - left + 1));
 		delta[2 * root + 1] = modifyOperation(delta[2 * root + 1], delta[root]);
 		delta[2 * root + 2] = modifyOperation(delta[2 * root + 2], delta[root]);
 		delta[root] = getNeutralDelta();
@@ -66,14 +71,20 @@ public class SegmentTree {
 	}
 
 	int query(int a, int b, int root, int left, int right) {
-		if (a > right || b < left)
-			return getNeutralValue();
-		if (a <= left && right <= b)
-			return modifyOperation(value[root], totalDeltaEffect(delta[root], right - left + 1));
+		if (a == left && b == right)
+			return modifyOperation(value[root], deltaEffectOnSegment(delta[root], right - left + 1));
 		pushDelta(root, left, right);
-		return queryOperation(
-				query(a, b, root * 2 + 1, left, (left + right) / 2),
-				query(a, b, root * 2 + 2, (left + right) / 2 + 1, right));
+		int mid = (left + right) >> 1;
+		if (a <= mid && b > mid) {
+			return queryOperation(
+					query(a, Math.min(b, mid), root * 2 + 1, left, mid),
+					query(Math.max(a, mid + 1), b, root * 2 + 2, mid + 1, right));
+		} else if (a <= mid) {
+			return query(a, Math.min(b, mid), root * 2 + 1, left, mid);
+		} else if (b > mid) {
+			return query(Math.max(a, mid + 1), b, root * 2 + 2, mid + 1, right);
+		}
+		throw new RuntimeException("Incorrect query from " + a + " to " + b);
 	}
 
 	public void modify(int a, int b, int delta) {
@@ -81,19 +92,19 @@ public class SegmentTree {
 	}
 
 	void modify(int a, int b, int delta, int root, int left, int right) {
-		if (a > right || b < left)
-			return;
-		if (a <= left && right <= b) {
+		if (a == left && b == right) {
 			this.delta[root] = modifyOperation(this.delta[root], delta);
 			return;
 		}
 		pushDelta(root, left, right);
-		int middle = (left + right) / 2;
-		modify(a, b, delta, 2 * root + 1, left, middle);
-		modify(a, b, delta, 2 * root + 2, middle + 1, right);
+		int mid = (left + right) >> 1;
+		if (a <= mid)
+			modify(a, Math.min(b, mid), delta, 2 * root + 1, left, mid);
+		if (b > mid)
+			modify(Math.max(a, mid + 1), b, delta, 2 * root + 2, mid + 1, right);
 		value[root] = queryOperation(
-				modifyOperation(value[2 * root + 1], totalDeltaEffect(this.delta[2 * root + 1], middle - left + 1)),
-				modifyOperation(value[2 * root + 2], totalDeltaEffect(this.delta[2 * root + 2], right - middle)));
+				modifyOperation(value[2 * root + 1], deltaEffectOnSegment(this.delta[2 * root + 1], mid - left + 1)),
+				modifyOperation(value[2 * root + 2], deltaEffectOnSegment(this.delta[2 * root + 2], right - mid)));
 	}
 
 	// Random test
@@ -112,7 +123,7 @@ public class SegmentTree {
 					int delta = rnd.nextInt(100) - 50;
 					t.modify(a, b, delta);
 					for (int j = a; j <= b; j++)
-						x[j] = t.modifyOperation(x[j], t.totalDeltaEffect(delta, 1));
+						x[j] = t.modifyOperation(x[j], t.deltaEffectOnSegment(delta, 1));
 				} else if (cmd == 1) {
 					int res1 = t.query(a, b);
 					int res2 = x[a];

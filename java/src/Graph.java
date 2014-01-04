@@ -26,11 +26,18 @@ public class Graph {
 		edges.get(v).add(u);
 	}
 
+	public void removeEdge(int u, int v) {
+		edges.get(u).remove(v);
+		edges.get(v).remove(u);
+	}
+
 	// Usage example
 	public static void main(String[] args) {
 		Graph g = new Graph();
 		g.addEdge(0, 1);
 		g.addEdge(1, 2);
+		System.out.println(g.edges);
+		g.removeEdge(1, 0);
 		System.out.println(g.edges);
 		g.removeNode(1);
 		System.out.println(g.edges);
