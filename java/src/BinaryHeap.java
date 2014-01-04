@@ -36,9 +36,9 @@ public class BinaryHeap {
 		}
 	}
 
-	public void add(int node) {
-		heap[size++] = node;
-		popUp(heap[size - 1]);
+	public void add(int value) {
+		heap[size] = value;
+		popUp(size++);
 	}
 
 	void popUp(int pos) {
