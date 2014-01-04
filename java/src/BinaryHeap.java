@@ -31,7 +31,7 @@ public class BinaryHeap {
 			if (heap[pos] <= heap[child]) {
 				break;
 			}
-			swap(heap, pos, child);
+			swap(pos, child);
 			pos = child;
 		}
 	}
@@ -47,15 +47,15 @@ public class BinaryHeap {
 			if (heap[pos] >= heap[parent]) {
 				break;
 			}
-			swap(heap, pos, parent);
+			swap(pos, parent);
 			pos = parent;
 		}
 	}
 
-	static void swap(int[] a, int i, int j) {
-		int t = a[i];
-		a[i] = a[j];
-		a[j] = t;
+	void swap(int i, int j) {
+		int t = heap[i];
+		heap[i] = heap[j];
+		heap[j] = t;
 	}
 
 	// Usage example

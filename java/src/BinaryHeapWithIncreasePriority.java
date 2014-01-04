@@ -1,19 +1,20 @@
 public class BinaryHeapWithIncreasePriority {
 	int[] heap;
-	int[] values;
+	int[] pos2Id;
 	int[] id2Pos;
 	int size;
 
 	public BinaryHeapWithIncreasePriority(int n) {
 		heap = new int[n];
-		values = new int[n];
+		pos2Id = new int[n];
 		id2Pos = new int[n];
 	}
 
 	public int remove() {
-		int removed = heap[0];
+		int removed = pos2Id[0];
 		heap[0] = heap[--size];
-		id2Pos[heap[0]] = 0;
+		pos2Id[0] = pos2Id[size];
+		id2Pos[pos2Id[0]] = 0;
 		pushDown(0);
 		return removed;
 	}
@@ -21,10 +22,10 @@ public class BinaryHeapWithIncreasePriority {
 	void pushDown(int pos) {
 		while (2 * pos + 1 < size) {
 			int child = 2 * pos + 1;
-			if (child + 1 < size && values[heap[child + 1]] < values[heap[child]]) {
+			if (child + 1 < size && heap[child + 1] < heap[child]) {
 				++child;
 			}
-			if (values[heap[pos]] <= values[heap[child]]) {
+			if (heap[pos] <= heap[child]) {
 				break;
 			}
 			swap(pos, child);
@@ -33,21 +34,21 @@ public class BinaryHeapWithIncreasePriority {
 	}
 
 	public void add(int id, int value) {
-		values[size] = value;
-		heap[size] = id;
+		heap[size] = value;
+		pos2Id[size] = id;
 		id2Pos[id] = size;
 		popUp(size++);
 	}
 
 	public void increasePriority(int id, int value) {
-		values[id] = value;
+		heap[id2Pos[id]] = value;
 		popUp(id2Pos[id]);
 	}
 
 	void popUp(int pos) {
 		while (pos > 0) {
 			int parent = (pos - 1) / 2;
-			if (values[heap[pos]] >= values[heap[parent]]) {
+			if (heap[pos] >= heap[parent]) {
 				break;
 			}
 			swap(pos, parent);
@@ -59,8 +60,11 @@ public class BinaryHeapWithIncreasePriority {
 		int t = heap[i];
 		heap[i] = heap[j];
 		heap[j] = t;
-		id2Pos[heap[i]] = i;
-		id2Pos[heap[j]] = j;
+		t = pos2Id[i];
+		pos2Id[i] = pos2Id[j];
+		pos2Id[j] = t;
+		id2Pos[pos2Id[i]] = i;
+		id2Pos[pos2Id[j]] = j;
 	}
 
 	// Usage example
@@ -74,8 +78,7 @@ public class BinaryHeapWithIncreasePriority {
 
 		// print elements in sorted order
 		while (heap.size != 0) {
-			int x = heap.remove();
-			System.out.println(heap.values[x]);
+			System.out.println(heap.heap[0] + " " + heap.remove());
 		}
 	}
 }
