@@ -1,26 +1,26 @@
 public class SegmentTreeKth {
 
-	public static void add(int[] sum, int i, int delta, int root, int left, int right) {
+	public static void add(int[] tree, int i, int delta, int root, int left, int right) {
 		if (left == right) {
-			sum[root] += delta;
+			tree[root] += delta;
 			return;
 		}
 		int mid = (left + right) >> 1;
 		if (i <= mid)
-			add(sum, i, delta, 2 * root + 1, left, mid);
+			add(tree, i, delta, 2 * root + 1, left, mid);
 		else
-			add(sum, i, delta, 2 * root + 2, mid + 1, right);
-		sum[root] = sum[2 * root + 1] + sum[2 * root + 2];
+			add(tree, i, delta, 2 * root + 2, mid + 1, right);
+		tree[root] = tree[2 * root + 1] + tree[2 * root + 2];
 	}
 
-	public static int getKth(int[] sum, int k, int root, int left, int right) {
+	public static int getKth(int[] tree, int k, int root, int left, int right) {
 		if (left == right)
 			return left;
 		int mid = (left + right) >> 1;
-		if (k <= sum[2 * root + 1])
-			return getKth(sum, k, 2 * root + 1, left, mid);
+		if (k <= tree[2 * root + 1])
+			return getKth(tree, k, 2 * root + 1, left, mid);
 		else
-			return getKth(sum, k - sum[2 * root + 1], 2 * root + 2, mid + 1, right);
+			return getKth(tree, k - tree[2 * root + 1], 2 * root + 2, mid + 1, right);
 	}
 
 	// tests
