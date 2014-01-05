@@ -86,7 +86,8 @@ public class SegmentTree2 {
 			return query(a, Math.min(b, mid), root * 2 + 1, left, mid);
 		else if (b > mid)
 			return query(Math.max(a, mid + 1), b, root * 2 + 2, mid + 1, right);
-		throw new RuntimeException("Incorrect query from " + a + " to " + b);
+		else
+			throw new RuntimeException("Incorrect query from " + a + " to " + b);
 	}
 
 	public void modify(int a, int b, int delta) {

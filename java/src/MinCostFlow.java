@@ -77,10 +77,10 @@ public class MinCostFlow {
 				int u = (int) cur;
 				if (d != prio[u])
 					continue;
-				for (int i = 0; i < (int) graph[u].size(); i++) {
+				for (int i = 0; i < graph[u].size(); i++) {
 					Edge e = graph[u].get(i);
 					int v = e.to;
-					if (e.cap <= e.f)
+					if (e.f >= e.cap)
 						continue;
 					int nprio = prio[u] + e.cost + pot[u] - pot[v];
 					if (prio[v] > nprio) {
@@ -105,7 +105,7 @@ public class MinCostFlow {
 				flowCost += df * e.cost;
 			}
 		}
-		return new int[] { flow, flowCost };
+		return new int[]{flow, flowCost};
 	}
 
 	// Usage example

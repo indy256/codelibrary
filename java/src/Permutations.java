@@ -20,16 +20,16 @@ public class Permutations {
 		return false;
 	}
 
-	public static int[] permutationByNumber(int len, long number) {
-		long[] fact = new long[len];
+	public static int[] permutationByNumber(int n, long number) {
+		long[] fact = new long[n];
 		fact[0] = 1;
-		for (int i = 1; i < len; i++) {
+		for (int i = 1; i < n; i++) {
 			fact[i] = i * fact[i - 1];
 		}
-		int[] p = new int[len];
-		for (int i = 0; i < len; i++) {
-			p[i] = (int) (number / fact[len - 1 - i]);
-			number %= fact[len - 1 - i];
+		int[] p = new int[n];
+		for (int i = 0; i < n; i++) {
+			p[i] = (int) (number / fact[n - 1 - i]);
+			number %= fact[n - 1 - i];
 			for (int j = 0; j < i; j++) {
 				if (p[j] <= p[i]) {
 					++p[i];

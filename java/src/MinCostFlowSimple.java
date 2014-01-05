@@ -9,7 +9,7 @@ public class MinCostFlowSimple {
 		for (int flow = 0, flowCost = 0;; ++flow) {
 			Arrays.fill(d, Integer.MAX_VALUE);
 			d[s] = 0;
-			for (int i = 0; i < n; i++)
+			for (int i = 0; i < n - 1; i++)
 				for (int j = 0; j < n; j++)
 					for (int k = 0; k < n; k++)
 						if (cap[j][k] > 0 && d[j] < Integer.MAX_VALUE && d[k] > d[j] + cost[j][k]) {
