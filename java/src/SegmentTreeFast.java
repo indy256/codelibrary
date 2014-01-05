@@ -1,30 +1,35 @@
-import java.util.Arrays;
-import java.util.Random;
+import java.util.*;
 
 public class SegmentTreeFast {
 
-	// Modify the following 6 methods to implement your custom operations on the tree. Pay attention to contracts
+	// Modify the following 5 methods to implement your custom operations on the tree.
+	// This example implements Add/Max operations. Operations like Add/Sum, Set/Max can also be implemented.
+	int modifyOperation(int x, int y) {
+		// treat neutral delta separately
+		if (x == getNeutralDelta()) {
+			return y;
+		}
+		if (y == getNeutralDelta()) {
+			return x;
+		}
+		// define operation here
+		return x + y;
+	}
+
 	int queryOperation(int x, int y) {
 		return Math.max(x, y);
 	}
 
-	int modifyOperation(int x, int y) {
-		return x + y; // return y == getNeutralDelta() ? x : y; (for modifyOperation "set")
-	}
-
-	int totalDeltaEffect(int delta, int count) {
-		// contract: totalDeltaEffect(delta, count) == queryOperation(delta, queryOperation(delta, ...count times))
-		return delta; // delta * count (for queryOperation "sum")
-	}
-
-	int getNeutralValue() {
-		// contract: queryOperation(x, getNeutralValue()) == x
-		return Integer.MIN_VALUE;
+	int deltaEffectOnSegment(int delta, int segmentLength) {
+		// Here you must write a fast equivalent of following slow code:
+		// int result = delta;
+		// for (int i = 0; i < segmentLength - 1; i++) result = queryOperation(result, delta);
+		// return result;
+		return delta;
 	}
 
 	int getNeutralDelta() {
-		// contract: modifyOperation(x, getNeutralDelta()) == x
-		return 0;
+		return Integer.MIN_VALUE;
 	}
 
 	int getInitValue() {
@@ -35,6 +40,19 @@ public class SegmentTreeFast {
 	int[] value;
 	int[] delta; // delta[i] affects value[i], delta[2*i+1] and delta[2*i+2]
 	int[] len;
+
+	void pushDelta(int i) {
+		int d = 0;
+		for (; (i >> d) > 0; d++) {
+		}
+		for (d -= 2; d >= 0; d--) {
+			int x = i >> d;
+			value[x >> 1] = joinValueWithDelta(x >> 1);
+			delta[x] = modifyOperation(delta[x], delta[x >> 1]);
+			delta[x ^ 1] = modifyOperation(delta[x ^ 1], delta[x >> 1]);
+			delta[x >> 1] = getNeutralDelta();
+		}
+	}
 
 	public SegmentTreeFast(int n) {
 		value = new int[2 * n];
@@ -55,22 +73,8 @@ public class SegmentTreeFast {
 		}
 	}
 
-	void pushDelta(int i) {
-		int d = 0;
-		for (; (i >> d) > 0; d++) {
-			;
-		}
-		for (d -= 2; d >= 0; d--) {
-			int x = i >> d;
-			value[x >> 1] = joinValueWithDelta(x >> 1);
-			delta[x] = modifyOperation(delta[x], delta[x >> 1]);
-			delta[x ^ 1] = modifyOperation(delta[x ^ 1], delta[x >> 1]);
-			delta[x >> 1] = getNeutralDelta();
-		}
-	}
-
-	int joinValueWithDelta(int a) {
-		return modifyOperation(value[a], totalDeltaEffect(delta[a], len[a]));
+	int joinValueWithDelta(int i) {
+		return modifyOperation(value[i], deltaEffectOnSegment(delta[i], len[i]));
 	}
 
 	public int query(int a, int b) {
@@ -78,15 +82,20 @@ public class SegmentTreeFast {
 		b += value.length >> 1;
 		pushDelta(a);
 		pushDelta(b);
-		int res = getNeutralValue();
+		int res = 0;
+		boolean found = false;
 		for (; a <= b; a = (a + 1) >> 1, b = (b - 1) >> 1) {
 			if ((a & 1) != 0) {
-				res = queryOperation(res, joinValueWithDelta(a));
+				res = found ? queryOperation(res, joinValueWithDelta(a)) : joinValueWithDelta(a);
+				found = true;
 			}
 			if ((b & 1) == 0) {
-				res = queryOperation(res, joinValueWithDelta(b));
+				res = found ? queryOperation(res, joinValueWithDelta(b)) : joinValueWithDelta(b);
+				found = true;
 			}
 		}
+		if (!found)
+			throw new RuntimeException();
 		return res;
 	}
 
@@ -135,7 +144,7 @@ public class SegmentTreeFast {
 					int delta = rnd.nextInt(100) - 50;
 					t.modify(a, b, delta);
 					for (int j = a; j <= b; j++) {
-						x[j] = t.modifyOperation(x[j], t.totalDeltaEffect(delta, 1));
+						x[j] = t.modifyOperation(x[j], delta);
 					}
 				} else if (cmd == 1) {
 					int res1 = t.query(a, b);
