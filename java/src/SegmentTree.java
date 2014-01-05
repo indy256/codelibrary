@@ -3,14 +3,16 @@ import java.util.*;
 public class SegmentTree {
 
 	// Modify the following 5 methods to implement your custom operations on the tree.
-	// This example implements Add/Max operations. Operations like Add/Sum, Color/Max can also be implemented.
+	// This example implements Add/Max operations. Operations like Add/Sum, Set/Max can also be implemented.
 	int modifyOperation(int x, int y) {
+		// treat neutral delta separately
 		if (x == getNeutralDelta()) {
 			return y;
 		}
 		if (y == getNeutralDelta()) {
 			return x;
 		}
+		// define operation here
 		return x + y;
 	}
 
@@ -34,10 +36,17 @@ public class SegmentTree {
 		return 0;
 	}
 
-	// generic tree code
+	// generic code
 	int n;
 	int[] value;
 	int[] delta; // delta[i] affects value[i], delta[2*i+1] and delta[2*i+2]
+
+	void pushDelta(int root, int left, int right) {
+		value[root] = modifyOperation(value[root], deltaEffectOnSegment(delta[root], right - left + 1));
+		delta[2 * root + 1] = modifyOperation(delta[2 * root + 1], delta[root]);
+		delta[2 * root + 2] = modifyOperation(delta[2 * root + 2], delta[root]);
+		delta[root] = getNeutralDelta();
+	}
 
 	public SegmentTree(int n) {
 		this.n = n;
@@ -59,13 +68,6 @@ public class SegmentTree {
 		}
 	}
 
-	void pushDelta(int root, int left, int right) {
-		value[root] = modifyOperation(value[root], deltaEffectOnSegment(delta[root], right - left + 1));
-		delta[2 * root + 1] = modifyOperation(delta[2 * root + 1], delta[root]);
-		delta[2 * root + 2] = modifyOperation(delta[2 * root + 2], delta[root]);
-		delta[root] = getNeutralDelta();
-	}
-
 	public int query(int a, int b) {
 		return query(a, b, 0, 0, n - 1);
 	}
@@ -75,15 +77,14 @@ public class SegmentTree {
 			return modifyOperation(value[root], deltaEffectOnSegment(delta[root], right - left + 1));
 		pushDelta(root, left, right);
 		int mid = (left + right) >> 1;
-		if (a <= mid && b > mid) {
+		if (a <= mid && b > mid)
 			return queryOperation(
 					query(a, Math.min(b, mid), root * 2 + 1, left, mid),
 					query(Math.max(a, mid + 1), b, root * 2 + 2, mid + 1, right));
-		} else if (a <= mid) {
+		else if (a <= mid)
 			return query(a, Math.min(b, mid), root * 2 + 1, left, mid);
-		} else if (b > mid) {
+		else if (b > mid)
 			return query(Math.max(a, mid + 1), b, root * 2 + 2, mid + 1, right);
-		}
 		throw new RuntimeException("Incorrect query from " + a + " to " + b);
 	}
 
@@ -123,7 +124,7 @@ public class SegmentTree {
 					int delta = rnd.nextInt(100) - 50;
 					t.modify(a, b, delta);
 					for (int j = a; j <= b; j++)
-						x[j] = t.modifyOperation(x[j], t.deltaEffectOnSegment(delta, 1));
+						x[j] = t.modifyOperation(x[j], delta);
 				} else if (cmd == 1) {
 					int res1 = t.query(a, b);
 					int res2 = x[a];
