@@ -1,11 +1,4 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.PriorityQueue;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 public class RandomGraph {
 
@@ -13,7 +6,8 @@ public class RandomGraph {
 		List<Integer>[] t = new List[n];
 		for (int i = 0; i < n; i++)
 			t[i] = new ArrayList<>();
-		int[] p = getRandomPermutation(n, rnd);
+		int[] p = new int[n];
+		for (int i = 0, j; i < n; j = rnd.nextInt(i + 1), p[i] = p[j], p[j] = i, i++) ; // random permutation
 		for (int i = 1; i < n; i++) {
 			int parent = p[rnd.nextInt(i)];
 			t[parent].add(p[i]);
@@ -121,20 +115,6 @@ public class RandomGraph {
 		for (int i = 0; i < V; i++)
 			Collections.sort(g[i]);
 		return g;
-	}
-
-	static int[] getRandomPermutation(int n, Random rnd) {
-		int[] res = new int[n];
-		for (int i = 0; i < n; i++) {
-			res[i] = i;
-		}
-		for (int i = res.length - 1; i > 0; i--) {
-			int j = rnd.nextInt(i + 1);
-			int t = res[i];
-			res[i] = res[j];
-			res[j] = t;
-		}
-		return res;
 	}
 
 	static int[] getRandomCombination(int n, int m, Random rnd) {

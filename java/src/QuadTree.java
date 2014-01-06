@@ -3,13 +3,14 @@ public class QuadTree {
 	static class Node {
 		int count;
 		Node topLeft, topRight, bottomLeft, bottomRight;
-	};
+	}
 
 	Node root;
 
 	static final int maxx = (1 << 30);
 	static final int maxy = (1 << 30);
 
+	// insert point (x,y)
 	public void insert(int x, int y) {
 		root = insert(root, 0, 0, maxx - 1, maxy - 1, x, y);
 	}
@@ -47,6 +48,7 @@ public class QuadTree {
 
 		int mx = (ax + bx) >> 1;
 		int my = (ay + by) >> 1;
+
 		int res = 0;
 		res += count(node.bottomLeft, ax, ay, mx, my, x1, y1, x2, y2);
 		res += count(node.topLeft, ax, my + 1, mx, by, x1, y1, x2, y2);

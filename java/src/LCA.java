@@ -25,11 +25,9 @@ public class LCA {
 			return;
 		}
 		int mid = (left + right) >> 1;
-		int n1 = node * 2 + 1;
-		int n2 = node * 2 + 2;
-		buildTree(n1, left, mid);
-		buildTree(n2, mid + 1, right);
-		minPos[node] = depth[minPos[n1]] < depth[minPos[n2]] ? minPos[n1] : minPos[n2];
+		buildTree(2 * node + 1, left, mid);
+		buildTree(2 * node + 2, mid + 1, right);
+		minPos[node] = depth[minPos[2 * node + 1]] < depth[minPos[2 * node + 2]] ? minPos[2 * node + 1] : minPos[2 * node + 2];
 	}
 
 	public LCA(List<Integer>[] tree, int root) {
@@ -47,30 +45,30 @@ public class LCA {
 
 		first = new int[nodes];
 		Arrays.fill(first, -1);
-		for (int i = 0; i < dfs_order.length; i++) {
-			int v = dfs_order[i];
-			if (first[v] == -1)
-				first[v] = i;
-		}
+		for (int i = 0; i < dfs_order.length; i++)
+			if (first[dfs_order[i]] == -1)
+				first[dfs_order[i]] = i;
 	}
 
 	public int lca(int a, int b) {
-		return minPos(0, 0, n - 1, Math.min(first[a], first[b]), Math.max(first[a], first[b]));
+		return minPos(Math.min(first[a], first[b]), Math.max(first[a], first[b]), 0, 0, n - 1);
 	}
 
-	int minPos(int node, int left, int right, int a, int b) {
-		if (a > right || b < left)
-			return -1;
-		if (a <= left && right <= b)
+	int minPos(int a, int b, int node, int left, int right) {
+		if (a == left && right == b)
 			return minPos[node];
 		int mid = (left + right) >> 1;
-		int p1 = minPos(node * 2 + 1, left, mid, a, b);
-		int p2 = minPos(node * 2 + 2, mid + 1, right, a, b);
-		if (p1 == -1)
-			return p2;
-		if (p2 == -1)
-			return p1;
-		return depth[p1] < depth[p2] ? p1 : p2;
+		if (a <= mid && b > mid) {
+			int p1 = minPos(a, Math.min(b, mid), 2 * node + 1, left, mid);
+			int p2 = minPos(Math.max(a, mid + 1), b, 2 * node + 2, mid + 1, right);
+			return depth[p1] < depth[p2] ? p1 : p2;
+		} else if (a <= mid) {
+			return minPos(a, Math.min(b, mid), 2 * node + 1, left, mid);
+		} else if (b > mid) {
+			return minPos(Math.max(a, mid + 1), b, 2 * node + 2, mid + 1, right);
+		} else {
+			throw new RuntimeException();
+		}
 	}
 
 	// Random test
@@ -88,7 +86,7 @@ public class LCA {
 				int a = rnd.nextInt(n);
 				int b = rnd.nextInt(n);
 				List<Integer> path = new ArrayList<>();
-				getPath(tree, a, b, -1, path);
+				getPathFromAtoB(tree, a, b, -1, path);
 				int res1 = q.lca(a, b);
 				int res2 = a;
 				for (int u : path)
@@ -101,30 +99,16 @@ public class LCA {
 		System.out.println("Test passed");
 	}
 
-	static boolean getPath(List<Integer>[] tree, int a, int b, int p, List<Integer> path) {
-		path.add(a);
-		if (a == b)
-			return true;
-		for (int u : tree[a])
-			if (u != p && getPath(tree, u, b, a, path))
-				return true;
-		path.remove(path.size() - 1);
-		return false;
-	}
-
 	static List<Integer>[] getRandomTree(int n, Random rnd) {
 		List<Integer>[] t = new List[n];
 		for (int i = 0; i < n; i++)
 			t[i] = new ArrayList<>();
-		List<Integer> p = new ArrayList<>();
-		for (int i = 0; i < n; i++)
-			p.add(i);
-		Collections.shuffle(p, rnd);
+		int[] p = new int[n];
+		for (int i = 0, j; i < n; j = rnd.nextInt(i + 1), p[i] = p[j], p[j] = i, i++) ; // random permutation
 		for (int i = 1; i < n; i++) {
-			int child = p.get(i);
-			int parent = p.get(rnd.nextInt(i));
-			t[parent].add(child);
-			t[child].add(parent);
+			int parent = p[rnd.nextInt(i)];
+			t[parent].add(p[i]);
+			t[p[i]].add(parent);
 		}
 		return t;
 	}
@@ -134,5 +118,16 @@ public class LCA {
 		for (int v : tree[u])
 			if (depth[v] == -1)
 				calcDepth(tree, depth, v, d + 1);
+	}
+
+	static boolean getPathFromAtoB(List<Integer>[] tree, int a, int b, int p, List<Integer> path) {
+		path.add(a);
+		if (a == b)
+			return true;
+		for (int u : tree[a])
+			if (u != p && getPathFromAtoB(tree, u, b, a, path))
+				return true;
+		path.remove(path.size() - 1);
+		return false;
 	}
 }
