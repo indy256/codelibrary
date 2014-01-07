@@ -61,21 +61,21 @@ public class MinCostFlow {
 		int[] prevnode = new int[n];
 		int[] pot = new int[n];
 
-		// bellmanFord can be safely commented if edges costs are non-negative
+		// bellmanFord invocation can be skipped if edges costs are non-negative
 		bellmanFord(graph, s, pot);
 		int flow = 0;
 		int flowCost = 0;
 		while (flow < maxf) {
-			Queue<Long> q = new PriorityQueue<Long>();
+			PriorityQueue<Long> q = new PriorityQueue<>();
 			q.add((long) s);
 			Arrays.fill(prio, 0, n, Integer.MAX_VALUE);
 			prio[s] = 0;
 			curflow[s] = Integer.MAX_VALUE;
 			while (!q.isEmpty()) {
 				long cur = q.remove();
-				int d = (int) (cur >>> 32);
 				int u = (int) cur;
-				if (d != prio[u])
+				int priou = (int) (cur >>> 32);
+				if (priou != prio[u])
 					continue;
 				for (int i = 0; i < graph[u].size(); i++) {
 					Edge e = graph[u].get(i);
