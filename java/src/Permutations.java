@@ -27,14 +27,16 @@ public class Permutations {
 			fact[i] = i * fact[i - 1];
 		}
 		int[] p = new int[n];
+		boolean[] used = new boolean[n];
 		for (int i = 0; i < n; i++) {
 			p[i] = (int) (number / fact[n - 1 - i]);
 			number %= fact[n - 1 - i];
-			for (int j = 0; j < i; j++) {
-				if (p[j] <= p[i]) {
+			for (int j = 0; j <= p[i]; j++) {
+				if (used[j]) {
 					++p[i];
 				}
 			}
+			used[p[i]] = true;
 		}
 		return p;
 	}
@@ -107,16 +109,19 @@ public class Permutations {
 		generatePermutations(new int[2], 1);
 
 		// print all permutations method 2
-		int[] p = {1, 2, 3};
+		int[] p = {0, 1, 2};
+		int cnt = 0;
 		do {
 			System.out.println(Arrays.toString(p));
+			if (!Arrays.equals(p, permutationByNumber(p.length, numberByPermutation(p))) ||
+					cnt != numberByPermutation(permutationByNumber(p.length, cnt)))
+				throw new RuntimeException();
+			++cnt;
 		} while (nextPermutation(p));
 
-		p = new int[]{2, 0, 1};
-		System.out.println(4 == numberByPermutation(p));
-		System.out.println(Arrays.equals(p, permutationByNumber(p.length, numberByPermutation(p))));
-		int x = 7;
-		System.out.println(x == numberByPermutation(permutationByNumber(3, x)));
+		System.out.println(5 == numberByPermutation(p));
+		System.out.println(Arrays.equals(new int[]{1, 0, 2}, permutationByNumber(3, 2)));
+
 		System.out.println(0b1101 == nextPermutation(0b1011));
 		System.out.println(decomposeIntoCycles(new int[]{0, 2, 1, 3}));
 	}
