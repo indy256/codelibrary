@@ -16,41 +16,79 @@ public class RandomGraph {
 		return t;
 	}
 
-	public static List<Integer>[] pruferCode2Tree(int[] a) {
-		int n = a.length + 2;
-		List<Integer>[] t = new List[n];
-		for (int i = 0; i < n; i++) {
-			t[i] = new ArrayList<>();
-		}
-		int[] degree = new int[n];
-		for (int x : a) {
-			++degree[x];
-		}
-		PriorityQueue<Long> q = new PriorityQueue<>();
-		for (int i = 0; i < n; i++) {
-			++degree[i];
-			q.add(((long) degree[i] << 32) + i);
-		}
-		for (int x : a) {
-			int num = 0;
-			int deg = 0;
-			do {
-				long node = q.poll();
-				deg = (int) (node >>> 32);
-				num = (int) node;
-			} while (deg != degree[num]);
-			t[x].add(num);
-			t[num].add(x);
-			--degree[x];
-			if (degree[x] >= 1) {
-				q.add(((long) degree[x] << 32) + x);
+	static void pruferDfs(List<Integer>[] tree, int[] parent, int v) {
+		for (int i = 0; i < tree[v].size(); ++i) {
+			int to = tree[v].get(i);
+			if (to != parent[v]) {
+				parent[to] = v;
+				pruferDfs(tree, parent, to);
 			}
 		}
-		int u = q.poll().intValue();
-		int v = q.poll().intValue();
-		t[u].add(v);
-		t[v].add(u);
-		return t;
+	}
+
+	public static int[] tree2PruferCode(List<Integer>[] tree) {
+		int n = tree.length;
+		int[] parent = new int[n];
+		parent[n - 1] = -1;
+		pruferDfs(tree, parent, n - 1);
+		int[] degree = new int[n];
+		int ptr = -1;
+		for (int i = 0; i < n; ++i) {
+			degree[i] = tree[i].size();
+			if (degree[i] == 1 && ptr == -1)
+				ptr = i;
+		}
+		int[] res = new int[n - 2];
+		int leaf = ptr;
+		for (int i = 0; i < n - 2; ++i) {
+			int next = parent[leaf];
+			res[i] = next;
+			--degree[next];
+			if (degree[next] == 1 && next < ptr) {
+				leaf = next;
+			} else {
+				++ptr;
+				while (ptr < n && degree[ptr] != 1)
+					++ptr;
+				leaf = ptr;
+			}
+		}
+		return res;
+	}
+
+
+	public static List<Integer>[] pruferCode2Tree(int[] pruferCode) {
+		int n = pruferCode.length + 2;
+		List<Integer>[] tree = new List[n];
+		for (int i = 0; i < n; i++)
+			tree[i] = new ArrayList<>();
+		int[] degree = new int[n];
+		Arrays.fill(degree, 1);
+		for (int v : pruferCode)
+			++degree[v];
+		int ptr = 0;
+		while (degree[ptr] != 1)
+			++ptr;
+		int leaf = ptr;
+		for (int v : pruferCode) {
+			tree[leaf].add(v);
+			tree[v].add(leaf);
+			--degree[leaf];
+			--degree[v];
+			if (degree[v] == 1 && v < ptr) {
+				leaf = v;
+			} else {
+				for (++ptr; ptr < n && degree[ptr] != 1; ++ptr) ;
+				leaf = ptr;
+			}
+		}
+		for (int v = 0; v < n - 1; v++) {
+			if (degree[v] == 1) {
+				tree[v].add(n - 1);
+				tree[n - 1].add(v);
+			}
+		}
+		return tree;
 	}
 
 	// precondition: n >= 2
@@ -133,7 +171,9 @@ public class RandomGraph {
 
 	// Usage example
 	public static void main(String[] args) {
-		System.out.println(Arrays.toString(pruferCode2Tree(new int[]{3, 3, 3, 4})));
+		List<Integer>[] tree = pruferCode2Tree(new int[]{3, 3, 3, 4});
+		System.out.println(Arrays.toString(tree));
+		System.out.println(Arrays.toString(tree2PruferCode(tree)));
 		System.out.println(Arrays.toString(pruferCode2Tree(new int[]{0, 0})));
 
 		Random rnd = new Random(1);

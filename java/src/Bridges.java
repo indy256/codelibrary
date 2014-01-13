@@ -22,7 +22,7 @@ public class Bridges {
 			} else {
 				dfs(v, u);
 				lowlink[u] = Math.min(lowlink[u], lowlink[v]);
-				if (lowlink[v] > tin[u] && p != -1) {
+				if (lowlink[v] > tin[u]) {
 					bridges.add("(" + u + "," + v + ")");
 				}
 			}

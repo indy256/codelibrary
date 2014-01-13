@@ -10,19 +10,13 @@ public class ConvexHull {
 		Point[] q = new Point[n * 2];
 		int cnt = 0;
 		for (int i = 0; i < n; q[cnt++] = p[i++])
-			for (; cnt > 1 && cross(q[cnt - 2], q[cnt - 1], p[i]) >= 0; --cnt)
-				;
+			for (; cnt > 1 && cross(q[cnt - 2], q[cnt - 1], p[i]) >= 0; --cnt) ;
 		for (int i = n - 2, t = cnt; i >= 0; q[cnt++] = p[i--])
-			for (; cnt > t && cross(q[cnt - 2], q[cnt - 1], p[i]) >= 0; --cnt)
-				;
+			for (; cnt > t && cross(q[cnt - 2], q[cnt - 1], p[i]) >= 0; --cnt) ;
 		return Arrays.copyOf(q, cnt - 1 - (q[0].compareTo(q[1]) == 0 ? 1 : 0));
 	}
 
-	static long cross(Point a, Point b, Point c) {
-		return (b.x - a.x) * (c.y - a.y) - (b.y - a.y) * (c.x - a.x);
-	}
-
-	static class Point implements Comparable<Point> {
+	public static class Point implements Comparable<Point> {
 		long x, y;
 
 		public Point(long x, long y) {
@@ -33,6 +27,10 @@ public class ConvexHull {
 		public int compareTo(Point o) {
 			return Long.compare(x, o.x) != 0 ? Long.compare(x, o.x) : Long.compare(y, o.y);
 		}
+	}
+
+	static long cross(Point a, Point b, Point c) {
+		return (b.x - a.x) * (c.y - a.y) - (b.y - a.y) * (c.x - a.x);
 	}
 
 	// Usage example

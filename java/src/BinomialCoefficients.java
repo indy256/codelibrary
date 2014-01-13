@@ -2,19 +2,18 @@ import java.math.BigInteger;
 
 public class BinomialCoefficients {
 
-	public static long[][] binomialTable(int maxn) {
-		long[][] c = new long[maxn + 1][maxn + 1];
-		for (int i = 0; i <= maxn; i++)
+	public static long[][] binomialTable(int n) {
+		long[][] c = new long[n + 1][n + 1];
+		for (int i = 0; i <= n; i++)
 			for (int j = 0; j <= i; j++)
 				c[i][j] = (j == 0) ? 1 : c[i - 1][j - 1] + c[i - 1][j];
 		return c;
 	}
 
 	public static long binomial(long n, long m) {
-		if (n < m || m < 0 || n < 0)
-			return 0;
+		m = Math.min(m, n - m);
 		long res = 1;
-		for (long i = 0; i < Math.min(m, n - m); i++) {
+		for (long i = 0; i < m; i++) {
 			res = res * (n - i) / (i + 1);
 		}
 		return res;
@@ -22,13 +21,13 @@ public class BinomialCoefficients {
 
 	// n! % mod
 	public static int factorial(int n, int mod) {
-		long result = 1;
+		long res = 1;
 		for (int i = 2; i <= n; i++)
-			result = result * i % mod;
-		return (int) (result % mod);
+			res = res * i % mod;
+		return (int) (res % mod);
 	}
 
-	// n! mod p, p - prime, p*log(n) complexity
+	// n! mod p, p - prime, O(p*log(n)) complexity
 	int factorial2(int n, int p) {
 		int res = 1;
 		while (n > 1) {
@@ -41,10 +40,7 @@ public class BinomialCoefficients {
 	}
 
 	public static int binomial(int n, int m, int mod) {
-		if (n < m || m < 0 || n < 0)
-			return 0;
-		if (2 * m > n)
-			m = n - m;
+		m = Math.min(m, n - m);
 		long res = 1;
 		for (int i = n - m + 1; i <= n; i++)
 			res = res * i % mod;

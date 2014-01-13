@@ -8,7 +8,7 @@ public class Partitions {
 			return false;
 		int s = p.remove(n - 1) - 1;
 		int i = n - 2;
-		while (i > 0 && p.get(i) == p.get(i - 1)) {
+		while (i > 0 && p.get(i).equals(p.get(i - 1))) {
 			s += p.remove(i);
 			--i;
 		}
@@ -17,6 +17,38 @@ public class Partitions {
 			p.add(1);
 		}
 		return true;
+	}
+
+	public static List<Integer> partitionByNumber(int n, long number) {
+		List<Integer> p = new ArrayList<>();
+		for (int x = n; x > 0; ) {
+			int j = 1;
+			while (true) {
+				long cnt = partitionFunction(x)[x][j];
+				if (number < cnt)
+					break;
+				number -= cnt;
+				++j;
+			}
+			p.add(j);
+			x -= j;
+		}
+		return p;
+	}
+
+	public static long numberByPartition(List<Integer> p) {
+		long res = 0;
+		int sum = 0;
+		for (int x : p) {
+			sum += x;
+		}
+		for (int cur : p) {
+			for (int j = 0; j < cur; j++) {
+				res += partitionFunction(sum)[sum][j];
+			}
+			sum -= cur;
+		}
+		return res;
 	}
 
 	public static void generateIncreasingPartitions(int[] p, int left, int last, int pos) {
@@ -34,8 +66,8 @@ public class Partitions {
 		long[] p = new long[n + 1];
 		p[0] = 1;
 		for (int i = 1; i <= n; i++) {
-			for (int j = 0; j <= n - i; j++) {
-				p[j + i] += p[j];
+			for (int j = i; j <= n; j++) {
+				p[j] += p[j - i];
 			}
 		}
 		return p[n];
@@ -48,10 +80,6 @@ public class Partitions {
 			for (int j = 1; j <= i; j++) {
 				p[i][j] = p[i - 1][j - 1] + p[i - j][j];
 			}
-		}
-		long res = 0;
-		for (int j = 0; j <= n; j++) {
-			res += p[n][j];
 		}
 		return p;
 	}
@@ -85,5 +113,10 @@ public class Partitions {
 
 		int[] p1 = new int[8];
 		generateIncreasingPartitions(p1, p1.length, 0, 0);
+
+		List<Integer> list = partitionByNumber(5, 6);
+		System.out.println(list);
+
+		System.out.println(numberByPartition(list));
 	}
 }

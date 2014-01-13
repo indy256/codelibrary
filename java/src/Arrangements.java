@@ -1,21 +1,21 @@
-import java.util.Arrays;
+import java.util.*;
 
 public class Arrangements {
-	public static boolean nextArrangement(int[] p, int n) {
+
+	public static boolean nextArrangement(int[] a, int n) {
 		boolean[] used = new boolean[n];
-		for (int x : p) {
+		for (int x : a)
 			used[x] = true;
-		}
-		int m = p.length;
+		int m = a.length;
 		for (int i = m - 1; i >= 0; i--) {
-			used[p[i]] = false;
-			for (int j = p[i] + 1; j < n; j++) {
+			used[a[i]] = false;
+			for (int j = a[i] + 1; j < n; j++) {
 				if (!used[j]) {
-					p[i++] = j;
+					a[i++] = j;
 					used[j] = true;
-					for (int k = 0; k < n && i < m; k++) {
+					for (int k = 0; i < m; k++) {
 						if (!used[k]) {
-							p[i++] = k;
+							a[i++] = k;
 						}
 					}
 					return true;
@@ -25,72 +25,80 @@ public class Arrangements {
 		return false;
 	}
 
-	public static boolean nextArrangement2(int[] p, int n) {
-		if (nextPermutation(p)) {
-			return true;
+	public static int[] arrangementByNumber(int n, int m, long number) {
+		int[] a = new int[m];
+		int[] free = new int[n];
+		for (int i = 0; i < n; i++) {
+			free[i] = i;
 		}
-		for (int i = 0, j = p.length - 1; i < j; i++, j--) {
-			int t = p[i];
-			p[i] = p[j];
-			p[j] = t;
+		for (int i = 0; i < m; i++) {
+			long cnt = countOfArrangements(n - 1 - i, m - 1 - i);
+			int pos = (int) (number / cnt);
+			a[i] = free[pos];
+			System.arraycopy(free, pos + 1, free, pos, n - 1 - pos);
+			number %= cnt;
 		}
-		return nextCombination(p, n);
+		return a;
 	}
 
-	public static boolean nextArrangementWithRepeats(int[] p, int n) {
-		for (int i = 0; i < p.length; i++) {
-			if (p[i] < n - 1) {
-				++p[i];
-				while (--i >= 0) {
-					p[i] = 0;
+	public static long numberByArrangement(int[] a, int n) {
+		int m = a.length;
+		long res = 0;
+		boolean[] used = new boolean[n];
+		for (int i = 0; i < m; i++) {
+			int cnt = 0;
+			for (int j = 0; j < a[i]; j++) {
+				if (!used[j]) {
+					++cnt;
 				}
+			}
+			res += cnt * countOfArrangements(n - i - 1, m - i - 1);
+			used[a[i]] = true;
+		}
+		return res;
+	}
+
+	public static long countOfArrangements(int n, int m) {
+		long res = 1;
+		for (int i = 0; i < m; i++) {
+			res *= n - i;
+		}
+		return res;
+	}
+
+	public static boolean nextArrangementWithRepeats(int[] a, int n) {
+		for (int i = a.length - 1; i >= 0; i--) {
+			if (a[i] < n - 1) {
+				++a[i];
+				Arrays.fill(a, i + 1, a.length, 0);
 				return true;
 			}
 		}
-		return false;
-	}
-
-	// auxiliary
-	static boolean nextCombination(int[] p, int n) {
-		int m = p.length;
-		for (int i = m - 1; i >= 0; i--) {
-			if (p[i] < n + i - m) {
-				++p[i];
-				while (++i < m) {
-					p[i] = p[i - 1] + 1;
-				}
-				return true;
-			}
-		}
-		return false;
-	}
-
-	// auxiliary
-	static boolean nextPermutation(int[] p) {
-		for (int a = p.length - 2; a >= 0; --a)
-			if (p[a] < p[a + 1])
-				for (int b = p.length - 1;; --b)
-					if (p[b] > p[a]) {
-						int t = p[a];
-						p[a] = p[b];
-						p[b] = t;
-						for (++a, b = p.length - 1; a < b; ++a, --b) {
-							t = p[a];
-							p[a] = p[b];
-							p[b] = t;
-						}
-						return true;
-					}
 		return false;
 	}
 
 	// Usage example
 	public static void main(String[] args) {
 		// print all arrangements
-		int[] p = { 0, 1, 2 };
+		int[] a = {0, 1, 2};
+		int cnt = 0;
+		int n = 4;
 		do {
-			System.out.println(Arrays.toString(p));
-		} while (nextArrangement(p, 4));
+			System.out.println(Arrays.toString(a));
+			if (!Arrays.equals(a, arrangementByNumber(n, a.length, numberByArrangement(a, n))) ||
+					cnt != numberByArrangement(arrangementByNumber(n, a.length, cnt), n))
+				throw new RuntimeException();
+			++cnt;
+		} while (nextArrangement(a, n));
 
+		// print all arrangements with repeats
+		a = new int[]{0, 0};
+		do {
+			System.out.println(Arrays.toString(a));
+		} while (nextArrangementWithRepeats(a, 2));
+
+		a = new int[]{2, 3, 4};
+		System.out.println(32 == numberByArrangement(a, 5));
+		System.out.println(Arrays.equals(a, arrangementByNumber(5, a.length, 32)));
 	}
 }

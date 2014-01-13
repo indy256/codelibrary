@@ -27,16 +27,15 @@ public class Permutations {
 			fact[i] = i * fact[i - 1];
 		}
 		int[] p = new int[n];
-		boolean[] used = new boolean[n];
+		int[] free = new int[n];
 		for (int i = 0; i < n; i++) {
-			p[i] = (int) (number / fact[n - 1 - i]);
+			free[i] = i;
+		}
+		for (int i = 0; i < n; i++) {
+			int pos = (int) (number / fact[n - 1 - i]);
+			p[i] = free[pos];
+			System.arraycopy(free, pos + 1, free, pos, n - 1 - pos);
 			number %= fact[n - 1 - i];
-			for (int j = 0; j <= p[i]; j++) {
-				if (used[j]) {
-					++p[i];
-				}
-			}
-			used[p[i]] = true;
 		}
 		return p;
 	}

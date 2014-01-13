@@ -1,5 +1,6 @@
 import java.util.*;
 
+// for directed graphs
 public class EulerCycle {
 
 	static void dfs(List<Integer>[] graph, int[] curEdge, List<Integer> res, int u) {
