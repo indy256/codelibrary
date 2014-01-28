@@ -1,7 +1,4 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class LIS21 {
 
@@ -55,24 +52,24 @@ public class LIS21 {
 			for (int i = 0; i < n; i++)
 				s[i] = rnd.nextInt(10);
 			int res1 = lis(s).length;
-			int res2 = getLisSlow(s);
+			int res2 = lisSlow(s);
 			if (res1 != res2)
 				throw new RuntimeException("error");
 		}
 	}
 
-	public static int getLisSlow(int[] s) {
+	static int lisSlow(int[] s) {
 		int n = s.length;
 		int res = 0;
-		m1: for (int mask = 0; mask < 1 << n; mask++) {
-			List<Integer> a = new ArrayList<>();
-			for (int i = 0; i < n; i++)
-				if ((mask & (1 << i)) != 0)
-					a.add(s[i]);
-			for (int i = 0; i + 1 < a.size(); i++)
-				if (a.get(i) >= a.get(i + 1))
-					continue m1;
-			res = Math.max(res, a.size());
+		m1:
+		for (int mask = 0; mask < 1 << n; mask++) {
+			for (int i = 0, prev = -1; i < n; i++)
+				if ((mask & (1 << i)) != 0) {
+					if (prev >= s[i])
+						continue m1;
+					prev = s[i];
+				}
+			res = Math.max(res, Integer.bitCount(mask));
 		}
 		return res;
 	}

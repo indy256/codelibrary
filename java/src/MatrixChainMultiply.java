@@ -2,8 +2,6 @@ import java.util.*;
 
 public class MatrixChainMultiply {
 
-	static final int INF = Integer.MAX_VALUE / 3;
-
 	public static int solveIterative(int[] s) {
 		int n = s.length - 1;
 		int[][] p = new int[n][n];
@@ -24,6 +22,17 @@ public class MatrixChainMultiply {
 		return m[0][n - 1];
 	}
 
+	public static int solveRecursive(int[] s) {
+		int n = s.length - 1;
+		int[][] cache = new int[n][n];
+		for (int[] x : cache)
+			Arrays.fill(x, INF);
+		int[][] p = new int[n][n];
+		return rec(0, n - 1, s, p, cache);
+	}
+
+	static final int INF = Integer.MAX_VALUE / 3;
+
 	static int rec(int i, int j, int[] s, int[][] p, int[][] cache) {
 		if (i == j)
 			return 0;
@@ -40,15 +49,7 @@ public class MatrixChainMultiply {
 		return cache[i][j] = res;
 	}
 
-	public static int solveRecursive(int[] s) {
-		int n = s.length - 1;
-		int[][] cache = new int[n][n];
-		for (int[] x : cache)
-			Arrays.fill(x, INF);
-		int[][] p = new int[n][n];
-		return rec(0, n - 1, s, p, cache);
-	}
-
+	// test
 	public static void main(String[] args) {
 		Random rnd = new Random(1);
 		for (int step = 0; step < 1000; step++) {
