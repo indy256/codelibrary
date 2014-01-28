@@ -5,6 +5,7 @@
 #include <string>
 #include <ctime>
 #include <cstdio>
+#include <cmath>
 using namespace std;
 
 // base and base_digits must be consistent
@@ -12,7 +13,7 @@ const int base = 1000000000;
 const int base_digits = 9;
 
 struct bigint {
-    vector<int> a;
+    vector<int> z;
     int sign;
 
     bigint() :
@@ -29,29 +30,29 @@ struct bigint {
 
     void operator=(const bigint &v) {
         sign = v.sign;
-        a = v.a;
+        z = v.z;
     }
 
     void operator=(long long v) {
         sign = 1;
         if (v < 0)
             sign = -1, v = -v;
-        a.clear();
+        z.clear();
         for (; v > 0; v = v / base)
-            a.push_back(v % base);
+            z.push_back(v % base);
     }
 
     bigint operator+(const bigint &v) const {
         if (sign == v.sign) {
             bigint res = v;
 
-            for (int i = 0, carry = 0; i < (int) max(a.size(), v.a.size()) || carry; ++i) {
-                if (i == (int) res.a.size())
-                    res.a.push_back(0);
-                res.a[i] += carry + (i < (int) a.size() ? a[i] : 0);
-                carry = res.a[i] >= base;
+            for (int i = 0, carry = 0; i < (int) max(z.size(), v.z.size()) || carry; ++i) {
+                if (i == (int) res.z.size())
+                    res.z.push_back(0);
+                res.z[i] += carry + (i < (int) z.size() ? z[i] : 0);
+                carry = res.z[i] >= base;
                 if (carry)
-                    res.a[i] -= base;
+                    res.z[i] -= base;
             }
             return res;
         }
@@ -62,11 +63,11 @@ struct bigint {
         if (sign == v.sign) {
             if (abs() >= v.abs()) {
                 bigint res = *this;
-                for (int i = 0, carry = 0; i < (int) v.a.size() || carry; ++i) {
-                    res.a[i] -= carry + (i < (int) v.a.size() ? v.a[i] : 0);
-                    carry = res.a[i] < 0;
+                for (int i = 0, carry = 0; i < (int) v.z.size() || carry; ++i) {
+                    res.z[i] -= carry + (i < (int) v.z.size() ? v.z[i] : 0);
+                    carry = res.z[i] < 0;
                     if (carry)
-                        res.a[i] += base;
+                        res.z[i] += base;
                 }
                 res.trim();
                 return res;
@@ -79,12 +80,12 @@ struct bigint {
     void operator*=(int v) {
         if (v < 0)
             sign = -sign, v = -v;
-        for (int i = 0, carry = 0; i < (int) a.size() || carry; ++i) {
-            if (i == (int) a.size())
-                a.push_back(0);
-            long long cur = a[i] * (long long) v + carry;
+        for (int i = 0, carry = 0; i < (int) z.size() || carry; ++i) {
+            if (i == (int) z.size())
+                z.push_back(0);
+            long long cur = z[i] * (long long) v + carry;
             carry = (int) (cur / base);
-            a[i] = (int) (cur % base);
+            z[i] = (int) (cur % base);
             //asm("divl %%ecx" : "=a"(carry), "=d"(a[i]) : "A"(cur), "c"(base));
         }
         trim();
@@ -97,22 +98,22 @@ struct bigint {
     }
 
     friend pair<bigint, bigint> divmod(const bigint &a1, const bigint &b1) {
-        int norm = base / (b1.a.back() + 1);
+        int norm = base / (b1.z.back() + 1);
         bigint a = a1.abs() * norm;
         bigint b = b1.abs() * norm;
         bigint q, r;
-        q.a.resize(a.a.size());
+        q.z.resize(a.z.size());
 
-        for (int i = a.a.size() - 1; i >= 0; i--) {
+        for (int i = a.z.size() - 1; i >= 0; i--) {
             r *= base;
-            r += a.a[i];
-            int s1 = r.a.size() <= b.a.size() ? 0 : r.a[b.a.size()];
-            int s2 = r.a.size() <= b.a.size() - 1 ? 0 : r.a[b.a.size() - 1];
-            int d = ((long long) base * s1 + s2) / b.a.back();
+            r += a.z[i];
+            int s1 = b.z.size() < r.z.size() ? r.z[b.z.size()] : 0;
+            int s2 = b.z.size() - 1 < r.z.size() ? r.z[b.z.size() - 1] : 0;
+            int d = ((long long) s1 * base + s2) / b.z.back();
             r -= b * d;
             while (r < 0)
                 r += b, --d;
-            q.a[i] = d;
+            q.z[i] = d;
         }
 
         q.sign = a1.sign * b1.sign;
@@ -120,6 +121,48 @@ struct bigint {
         q.trim();
         r.trim();
         return make_pair(q, r / norm);
+    }
+
+    friend bigint sqrt(const bigint &a1) {
+        bigint a = a1;
+        while (a.z.empty() || a.z.size() % 2 == 1)
+            a.z.push_back(0);
+
+        int n = a.z.size();
+        
+        int firstDigit = (int) sqrt((double) a.z[n - 1] * base + a.z[n - 2]);
+        int norm = base / (firstDigit + 1);
+        a *= norm;
+        a *= norm;
+		while (a.z.empty() || a.z.size() % 2 == 1)
+			a.z.push_back(0);
+        
+        bigint r = (long long) a.z[n - 1] * base + a.z[n - 2];
+        firstDigit = (int) sqrt((double) a.z[n - 1] * base + a.z[n - 2]);
+        int q = firstDigit;
+		bigint res;
+ 
+        for(int j = n / 2 - 1; j >= 0; j--) {
+            for(; ; --q) {
+                bigint r1 = (r - (res * 2 * base + q) * q) * base * base + (j > 0 ? (long long) a.z[2 * j - 1] * base + a.z[2 * j - 2] : 0);
+                if (r1 >= 0) {
+                    r = r1;
+                    break;
+                }
+            }
+            res *= base;
+            res += q;
+
+            if (j > 0) {
+				int d1 = res.z.size() + 2 < r.z.size() ? r.z[res.z.size() + 2] : 0;
+				int d2 = res.z.size() + 1 < r.z.size() ? r.z[res.z.size() + 1] : 0;
+                int d3 = res.z.size() < r.z.size() ? r.z[res.z.size()] : 0;
+                q = ((long long) d1 * base * base + (long long) d2 * base + d3) / (firstDigit * 2);
+            }           
+        }
+        
+        res.trim();
+        return res / norm;
     }
 
     bigint operator/(const bigint &v) const {
@@ -133,9 +176,9 @@ struct bigint {
     void operator/=(int v) {
         if (v < 0)
             sign = -sign, v = -v;
-        for (int i = (int) a.size() - 1, rem = 0; i >= 0; --i) {
-            long long cur = a[i] + rem * (long long) base;
-            a[i] = (int) (cur / v);
+        for (int i = (int) z.size() - 1, rem = 0; i >= 0; --i) {
+            long long cur = z[i] + rem * (long long) base;
+            z[i] = (int) (cur / v);
             rem = (int) (cur % v);
         }
         trim();
@@ -151,8 +194,8 @@ struct bigint {
         if (v < 0)
             v = -v;
         int m = 0;
-        for (int i = a.size() - 1; i >= 0; --i)
-            m = (a[i] + m * (long long) base) % v;
+        for (int i = z.size() - 1; i >= 0; --i)
+            m = (z[i] + m * (long long) base) % v;
         return m * sign;
     }
 
@@ -172,11 +215,11 @@ struct bigint {
     bool operator<(const bigint &v) const {
         if (sign != v.sign)
             return sign < v.sign;
-        if (a.size() != v.a.size())
-            return a.size() * sign < v.a.size() * v.sign;
-        for (int i = a.size() - 1; i >= 0; i--)
-            if (a[i] != v.a[i])
-                return a[i] * sign < v.a[i] * sign;
+        if (z.size() != v.z.size())
+            return z.size() * sign < v.z.size() * v.sign;
+        for (int i = z.size() - 1; i >= 0; i--)
+            if (z[i] != v.z[i])
+                return z[i] * sign < v.z[i] * sign;
         return false;
     }
 
@@ -197,14 +240,14 @@ struct bigint {
     }
 
     void trim() {
-        while (!a.empty() && a.back() == 0)
-            a.pop_back();
-        if (a.empty())
+        while (!z.empty() && z.back() == 0)
+            z.pop_back();
+        if (z.empty())
             sign = 1;
     }
 
     bool isZero() const {
-        return a.empty() || (a.size() == 1 && !a[0]);
+        return z.empty() || (z.size() == 1 && !z[0]);
     }
 
     bigint operator-() const {
@@ -221,8 +264,8 @@ struct bigint {
 
     long long longValue() const {
         long long res = 0;
-        for (int i = a.size() - 1; i >= 0; i--)
-            res = res * base + a[i];
+        for (int i = z.size() - 1; i >= 0; i--)
+            res = res * base + z[i];
         return res * sign;
     }
 
@@ -235,7 +278,7 @@ struct bigint {
 
     void read(const string &s) {
         sign = 1;
-        a.clear();
+        z.clear();
         int pos = 0;
         while (pos < (int) s.size() && (s[pos] == '-' || s[pos] == '+')) {
             if (s[pos] == '-')
@@ -246,7 +289,7 @@ struct bigint {
             int x = 0;
             for (int j = max(pos, i - base_digits + 1); j <= i; j++)
                 x = x * 10 + s[j] - '0';
-            a.push_back(x);
+            z.push_back(x);
         }
         trim();
     }
@@ -261,9 +304,9 @@ struct bigint {
     friend ostream& operator<<(ostream &stream, const bigint &v) {
         if (v.sign == -1)
             stream << '-';
-        stream << (v.a.empty() ? 0 : v.a.back());
-        for (int i = (int) v.a.size() - 2; i >= 0; --i)
-            stream << setw(base_digits) << setfill('0') << v.a[i];
+        stream << (v.z.empty() ? 0 : v.z.back());
+        for (int i = (int) v.z.size() - 2; i >= 0; --i)
+            stream << setw(base_digits) << setfill('0') << v.z[i];
         return stream;
     }
 
@@ -332,8 +375,8 @@ struct bigint {
     }
 
     bigint operator*(const bigint &v) const {
-        vector<int> a6 = convert_base(this->a, base_digits, 6);
-        vector<int> b6 = convert_base(v.a, base_digits, 6);
+        vector<int> a6 = convert_base(this->z, base_digits, 6);
+        vector<int> b6 = convert_base(v.z, base_digits, 6);
         vll a(a6.begin(), a6.end());
         vll b(b6.begin(), b6.end());
         while (a.size() < b.size())
@@ -347,32 +390,55 @@ struct bigint {
         res.sign = sign * v.sign;
         for (int i = 0, carry = 0; i < (int) c.size(); i++) {
             long long cur = c[i] + carry;
-            res.a.push_back((int) (cur % 1000000));
+            res.z.push_back((int) (cur % 1000000));
             carry = (int) (cur / 1000000);
         }
-        res.a = convert_base(res.a, 6, base_digits);
+        res.z = convert_base(res.z, 6, base_digits);
         res.trim();
         return res;
     }
 };
 
+bigint random_bigint(int n) {
+	string s;
+	for (int i = 0; i < n; i++) {
+		s += rand() % 10 + '0';
+	}
+	return bigint(s);
+}
+
+// random tests
 int main() {
-    bigint a("99999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999");
-    bigint b("19999999999999999999999999999999999999999999999999999999999999999999999999999999999999998");
-    cout << a * b << endl;
-    cout << a / b << endl;
+	for(int i = 0; i < 1000; i++) {
+		cout << i << endl;
+		int n = rand() % 100 + 1;
+		bigint a = random_bigint(n);
+		bigint res = sqrt(a);
+		bigint xx = res * res;
+		bigint yy = (res + 1) * (res + 1);
+ 
+		if (xx > a || yy <= a) {
+			cout << a << " " << res << endl;
+			break;
+		}
 
-    string sa, sb;
-    for (int i = 0; i < 100000; i++)
-        sa += i % 10 + '0';
-    for (int i = 0; i < 20000; i++)
-        sb += i % 10 + '0';
-    a = bigint(sa);
-    b = bigint(sb);
+		int m = rand() % n + 1;
+		bigint b = random_bigint(m) + 1;
+		res = a / b;
+		xx = res * b;
+		yy = b * (res + 1);
 
+		if (xx > a || yy <= a) {
+			cout << a << " " << b << " " << res << endl;
+			break;
+		}
+	}
+
+    bigint a = random_bigint(10000);
+	bigint b = random_bigint(2000);
     clock_t start = clock();
     bigint c = a / b;
-    fprintf(stderr, "time=%.3lfsec\n", 0.001 * (clock() - start));
+    fprintf(stdout, "time=%.3lfsec\n", 0.001 * (clock() - start));
 
     bigint x = 5;
     x = 6;
