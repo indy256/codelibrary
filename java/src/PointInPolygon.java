@@ -44,15 +44,15 @@ public class PointInPolygon {
 
 	// Usage example
 	public static void main(String[] args) {
-		Point[] points = new Point[4];
-		points[0] = new Point(0, 0);
-		points[1] = new Point(3, 0);
-		points[2] = new Point(3, 3);
-		points[3] = new Point(0, 3);
+		Point[] poly = new Point[4];
+		poly[0] = new Point(0, 0);
+		poly[1] = new Point(3, 0);
+		poly[2] = new Point(3, 3);
+		poly[3] = new Point(0, 3);
 
-		System.out.println(Location.INTERIOR == pointInPolygon(new Point(1, 1), points));
-		System.out.println(Location.EXTERIOR == pointInPolygon(new Point(4, 3), points));
-		System.out.println(Location.BOUNDARY == pointInPolygon(new Point(3, 3), points));
-		System.out.println(Location.BOUNDARY == pointInPolygon(new Point(0, 2), points));
+		System.out.println(Location.INTERIOR == pointInPolygon(new Point(1, 1), poly));
+		System.out.println(Location.EXTERIOR == pointInPolygon(new Point(4, 3), poly));
+		System.out.println(Location.BOUNDARY == pointInPolygon(new Point(3, 3), poly));
+		System.out.println(Location.BOUNDARY == pointInPolygon(new Point(0, 2), poly));
 	}
 }
