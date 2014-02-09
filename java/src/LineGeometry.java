@@ -160,22 +160,6 @@ public class LineGeometry {
 		return Position.BETWEEN;
 	}
 
-	public static Point[] convexHull(Point[] p) {
-		int n = p.length;
-		if (n <= 1)
-			return p;
-		int k = 0;
-		Arrays.sort(p);
-		Point[] q = new Point[n * 2];
-		for (int i = 0; i < n; q[k++] = p[i++])
-			for (; k > 1 && !cw(q[k - 2], q[k - 1], p[i]); --k)
-				;
-		for (int i = n - 2, t = k; i >= 0; q[k++] = p[i--])
-			for (; k > t && !cw(q[k - 2], q[k - 1], p[i]); --k)
-				;
-		return Arrays.copyOf(q, k - 1 - (q[0].compareTo(q[1]) == 0 ? 1 : 0));
-	}
-
 	// cuts right part of poly (returns left part)
 	public static Point[] convexCut(Point[] poly, Point p1, Point p2) {
 		int n = poly.length;
@@ -189,32 +173,6 @@ public class LineGeometry {
 				res.add(new Line(p1, p2).intersect(new Line(poly[j], poly[i])));
 		}
 		return res.toArray(new Point[res.size()]);
-	}
-
-	public static enum Location {
-		BOUNDARY, INTERIOR, EXTERIOR
-	}
-
-	public static Location pointInPolygon(Point p0, Point[] poly) {
-		int n = poly.length;
-		Point[] p = new Point[n];
-		for (int i = 0; i < p.length; i++)
-			p[i] = poly[i].minus(p0);
-		int cnt = 0;
-		for (int i = 0, j = n - 1; i < n; j = i++) {
-			if (sign(p[i].x) == 0 && sign(p[i].y) == 0
-					|| sign(p[i].y) == 0 && sign(p[j].y) == 0 && (sign(p[i].x) < 0) != (sign(p[j].x) < 0))
-				return Location.BOUNDARY;
-
-			if (sign(p[i].y) > 0 != sign(p[j].y) > 0) {
-				double det = p[i].cross(p[j]);
-				if (sign(det) == 0)
-					return Location.BOUNDARY;
-				if (sign(det) > 0 != sign(p[j].y - p[i].y) > 0)
-					++cnt;
-			}
-		}
-		return cnt % 2 == 0 ? Location.EXTERIOR : Location.INTERIOR;
 	}
 
 	// Usage example
