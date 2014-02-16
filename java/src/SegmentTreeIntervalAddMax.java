@@ -17,45 +17,45 @@ public class SegmentTreeIntervalAddMax {
 		tadd = new int[4 * n];
 	}
 
-	public int max(int a, int b) {
-		return max(a, b, 0, 0, n - 1);
+	public int max(int from, int to) {
+		return max(from, to, 0, 0, n - 1);
 	}
 
-	int max(int a, int b, int root, int left, int right) {
-		if (a == left && b == right) {
+	int max(int from, int to, int root, int left, int right) {
+		if (from == left && to == right) {
 			return tmax[root] + tadd[root];
 		}
 		push(root);
 		int mid = (left + right) >> 1;
-		if (a <= mid && b > mid)
+		if (from <= mid && to > mid)
 			return Math.max(
-					max(a, Math.min(b, mid), 2 * root + 1, left, mid),
-					max(Math.max(a, mid + 1), b, 2 * root + 2, mid + 1, right)
+					max(from, Math.min(to, mid), 2 * root + 1, left, mid),
+					max(Math.max(from, mid + 1), to, 2 * root + 2, mid + 1, right)
 			);
-		else if (a <= mid)
-			return max(a, Math.min(b, mid), 2 * root + 1, left, mid);
-		else if (b > mid)
-			return max(Math.max(a, mid + 1), b, 2 * root + 2, mid + 1, right);
+		else if (from <= mid)
+			return max(from, Math.min(to, mid), 2 * root + 1, left, mid);
+		else if (to > mid)
+			return max(Math.max(from, mid + 1), to, 2 * root + 2, mid + 1, right);
 		else
 			throw new RuntimeException();
 	}
 
-	public void add(int a, int b, int delta) {
-		add(a, b, delta, 0, 0, n - 1);
+	public void add(int from, int to, int delta) {
+		add(from, to, delta, 0, 0, n - 1);
 	}
 
-	void add(int a, int b, int delta, int root, int left, int right) {
-		if (a == left && b == right) {
+	void add(int from, int to, int delta, int root, int left, int right) {
+		if (from == left && to == right) {
 			tadd[root] += delta;
 			return;
 		}
 		// push can be skipped for add, but is necessary for other operations such as set
 		push(root);
 		int mid = (left + right) >> 1;
-		if (a <= mid)
-			add(a, Math.min(b, mid), delta, 2 * root + 1, left, mid);
-		if (b > mid)
-			add(Math.max(a, mid + 1), b, delta, 2 * root + 2, mid + 1, right);
+		if (from <= mid)
+			add(from, Math.min(to, mid), delta, 2 * root + 1, left, mid);
+		if (to > mid)
+			add(Math.max(from, mid + 1), to, delta, 2 * root + 2, mid + 1, right);
 		tmax[root] = Math.max(tmax[2 * root + 1] + tadd[2 * root + 1], tmax[2 * root + 2] + tadd[2 * root + 2]);
 	}
 

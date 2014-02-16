@@ -6,39 +6,38 @@ public class TreeCenters {
 	// http://en.wikipedia.org/wiki/Graph_center
 	public static List<Integer> findCenters(List<Integer>[] tree) {
 		int n = tree.length;
-		int cnt = n;
-		List<Integer> a = new ArrayList<>();
+		List<Integer> leaves = new ArrayList<>();
 		int[] degree = new int[n];
 		for (int i = 0; i < n; i++) {
 			degree[i] = tree[i].size();
 			if (degree[i] <= 1) {
-				a.add(i);
-				--cnt;
+				leaves.add(i);
 			}
 		}
-		while (cnt > 0) {
-			List<Integer> na = new ArrayList<>();
-			for (int u : a) {
+		int removedLeaves = leaves.size();
+		while (removedLeaves < n) {
+			List<Integer> nleaves = new ArrayList<>();
+			for (int u : leaves) {
 				for (int v : tree[u]) {
 					if (--degree[v] == 1) {
-						na.add(v);
-						--cnt;
+						nleaves.add(v);
 					}
 				}
 			}
-			a = na;
+			leaves = nleaves;
+			removedLeaves += leaves.size();
 		}
-		return a;
+		return leaves;
 	}
 
 	// returns vertex that has all its subtrees sizes <= n/2
-	public static int findCenter(List<Integer>[] tree, int u, int p) {
+	public static int findCentroid(List<Integer>[] tree, int u, int p) {
 		int n = tree.length;
 		int cnt = 1;
 		boolean goodCenter = true;
 		for (int v : tree[u]) {
 			if (v == p) continue;
-			int res = findCenter(tree, v, u);
+			int res = findCentroid(tree, v, u);
 			if (res >= 0)
 				return res;
 			int size = -res;
@@ -47,6 +46,19 @@ public class TreeCenters {
 		}
 		goodCenter &= n - cnt <= n / 2;
 		return goodCenter ? u : -cnt;
+	}
+
+	public static int diameter(List<Integer>[] tree) {
+		int furthestVertex = (int) dfs(tree, 0, -1, 0);
+		return (int) (dfs(tree, furthestVertex, -1, 0) >>> 32);
+	}
+
+	static long dfs(List<Integer>[] tree, int u, int p, int depth) {
+		long res = ((long) depth << 32) + u;
+		for (int v : tree[u])
+			if (v != p)
+				res = Math.max(res, dfs(tree, v, u, depth + 1));
+		return res;
 	}
 
 	// Usage example
@@ -62,6 +74,8 @@ public class TreeCenters {
 		tree[1].add(3);
 		tree[3].add(2);
 		tree[2].add(3);
-		System.out.println(3 == findCenter(tree, 0, -1));
+		System.out.println(3 == findCentroid(tree, 0, -1));
+		System.out.println(3 == findCenters(tree).get(0));
+		System.out.println(2 == diameter(tree));
 	}
 }
