@@ -24,8 +24,8 @@ public class KdTreePointQuery {
 	void build(int low, int high, boolean divX, Point[] points) {
 		if (low >= high)
 			return;
-		int mid = (low + high) >> 1;
-		nth_element(points, low, high, mid - low, divX);
+		int mid = (low + high) >>> 1;
+		nth_element(points, low, high, mid, divX);
 
 		tx[mid] = points[mid].x;
 		ty[mid] = points[mid].y;
@@ -34,17 +34,17 @@ public class KdTreePointQuery {
 		build(mid + 1, high, !divX, points);
 	}
 
-	// analog of C++ nth_element()
-	static int nth_element(Point[] a, int low, int high, int n, boolean divX) {
-		if (low == high - 1)
-			return low;
-		int q = randomizedPartition(a, low, high, divX);
-		int k = q - low;
-		if (n < k)
-			return nth_element(a, low, q, n, divX);
-		if (n > k)
-			return nth_element(a, q + 1, high, n - k - 1, divX);
-		return q;
+	// See: http://www.cplusplus.com/reference/algorithm/nth_element
+	static void nth_element(Point[] a, int low, int high, int n, boolean divX) {
+		while (true) {
+			int k = randomizedPartition(a, low, high, divX);
+			if (n < k)
+				high = k;
+			else if (n > k)
+				low = k + 1;
+			else
+				return;
+		}
 	}
 
 	static final Random rnd = new Random();
@@ -53,12 +53,9 @@ public class KdTreePointQuery {
 		swap(a, low + rnd.nextInt(high - low), high - 1);
 		int v = divX ? a[high - 1].x : a[high - 1].y;
 		int i = low - 1;
-		for (int j = low; j < high; j++) {
-			if (divX && a[j].x <= v || !divX && a[j].y <= v) {
-				++i;
-				swap(a, i, j);
-			}
-		}
+		for (int j = low; j < high; j++)
+			if (divX && a[j].x <= v || !divX && a[j].y <= v)
+				swap(a, ++i, j);
 		return i;
 	}
 
@@ -80,7 +77,7 @@ public class KdTreePointQuery {
 	void findNearestNeighbour(int low, int high, int x, int y, boolean divX) {
 		if (low >= high)
 			return;
-		int mid = (low + high) >> 1;
+		int mid = (low + high) >>> 1;
 		long dx = x - tx[mid];
 		long dy = y - ty[mid];
 		long d = dx * dx + dy * dy;
@@ -108,17 +105,25 @@ public class KdTreePointQuery {
 			findNearestNeighbour(l2, h2, x, y, !divX);
 	}
 
-	// Usage example
+	// random test
 	public static void main(String[] args) {
-		int[] x = { 0, 10, 0, 10 };
-		int[] y = { 0, 10, 10, 0 };
-
-		Point[] points = new Point[x.length];
-		for (int i = 0; i < points.length; i++)
-			points[i] = new Point(x[i], y[i]);
-
-		KdTreePointQuery kdTree = new KdTreePointQuery(points);
-		int res = kdTree.findNearestNeighbour(6, 3);
-		System.out.println(points[3] == points[res]);
+		for (int step = 0; step < 100_000; step++) {
+			int qx = rnd.nextInt(100) - 50;
+			int qy = rnd.nextInt(100) - 50;
+			int n = rnd.nextInt(100) + 1;
+			Point[] points = new Point[n];
+			long minDist = Long.MAX_VALUE;
+			for (int i = 0; i < n; i++) {
+				int x = rnd.nextInt(100) - 50;
+				int y = rnd.nextInt(100) - 50;
+				points[i] = new Point(x, y);
+				minDist = Math.min(minDist, (long) (x - qx) * (x - qx) + (long) (y - qy) * (y - qy));
+			}
+			KdTreePointQuery kdTree = new KdTreePointQuery(points);
+			int i = kdTree.findNearestNeighbour(qx, qy);
+			Point p = points[i];
+			if (minDist != kdTree.bestDist || (long) (p.x - qx) * (p.x - qx) + (long) (p.y - qy) * (p.y - qy) != minDist)
+				throw new RuntimeException();
+		}
 	}
 }

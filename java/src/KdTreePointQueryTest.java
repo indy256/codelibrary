@@ -59,7 +59,7 @@ public class KdTreePointQueryTest {
 
 	static void perfomance() {
 		Random rnd = new Random(1);
-		int n = 1000000;
+		int n = 10_000_00;
 
 		int[] qx = new int[n];
 		int[] qy = new int[n];
@@ -91,7 +91,7 @@ public class KdTreePointQueryTest {
 		}
 		System.out.println("search time:" + (System.currentTimeMillis() - time));
 
-		if (n > 10000)
+		if (n > 10_000)
 			return;
 
 		long[] dist1 = new long[n];

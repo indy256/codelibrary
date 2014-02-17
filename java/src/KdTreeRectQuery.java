@@ -31,8 +31,8 @@ public class KdTreeRectQuery {
 	void build(int low, int high, boolean divX, Point[] points) {
 		if (low >= high)
 			return;
-		int mid = (low + high) >> 1;
-		nth_element(points, low, high, mid - low, divX);
+		int mid = (low + high) >>> 1;
+		nth_element(points, low, high, mid, divX);
 
 		tx[mid] = points[mid].x;
 		ty[mid] = points[mid].y;
@@ -53,16 +53,17 @@ public class KdTreeRectQuery {
 		build(mid + 1, high, !divX, points);
 	}
 
-	static int nth_element(Point[] a, int low, int high, int n, boolean divX) {
-		if (low == high - 1)
-			return low;
-		int q = randomizedPartition(a, low, high, divX);
-		int k = q - low;
-		if (n < k)
-			return nth_element(a, low, q, n, divX);
-		if (n > k)
-			return nth_element(a, q + 1, high, n - k - 1, divX);
-		return q;
+	// See: http://www.cplusplus.com/reference/algorithm/nth_element
+	static void nth_element(Point[] a, int low, int high, int n, boolean divX) {
+		while (true) {
+			int k = randomizedPartition(a, low, high, divX);
+			if (n < k)
+				high = k;
+			else if (n > k)
+				low = k + 1;
+			else
+				return;
+		}
 	}
 
 	static final Random rnd = new Random();
@@ -71,12 +72,9 @@ public class KdTreeRectQuery {
 		swap(a, low + rnd.nextInt(high - low), high - 1);
 		int v = divX ? a[high - 1].x : a[high - 1].y;
 		int i = low - 1;
-		for (int j = low; j < high; j++) {
-			if (divX && a[j].x <= v || !divX && a[j].y <= v) {
-				++i;
-				swap(a, i, j);
-			}
-		}
+		for (int j = low; j < high; j++)
+			if (divX && a[j].x <= v || !divX && a[j].y <= v)
+				swap(a, ++i, j);
 		return i;
 	}
 
@@ -94,7 +92,7 @@ public class KdTreeRectQuery {
 	int count(int low, int high, int x1, int y1, int x2, int y2) {
 		if (low >= high)
 			return 0;
-		int mid = (low + high) >> 1;
+		int mid = (low + high) >>> 1;
 
 		int ax = minx[mid];
 		int ay = miny[mid];
@@ -116,9 +114,9 @@ public class KdTreeRectQuery {
 
 	// Usage example
 	public static void main(String[] args) {
-		int[] x = { 0, 10, 0, 10 };
-		int[] y = { 0, 10, 10, 0 };
-		
+		int[] x = {0, 10, 0, 10};
+		int[] y = {0, 10, 10, 0};
+
 		Point[] points = new Point[x.length];
 		for (int i = 0; i < points.length; i++)
 			points[i] = new Point(x[i], y[i]);

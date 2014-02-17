@@ -19,8 +19,9 @@ public class NthElement {
 
 	static int randomizedPartition(int[] a, int low, int high) {
 		swap(a, low + rnd.nextInt(high - low), high - 1);
+		int separator = a[high - 1];
 		int i = low - 1;
-		for (int j = low, separator = a[high - 1]; j < high; j++)
+		for (int j = low; j < high; j++)
 			if (a[j] <= separator)
 				swap(a, ++i, j);
 		return i;
