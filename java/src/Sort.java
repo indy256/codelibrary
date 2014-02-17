@@ -7,13 +7,13 @@ public class Sort {
 	public static void qSort(int[] a, int low, int high) {
 		if (low > high)
 			return;
-		int x = a[low + rnd.nextInt(high - low + 1)];
+		int separator = a[low + rnd.nextInt(high - low + 1)];
 		int i = low;
 		int j = high;
 		while (true) {
-			while (a[i] < x)
+			while (a[i] < separator)
 				++i;
-			while (x < a[j])
+			while (a[j] > separator)
 				--j;
 			if (i > j)
 				break;

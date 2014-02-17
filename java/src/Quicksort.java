@@ -7,13 +7,13 @@ public class Quicksort {
 	public static void quickSort(int[] a, int low, int high) {
 		if (low > high)
 			return;
-		int x = a[low + rnd.nextInt(high - low + 1)];
+		int separator = a[low + rnd.nextInt(high - low + 1)];
 		int i = low;
 		int j = high;
 		while (i <= j) {
-			while (a[i] < x)
+			while (a[i] < separator)
 				++i;
-			while (x < a[j])
+			while (a[j] > separator)
 				--j;
 			if (i <= j) {
 				int t = a[i];
@@ -23,8 +23,8 @@ public class Quicksort {
 				--j;
 			}
 		}
-		if (low < j) quickSort(a, low, j);
-		if (j < high) quickSort(a, i, high);
+		quickSort(a, low, j);
+		quickSort(a, i, high);
 	}
 
 	// test

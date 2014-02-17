@@ -1,21 +1,20 @@
 import java.util.*;
 
-public class NthElement {
+public class NthElement2 {
+
+	static Random rnd = new Random(1);
 
 	// See: http://www.cplusplus.com/reference/algorithm/nth_element
 	public static void nth_element(int[] a, int low, int high, int n) {
-		while (true) {
-			int k = randomizedPartition(a, low, high);
-			if (n < k)
-				high = k;
-			else if (n > k)
-				low = k + 1;
-			else
-				return;
-		}
+		if (low + 1 == high)
+			return;
+		int q = randomizedPartition(a, low, high);
+		int k = q - low;
+		if (n < k)
+			nth_element(a, low, q, n);
+		else if (n > k)
+			nth_element(a, q + 1, high, n - k - 1);
 	}
-
-	static Random rnd = new Random();
 
 	static int randomizedPartition(int[] a, int low, int high) {
 		swap(a, low + rnd.nextInt(high - low), high - 1);
@@ -34,11 +33,11 @@ public class NthElement {
 
 	// Random test
 	public static void main(String[] args) {
-		for (int step = 0; step < 100_000; step++) {
-			int n = rnd.nextInt(10) + 1;
+		for (int step = 0; step < 100000; step++) {
+			int n = rnd.nextInt(3) + 1;
 			int[] a = new int[n];
 			for (int i = 0; i < n; i++)
-				a[i] = rnd.nextInt(10);
+				a[i] = rnd.nextInt(5);
 			int k = rnd.nextInt(n);
 			nth_element(a, 0, n, k);
 			int[] s = a.clone();

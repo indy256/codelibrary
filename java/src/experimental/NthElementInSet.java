@@ -1,6 +1,8 @@
+package experimental;
+
 import java.util.*;
 
-public class KthSet {
+public class NthElementInSet {
 
 	public static int getKthElement(NavigableSet<Integer> set, int k) {
 		int lo = set.first() - 1;
