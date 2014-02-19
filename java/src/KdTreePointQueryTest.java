@@ -59,7 +59,7 @@ public class KdTreePointQueryTest {
 
 	static void perfomance() {
 		Random rnd = new Random(1);
-		int n = 10_000_00;
+		int n = 1000_000;
 
 		int[] qx = new int[n];
 		int[] qy = new int[n];
