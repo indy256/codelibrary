@@ -80,29 +80,23 @@ public class KdTreePointQuery {
 		int mid = (low + high) >>> 1;
 		long dx = x - tx[mid];
 		long dy = y - ty[mid];
-		long d = dx * dx + dy * dy;
-		if (bestDist > d) {
-			bestDist = d;
+		long dist = dx * dx + dy * dy;
+		if (bestDist > dist) {
+			bestDist = dist;
 			bestNode = mid;
 		}
 		long delta = divX ? dx : dy;
 		long delta2 = delta * delta;
 
-		int l1 = low;
-		int h1 = mid;
-		int l2 = mid + 1;
-		int h2 = high;
-		if (delta > 0) {
-			int t = l1;
-			l1 = l2;
-			l2 = t;
-			t = h1;
-			h1 = h2;
-			h2 = t;
+		if (delta <= 0) {
+			findNearestNeighbour(low, mid, x, y, !divX);
+			if (delta2 < bestDist)
+				findNearestNeighbour(mid + 1, high, x, y, !divX);
+		} else {
+			findNearestNeighbour(mid + 1, high, x, y, !divX);
+			if (delta2 < bestDist)
+				findNearestNeighbour(low, mid, x, y, !divX);
 		}
-		findNearestNeighbour(l1, h1, x, y, !divX);
-		if (delta2 < bestDist)
-			findNearestNeighbour(l2, h2, x, y, !divX);
 	}
 
 	// random test

@@ -6,7 +6,7 @@ public class BinarySearch {
 	public static int binarySearchFirstTrue(IntPredicate predicate, int fromInclusive, int toInclusive) {
 		int lo = fromInclusive - 1;
 		int hi = toInclusive + 1;
-		while (lo + 1 < hi) {
+		while (lo < hi - 1) {
 			// overflow resilient arithmetic mean, rounded towards negative infinity
 			int mid = (lo & hi) + ((lo ^ hi) >> 1);
 			if (!predicate.test(mid)) {

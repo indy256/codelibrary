@@ -96,16 +96,6 @@ public class LineGeometry {
 		return Math.abs(line.a * p.x + line.b * p.y + line.c) / fastHypot(line.a, line.b);
 	}
 
-	public static double pointToSegmentDistance(Point p, Point a, Point b) {
-		double ab = sqr(a.x - b.x) + sqr(a.y - b.y);
-		double pa = sqr(p.x - a.x) + sqr(p.y - a.y);
-		double pb = sqr(p.x - b.x) + sqr(p.y - b.y);
-		if (ab > EPS && Math.abs(pa - pb) <= ab)
-			return Math.abs(a.minus(p).cross(b.minus(p))) / Math.sqrt(ab);
-		else
-			return Math.sqrt(Math.min(pa, pb));
-	}
-
 	public static double fastHypot(double x, double y) {
 		return Math.sqrt(x * x + y * y);
 	}
