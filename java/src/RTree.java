@@ -13,7 +13,7 @@ public class RTree {
 		}
 	}
 
-	final Segment[] segments;
+	final int[] x1, y1, x2, y2;
 	final int[] minx, maxx, miny, maxy;
 
 	public RTree(Segment[] segments) {
@@ -26,15 +26,23 @@ public class RTree {
 		Arrays.fill(maxx, Integer.MIN_VALUE);
 		Arrays.fill(miny, Integer.MAX_VALUE);
 		Arrays.fill(maxy, Integer.MIN_VALUE);
-		this.segments = segments;
-		build(0, n, true);
+		x1 = new int[n];
+		y1 = new int[n];
+		x2 = new int[n];
+		y2 = new int[n];
+		build(0, n, true, segments);
 	}
 
-	void build(int low, int high, boolean divX) {
+	void build(int low, int high, boolean divX, Segment[] segments) {
 		if (low >= high)
 			return;
 		int mid = (low + high) >>> 1;
 		nth_element(segments, low, high, mid, divX);
+
+		x1[mid] = segments[mid].x1;
+		y1[mid] = segments[mid].y1;
+		x2[mid] = segments[mid].x2;
+		y2[mid] = segments[mid].y2;
 
 		for (int i = low; i < high; i++) {
 			minx[mid] = Math.min(minx[mid], Math.min(segments[i].x1, segments[i].x2));
@@ -43,8 +51,8 @@ public class RTree {
 			maxy[mid] = Math.max(maxy[mid], Math.max(segments[i].y1, segments[i].y2));
 		}
 
-		build(low, mid, !divX);
-		build(mid + 1, high, !divX);
+		build(low, mid, !divX, segments);
+		build(mid + 1, high, !divX, segments);
 	}
 
 	// See: http://www.cplusplus.com/reference/algorithm/nth_element
@@ -83,7 +91,7 @@ public class RTree {
 
 	public int findNearestNeighbour(int x, int y) {
 		bestDist = Double.POSITIVE_INFINITY;
-		findNearestNeighbour(0, segments.length, x, y, true);
+		findNearestNeighbour(0, x1.length, x, y, true);
 		return bestNode;
 	}
 
@@ -91,20 +99,20 @@ public class RTree {
 		if (low >= high)
 			return;
 		int mid = (low + high) >>> 1;
-		double distance = pointToSegmentSquaredDistance(x, y, segments[mid].x1, segments[mid].y1, segments[mid].x2, segments[mid].y2);
+		double distance = pointToSegmentSquaredDistance(x, y, x1[mid], y1[mid], x2[mid], y2[mid]);
 		if (bestDist > distance) {
 			bestDist = distance;
 			bestNode = mid;
 		}
 
-		long delta = divX ? 2 * x - segments[mid].x1 - segments[mid].x2 : 2 * y - segments[mid].y1 - segments[mid].y2;
+		long delta = divX ? 2 * x - x1[mid] - x2[mid] : 2 * y - y1[mid] - y2[mid];
 
 		if (delta <= 0) {
 			findNearestNeighbour(low, mid, x, y, !divX);
 			if (mid + 1 < high) {
 				int mid1 = (mid + 1 + high) >>> 1;
-				delta = divX ? getDelta(x, minx[mid1], maxx[mid1]) : getDelta(y, miny[mid1], maxy[mid1]);
-				long delta2 = delta * delta;
+				long dist = divX ? getDist(x, minx[mid1], maxx[mid1]) : getDist(y, miny[mid1], maxy[mid1]);
+				long delta2 = dist * dist;
 				if (delta2 < bestDist)
 					findNearestNeighbour(mid + 1, high, x, y, !divX);
 			}
@@ -112,15 +120,15 @@ public class RTree {
 			findNearestNeighbour(mid + 1, high, x, y, !divX);
 			if (low < mid) {
 				int mid1 = (low + mid) >>> 1;
-				delta = divX ? getDelta(x, minx[mid1], maxx[mid1]) : getDelta(y, miny[mid1], maxy[mid1]);
-				long delta2 = delta * delta;
+				long dist = divX ? getDist(x, minx[mid1], maxx[mid1]) : getDist(y, miny[mid1], maxy[mid1]);
+				long delta2 = dist * dist;
 				if (delta2 < bestDist)
 					findNearestNeighbour(low, mid, x, y, !divX);
 			}
 		}
 	}
 
-	static long getDelta(int v, int min, int max) {
+	static long getDist(int v, int min, int max) {
 		if (v <= min)
 			return min - v;
 		if (v >= max)
