@@ -114,8 +114,8 @@ public class KdTreePointQuery {
 				minDist = Math.min(minDist, (long) (x - qx) * (x - qx) + (long) (y - qy) * (y - qy));
 			}
 			KdTreePointQuery kdTree = new KdTreePointQuery(points);
-			int i = kdTree.findNearestNeighbour(qx, qy);
-			Point p = points[i];
+			int index = kdTree.findNearestNeighbour(qx, qy);
+			Point p = points[index];
 			if (minDist != kdTree.bestDist || (long) (p.x - qx) * (p.x - qx) + (long) (p.y - qy) * (p.y - qy) != minDist)
 				throw new RuntimeException();
 		}
