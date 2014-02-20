@@ -18,6 +18,10 @@ public class RTree {
 
 	public RTree(Segment[] segments) {
 		int n = segments.length;
+		x1 = new int[n];
+		y1 = new int[n];
+		x2 = new int[n];
+		y2 = new int[n];
 		minx = new int[n];
 		maxx = new int[n];
 		miny = new int[n];
@@ -26,10 +30,6 @@ public class RTree {
 		Arrays.fill(maxx, Integer.MIN_VALUE);
 		Arrays.fill(miny, Integer.MAX_VALUE);
 		Arrays.fill(maxy, Integer.MIN_VALUE);
-		x1 = new int[n];
-		y1 = new int[n];
-		x2 = new int[n];
-		y2 = new int[n];
 		build(0, n, true, segments);
 	}
 
@@ -112,8 +112,7 @@ public class RTree {
 			if (mid + 1 < high) {
 				int mid1 = (mid + 1 + high) >>> 1;
 				long dist = divX ? getDist(x, minx[mid1], maxx[mid1]) : getDist(y, miny[mid1], maxy[mid1]);
-				long delta2 = dist * dist;
-				if (delta2 < bestDist)
+				if (dist * dist < bestDist)
 					findNearestNeighbour(mid + 1, high, x, y, !divX);
 			}
 		} else {
@@ -121,14 +120,13 @@ public class RTree {
 			if (low < mid) {
 				int mid1 = (low + mid) >>> 1;
 				long dist = divX ? getDist(x, minx[mid1], maxx[mid1]) : getDist(y, miny[mid1], maxy[mid1]);
-				long delta2 = dist * dist;
-				if (delta2 < bestDist)
+				if (dist * dist < bestDist)
 					findNearestNeighbour(low, mid, x, y, !divX);
 			}
 		}
 	}
 
-	static long getDist(int v, int min, int max) {
+	static int getDist(int v, int min, int max) {
 		if (v <= min)
 			return min - v;
 		if (v >= max)
