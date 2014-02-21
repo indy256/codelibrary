@@ -2,20 +2,39 @@ import java.util.*;
 
 public class BiconnectedComponents {
 
-	static int time;
-	static List<Integer>[] graph;
-	static boolean[] visited;
-	static int[] tin;
-	static int[] lowlink;
-	static List<Integer> cutPoints;
-	static List<String> bridges;
-	static Stack<Integer> st;
-	static List<List<Integer>> components;
+	List<Integer>[] graph;
+	boolean[] visited;
+	Stack<Integer> stack;
+	int time;
+	int[] tin;
+	int[] lowlink;
+	List<List<Integer>> components;
+	List<Integer> cutPoints;
+	List<String> bridges;
 
-	static void dfs(int u, int p) {
+	public List<List<Integer>> biconnectedComponents(List<Integer>[] graph) {
+		int n = graph.length;
+		this.graph = graph;
+		visited = new boolean[n];
+		stack = new Stack<>();
+		time = 0;
+		tin = new int[n];
+		lowlink = new int[n];
+		components = new ArrayList<>();
+		cutPoints = new ArrayList<>();
+		bridges = new ArrayList<>();
+
+		for (int u = 0; u < n; u++)
+			if (!visited[u])
+				dfs(u, -1);
+
+		return components;
+	}
+
+	void dfs(int u, int p) {
 		visited[u] = true;
 		lowlink[u] = tin[u] = time++;
-		st.add(u);
+		stack.add(u);
 		int children = 0;
 		boolean cutPoint = false;
 		for (int v : graph[u]) {
@@ -41,7 +60,7 @@ public class BiconnectedComponents {
 		if (lowlink[u] == tin[u]) {
 			List<Integer> component = new ArrayList<>();
 			while (true) {
-				int x = st.pop();
+				int x = stack.pop();
 				component.add(x);
 				if (x == u)
 					break;
@@ -52,9 +71,8 @@ public class BiconnectedComponents {
 
 	// Usage example
 	public static void main(String[] args) {
-		time = 0;
 		int n = 6;
-		graph = new List[n];
+		List<Integer>[] graph = new List[n];
 		for (int i = 0; i < n; i++) {
 			graph[i] = new ArrayList<>();
 		}
@@ -64,18 +82,11 @@ public class BiconnectedComponents {
 			graph[edge[1]].add(edge[0]);
 		}
 
-		visited = new boolean[n];
-		tin = new int[n];
-		lowlink = new int[n];
-		cutPoints = new ArrayList<>();
-		bridges = new ArrayList<>();
-		st = new Stack<>();
-		components = new ArrayList<>();
+		BiconnectedComponents bc = new BiconnectedComponents();
+		List<List<Integer>> components = bc.biconnectedComponents(graph);
 
-		dfs(0, -1);
-
-		System.out.println("cutPoints: " + cutPoints);
-		System.out.println("bridges:" + bridges);
 		System.out.println("biconnected components:" + components);
+		System.out.println("cutPoints: " + bc.cutPoints);
+		System.out.println("bridges:" + bc.bridges);
 	}
 }
