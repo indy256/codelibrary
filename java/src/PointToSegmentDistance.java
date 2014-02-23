@@ -1,5 +1,5 @@
 import java.awt.geom.Line2D;
-import java.util.Random;
+		import java.util.Random;
 
 public class PointToSegmentDistance {
 
@@ -25,13 +25,14 @@ public class PointToSegmentDistance {
 	// random test
 	public static void main(String[] args) {
 		Random rnd = new Random();
-		for (int step = 0; step < 100_000; step++) {
-			int x = rnd.nextInt(100) - 50;
-			int y = rnd.nextInt(100) - 50;
-			int x1 = rnd.nextInt(100) - 50;
-			int y1 = rnd.nextInt(100) - 50;
-			int x2 = rnd.nextInt(100) - 50;
-			int y2 = rnd.nextInt(100) - 50;
+		for (int step = 0; step < 1000_000; step++) {
+			int r = 10;
+			int x = rnd.nextInt(r) - r / 2;
+			int y = rnd.nextInt(r) - r / 2;
+			int x1 = rnd.nextInt(r) - r / 2;
+			int y1 = rnd.nextInt(r) - r / 2;
+			int x2 = rnd.nextInt(r) - r / 2;
+			int y2 = rnd.nextInt(r) - r / 2;
 			double res1 = pointToSegmentDistance(x, y, x1, y1, x2, y2);
 			double res2 = Line2D.ptSegDist(x1, y1, x2, y2, x, y);
 			if (Math.abs(res1 - res2) > 1e-9)
