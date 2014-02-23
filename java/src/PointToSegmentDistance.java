@@ -1,3 +1,6 @@
+import java.awt.geom.Line2D;
+import java.util.Random;
+
 public class PointToSegmentDistance {
 
 	public static double pointToSegmentDistance(int x, int y, int x1, int y1, int x2, int y2) {
@@ -8,16 +11,31 @@ public class PointToSegmentDistance {
 		long squaredLength = dx * dx + dy * dy;
 		long dotProduct = dx * px + dy * py;
 		if (dotProduct <= 0 || squaredLength == 0)
-			return Math.hypot(px, py);
+			return fastHypot(px, py);
 		if (dotProduct >= squaredLength)
-			return Math.hypot(px - dx, py - dy);
+			return fastHypot(px - dx, py - dy);
 		double q = (double) dotProduct / squaredLength;
-		return Math.hypot(px - q * dx, py - q * dy);
+		return fastHypot(px - q * dx, py - q * dy);
 	}
 
-	// Usage example
+	static double fastHypot(double x, double y) {
+		return Math.sqrt(x * x + y * y);
+	}
+
+	// random test
 	public static void main(String[] args) {
-		double d = pointToSegmentDistance(0, 0, -1, 1, 1, 1);
-		System.out.println(d == 1.0);
+		Random rnd = new Random();
+		for (int step = 0; step < 100_000; step++) {
+			int x = rnd.nextInt(100) - 50;
+			int y = rnd.nextInt(100) - 50;
+			int x1 = rnd.nextInt(100) - 50;
+			int y1 = rnd.nextInt(100) - 50;
+			int x2 = rnd.nextInt(100) - 50;
+			int y2 = rnd.nextInt(100) - 50;
+			double res1 = pointToSegmentDistance(x, y, x1, y1, x2, y2);
+			double res2 = Line2D.ptSegDist(x1, y1, x2, y2, x, y);
+			if (Math.abs(res1 - res2) > 1e-9)
+				throw new RuntimeException();
+		}
 	}
 }
