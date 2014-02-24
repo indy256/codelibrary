@@ -24,11 +24,24 @@ class segment {
         if (a.first < o.a.first) {
             int s = cross(a, b, o.a);
             return (s > 0 || s == 0 && a.second < o.a.second);
-        } else {
+        } else if (a.first > o.a.first) {
             int s = cross(o.a, o.b, a);
             return (s < 0 || s == 0 && a.second < o.a.second);
         }
         return a.second < o.a.second;
+    }
+};
+
+class event {
+    public:
+    pii p;
+    int id;
+    int type;
+    event(pii p, int id, int type) :
+        p(p), id(id), type(type) {
+    }
+    bool operator<(const event &o) const {
+        return p.first < o.p.first || p.first == o.p.first && (type > o.type || type == o.type && p.second < o.p.second);
     }
 };
 
@@ -51,27 +64,14 @@ bool intersect(segment s1, segment s2) {
     return true;
 }
 
-class event {
-    public:
-    pii p;
-    int id;
-    int type;
-    event(pii p, int id, int type) :
-        p(p), id(id), type(type) {
-    }
-    bool operator<(const event &o) const {
-        return p.first < o.p.first || p.first == o.p.first && (type > o.type || type == o.type && p.second < o.p.second);
-    }
-};
-
-pii findIntersection(vector<segment> a) {
-    int n = a.size();
+pii findIntersection(vector<segment> s) {
+    int n = s.size();
     vector<event> e;
     for (int i = 0; i < n; ++i) {
-        if (a[i].a > a[i].b)
-            swap(a[i].a, a[i].b);
-        e.push_back(event(a[i].a, i, 1));
-        e.push_back(event(a[i].b, i, -1));
+        if (s[i].a > s[i].b)
+            swap(s[i].a, s[i].b);
+        e.push_back(event(s[i].a, i, 1));
+        e.push_back(event(s[i].b, i, -1));
     }
     sort(e.begin(), e.end());
 
@@ -80,14 +80,14 @@ pii findIntersection(vector<segment> a) {
     for (int i = 0; i < n * 2; ++i) {
         int id = e[i].id;
         if (e[i].type == 1) {
-            set<segment>::iterator it = q.lower_bound(a[id]);
-            if (it != q.end() && intersect(*it, a[id]))
-                return make_pair(it->id, a[id].id);
-            if (it != q.begin() && intersect(*--it, a[id]))
-                return make_pair(it->id, a[id].id);
-            q.insert(a[id]);
+            set<segment>::iterator it = q.lower_bound(s[id]);
+            if (it != q.end() && intersect(*it, s[id]))
+                return make_pair(it->id, s[id].id);
+            if (it != q.begin() && intersect(*--it, s[id]))
+                return make_pair(it->id, s[id].id);
+            q.insert(s[id]);
         } else {
-            set<segment>::iterator it = q.lower_bound(a[id]), next = it, prev = it;
+            set<segment>::iterator it = q.lower_bound(s[id]), next = it, prev = it;
             if (it != q.begin() && it != --q.end()) {
                 ++next, --prev;
                 if (intersect(*next, *prev))
