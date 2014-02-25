@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.function.IntPredicate;
 
 public class Sort {
 
@@ -71,6 +72,93 @@ public class Sort {
 				}
 			}
 			System.arraycopy(b, 0, a, low, size);
+		}
+	}
+
+	public static void inPlaceMergeSort(int[] a, int low, int high) {
+		if (low < high - 1) {
+			int mid = (low + high) >>> 1;
+			mergeSort(a, low, mid);
+			mergeSort(a, mid, high);
+			inPlaceMerge(a, low, mid, high);
+		}
+	}
+
+	// O(n*log(n)) complexity
+	static void inPlaceMerge(int[] a, int from, int mid, int to) {
+		if (from >= mid || mid >= to) return;
+		if (to - from == 2) {
+			if (a[from] > a[mid])
+				swap(a, from, mid);
+			return;
+		}
+
+		final int firstCut;
+		final int secondCut;
+
+		if (mid - from > to - mid) {
+			firstCut = from + (mid - from) / 2;
+			secondCut = binarySearchFirstTrue(i -> a[i] >= a[firstCut], mid, to);
+		} else {
+			secondCut = mid + (to - mid) / 2;
+			firstCut = binarySearchFirstTrue(i -> a[i] > a[secondCut], from, mid);
+		}
+
+		if (mid != firstCut && mid != secondCut) {
+			rotate(a, firstCut, mid, secondCut);
+		}
+
+		mid = firstCut + (secondCut - mid);
+		inPlaceMerge(a, from, firstCut, mid);
+		inPlaceMerge(a, mid, secondCut, to);
+	}
+
+	static void rotate(int[] a, int first, int middle, int last) {
+		reverse(a, first, middle);
+		reverse(a, middle, last);
+		reverse(a, first, last);
+	}
+
+	static void reverse(int[] a, int from, int to) {
+		while (from < --to)
+			swap(a, from++, to);
+	}
+
+	static int binarySearchFirstTrue(IntPredicate predicate, int fromInclusive, int toExclusive) {
+		int lo = fromInclusive - 1;
+		int hi = toExclusive;
+		while (lo < hi - 1) {
+			int mid = (lo + hi) >>> 1;
+			if (!predicate.test(mid)) {
+				lo = mid;
+			} else {
+				hi = mid;
+			}
+		}
+		return hi;
+	}
+
+	public static void heapSort(int[] a) {
+		int n = a.length;
+		for (int i = n / 2 - 1; i >= 0; i--)
+			pushDown(a, i, n);
+		while (n > 1) {
+			swap(a, 0, n - 1);
+			pushDown(a, 0, --n);
+		}
+	}
+
+	static void pushDown(int[] h, int pos, int size) {
+		while (true) {
+			int child = 2 * pos + 1;
+			if (child >= size)
+				break;
+			if (child + 1 < size && h[child + 1] > h[child])
+				child++;
+			if (h[pos] >= h[child])
+				break;
+			swap(h, pos, child);
+			pos = child;
 		}
 	}
 
@@ -150,7 +238,7 @@ public class Sort {
 
 	// random test
 	public static void main(String[] args) {
-		Random rnd = new Random(1);
+		Random rnd = new Random();
 		for (int step = 0; step < 1000; step++) {
 			int n = rnd.nextInt(100) + 1;
 			int[] a = new int[n];
@@ -182,7 +270,7 @@ public class Sort {
 		}
 
 		for (int step = 0; step < 10; step++) {
-			int n = rnd.nextInt(50000) + 100000;
+			int n = rnd.nextInt(50_000) + 100_000;
 			int[] a = new int[n];
 			for (int i = 0; i < n; i++) {
 				a[i] = rnd.nextInt();
@@ -202,6 +290,16 @@ public class Sort {
 
 			b = a.clone();
 			mergeSort(b, 0, b.length);
+			if (!Arrays.equals(s, b))
+				throw new RuntimeException();
+
+			b = a.clone();
+			inPlaceMergeSort(b, 0, b.length);
+			if (!Arrays.equals(s, b))
+				throw new RuntimeException();
+
+			b = a.clone();
+			heapSort(b);
 			if (!Arrays.equals(s, b))
 				throw new RuntimeException();
 

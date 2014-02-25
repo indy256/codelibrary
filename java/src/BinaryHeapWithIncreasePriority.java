@@ -20,14 +20,14 @@ public class BinaryHeapWithIncreasePriority {
 	}
 
 	void pushDown(int pos) {
-		while (2 * pos + 1 < size) {
+		while (true) {
 			int child = 2 * pos + 1;
-			if (child + 1 < size && heap[child + 1] < heap[child]) {
-				++child;
-			}
-			if (heap[pos] <= heap[child]) {
+			if (child >= size)
 				break;
-			}
+			if (child + 1 < size && heap[child + 1] < heap[child])
+				++child;
+			if (heap[pos] <= heap[child])
+				break;
 			swap(pos, child);
 			pos = child;
 		}
@@ -48,9 +48,8 @@ public class BinaryHeapWithIncreasePriority {
 	void popUp(int pos) {
 		while (pos > 0) {
 			int parent = (pos - 1) / 2;
-			if (heap[pos] >= heap[parent]) {
+			if (heap[pos] >= heap[parent])
 				break;
-			}
 			swap(pos, parent);
 			pos = parent;
 		}
