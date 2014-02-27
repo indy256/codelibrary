@@ -342,16 +342,16 @@ public class TreapSet<E> extends AbstractSet<E> implements NavigableSet<E> {
 			}
 		}
 
-		protected Node remove(E key) {
-			int cmp = compare(key, this.key);
+		protected Node remove(E e) {
+			int cmp = compare(e, key);
 			if (cmp == 0)
 				return merge(left, right);
 			if (cmp < 0) {
-				left = left == null ? null : left.remove(key);
+				left = left == null ? null : left.remove(e);
 				updateSize();
 				return this;
 			} else {
-				right = right == null ? null : right.remove(key);
+				right = right == null ? null : right.remove(e);
 				updateSize();
 				return this;
 			}
@@ -393,14 +393,14 @@ public class TreapSet<E> extends AbstractSet<E> implements NavigableSet<E> {
 			return right == null ? this : right.last();
 		}
 
-		protected Node search(E key) {
-			int cmp = compare(key, this.key);
+		protected Node search(E e) {
+			int cmp = compare(e, key);
 			if (cmp == 0)
 				return this;
 			if (cmp < 0)
-				return left == null ? null : left.search(key);
+				return left == null ? null : left.search(e);
 			else
-				return right == null ? null : right.search(key);
+				return right == null ? null : right.search(e);
 		}
 
 		public int indexOf(Node node) {
@@ -441,6 +441,10 @@ public class TreapSet<E> extends AbstractSet<E> implements NavigableSet<E> {
 			for (int i = 0; i < 1000; i++) {
 				if (!view1.equals(view2))
 					throw new RuntimeException();
+				int pos = 0;
+				for (int item : s1)
+					if (!Objects.equals(s2.get(pos++), item))
+						throw new RuntimeException();
 				int arg = rnd.nextInt(range) - range / 2;
 				int op = rnd.nextInt(methods0.length + methods1.length);
 				check(s1, s2, op < methods0.length ? methods0[op] : methods1[op - methods0.length], op < methods0.length ? null : arg);
