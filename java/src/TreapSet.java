@@ -93,13 +93,13 @@ public class TreapSet<E> extends AbstractSet<E> implements NavigableSet<E> {
 			Node to = toInclusive ? rc.root.floor(this.to) : rc.root.lower(this.to);
 			if (to == null)
 				return 0;
-			return rc.root.indexOf(to) + 1;
+			return rc.root.indexOf(to.key) + 1;
 		}
 		if (to == null) {
 			Node from = fromInclusive ? rc.root.ceil(this.from) : rc.root.higher(this.from);
 			if (from == null)
 				return 0;
-			return rc.root.size - rc.root.indexOf(from);
+			return rc.root.size - rc.root.indexOf(from.key);
 		}
 		Node from = fromInclusive ? rc.root.ceil(this.from) : rc.root.higher(this.from);
 		if (from == null || !inRange(from.key))
@@ -107,7 +107,7 @@ public class TreapSet<E> extends AbstractSet<E> implements NavigableSet<E> {
 		Node to = toInclusive ? rc.root.floor(this.to) : rc.root.lower(this.to);
 		if (to == null || !inRange(to.key))
 			return 0;
-		return rc.root.indexOf(to) - rc.root.indexOf(from) + 1;
+		return rc.root.indexOf(to.key) - rc.root.indexOf(from.key) + 1;
 	}
 
 	@SuppressWarnings({"unchecked"})
@@ -260,7 +260,7 @@ public class TreapSet<E> extends AbstractSet<E> implements NavigableSet<E> {
 		return res;
 	}
 
-	public E get(int index) {
+	public E getByIndex(int index) {
 		if (index < 0)
 			throw new IndexOutOfBoundsException(Integer.toString(index));
 		if (from != null)
@@ -268,6 +268,10 @@ public class TreapSet<E> extends AbstractSet<E> implements NavigableSet<E> {
 		if (index >= size() - (to == null ? 0 : tailSet(to, !toInclusive).size()))
 			throw new IndexOutOfBoundsException(Integer.toString(index));
 		return rc.root.get(index);
+	}
+
+	public int indexOf(E e) {
+		return rc.root != null && inRange(e) ? rc.root.indexOf(e) : -1;
 	}
 
 	protected class Node {
@@ -403,15 +407,17 @@ public class TreapSet<E> extends AbstractSet<E> implements NavigableSet<E> {
 				return right == null ? null : right.search(e);
 		}
 
-		public int indexOf(Node node) {
-			if (this == node)
+		protected int indexOf(E e) {
+			int cmp = compare(e, key);
+			if (cmp == 0)
 				return size(left);
-			if (compare(node.key, key) > 0)
-				return size(left) + 1 + (right == null ? 0 : right.indexOf(node));
-			return left == null ? 0 : left.indexOf(node);
+			if (cmp < 0)
+				return left == null ? 0 : left.indexOf(e);
+			else
+				return size(left) + 1 + (right == null ? 0 : right.indexOf(e));
 		}
 
-		public E get(int index) {
+		protected E get(int index) {
 			if (index < size(left))
 				return left.get(index);
 			else if (index == size(left))
@@ -442,9 +448,12 @@ public class TreapSet<E> extends AbstractSet<E> implements NavigableSet<E> {
 				if (!view1.equals(view2))
 					throw new RuntimeException();
 				int pos = 0;
-				for (int item : s1)
-					if (!Objects.equals(s2.get(pos++), item))
+				for (int item1 : s1) {
+					Integer item2 = s2.getByIndex(pos);
+					if (!Objects.equals(item1, item2) || s2.indexOf(item1) != pos)
 						throw new RuntimeException();
+					++pos;
+				}
 				int arg = rnd.nextInt(range) - range / 2;
 				int op = rnd.nextInt(methods0.length + methods1.length);
 				check(s1, s2, op < methods0.length ? methods0[op] : methods1[op - methods0.length], op < methods0.length ? null : arg);
