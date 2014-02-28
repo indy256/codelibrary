@@ -462,30 +462,31 @@ public class TreapSet<E> extends AbstractSet<E> implements NavigableSet<E> {
 	}
 
 	static void check(Object obj1, Object obj2, String methodName, Integer arg) {
-		boolean exception1 = true;
-		Object res1 = null;
-		String s = "";
-		try {
-			res1 = invoke(obj1, methodName, arg);
-			exception1 = false;
-		} catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
-			s += e.getMessage();
-		}
-		boolean exception2 = true;
-		Object res2 = null;
-		try {
-			res2 = invoke(obj2, methodName, arg);
-			exception2 = false;
-		} catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
-			s += e.getMessage();
-		}
-		if (exception1 != exception2 || !Objects.deepEquals(res1, res2))
-			throw new RuntimeException(s);
+		Result result1 = invoke(obj1, methodName, arg);
+		Result result2 = invoke(obj2, methodName, arg);
+		if ((result1.e == null) != (result2.e == null) || !Objects.deepEquals(result1.result, result2.result))
+			throw new RuntimeException("" + result1.e + result2.e);
 	}
 
-	static Object invoke(Object obj, String methodName, Integer arg)
-			throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
-		Method method = arg != null ? obj.getClass().getMethod(methodName, Object.class) : obj.getClass().getMethod(methodName);
-		return arg != null ? method.invoke(obj, arg) : method.invoke(obj);
+	static Result invoke(Object obj, String methodName, Integer arg) {
+		Object result = null;
+		Exception e = null;
+		try {
+			Method method = arg != null ? obj.getClass().getMethod(methodName, Object.class) : obj.getClass().getMethod(methodName);
+			result = arg != null ? method.invoke(obj, arg) : method.invoke(obj);
+		} catch (Exception ex) {
+			e = ex;
+		}
+		return new Result(result, e);
+	}
+
+	static class Result {
+		Object result;
+		Exception e;
+
+		Result(Object result, Exception e) {
+			this.result = result;
+			this.e = e;
+		}
 	}
 }
