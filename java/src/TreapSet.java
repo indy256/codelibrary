@@ -434,9 +434,9 @@ public class TreapSet<E> extends AbstractSet<E> implements NavigableSet<E> {
 	// random tests
 	public static void main(String[] args) {
 		Random rnd = new Random();
-		int range = 10;
+		int range = 50;
 		String[] methods0 = {"size", "first", "last", "pollFirst", "pollLast", "toArray"};
-		String[] methods1 = {"add", "contains", "remove", "lower", "floor", "ceiling", "higher", "headSet", "tailSet"};
+		String[] methods1 = {"add", "add", "add", "contains", "remove", "lower", "floor", "ceiling", "higher", "headSet", "tailSet"};
 		for (int step = 0; step < 1000; step++) {
 			NavigableSet<Integer> s1 = new TreeSet<>();
 			TreapSet<Integer> s2 = new TreapSet<>();
@@ -462,31 +462,18 @@ public class TreapSet<E> extends AbstractSet<E> implements NavigableSet<E> {
 	}
 
 	static void check(Object obj1, Object obj2, String methodName, Integer arg) {
-		Result result1 = invoke(obj1, methodName, arg);
-		Result result2 = invoke(obj2, methodName, arg);
-		if ((result1.e == null) != (result2.e == null) || !Objects.deepEquals(result1.result, result2.result))
-			throw new RuntimeException("" + result1.e + result2.e);
+		Object result1 = invoke(obj1, methodName, arg);
+		Object result2 = invoke(obj2, methodName, arg);
+		if (!((result1 instanceof Exception && result2 instanceof Exception) || Objects.deepEquals(result1, result2)))
+			throw new RuntimeException(result1 + " " + result2);
 	}
 
-	static Result invoke(Object obj, String methodName, Integer arg) {
-		Object result = null;
-		Exception e = null;
+	static Object invoke(Object obj, String methodName, Integer arg) {
 		try {
 			Method method = arg != null ? obj.getClass().getMethod(methodName, Object.class) : obj.getClass().getMethod(methodName);
-			result = arg != null ? method.invoke(obj, arg) : method.invoke(obj);
-		} catch (Exception ex) {
-			e = ex;
-		}
-		return new Result(result, e);
-	}
-
-	static class Result {
-		Object result;
-		Exception e;
-
-		Result(Object result, Exception e) {
-			this.result = result;
-			this.e = e;
+			return arg != null ? method.invoke(obj, arg) : method.invoke(obj);
+		} catch (Exception e) {
+			return e;
 		}
 	}
 }
