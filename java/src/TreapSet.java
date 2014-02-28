@@ -110,7 +110,7 @@ public class TreapSet<E> extends AbstractSet<E> implements NavigableSet<E> {
 		return rc.root.indexOf(to.key) - rc.root.indexOf(from.key) + 1;
 	}
 
-	@SuppressWarnings({"unchecked"})
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean contains(Object o) {
 		return rc.root != null && inRange((E) o) && rc.root.search((E) o) != null;
@@ -196,7 +196,7 @@ public class TreapSet<E> extends AbstractSet<E> implements NavigableSet<E> {
 		return new Node(e, rnd.nextLong());
 	}
 
-	@SuppressWarnings({"unchecked"})
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean remove(Object o) {
 		if (!contains(o))
@@ -310,7 +310,7 @@ public class TreapSet<E> extends AbstractSet<E> implements NavigableSet<E> {
 			size = size(left) + size(right) + 1;
 		}
 
-		@SuppressWarnings({"unchecked"})
+		@SuppressWarnings("unchecked")
 		protected Node[] split(E minRightKey) {
 			if (compare(minRightKey, key) < 0) {
 				Node[] result = left == null ? new TreapSet.Node[2] : left.split(minRightKey);
@@ -343,7 +343,7 @@ public class TreapSet<E> extends AbstractSet<E> implements NavigableSet<E> {
 			}
 		}
 
-		@SuppressWarnings({"unchecked"})
+		@SuppressWarnings("unchecked")
 		protected Node insert(Node node) {
 			if (node.priority > priority) {
 				Node[] result = split(node.key);
