@@ -1,8 +1,8 @@
-import java.lang.reflect.*;
+import java.lang.reflect.Method;
 import java.util.*;
 
 public class TreapSet<E> extends AbstractSet<E> implements NavigableSet<E> {
-	protected static final Random rnd = new Random(1);
+	protected static final Random rnd = new Random();
 
 	private class RootContainer {
 		private Node root;
@@ -116,46 +116,63 @@ public class TreapSet<E> extends AbstractSet<E> implements NavigableSet<E> {
 		return rc.root != null && inRange((E) o) && rc.root.search((E) o) != null;
 	}
 
+	private abstract class TreapIterator<E> implements Iterator<E> {
+		private E next = getStartKey();
+		private E lastReturned = null;
+
+		abstract E getStartKey();
+
+		abstract E nextKey(E e);
+
+		@Override
+		public boolean hasNext() {
+			return next != null;
+		}
+
+		@Override
+		public E next() {
+			if (next == null)
+				throw new NoSuchElementException();
+			lastReturned = next;
+			next = nextKey(next);
+			return lastReturned;
+		}
+
+		@Override
+		public void remove() {
+			if (lastReturned == null)
+				throw new IllegalStateException();
+			TreapSet.this.remove(lastReturned);
+			lastReturned = null;
+		}
+	}
+
 	@Override
 	public Iterator<E> iterator() {
-		return new Iterator<E>() {
-			private E next = getFirst();
-			private E lastReturned = null;
-
-			public boolean hasNext() {
-				return next != null;
+		return new TreapIterator<E>() {
+			@Override
+			protected E getStartKey() {
+				return getFirst();
 			}
 
-			public E next() {
-				lastReturned = next;
-				next = higher(next);
-				return lastReturned;
-			}
-
-			public void remove() {
-				TreapSet.this.remove(lastReturned);
+			@Override
+			protected E nextKey(E e) {
+				return higher(e);
 			}
 		};
 	}
 
 	@Override
 	public Iterator<E> descendingIterator() {
-		return new Iterator<E>() {
-			private E next = getLast();
-			private E lastReturned = null;
-
-			public boolean hasNext() {
-				return next != null;
+		return new TreapIterator<E>() {
+			@Override
+			protected E getStartKey() {
+				return getLast();
 			}
 
-			public E next() {
-				lastReturned = next;
-				next = lower(next);
-				return lastReturned;
-			}
-
-			public void remove() {
-				TreapSet.this.remove(lastReturned);
+			@Override
+			protected E nextKey(E e) {
+				return lower(e);
 			}
 		};
 	}
@@ -435,8 +452,9 @@ public class TreapSet<E> extends AbstractSet<E> implements NavigableSet<E> {
 	public static void main(String[] args) {
 		Random rnd = new Random();
 		int range = 50;
-		String[] methods0 = {"size", "first", "last", "pollFirst", "pollLast", "toArray"};
+		String[] methods0 = {"size", "isEmpty", "first", "last", "pollFirst", "pollLast", "toArray", "clear"};
 		String[] methods1 = {"add", "add", "add", "contains", "remove", "lower", "floor", "ceiling", "higher", "headSet", "tailSet"};
+		String[] iteratorMethods = {"hasNext", "next", "remove"};
 		for (int step = 0; step < 1000; step++) {
 			NavigableSet<Integer> s1 = new TreeSet<>();
 			TreapSet<Integer> s2 = new TreapSet<>();
@@ -457,6 +475,17 @@ public class TreapSet<E> extends AbstractSet<E> implements NavigableSet<E> {
 				int arg = rnd.nextInt(range) - range / 2;
 				int op = rnd.nextInt(methods0.length + methods1.length);
 				check(s1, s2, op < methods0.length ? methods0[op] : methods1[op - methods0.length], op < methods0.length ? null : arg);
+
+				if (rnd.nextInt(100) == 0) {
+					Iterator<Integer> it1 = s1.iterator();
+					Iterator<Integer> it2 = s2.iterator();
+					for (int j = 0; j < 10; j++)
+						check(it1, it2, iteratorMethods[rnd.nextInt(iteratorMethods.length)], null);
+					it1 = s1.descendingIterator();
+					it2 = s2.descendingIterator();
+					for (int j = 0; j < 10; j++)
+						check(it1, it2, iteratorMethods[rnd.nextInt(iteratorMethods.length)], null);
+				}
 			}
 		}
 	}
@@ -471,6 +500,7 @@ public class TreapSet<E> extends AbstractSet<E> implements NavigableSet<E> {
 	static Object invoke(Object obj, String methodName, Integer arg) {
 		try {
 			Method method = arg != null ? obj.getClass().getMethod(methodName, Object.class) : obj.getClass().getMethod(methodName);
+			method.setAccessible(true);
 			return arg != null ? method.invoke(obj, arg) : method.invoke(obj);
 		} catch (Exception e) {
 			return e;
