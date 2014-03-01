@@ -1,4 +1,4 @@
-import java.awt.geom.Line2D;
+import java.awt.geom.*;
 import java.util.Random;
 
 public class SegmentsIntersection {
@@ -20,6 +20,21 @@ public class SegmentsIntersection {
 		long z3 = (x4 - x3) * (y1 - y3) - (y4 - y3) * (x1 - x3);
 		long z4 = (x4 - x3) * (y2 - y3) - (y4 - y3) * (x2 - x3);
 		return (z1 <= 0 || z2 <= 0) && (z1 >= 0 || z2 >= 0) && (z3 <= 0 || z4 <= 0) && (z3 >= 0 || z4 >= 0);
+	}
+
+	public static Point2D.Double getLinesIntersection(long x1, long y1, long x2, long y2, long x3, long y3, long x4, long y4) {
+		long a1 = y2 - y1;
+		long b1 = x1 - x2;
+		long c1 = -(x1 * y2 - x2 * y1);
+		long a2 = y4 - y3;
+		long b2 = x3 - x4;
+		long c2 = -(x3 * y4 - x4 * y3);
+		long det = a1 * b2 - a2 * b1;
+		if (det == 0)
+			return null;
+		double x = -(c1 * b2 - c2 * b1) / (double) det;
+		double y = -(a1 * c2 - a2 * c1) / (double) det;
+		return new Point2D.Double(x, y);
 	}
 
 	// random tests
@@ -44,5 +59,6 @@ public class SegmentsIntersection {
 			if (crossOrTouchIntersect != crossOrTouchIntersect2 || crossIntersect && !crossOrTouchIntersect)
 				throw new RuntimeException();
 		}
+		System.out.println(getLinesIntersection(0, 0, 4, 2, 2, -1, 2, 5).equals(new Point2D.Double(2, 1)));
 	}
 }
