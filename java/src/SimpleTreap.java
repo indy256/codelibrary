@@ -1,17 +1,17 @@
 import java.util.*;
 
-public class TreapSet2 {
+public class SimpleTreap {
 	static Random random = new Random();
 
 	static class Treap {
-		int value;
+		int key;
 		long prio;
 		Treap left;
 		Treap right;
 		int count;
 
-		Treap(int value) {
-			this.value = value;
+		Treap(int key) {
+			this.key = key;
 			prio = random.nextLong();
 			count = 1;
 		}
@@ -38,7 +38,7 @@ public class TreapSet2 {
 	static TreapPair split(Treap root, int minRight) {
 		if (root == null)
 			return new TreapPair(null, null);
-		if (root.value >= minRight) {
+		if (root.key >= minRight) {
 			TreapPair sub = split(root.left, minRight);
 			root.left = sub.right;
 			root.update();
@@ -84,18 +84,18 @@ public class TreapSet2 {
 			return kth(root.left, k);
 		else if (k > getCount(root.left))
 			return kth(root.right, k - getCount(root.left) - 1);
-		return root.value;
+		return root.key;
 	}
 
 	static void print(Treap root) {
 		if (root == null)
 			return;
 		print(root.left);
-		System.out.println(root.value);
+		System.out.println(root.key);
 		print(root.right);
 	}
 
-	// Usage example
+	// random test
 	public static void main(String[] args) {
 		Treap treap = null;
 		Set<Integer> set = new TreeSet<>();
@@ -108,10 +108,8 @@ public class TreapSet2 {
 				treap = insert(treap, x);
 				set.add(x);
 			}
-			if (set.size() != getCount(treap)) {
-				System.err.println(set.size() + " " + getCount(treap));
-				break;
-			}
+			if (set.size() != getCount(treap))
+				throw new RuntimeException();
 		}
 		// print(treap);
 	}

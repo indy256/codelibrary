@@ -1,9 +1,13 @@
+package experimental;
+
 import java.lang.reflect.Method;
 import java.util.*;
 
-public class ClosedAddressingHashMap<K, V> extends AbstractMap<K, V> {
+// todo
+public class OpenAddressingHashMap<K, V> extends AbstractMap<K, V> {
 	private int size;
-	private Entry<K, V>[] table;
+	private K[] keys;
+	private V[] values;
 	private final Set<Map.Entry<K, V>> entrySet;
 
 	private static final int[] shifts = new int[10];
@@ -14,62 +18,45 @@ public class ClosedAddressingHashMap<K, V> extends AbstractMap<K, V> {
 			shifts[i] = 1 + 3 * i + random.nextInt(3);
 	}
 
-	public ClosedAddressingHashMap() {
+	public OpenAddressingHashMap() {
 		this(4);
 	}
 
 	@SuppressWarnings("unchecked")
 	private void setCapacity(int size) {
-		table = new Entry[Integer.highestOneBit(size) * 4];
+		keys = (K[]) new Object[Integer.highestOneBit(size) * 4];
+		values = (V[]) new Object[Integer.highestOneBit(size) * 4];
 	}
 
-	public ClosedAddressingHashMap(int initialCapacity) {
+	public OpenAddressingHashMap(int initialCapacity) {
 		setCapacity(initialCapacity);
 		entrySet = new AbstractSet<Map.Entry<K, V>>() {
 			@Override
 			public Iterator<Map.Entry<K, V>> iterator() {
 				return new Iterator<Map.Entry<K, V>>() {
-					private Entry<K, V> lastReturned;
-					private Entry<K, V> next;
-					private Entry<K, V> prev;
-					private int nextIndex = -1;
-					private int lastReturnedIndex = -1;
+					private int index;
+					private Entry lastReturned;
 
 					@Override
 					public boolean hasNext() {
-						if (next == null) {
-							while (nextIndex + 1 < table.length) {
-								next = table[++nextIndex];
-								if (next != null)
-									break;
-							}
-						}
-						return next != null;
+						for (; index < keys.length; index++)
+							if (keys[index] != null)
+								return true;
+						return false;
 					}
 
 					@Override
 					public Map.Entry<K, V> next() {
 						if (!hasNext())
 							throw new NoSuchElementException();
-						if (nextIndex != lastReturnedIndex)
-							prev = null;
-						else if (lastReturned != null)
-							prev = lastReturned;
-						lastReturned = next;
-						lastReturnedIndex = nextIndex;
-						next = next.next;
-						return lastReturned;
+						return lastReturned = new Entry(index++);
 					}
 
 					@Override
 					public void remove() {
 						if (lastReturned == null)
 							throw new IllegalStateException();
-						--size;
-						if (prev == null)
-							table[lastReturnedIndex] = lastReturned.next;
-						else
-							prev.next = lastReturned.next;
+						OpenAddressingHashMap.this.remove(lastReturned);
 						lastReturned = null;
 					}
 				};
@@ -82,7 +69,7 @@ public class ClosedAddressingHashMap<K, V> extends AbstractMap<K, V> {
 		};
 	}
 
-	public ClosedAddressingHashMap(Map<K, V> map) {
+	public OpenAddressingHashMap(Map<K, V> map) {
 		this(map.size());
 		putAll(map);
 	}
@@ -94,12 +81,13 @@ public class ClosedAddressingHashMap<K, V> extends AbstractMap<K, V> {
 
 	@Override
 	public void clear() {
-		Arrays.fill(table, null);
+		Arrays.fill(keys, null);
+		Arrays.fill(values, null);
 		size = 0;
 	}
 
 	private int index(Object o) {
-		return getHash(o.hashCode()) & (table.length - 1);
+		return getHash(o.hashCode()) & (keys.length - 1);
 	}
 
 	private int getHash(int h) {
@@ -109,55 +97,69 @@ public class ClosedAddressingHashMap<K, V> extends AbstractMap<K, V> {
 		return result;
 	}
 
+	private void shiftEntries(int pos) {
+		for (int i = nextIndex(pos); keys[i] != null; i = nextIndex(i)) {
+			int slot = index(keys[i]);
+			if ((i < slot && (slot <= pos || pos <= i)) || (slot <= pos && pos <= i)) {
+				keys[pos] = keys[i];
+				keys[i] = null;
+				values[pos] = values[i];
+				values[i] = null;
+				pos = i;
+			}
+		}
+	}
+
+	private int nextIndex(int index) {
+		return (index + 1) & (keys.length - 1);
+	}
+
 	@Override
 	public V remove(Object key) {
 		Objects.requireNonNull(key);
 		int index = index(key);
-		Entry<K, V> prev = null;
-		for (Entry<K, V> current = table[index]; current != null; current = current.next) {
-			if (current.getKey().equals(key)) {
-				if (prev == null)
-					table[index] = current.next;
-				else
-					prev.next = current.next;
+		while (true) {
+			if (keys[index] == null)
+				return null;
+			if (keys[index].equals(key)) {
 				--size;
-				return current.getValue();
+				V oldValue = values[index];
+				keys[index] = null;
+				values[index] = null;
+				shiftEntries(index);
+				return oldValue;
 			}
-			prev = current;
+			index = nextIndex(index);
 		}
-		return null;
 	}
 
 	@Override
 	public V put(K key, V value) {
 		Objects.requireNonNull(key);
 		int index = index(key);
-		Entry<K, V> current = table[index];
-		for (; current != null; current = current.next) {
-			if (current.getKey().equals(key)) {
-				V oldValue = current.getValue();
-				current.setValue(value);
+		while (keys[index] != null) {
+			if (keys[index].equals(key)) {
+				V oldValue = values[index];
+				values[index] = value;
 				return oldValue;
 			}
-			if (current.next == null)
-				break;
+			index = nextIndex(index);
 		}
-		if (current == null)
-			table[index] = new Entry<>(key, value);
-		else
-			current.next = new Entry<>(key, value);
+		keys[index] = key;
+		values[index] = value;
 		++size;
-		if (2 * size > table.length) {
-			Entry<K, V>[] oldTable = table;
+		if (2 * size > keys.length) {
+			K[] oldKeys = keys;
+			V[] oldValues = values;
 			setCapacity(size);
-			for (Entry<K, V> entry : oldTable) {
-				for (; entry != null; ) {
-					Entry<K, V> next = entry.next;
-					index = index(entry.getKey());
-					entry.next = table[index];
-					table[index] = entry;
-					entry = next;
-				}
+			for (int i = 0; i < oldKeys.length; i++) {
+				if (oldKeys[i] == null)
+					continue;
+				index = index(oldKeys[i]);
+				while (keys[index] != null)
+					index = nextIndex(index);
+				keys[index] = oldKeys[i];
+				values[index] = oldValues[i];
 			}
 		}
 		return null;
@@ -166,20 +168,23 @@ public class ClosedAddressingHashMap<K, V> extends AbstractMap<K, V> {
 	@Override
 	public V get(Object key) {
 		Objects.requireNonNull(key);
-		Entry<K, V> entry = getEntry(key);
-		return entry != null ? entry.getValue() : null;
+		Integer index = getIndex(key);
+		return index != null ? values[index] : null;
 	}
 
 	@Override
 	public boolean containsKey(Object key) {
 		Objects.requireNonNull(key);
-		return getEntry(key) != null;
+		return getIndex(key) != null;
 	}
 
-	private Entry<K, V> getEntry(Object key) {
-		for (Entry<K, V> entry = table[index(key)]; entry != null; entry = entry.next)
-			if (entry.getKey().equals(key))
-				return entry;
+	private Integer getIndex(Object key) {
+		int index = index(key);
+		while (keys[index] != null) {
+			if (keys[index].equals(key))
+				return index;
+			index = nextIndex(index);
+		}
 		return null;
 	}
 
@@ -188,11 +193,28 @@ public class ClosedAddressingHashMap<K, V> extends AbstractMap<K, V> {
 		return size;
 	}
 
-	private static class Entry<E, V> extends SimpleEntry<E, V> {
-		private Entry<E, V> next;
+	private class Entry implements Map.Entry<K, V> {
+		private final int index;
 
-		private Entry(E key, V value) {
-			super(key, value);
+		private Entry(int index) {
+			this.index = index;
+		}
+
+		@Override
+		public K getKey() {
+			return keys[index];
+		}
+
+		@Override
+		public V getValue() {
+			return values[index];
+		}
+
+		@Override
+		public V setValue(V value) {
+			V oldValue = values[index];
+			values[index] = value;
+			return oldValue;
 		}
 	}
 
@@ -205,7 +227,7 @@ public class ClosedAddressingHashMap<K, V> extends AbstractMap<K, V> {
 		String[] iteratorMethods = {"hasNext", "next", "remove"};
 		for (int step = 0; step < 1000; step++) {
 			Map<Integer, Integer> m1 = new HashMap<>();
-			Map<Integer, Integer> m2 = new ClosedAddressingHashMap<>();
+			Map<Integer, Integer> m2 = new OpenAddressingHashMap<>();
 			for (int i = 0; i < 1000; i++) {
 				if (!m1.equals(m2))
 					throw new RuntimeException();

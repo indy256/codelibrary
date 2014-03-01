@@ -343,7 +343,6 @@ public class TreapSet<E> extends AbstractSet<E> implements NavigableSet<E> {
 			}
 		}
 
-		@SuppressWarnings("unchecked")
 		protected Node insert(Node node) {
 			if (node.priority > priority) {
 				Node[] result = split(node.key);
