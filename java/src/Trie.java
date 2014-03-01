@@ -1,23 +1,23 @@
 public class Trie {
 	static class TrieNode {
-		TrieNode[] children = new TrieNode[26];
+		TrieNode[] children = new TrieNode[128];
 		boolean leaf;
 	}
 
 	public static void insertString(TrieNode root, String s) {
 		TrieNode v = root;
 		for (char ch : s.toCharArray()) {
-			TrieNode next = v.children[ch - 'a'];
+			TrieNode next = v.children[ch];
 			if (next == null)
-				v.children[ch - 'a'] = next = new TrieNode();
+				v.children[ch] = next = new TrieNode();
 			v = next;
 		}
 		v.leaf = true;
 	}
 
 	public static void printSorted(TrieNode node, String s) {
-		for (char ch = 'a'; ch <= 'z'; ch++) {
-			TrieNode child = node.children[ch - 'a'];
+		for (char ch = 0; ch < node.children.length; ch++) {
+			TrieNode child = node.children[ch];
 			if (child != null)
 				printSorted(child, s + ch);
 		}
