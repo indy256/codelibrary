@@ -1,8 +1,7 @@
+import javax.swing.*;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
-
-import javax.swing.*;
 
 public class GeneticProgramming extends JFrame {
 	static Random rnd = new Random();
@@ -227,7 +226,7 @@ public class GeneticProgramming extends JFrame {
 	public static void main(String[] args) {
 		JFrame frame = new GeneticProgramming();
 		frame.setSize(new Dimension(800, 600));
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		frame.setVisible(true);
 	}
 }

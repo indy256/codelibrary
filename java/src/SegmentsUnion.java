@@ -39,7 +39,8 @@ public class SegmentsUnion {
 		}
 	}
 
+	// Usage example
 	public static void main(String[] args) {
-
+		System.out.println(segmentsUnionLength(new double[]{5, 10}, new double[]{15, 20}));
 	}
 }

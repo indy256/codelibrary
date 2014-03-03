@@ -1,6 +1,6 @@
-import java.awt.*;
-import java.util.*;
 import javax.swing.*;
+import java.awt.*;
+import java.util.Random;
 
 public class SimulatedAnnealing extends JFrame {
 	Random rnd = new Random();
@@ -23,7 +23,7 @@ public class SimulatedAnnealing extends JFrame {
 		int w = (int) (n * curTemp / 2);
 		int j = (i + rnd.nextInt(2 * w + 1) - w + n) % n;
 		int[] newState = state.clone();
-		int sign = i - j;
+		int sign = Integer.compare(i, j);
 		// reverse order from i to j
 		while (sign * (i - j) > 0) {
 			int t = newState[i];
@@ -119,7 +119,7 @@ public class SimulatedAnnealing extends JFrame {
 	public static void main(String[] args) {
 		JFrame frame = new SimulatedAnnealing();
 		frame.setSize(new Dimension(800, 600));
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		frame.setVisible(true);
 	}
 }
