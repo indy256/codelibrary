@@ -29,9 +29,9 @@ public class ShortestHamiltonianPath {
 		int cur = (1 << n) - 1;
 		int[] order = new int[n];
 		int last = -1;
-		for (int i = n - 1; i >= 1; i--) {
+		for (int i = n - 1; i >= 0; i--) {
 			int bj = -1;
-			for (int j = 1; j < n; j++) {
+			for (int j = 0; j < n; j++) {
 				if ((cur & 1 << j) != 0
 						&& (bj == -1 || dp[cur][bj] + (last == -1 ? 0 : dist[bj][last]) > dp[cur][j]
 								+ (last == -1 ? 0 : dist[j][last]))) {
