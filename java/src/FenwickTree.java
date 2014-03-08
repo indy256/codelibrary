@@ -1,14 +1,15 @@
 public class FenwickTree {
 
+	// T[i] += value
 	public static void add(int[] t, int i, int value) {
-		for (; i < t.length; i += (i + 1) & -(i + 1))
+		for (; i < t.length; i |= i + 1)
 			t[i] += value;
 	}
 
 	// sum[0..i]
 	public static int sum(int[] t, int i) {
 		int res = 0;
-		for (; i >= 0; i -= (i + 1) & -(i + 1))
+		for (; i >= 0; i = (i & (i + 1)) - 1)
 			res += t[i];
 		return res;
 	}

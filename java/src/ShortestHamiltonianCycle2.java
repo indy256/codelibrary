@@ -11,8 +11,7 @@ public class ShortestHamiltonianCycle2 {
 			for (int next = 0; next < n; next++) {
 				if ((mask & 1 << next) == 0) {
 					for (int cur = 0; cur < n; cur++) {
-						dp[mask | 1 << next][next] = Math.min(dp[mask | 1 << next][next], dp[mask][cur]
-								+ dist[cur][next]);
+						dp[mask | 1 << next][next] = Math.min(dp[mask | 1 << next][next], dp[mask][cur] + dist[cur][next]);
 					}
 				}
 			}
@@ -22,7 +21,7 @@ public class ShortestHamiltonianCycle2 {
 
 	// Usage example
 	public static void main(String[] args) {
-		int[][] dist = { { 0, 1, 1 }, { 1, 0, 10 }, { 1, 10, 0 } };
+		int[][] dist = {{0, 1, 1}, {1, 0, 10}, {1, 10, 0}};
 		int tourLength = getShortestHamiltonianCycle(dist);
 		System.out.println(12 == tourLength);
 	}

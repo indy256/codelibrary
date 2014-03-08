@@ -3,7 +3,6 @@ public class AhoCorasick {
 	static final int ALPHABET_SIZE = 26;
 
 	static class Node {
-
 		Node[] children = new Node[ALPHABET_SIZE];
 		boolean leaf;
 		Node parent;
