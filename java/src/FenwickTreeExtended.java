@@ -2,14 +2,14 @@ public class FenwickTreeExtended {
 
 	// T[i] += value
 	public static void add(int[] t, int i, int value) {
-		for (; i < t.length; i += (i + 1) & -(i + 1))
+		for (; i < t.length; i |= i + 1)
 			t[i] += value;
 	}
 
 	// sum[0..i]
 	public static int sum(int[] t, int i) {
 		int res = 0;
-		for (; i >= 0; i -= (i + 1) & -(i + 1))
+		for (; i >= 0; i = (i & (i + 1)) - 1)
 			res += t[i];
 		return res;
 	}
@@ -18,7 +18,7 @@ public class FenwickTreeExtended {
 		int[] res = new int[a.length];
 		for (int i = 0; i < a.length; i++) {
 			res[i] += a[i];
-			int j = i + ((i + 1) & -(i + 1)); // i | (i + 1);
+			int j = i | (i + 1);
 			if (j < a.length)
 				res[j] += res[i];
 		}
@@ -31,14 +31,13 @@ public class FenwickTreeExtended {
 	}
 
 	public static int get(int[] t, int i) {
-		return sum(t, i) - sum(t, i - 1);
-//		int res = t[i];
-//		if (i > 0) {
-//			int lca = i - ((i + 1) & -(i + 1));
-//			for (--i; i != lca; i -= (i + 1) & -(i + 1))
-//				res -= t[i];
-//		}
-//		return res;
+		int res = t[i];
+		if (i > 0) {
+			int lca = (i & (i + 1)) - 1;
+			for (--i; i != lca; i = (i & (i + 1)) - 1)
+				res -= t[i];
+		}
+		return res;
 	}
 
 	public static void set(int[] t, int i, int value) {

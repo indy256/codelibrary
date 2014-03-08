@@ -5,14 +5,14 @@ using namespace std;
 const int n = 2000000000;
 
 void add(map<int, int> &t, int i, int value) {
-	for (; i < n; i += (i + 1) & -(i + 1))
+	for (; i < n; i |= i + 1)
 		t[i] += value;
 }
 
 // sum[0,i]
 int sum(map<int, int> &t, int i) {
 	int res = 0;
-	for (; i >= 0; i -= (i + 1) & -(i + 1))
+	for (; i >= 0; i = (i & (i + 1)) - 1)
 		if (t.count(i)) res += t[i];
 	return res;
 }
