@@ -1,3 +1,4 @@
+import java.io.*;
 import java.util.*;
 
 public class ArithmeticCoding {
@@ -8,7 +9,7 @@ public class ArithmeticCoding {
 	final int END = 256;
 
 	long low, high;
-	int waitingCounter;
+	int additionalBits;
 	long value;
 	int[] cumFreq;
 	int[] bits;
@@ -23,14 +24,13 @@ public class ArithmeticCoding {
 		low = 0;
 		high = (1 << BITS) - 1;
 
-		waitingCounter = 0;
+		additionalBits = 0;
 
-		for (int c : inputBytes) {
+		for (int c : inputBytes)
 			encodeSymbol(c);
-		}
 
 		encodeSymbol(END);
-		outputBit((high & HIGHEST_BIT) != 0);
+		outputBit(true);
 
 		int[] bits = new int[encodedBits.size()];
 		for (int i = 0; i < bits.length; i++)
@@ -43,18 +43,17 @@ public class ArithmeticCoding {
 		high = low + range * sum(cumFreq, c) / sum(cumFreq, END) - 1;
 		low = low + range * sum(cumFreq, c - 1) / sum(cumFreq, END);
 
-		for (boolean wasNormalized = true; wasNormalized; ) {
-			wasNormalized = false;
+		while (true) {
 			if ((low & HIGHEST_BIT) == (high & HIGHEST_BIT)) {
 				outputBit((high & HIGHEST_BIT) != 0);
 				low = (low << 1) & MASK;
 				high = ((high << 1) + 1) & MASK;
-				wasNormalized = true;
 			} else if (high - low < sum(cumFreq, END)) {
-				low = ((low - (1 << (BITS - 2))) << 1) & MASK;
-				high = (((high - (1 << (BITS - 2))) << 1) + 1) & MASK;
-				++waitingCounter;
-				wasNormalized = true;
+				low = (low - (1 << (BITS - 2))) << 1;
+				high = ((high - (1 << (BITS - 2))) << 1) + 1;
+				++additionalBits;
+			} else {
+				break;
 			}
 		}
 		increment(cumFreq, c);
@@ -62,7 +61,7 @@ public class ArithmeticCoding {
 
 	void outputBit(boolean bit) {
 		encodedBits.add(bit);
-		for (; waitingCounter > 0; waitingCounter--)
+		for (; additionalBits > 0; additionalBits--)
 			encodedBits.add(!bit);
 	}
 
@@ -102,20 +101,19 @@ public class ArithmeticCoding {
 		high = low + range * sum(cumFreq, c) / sum(cumFreq, END) - 1;
 		low = low + range * sum(cumFreq, c - 1) / sum(cumFreq, END);
 
-		for (boolean wasNormalized = true; wasNormalized; ) {
-			wasNormalized = false;
+		while (true) {
 			if ((low & HIGHEST_BIT) == (high & HIGHEST_BIT)) {
 				low = (low << 1) & MASK;
 				high = ((high << 1) + 1) & MASK;
 				int b = bitsPos < bits.length ? bits[bitsPos++] : 0;
 				value = ((value << 1) + b) & MASK;
-				wasNormalized = true;
 			} else if (high - low < sum(cumFreq, END)) {
-				low = ((low - (1 << (BITS - 2))) << 1) & MASK;
-				high = (((high - (1 << (BITS - 2))) << 1) + 1) & MASK;
+				low = (low - (1 << (BITS - 2))) << 1;
+				high = ((high - (1 << (BITS - 2))) << 1) + 1;
 				int b = bitsPos < bits.length ? bits[bitsPos++] : 0;
-				value = (((value - (1 << (BITS - 2))) << 1) + b) & MASK;
-				wasNormalized = true;
+				value = ((value - (1 << (BITS - 2))) << 1) + b;
+			} else {
+				break;
 			}
 		}
 
@@ -152,7 +150,7 @@ public class ArithmeticCoding {
 	static int[] createFenwickTree(int n) {
 		int[] res = new int[n];
 		for (int i = 0; i < n; i++) {
-			res[i] += 1;
+			++res[i];
 			int j = i | (i + 1);
 			if (j < n)
 				res[j] += res[i];
@@ -161,24 +159,43 @@ public class ArithmeticCoding {
 	}
 
 	// random tests
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		ArithmeticCoding codec = new ArithmeticCoding();
 		int[] a = new int[1000_000];
-		int[] encoded = codec.encode(a);
-		System.out.println(encoded.length / 8);
-		System.out.println(Arrays.equals(a, codec.decode(encoded)));
+		int[] encodedBits = codec.encode(a);
+		System.out.println(a.length + " -> " + encodedBits.length / 8);
+		System.out.println(Arrays.equals(a, codec.decode(encodedBits)));
+
 		Random rnd = new Random();
-		for (int step = 0; step < 1000_000; step++) {
+		for (int step = 0; step < 10_000; step++) {
 			int n = rnd.nextInt(100) + 1;
 			int[] inputBytes = new int[n];
-			for (int i = 0; i < n; i++) {
+			for (int i = 0; i < n; i++)
 				inputBytes[i] = rnd.nextInt(255);
-			}
-			int[] encodedBits = codec.encode(inputBytes);
+
+			encodedBits = codec.encode(inputBytes);
 			int[] decodedBytes = codec.decode(encodedBits);
 
 			if (!Arrays.equals(inputBytes, decodedBytes))
 				throw new RuntimeException();
 		}
+
+		FileInputStream fs = new FileInputStream("src/ArithmeticCoding.java");
+		byte[] buffer = new byte[10_000_000];
+		int len = fs.read(buffer, 0, buffer.length);
+		a = new int[len];
+		int[] freq = new int[256];
+		for (int i = 0; i < len; i++) {
+			a[i] = buffer[i] & 255;
+			++freq[a[i]];
+		}
+		double optimalLength = 0;
+		for (int f : freq)
+			if (f > 0)
+				optimalLength += f * Math.log((double) len / f) / Math.log(2) / 8;
+
+		encodedBits = codec.encode(a);
+		System.out.println(a.length + " -> " + encodedBits.length / 8 + " (" + optimalLength + ")");
+		System.out.println(Arrays.equals(a, codec.decode(encodedBits)));
 	}
 }
