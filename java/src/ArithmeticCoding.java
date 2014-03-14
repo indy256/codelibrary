@@ -186,10 +186,10 @@ public class ArithmeticCoding {
 		a = new int[len];
 		for (int i = 0; i < len; i++)
 			a[i] = buffer[i] & 255;
-		double optimalLength = optimalCompressedLength(a);
 
 		encodedBits = codec.encode(a);
-		System.out.println(a.length + " -> " + encodedBits.length / 8 + " (" + optimalLength + ")");
+		Locale.setDefault(Locale.US);
+		System.out.printf("%d -> %d (%.0f)\n", a.length, encodedBits.length / 8, optimalCompressedLength(a));
 		System.out.println(Arrays.equals(a, codec.decode(encodedBits)));
 	}
 
