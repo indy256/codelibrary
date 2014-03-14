@@ -2,7 +2,7 @@ import java.util.Arrays;
 
 public class ZFunction {
 
-	// z[i] = max {k | s[i..i+k-1] = s[0..k-1]}
+	// z[i] = lcp(s[0..], s[i..])
 	public static int[] zFunction(String s) {
 		int[] z = new int[s.length()];
 		for (int i = 1, l = 0, r = 0; i < z.length; ++i) {

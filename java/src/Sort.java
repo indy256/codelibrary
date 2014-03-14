@@ -227,11 +227,11 @@ public class Sort {
 			int[] cnt = new int[1 << d];
 			// the next three for loops implement counting-sort
 			for (int i = 0; i < a.length; i++)
-				++cnt[((a[i] ^ Integer.MIN_VALUE) >>> d * p) & ((1 << d) - 1)];
-			for (int i = 1; i < 1 << d; i++)
+				++cnt[((a[i] ^ Integer.MIN_VALUE) >>> (d * p)) & ((1 << d) - 1)];
+			for (int i = 1; i < cnt.length; i++)
 				cnt[i] += cnt[i - 1];
 			for (int i = a.length - 1; i >= 0; i--)
-				t[--cnt[((a[i] ^ Integer.MIN_VALUE) >>> d * p) & ((1 << d) - 1)]] = a[i];
+				t[--cnt[((a[i] ^ Integer.MIN_VALUE) >>> (d * p)) & ((1 << d) - 1)]] = a[i];
 			System.arraycopy(t, 0, a, 0, a.length);
 		}
 	}
