@@ -184,18 +184,26 @@ public class ArithmeticCoding {
 		byte[] buffer = new byte[10_000_000];
 		int len = fs.read(buffer, 0, buffer.length);
 		a = new int[len];
-		int[] freq = new int[256];
-		for (int i = 0; i < len; i++) {
+		for (int i = 0; i < len; i++)
 			a[i] = buffer[i] & 255;
-			++freq[a[i]];
-		}
-		double optimalLength = 0;
-		for (int f : freq)
-			if (f > 0)
-				optimalLength += f * Math.log((double) len / f) / Math.log(2) / 8;
+		double optimalLength = optimalCompressedLength(a);
 
 		encodedBits = codec.encode(a);
 		System.out.println(a.length + " -> " + encodedBits.length / 8 + " (" + optimalLength + ")");
 		System.out.println(Arrays.equals(a, codec.decode(encodedBits)));
+	}
+
+	static double optimalCompressedLength(int[] a) {
+		int max = 0;
+		for (int x : a)
+			max = Math.max(max, x);
+		int[] freq = new int[max + 1];
+		for (int x : a)
+			++freq[x];
+		double optimalLength = 0;
+		for (int f : freq)
+			if (f > 0)
+				optimalLength += f * Math.log((double) a.length / f) / Math.log(2) / 8;
+		return optimalLength;
 	}
 }
