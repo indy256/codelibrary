@@ -1,11 +1,11 @@
-package experimental;
+package obsolete;
 
 import java.util.*;
 
 // Search for maximum independent set
 // Based on http://web.cecs.pdx.edu/~mperkows/temp/HOM1/findMaxClique.pdf
-public class BronKerboshSort {
-/*
+public class BronKerboshTest {
+   /*
 	static long time;
 
 	static void findMaximumIndependentSet(List<Integer> cur, List<Integer> result, boolean[][] graph, int[] oldSet,
@@ -89,57 +89,14 @@ public class BronKerboshSort {
 	public static void main(String[] args) {
 		time = System.currentTimeMillis();
 		Random rnd = new Random(1);
-		int V = 20;
+		int V = 250;
 		int E = V * (V - 1) / 2 / 5;
 		System.out.println(V + " " + E);
 		List<Integer>[] graph = RandomGraph.getRandomUndirectedConnectedGraph(V, E, rnd);
 		long time = System.currentTimeMillis();
-
-		graph = sortVertices(graph);
-		System.out.println(Arrays.toString(graph));
-
 		List<Integer> mis = maximumIndependentSet(convert(graph));
 		System.out.println(System.currentTimeMillis() - time);
 		System.out.println(mis.size() + " " + mis);
-	}
-
-	static List<Integer>[] sortVertices(List<Integer>[] graph) {
-		int V = graph.length;
-		Graph g = new Graph();
-		Graph g1 = new Graph();
-		for (int i = 0; i < graph.length; i++) {
-			for (int j : graph[i]) {
-				g.addEdge(i, j);
-				g1.addEdge(i, j);
-			}
-		}
-		int[] p = new int[V];
-		for (int i = 0; i < V; i++) {
-			int max = Integer.MIN_VALUE;
-			int maxv = -1;
-			for (int v : g.edges.keySet()) {
-				if (max < g.edges.get(v).size()) {
-					max = g.edges.get(v).size();
-					maxv = v;
-				}
-			}
-			p[i] = maxv;
-			g.removeNode(maxv);
-		}
-		int[] rp = new int[V];
-		for (int i = 0; i < V; i++) {
-			rp[p[i]] = i;
-		}
-		graph = new List[V];
-		for (int i = 0; i < V; i++) {
-			graph[i] = new ArrayList<>();
-		}
-		for (int i = 0; i < V; i++) {
-			for (int j : g1.edges.get(p[i])) {
-				graph[i].add(rp[j]);
-			}
-		}
-		return graph;
 	}
 
 	static boolean[][] convert(List<Integer>[] graph) {

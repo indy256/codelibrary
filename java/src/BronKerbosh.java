@@ -1,103 +1,65 @@
 import java.util.*;
 
-// Search for maximum independent set
-// Based on http://web.cecs.pdx.edu/~mperkows/temp/HOM1/findMaxClique.pdf
 public class BronKerbosh {
 
-	static void findMaximumIndependentSet(List<Integer> cur, List<Integer> result, boolean[][] graph, int[] oldSet,
-			int ne, int ce) {
-		int nod = 0;
-		int minnod = ce;
-		int fixp = -1;
-		int s = -1;
-
-		for (int i = 0; i < ce && minnod != 0; i++) {
-			int p = oldSet[i];
-			int cnt = 0;
-			int pos = -1;
-
-			for (int j = ne; j < ce; j++)
-				if (graph[p][oldSet[j]]) {
-					if (++cnt == minnod)
-						break;
-					pos = j;
-				}
-
-			if (minnod > cnt) {
-				minnod = cnt;
-				fixp = p;
-				if (i < ne) {
-					s = pos;
-				} else {
-					s = i;
-					nod = 1;
-				}
-			}
+	public static int BronKerbosch(long[] g, long cur, long allowed, long forbidden, int[] weights) {
+		if (allowed == 0 && forbidden == 0) {
+			int res = 0;
+			for (int u = Long.numberOfTrailingZeros(cur); u < g.length; u += Long.numberOfTrailingZeros(cur >> (u + 1)) + 1)
+				res += weights[u];
+			return res;
 		}
-
-		int[] newSet = new int[ce];
-
-		for (int k = minnod + nod; k >= 1; k--) {
-			int sel = oldSet[s];
-			oldSet[s] = oldSet[ne];
-			oldSet[ne] = sel;
-
-			int newne = 0;
-			for (int i = 0; i < ne; i++)
-				if (!graph[sel][oldSet[i]])
-					newSet[newne++] = oldSet[i];
-
-			int newce = newne;
-			for (int i = ne + 1; i < ce; i++)
-				if (!graph[sel][oldSet[i]])
-					newSet[newce++] = oldSet[i];
-
-			cur.add(sel);
-			if (newce == 0) {
-				if (result.size() < cur.size()) {
-					result.clear();
-					result.addAll(cur);
-				}
-			} else if (newne < newce) {
-				if (cur.size() + newce - newne > result.size())
-					findMaximumIndependentSet(cur, result, graph, newSet, newne, newce);
-			}
-
-			cur.remove(cur.size() - 1);
-			if (k > 1)
-				for (s = ++ne; !graph[fixp][oldSet[s]]; s++)
-					;
+		if (allowed == 0)
+			return -1;
+		int res = -1;
+		int pivot = Long.numberOfTrailingZeros(allowed | forbidden);
+		long z = allowed & ~g[pivot];
+		for (int u = Long.numberOfTrailingZeros(z); u < g.length; u += Long.numberOfTrailingZeros(z >> (u + 1)) + 1) {
+			res = Math.max(res, BronKerbosch(g, cur | (1L << u), allowed & g[u], forbidden & g[u], weights));
+			allowed ^= 1L << u;
+			forbidden |= 1L << u;
 		}
-	}
-
-	public static List<Integer> maximumIndependentSet(boolean[][] graph) {
-		int n = graph.length;
-		int[] all = new int[n];
-		for (int i = 0; i < n; i++)
-			all[i] = i;
-		List<Integer> res = new ArrayList<>();
-		findMaximumIndependentSet(new ArrayList<Integer>(), res, graph, all, 0, n);
 		return res;
 	}
 
-	// Usage example
+	// random test
 	public static void main(String[] args) {
-		int n = 4;
-		boolean[][] g = new boolean[n][n];
+		Random rnd = new Random(1);
+		for (int step = 0; step < 1000; step++) {
+			int n = rnd.nextInt(16) + 1;
+			long[] g = new long[n];
+			int[] weights = new int[n];
+			for (int i = 0; i < n; i++)
+				weights[i] = rnd.nextInt(1000);
+			for (int i = 0; i < n; i++)
+				for (int j = 0; j < i; j++)
+					if (rnd.nextBoolean()) {
+						g[i] |= 1L << j;
+						g[j] |= 1L << i;
+					}
+			int res1 = BronKerbosch(g, 0, (1L << n) - 1, 0, weights);
+			int res2 = maxCliqueSlow(g, weights);
+			if (res1 != res2)
+				throw new RuntimeException();
+		}
+	}
 
-		// create a simple cycle
-		g[0][1] = g[1][0] = true;
-		g[1][2] = g[2][1] = true;
-		g[2][3] = g[3][2] = true;
-		g[3][0] = g[0][3] = true;
-
-		List<Integer> res = maximumIndependentSet(g);
-
-		List<Integer> expectedResult = new ArrayList<>();
-		Collections.addAll(expectedResult, 0, 2);
-		System.out.println(expectedResult.equals(res));
-		
-		String ip="122.2.3.411";
-		System.out.println(ip.matches("([0-9]{1,3}\\.){3}[0-9]{1,3}"));
+	static int maxCliqueSlow(long[] g, int[] weights) {
+		int res = 0;
+		int n = g.length;
+		for (int set = 0; set < 1 << n; set++) {
+			boolean ok = true;
+			for (int i = 0; i < n; i++)
+				for (int j = 0; j < i; j++)
+					ok &= (set & (1 << i)) == 0 || (set & (1 << j)) == 0 || (g[i] & (1L << j)) != 0;
+			if (ok) {
+				int cur = 0;
+				for (int i = 0; i < n; i++)
+					if ((set & (1 << i)) != 0)
+						cur += weights[i];
+				res = Math.max(res, cur);
+			}
+		}
+		return res;
 	}
 }

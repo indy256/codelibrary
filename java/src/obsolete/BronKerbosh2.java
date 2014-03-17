@@ -1,16 +1,13 @@
-package experimental;
+package obsolete;
 
 import java.util.*;
 
 // Search for maximum independent set
 // Based on http://web.cecs.pdx.edu/~mperkows/temp/HOM1/findMaxClique.pdf
-public class BronKerboshTest {
-   /*
-	static long time;
+public class BronKerbosh2 {
 
 	static void findMaximumIndependentSet(List<Integer> cur, List<Integer> result, boolean[][] graph, int[] oldSet,
 			int ne, int ce) {
-		// if(System.currentTimeMillis()-time>1000)return;
 		int nod = 0;
 		int minnod = ce;
 		int fixp = -1;
@@ -81,33 +78,25 @@ public class BronKerboshTest {
 		for (int i = 0; i < n; i++)
 			all[i] = i;
 		List<Integer> res = new ArrayList<>();
-		findMaximumIndependentSet(new ArrayList<Integer>(), res, graph, all, 0, n);
+		findMaximumIndependentSet(new ArrayList<>(), res, graph, all, 0, n);
 		return res;
 	}
 
 	// Usage example
 	public static void main(String[] args) {
-		time = System.currentTimeMillis();
-		Random rnd = new Random(1);
-		int V = 250;
-		int E = V * (V - 1) / 2 / 5;
-		System.out.println(V + " " + E);
-		List<Integer>[] graph = RandomGraph.getRandomUndirectedConnectedGraph(V, E, rnd);
-		long time = System.currentTimeMillis();
-		List<Integer> mis = maximumIndependentSet(convert(graph));
-		System.out.println(System.currentTimeMillis() - time);
-		System.out.println(mis.size() + " " + mis);
-	}
+		int n = 4;
+		boolean[][] g = new boolean[n][n];
 
-	static boolean[][] convert(List<Integer>[] graph) {
-		int n = graph.length;
-		boolean[][] a = new boolean[n][n];
-		for (int i = 0; i < n; i++) {
-			for (int j : graph[i]) {
-				a[i][j] = true;
-			}
-		}
-		return a;
+		// create a simple cycle
+		g[0][1] = g[1][0] = true;
+		g[1][2] = g[2][1] = true;
+		g[2][3] = g[3][2] = true;
+		g[3][0] = g[0][3] = true;
+
+		List<Integer> res = maximumIndependentSet(g);
+
+		List<Integer> expectedResult = new ArrayList<>();
+		Collections.addAll(expectedResult, 0, 2);
+		System.out.println(expectedResult.equals(res));
 	}
-	*/
 }
