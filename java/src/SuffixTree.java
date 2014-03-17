@@ -1,17 +1,16 @@
 public class SuffixTree {
-	static String alphabet = "abcdefghijklmnopqrstuvwxyz1234567890\1\2";
-	static int alphabetSize = alphabet.length();
+	static final String ALPHABET = "abcdefghijklmnopqrstuvwxyz1234567890\1\2";
 
-	static class Node {
-		int depth; // from start of suffix
+	public static class Node {
 		int begin;
 		int end;
-		Node[] children;
+		int depth; // from start of suffix
 		Node parent;
+		Node[] children;
 		Node suffixLink;
 
 		Node(int begin, int end, int depth, Node parent) {
-			children = new Node[alphabetSize];
+			children = new Node[ALPHABET.length()];
 			this.begin = begin;
 			this.end = end;
 			this.parent = parent;
@@ -23,22 +22,19 @@ public class SuffixTree {
 		}
 	}
 
-	public static Node buildSuffixTree(String s) {
+	public static Node buildSuffixTree(CharSequence s) {
 		int n = s.length();
 		byte[] a = new byte[n];
-		for (int i = 0; i < n; i++) {
-			a[i] = (byte) alphabet.indexOf(s.charAt(i));
-		}
+		for (int i = 0; i < n; i++)
+			a[i] = (byte) ALPHABET.indexOf(s.charAt(i));
 		Node root = new Node(0, 0, 0, null);
 		Node cn = root;
-		// root.suffixLink must be null, but that way it gets more convenient
-		// processing
+		// root.suffixLink must be null, but that way it gets more convenient processing
 		root.suffixLink = root;
 		Node needsSuffixLink = null;
 		int lastRule = 0;
 		int j = 0;
-		for (int i = -1; i < n - 1; i++) {// strings s[j..i] already in tree,
-			// add s[i+l] to it.
+		for (int i = -1; i < n - 1; i++) {// strings s[j..i] are already in tree, add s[i+l] to it
 			int cur = a[i + 1]; // last char of current string
 			for (; j <= i + 1; j++) {
 				int curDepth = i + 1 - j;
@@ -105,7 +101,7 @@ public class SuffixTree {
 			return 2;
 		}
 		int mask = 0;
-		for (char f = 0; f < alphabetSize; f++) {
+		for (char f = 0; f < ALPHABET.length(); f++) {
 			if (node.children[f] != null) {
 				mask |= findLCS(node.children[f], i1, i2);
 			}

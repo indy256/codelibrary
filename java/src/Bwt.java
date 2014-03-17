@@ -17,10 +17,10 @@ public class Bwt {
 	}
 
 	public static class TransformedData {
-		public final byte[] last;
-		public final int position;
+		final byte[] last;
+		final int position;
 
-		public TransformedData(byte[] last, int position) {
+		TransformedData(byte[] last, int position) {
 			this.last = last;
 			this.position = position;
 		}
