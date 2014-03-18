@@ -71,7 +71,7 @@ public class Lzw {
 		data = Arrays.copyOf(data, len);
 		char[] buffer = new char[len];
 		for (int i = 0; i < len; i++)
-			buffer[i] = (char) (data[i] & 255);
+			buffer[i] = (char) (Byte.toUnsignedInt(data[i]));
 		String s = new String(buffer, 0, len);
 		int[] encoded = lzwEncoding(s);
 		String s2 = lzwDecoding(encoded);

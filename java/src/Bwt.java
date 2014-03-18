@@ -32,7 +32,7 @@ public class Bwt {
 		Integer[] order = new Integer[n];
 		for (int i = 0; i < n; i++)
 			order[i] = i;
-		Arrays.sort(order, (a, b) -> Integer.compare(S[a] & 255, S[b] & 255));
+		Arrays.sort(order, (a, b) -> Integer.compare(Byte.toUnsignedInt(S[a]), Byte.toUnsignedInt(S[b])));
 		int[] sa = new int[n];
 		int[] classes = new int[n];
 		for (int i = 0; i < n; i++) {
@@ -58,13 +58,13 @@ public class Bwt {
 	public static byte[] inverseBwt(byte[] last, int position) {
 		int[] cnt = new int[256];
 		for (byte b : last)
-			++cnt[b & 255];
+			++cnt[Byte.toUnsignedInt(b)];
 		for (int i = 1; i < cnt.length; i++)
 			cnt[i] += cnt[i - 1];
 		int n = last.length;
 		int[] t = new int[n];
 		for (int i = n - 1; i >= 0; i--)
-			t[--cnt[last[i] & 255]] = i;
+			t[--cnt[Byte.toUnsignedInt(last[i])]] = i;
 		byte[] res = new byte[n];
 		int j = t[position];
 		for (int i = 0; i < n; i++) {
@@ -96,7 +96,7 @@ public class Bwt {
 			table[i] = (byte) i;
 		byte[] res = new byte[s.length];
 		for (int i = 0; i < s.length; i++) {
-			int pos = s[i] & 255;
+			int pos = Byte.toUnsignedInt(s[i]);
 			res[i] = table[pos];
 			byte t = table[pos];
 			System.arraycopy(table, 0, table, 1, pos);
@@ -128,7 +128,7 @@ public class Bwt {
 		byte[] last2 = mtfDecode(encoded);
 		int[] encodedInts = new int[encoded.length];
 		for (int i = 0; i < encoded.length; i++)
-			encodedInts[i] = encoded[i] & 255;
+			encodedInts[i] = Byte.toUnsignedInt(encoded[i]);
 		byte[] data2 = inverseBwt(bwt.last, bwt.position);
 		System.out.println(Arrays.equals(data, data2));
 		System.out.println(Arrays.equals(bwt.last, last2));

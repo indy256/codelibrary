@@ -185,7 +185,7 @@ public class ArithmeticCoding {
 		int len = fs.read(buffer, 0, buffer.length);
 		a = new int[len];
 		for (int i = 0; i < len; i++)
-			a[i] = buffer[i] & 255;
+			a[i] = Byte.toUnsignedInt(buffer[i]);
 
 		encodedBits = codec.encode(a);
 		Locale.setDefault(Locale.US);
