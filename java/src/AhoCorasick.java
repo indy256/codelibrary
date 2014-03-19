@@ -1,70 +1,76 @@
+import java.util.Arrays;
+
 public class AhoCorasick {
 
 	static final int ALPHABET_SIZE = 26;
 
-	static class Node {
-		Node[] children = new Node[ALPHABET_SIZE];
+	Node[] nodes;
+	int nodeCount;
+
+	public static class Node {
+		int parent;
+		char charFromParent;
+		int suffLink = -1;
+		int[] children = new int[ALPHABET_SIZE];
+		int[] transitions = new int[ALPHABET_SIZE];
 		boolean leaf;
-		Node parent;
-		char charToParent;
-		Node suffLink;
-		Node[] go = new Node[ALPHABET_SIZE];
+
+		{
+			Arrays.fill(children, -1);
+			Arrays.fill(transitions, -1);
+		}
 	}
 
-	public static Node createRoot() {
-		Node node = new Node();
-		node.suffLink = node;
-		return node;
+	public AhoCorasick(int maxNodes) {
+		nodes = new Node[maxNodes];
+		// create root
+		nodes[0] = new Node();
+		nodes[0].suffLink = 0;
+		nodes[0].parent = -1;
+		nodeCount = 1;
 	}
 
-	public static void addString(Node node, String s) {
+	public void addString(String s) {
+		int cur = 0;
 		for (char ch : s.toCharArray()) {
 			int c = ch - 'a';
-			if (node.children[c] == null) {
-				Node n = new Node();
-				n.parent = node;
-				n.charToParent = ch;
-				node.children[c] = n;
+			if (nodes[cur].children[c] == -1) {
+				nodes[nodeCount] = new Node();
+				nodes[nodeCount].parent = cur;
+				nodes[nodeCount].charFromParent = ch;
+				nodes[cur].children[c] = nodeCount++;
 			}
-			node = node.children[c];
+			cur = nodes[cur].children[c];
 		}
-		node.leaf = true;
+		nodes[cur].leaf = true;
 	}
 
-	public static Node go(Node node, char ch) {
-		int c = ch - 'a';
-		if (node.go[c] == null) {
-			if (node.children[c] != null) {
-				node.go[c] = node.children[c];
-			} else {
-				node.go[c] = node.parent == null ? node : go(suffLink(node), ch);
-			}
-		}
-		return node.go[c];
-	}
-
-	public static Node suffLink(Node node) {
-		if (node.suffLink == null) {
-			if (node.parent.parent == null) {
-				node.suffLink = node.parent;
-			} else {
-				node.suffLink = go(suffLink(node.parent), node.charToParent);
-			}
-		}
+	public int suffLink(int nodeIndex) {
+		Node node = nodes[nodeIndex];
+		if (node.suffLink == -1)
+			node.suffLink = node.parent == 0 ? 0 : transition(suffLink(node.parent), node.charFromParent);
 		return node.suffLink;
+	}
+
+	public int transition(int nodeIndex, char ch) {
+		int c = ch - 'a';
+		Node node = nodes[nodeIndex];
+		if (node.transitions[c] == -1)
+			node.transitions[c] = node.children[c] != -1 ? node.children[c] : (nodeIndex == 0 ? 0 : transition(suffLink(nodeIndex), ch));
+		return node.transitions[c];
 	}
 
 	// Usage example
 	public static void main(String[] args) {
-		Node tree = createRoot();
-		addString(tree, "bc");
-		addString(tree, "abc");
+		AhoCorasick ahoCorasick = new AhoCorasick(1000);
+		ahoCorasick.addString("bc");
+		ahoCorasick.addString("abc");
 
 		String s = "tabc";
-		Node node = tree;
+		int node = 0;
 		for (char ch : s.toCharArray()) {
-			node = go(node, ch);
+			node = ahoCorasick.transition(node, ch);
 		}
-		System.out.println(node.leaf);
+		System.out.println(ahoCorasick.nodes[node].leaf);
 	}
 }

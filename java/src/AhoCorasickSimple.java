@@ -17,17 +17,17 @@ public class AhoCorasickSimple {
 		for (int i = 0; i < prefixes.length; i++) {
 			prefixMap.put(prefixes[i], i);
 		}
-		int[][] next = new int[prefixes.length][ALPHABET_SIZE];
+		int[][] transitions = new int[prefixes.length][ALPHABET_SIZE];
 		for (int i = 0; i < prefixes.length; i++) {
 			for (int j = 0; j < ALPHABET_SIZE; j++) {
 				String s = prefixes[i] + (char) ('a' + j);
 				while (!prefixMap.containsKey(s)) {
 					s = s.substring(1);
 				}
-				next[i][j] = prefixMap.get(s);
+				transitions[i][j] = prefixMap.get(s);
 			}
 		}
-		return next;
+		return transitions;
 	}
 
 	// Usage example
