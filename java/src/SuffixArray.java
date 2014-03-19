@@ -9,7 +9,6 @@ public class SuffixArray {
 		for (int i = 0; i < n; i++)
 			order[i] = n - 1 - i;
 
-		// stable sort of characters. java8 lambda syntax
 		Arrays.sort(order, (a, b) -> Character.compare(S.charAt(a), S.charAt(b)));
 
 		int[] sa = new int[n];
