@@ -16,7 +16,7 @@ public class SegmentTree2 {
 	int deltaEffectOnSegment(int delta, int segmentLength) {
 		// Here you must write a fast equivalent of following slow code:
 		// int result = delta;
-		// for (int i = 0; i < segmentLength - 1; i++) result = queryOperation(result, delta);
+		// for (int i = 1; i < segmentLength; i++) result = queryOperation(result, delta);
 		// return result;
 		return delta;
 	}

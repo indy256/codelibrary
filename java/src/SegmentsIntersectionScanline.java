@@ -9,7 +9,7 @@ public class SegmentsIntersectionScanline {
 			events[cnt++] = new Event(s[i].x1, s[i].y1, 1, s[i]);
 			events[cnt++] = new Event(s[i].x2, s[i].y2, -1, s[i]);
 		}
-		Arrays.sort(events);
+		Arrays.sort(events, eventComparator);
 		NavigableSet<Segment> set = new TreeSet<>(segmentComparator);
 
 		for (Event event : events) {
@@ -70,7 +70,7 @@ public class SegmentsIntersectionScanline {
 		}
 	};
 
-	static class Event implements Comparable<Event> {
+	static class Event {
 		final int x, y;
 		final int type;
 		final Segment segment;
@@ -81,16 +81,18 @@ public class SegmentsIntersectionScanline {
 			this.type = type;
 			this.segment = segment;
 		}
-
-		@Override
-		public int compareTo(Event o) {
-			if (x != o.x)
-				return x < o.x ? -1 : 1;
-			if (type != o.type)
-				return type > o.type ? -1 : 1;
-			return Integer.compare(y, o.y);
-		}
 	}
+
+	static final Comparator<Event> eventComparator = new Comparator<Event>() {
+		@Override
+		public int compare(Event a, Event b) {
+			if (a.x != b.x)
+				return a.x < b.x ? -1 : 1;
+			if (a.type != b.type)
+				return a.type > b.type ? -1 : 1;
+			return Integer.compare(a.y, b.y);
+		}
+	};
 
 	static long cross(long ax, long ay, long bx, long by, long cx, long cy) {
 		return (bx - ax) * (cy - ay) - (by - ay) * (cx - ax);
