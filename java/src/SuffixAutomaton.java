@@ -11,7 +11,7 @@ public class SuffixAutomaton {
 			Arrays.fill(next, -1);
 		}
 		List<Integer> ilink = new ArrayList<>(0);
-	};
+	}
 
 	State[] st;
 	int size;
