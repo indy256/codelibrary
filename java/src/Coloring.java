@@ -5,7 +5,7 @@ public class Coloring {
 	int minColors;
 	int[] bestColoring;
 
-	public int color(boolean[][] graph) {
+	public int minColors(boolean[][] graph) {
 		int n = graph.length;
 		bestColoring = new int[n];
 		int[] id = new int[n + 1];
@@ -70,7 +70,7 @@ public class Coloring {
 						g[i][j] = true;
 						g[j][i] = true;
 					}
-			int res1 = new Coloring().color(g);
+			int res1 = new Coloring().minColors(g);
 			int res2 = colorSlow(g);
 			if (res1 != res2)
 				throw new RuntimeException();

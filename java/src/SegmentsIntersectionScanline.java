@@ -51,22 +51,19 @@ public class SegmentsIntersectionScanline {
 		}
 	}
 
-	static final Comparator<Segment> segmentComparator = new Comparator<Segment>() {
-		@Override
-		public int compare(Segment a, Segment b) {
-			if (a.x1 == b.x1)
-				return Integer.compare(a.y1, b.y1);
-			if (a.x1 < b.x1) {
-				long v = cross(a.x1, a.y1, a.x2, a.y2, b.x1, b.y1);
-				if (v != 0)
-					return v > 0 ? -1 : 1;
-				return Integer.compare(a.y1, b.y1);
-			} else {
-				long v = cross(b.x1, b.y1, b.x2, b.y2, a.x1, a.y1);
-				if (v != 0)
-					return v < 0 ? -1 : 1;
-				return Integer.compare(a.y1, b.y1);
-			}
+	static final Comparator<Segment> segmentComparator = (a, b) -> {
+		if (a.x1 == b.x1)
+			return Integer.compare(a.y1, b.y1);
+		if (a.x1 < b.x1) {
+			long v = cross(a.x1, a.y1, a.x2, a.y2, b.x1, b.y1);
+			if (v != 0)
+				return v > 0 ? -1 : 1;
+			return Integer.compare(a.y1, b.y1);
+		} else {
+			long v = cross(b.x1, b.y1, b.x2, b.y2, a.x1, a.y1);
+			if (v != 0)
+				return v < 0 ? -1 : 1;
+			return Integer.compare(a.y1, b.y1);
 		}
 	};
 
@@ -83,15 +80,12 @@ public class SegmentsIntersectionScanline {
 		}
 	}
 
-	static final Comparator<Event> eventComparator = new Comparator<Event>() {
-		@Override
-		public int compare(Event a, Event b) {
-			if (a.x != b.x)
-				return a.x < b.x ? -1 : 1;
-			if (a.type != b.type)
-				return a.type > b.type ? -1 : 1;
-			return Integer.compare(a.y, b.y);
-		}
+	static final Comparator<Event> eventComparator = (a, b) -> {
+		if (a.x != b.x)
+			return a.x < b.x ? -1 : 1;
+		if (a.type != b.type)
+			return a.type > b.type ? -1 : 1;
+		return Integer.compare(a.y, b.y);
 	};
 
 	static long cross(long ax, long ay, long bx, long by, long cx, long cy) {
