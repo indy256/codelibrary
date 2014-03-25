@@ -2,27 +2,52 @@ import java.util.*;
 
 public class HeavyLight {
 
-	// specific code
 	// true - values on vertices, false - values on edges
 	static boolean VALUES_ON_VERTICES = true;
 
-	static final int INIT_VALUE = 0;
-	static final int NEUTRAL_VALUE = Integer.MIN_VALUE;
-	static final int NEUTRAL_DELTA = 0;
+	// Modify the following 6 methods to implement your custom operations on the tree.
+	// This example implements Add/Max operations. Operations like Add/Sum, Set/Max can also be implemented.
+	static int modifyOperation(int x, int y) {
+		return x + y;
+	}
 
-	static int joinValues(int leftValue, int rightValue) {
+	// query (or combine) operation
+	static int queryOperation(int leftValue, int rightValue) {
 		return Math.max(leftValue, rightValue);
 	}
 
-	static int joinDeltas(int oldDelta, int newDelta) {
-		return oldDelta + newDelta;
+	static int deltaEffectOnSegment(int delta, int segmentLength) {
+		// Here you must write a fast equivalent of following slow code:
+		// int result = delta;
+		// for (int i = 1; i < segmentLength; i++) result = queryOperation(result, delta);
+		// return result;
+		return delta;
 	}
 
-	static int joinValueWithDelta(int value, int delta, int length) {
-		return value + delta;
+	static int getNeutralDelta() {
+		return 0;
+	}
+
+	static int getInitValue() {
+		return 0;
+	}
+
+	static int getNeutralValue() {
+		return Integer.MIN_VALUE;
 	}
 
 	// generic code
+	static int joinValueWithDelta(int value, int delta) {
+		if (delta == getNeutralDelta()) return value;
+		return modifyOperation(value, delta);
+	}
+
+	static int joinDeltas(int delta1, int delta2) {
+		if (delta1 == getNeutralDelta()) return delta2;
+		if (delta2 == getNeutralDelta()) return delta1;
+		return modifyOperation(delta1, delta2);
+	}
+
 	int[][] value;
 	int[][] delta;
 	int[][] len;
@@ -64,12 +89,12 @@ public class HeavyLight {
 
 			value[i] = new int[2 * m];
 			for (int j = 0; j < m; j++)
-				value[i][j + m] = INIT_VALUE;
+				value[i][j + m] = getInitValue();
 			for (int j = 2 * m - 1; j > 1; j -= 2)
-				value[i][j >> 1] = joinValues(value[i][j], value[i][j ^ 1]);
+				value[i][j >> 1] = queryOperation(value[i][j], value[i][j ^ 1]);
 
 			delta[i] = new int[2 * m];
-			Arrays.fill(delta[i], NEUTRAL_DELTA);
+			Arrays.fill(delta[i], getNeutralDelta());
 
 			len[i] = new int[2 * m];
 			Arrays.fill(len[i], m, 2 * m, 1);
@@ -105,7 +130,7 @@ public class HeavyLight {
 	}
 
 	void applyDelta(int path, int i, int delta) {
-		value[path][i] = joinValueWithDelta(value[path][i], delta, len[path][i]);
+		value[path][i] = joinValueWithDelta(value[path][i], deltaEffectOnSegment(delta, len[path][i]));
 		this.delta[path][i] = joinDeltas(this.delta[path][i], delta);
 	}
 
@@ -117,7 +142,7 @@ public class HeavyLight {
 			int x = i >> d;
 			applyDelta(path, x, delta[path][x >> 1]);
 			applyDelta(path, x ^ 1, delta[path][x >> 1]);
-			delta[path][x >> 1] = NEUTRAL_DELTA;
+			delta[path][x >> 1] = getNeutralDelta();
 		}
 	}
 
@@ -141,9 +166,9 @@ public class HeavyLight {
 			}
 		}
 		for (int i = ta; i > 1; i >>= 1)
-			value[path][i >> 1] = joinValues(value[path][i], value[path][i ^ 1]);
+			value[path][i >> 1] = queryOperation(value[path][i], value[path][i ^ 1]);
 		for (int i = tb; i > 1; i >>= 1)
-			value[path][i >> 1] = joinValues(value[path][i], value[path][i ^ 1]);
+			value[path][i >> 1] = queryOperation(value[path][i], value[path][i ^ 1]);
 	}
 
 	int queryPath(int path, int a, int b) {
@@ -151,12 +176,12 @@ public class HeavyLight {
 		b += value[path].length >> 1;
 		pushDelta(path, a);
 		pushDelta(path, b);
-		int res = NEUTRAL_VALUE;
+		int res = getNeutralValue();
 		for (; a <= b; a = (a + 1) >> 1, b = (b - 1) >> 1) {
 			if ((a & 1) != 0)
-				res = joinValues(res, value[path][a]);
+				res = queryOperation(res, value[path][a]);
 			if ((b & 1) == 0)
-				res = joinValues(res, value[path][b]);
+				res = queryOperation(res, value[path][b]);
 		}
 		return res;
 	}
@@ -177,14 +202,14 @@ public class HeavyLight {
 	}
 
 	public int query(int a, int b) {
-		int res = NEUTRAL_VALUE;
+		int res = getNeutralValue();
 		for (int root; !isAncestor(root = pathRoot[path[a]], b); a = parent[root])
-			res = joinValues(res, queryPath(path[a], 0, pathPos[a]));
+			res = queryOperation(res, queryPath(path[a], 0, pathPos[a]));
 		for (int root; !isAncestor(root = pathRoot[path[b]], a); b = parent[root])
-			res = joinValues(res, queryPath(path[b], 0, pathPos[b]));
+			res = queryOperation(res, queryPath(path[b], 0, pathPos[b]));
 		if (!VALUES_ON_VERTICES && a == b)
 			return res;
-		return joinValues(
+		return queryOperation(
 				res,
 				queryPath(path[a], Math.min(pathPos[a], pathPos[b]) + (VALUES_ON_VERTICES ? 0 : 1),
 						Math.max(pathPos[a], pathPos[b])));
@@ -198,7 +223,7 @@ public class HeavyLight {
 			int n = rnd.nextInt(50) + 1;
 			List<Integer>[] tree = getRandomTree(n, rnd);
 			int[] x = new int[n];
-			Arrays.fill(x, INIT_VALUE);
+			Arrays.fill(x, getInitValue());
 			HeavyLight hl = new HeavyLight(tree);
 			for (int i = 0; i < 1000; i++) {
 				int a = rnd.nextInt(n);
@@ -209,12 +234,12 @@ public class HeavyLight {
 					int delta = rnd.nextInt(50) - 100;
 					hl.modify(a, b, delta);
 					for (int u : path)
-						x[u] = joinValueWithDelta(x[u], delta, 1);
+						x[u] = joinValueWithDelta(x[u], delta);
 				} else {
 					int res1 = hl.query(a, b);
-					int res2 = NEUTRAL_VALUE;
+					int res2 = getNeutralValue();
 					for (int u : path)
-						res2 = joinValues(res2, x[u]);
+						res2 = queryOperation(res2, x[u]);
 					if (res1 != res2)
 						throw new RuntimeException("error");
 				}
@@ -227,7 +252,7 @@ public class HeavyLight {
 			Map<Long, Integer> x = new HashMap<>();
 			for (int u = 0; u < tree.length; u++)
 				for (int v : tree[u])
-					x.put(edge(u, v), INIT_VALUE);
+					x.put(edge(u, v), getInitValue());
 			HeavyLight hl = new HeavyLight(tree);
 			for (int i = 0; i < 1000; i++) {
 				int a = rnd.nextInt(n);
@@ -239,14 +264,14 @@ public class HeavyLight {
 					hl.modify(a, b, delta);
 					for (int j = 0; j + 1 < path.size(); j++) {
 						long key = edge(path.get(j), path.get(j + 1));
-						x.put(key, joinValueWithDelta(x.get(key), delta, 1));
+						x.put(key, joinValueWithDelta(x.get(key), delta));
 					}
 				} else {
 					int res1 = hl.query(a, b);
-					int res2 = NEUTRAL_VALUE;
+					int res2 = getNeutralValue();
 					for (int j = 0; j + 1 < path.size(); j++) {
 						long key = edge(path.get(j), path.get(j + 1));
-						res2 = joinValues(res2, x.get(key));
+						res2 = queryOperation(res2, x.get(key));
 					}
 					if (res1 != res2)
 						throw new RuntimeException("error");

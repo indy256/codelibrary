@@ -22,7 +22,7 @@ public class TreapIndexedList {
 	}
 
 	static int getNeutralDelta() {
-		return Integer.MIN_VALUE;
+		return 0;
 	}
 
 	static int getNeutralValue() {
@@ -31,6 +31,17 @@ public class TreapIndexedList {
 
 	// generic code
 	static Random random = new Random();
+
+	static int joinValueWithDelta(int value, int delta) {
+		if (delta == getNeutralDelta()) return value;
+		return modifyOperation(value, delta);
+	}
+
+	static int joinDeltas(int delta1, int delta2) {
+		if (delta1 == getNeutralDelta()) return delta2;
+		if (delta2 == getNeutralDelta()) return delta1;
+		return modifyOperation(delta1, delta2);
+	}
 
 	public static class Treap {
 		int nodeValue;
@@ -53,17 +64,6 @@ public class TreapIndexedList {
 			subTreeValue = queryOperation(queryOperation(getSubTreeValue(left), nodeValue), getSubTreeValue(right));
 			count = 1 + getCount(left) + getCount(right);
 		}
-	}
-
-	static int joinValueWithDelta(int value, int delta) {
-		if (delta == getNeutralDelta()) return value;
-		return modifyOperation(value, delta);
-	}
-
-	static int joinDeltas(int delta1, int delta2) {
-		if (delta1 == getNeutralDelta()) return delta2;
-		if (delta2 == getNeutralDelta()) return delta1;
-		return modifyOperation(delta1, delta2);
 	}
 
 	static void applyDelta(Treap root, int delta) {

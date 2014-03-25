@@ -22,7 +22,7 @@ public class SegmentTree2 {
 	}
 
 	int getNeutralDelta() {
-		return Integer.MIN_VALUE;
+		return 0;
 	}
 
 	int getInitValue() {
