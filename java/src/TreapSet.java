@@ -4,12 +4,12 @@ import java.util.*;
 public class TreapSet<E> extends AbstractSet<E> implements NavigableSet<E> {
 	protected static final Random rnd = new Random();
 
-	private class RootContainer {
-		private Node root;
+	protected class RootContainer {
+		protected Node root;
 	}
 
-	private final Comparator<? super E> comparator;
-	private final RootContainer rc;
+	protected final Comparator<? super E> comparator;
+	protected final RootContainer rc;
 	private final E from;
 	private final E to;
 	private final boolean fromInclusive;
@@ -33,7 +33,7 @@ public class TreapSet<E> extends AbstractSet<E> implements NavigableSet<E> {
 	}
 
 	@SuppressWarnings("unchecked")
-	private int compare(E first, E second) {
+	protected int compare(E first, E second) {
 		return comparator != null ? comparator.compare(first, second) : ((Comparable<? super E>) first).compareTo(second);
 	}
 
