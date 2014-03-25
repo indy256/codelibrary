@@ -130,6 +130,8 @@ public class PersistentTreapSet<E> extends TreapSet<E> implements PersistentSet<
 		Object marker1 = new Object();
 		Object marker2 = new Object();
 		Object marker3 = new Object();
+		Object marker4 = new Object();
+		Object marker5 = new Object();
 
 		PersistentSet<Integer> set = new PersistentTreapSet<>();
 		set.markState(marker1);
@@ -137,9 +139,15 @@ public class PersistentTreapSet<E> extends TreapSet<E> implements PersistentSet<
 		set.markState(marker2);
 		set.add(2);
 		set.markState(marker3);
+		set.remove(1);
+		set.markState(marker4);
+		set.remove(2);
+		set.markState(marker5);
 		System.out.println(set.getState(marker1));
 		System.out.println(set.getState(marker2));
 		System.out.println(set.getState(marker3));
+		System.out.println(set.getState(marker4));
+		System.out.println(set.getState(marker5));
 		System.out.println(set);
 	}
 }
