@@ -2,25 +2,31 @@ import java.util.*;
 
 public class TreapIndexedList {
 
-	// Modify these 5 methods to implement your custom operation on the tree
-	static int getNeutralValue() {
-		return Integer.MIN_VALUE;
+	// Modify the following 5 methods to implement your custom operations on the tree.
+	// This example implements Add/Max operations. Operations like Add/Sum, Set/Max can also be implemented.
+	static int modifyOperation(int x, int y) {
+		return x + y;
 	}
 
-	static int getNeutralDelta() {
-		return 0;
-	}
-
-	static int joinValues(int leftValue, int rightValue) {
+	// query (or combine) operation
+	static int queryOperation(int leftValue, int rightValue) {
 		return Math.max(leftValue, rightValue);
 	}
 
-	static int joinDeltas(int oldDelta, int newDelta) {
-		return oldDelta + newDelta;
+	static int deltaEffectOnSegment(int delta, int segmentLength) {
+		// Here you must write a fast equivalent of following slow code:
+		// int result = delta;
+		// for (int i = 1; i < segmentLength; i++) result = queryOperation(result, delta);
+		// return result;
+		return delta;
 	}
 
-	static int joinValueWithDelta(int value, int delta, int length) {
-		return value + delta;
+	static int getNeutralDelta() {
+		return Integer.MIN_VALUE;
+	}
+
+	static int getNeutralValue() {
+		return Integer.MIN_VALUE;
 	}
 
 	// generic code
@@ -44,17 +50,28 @@ public class TreapIndexedList {
 		}
 
 		void update() {
-			subTreeValue = joinValues(joinValues(getSubTreeValue(left), nodeValue), getSubTreeValue(right));
+			subTreeValue = queryOperation(queryOperation(getSubTreeValue(left), nodeValue), getSubTreeValue(right));
 			count = 1 + getCount(left) + getCount(right);
 		}
+	}
+
+	static int joinValueWithDelta(int value, int delta) {
+		if (delta == getNeutralDelta()) return value;
+		return modifyOperation(value, delta);
+	}
+
+	static int joinDeltas(int delta1, int delta2) {
+		if (delta1 == getNeutralDelta()) return delta2;
+		if (delta2 == getNeutralDelta()) return delta1;
+		return modifyOperation(delta1, delta2);
 	}
 
 	static void applyDelta(Treap root, int delta) {
 		if (root == null)
 			return;
 		root.delta = joinDeltas(root.delta, delta);
-		root.nodeValue = joinValueWithDelta(root.nodeValue, delta, 1);
-		root.subTreeValue = joinValueWithDelta(root.subTreeValue, delta, root.count);
+		root.nodeValue = joinValueWithDelta(root.nodeValue, delta);
+		root.subTreeValue = joinValueWithDelta(root.subTreeValue, deltaEffectOnSegment(delta, root.count));
 	}
 
 	static void pushDelta(Treap root) {
@@ -184,7 +201,7 @@ public class TreapIndexedList {
 				int a = rnd.nextInt(b + 1);
 				int res = list.get(a);
 				for (int i = a + 1; i <= b; i++)
-					res = joinValues(res, list.get(i));
+					res = queryOperation(res, list.get(i));
 				TreapAndResult tr = query(treap, a, b);
 				treap = tr.treap;
 				if (res != tr.value) {
@@ -197,7 +214,7 @@ public class TreapIndexedList {
 				int a = rnd.nextInt(b + 1);
 				int delta = rnd.nextInt(100) - 50;
 				for (int i = a; i <= b; i++)
-					list.set(i, joinValueWithDelta(list.get(i), delta, 1));
+					list.set(i, joinValueWithDelta(list.get(i), delta));
 				treap = modify(treap, a, b, delta);
 			} else {
 				for (int i = 0; i < list.size(); i++) {
