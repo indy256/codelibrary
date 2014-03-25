@@ -15,10 +15,12 @@ public class PersistentTreapSet<E> extends TreapSet<E> implements PersistentSet<
 		super(null, null, false, false, comparator, rc);
 	}
 
+	@Override
 	public void markState(Object marker) {
 		states.put(marker, rc.root);
 	}
 
+	@Override
 	public PersistentTreapSet<E> getState(Object marker) {
 		RootContainer rc = new RootContainer();
 		rc.root = states.get(marker);
@@ -46,6 +48,7 @@ public class PersistentTreapSet<E> extends TreapSet<E> implements PersistentSet<
 		}
 
 		@SuppressWarnings({"unchecked"})
+		@Override
 		protected Node[] split(E minRightKey) {
 			Node clone = clone();
 			if (compare(minRightKey, key) < 0) {
@@ -64,6 +67,7 @@ public class PersistentTreapSet<E> extends TreapSet<E> implements PersistentSet<
 		}
 
 		@SuppressWarnings({"unchecked"})
+		@Override
 		protected Node insert(Node node) {
 			if (node.priority > priority) {
 				Node[] result = split(node.key);
@@ -84,6 +88,7 @@ public class PersistentTreapSet<E> extends TreapSet<E> implements PersistentSet<
 			}
 		}
 
+		@Override
 		protected Node merge(Node left, Node right) {
 			if (left == null)
 				return right;
@@ -102,6 +107,7 @@ public class PersistentTreapSet<E> extends TreapSet<E> implements PersistentSet<
 			}
 		}
 
+		@Override
 		protected Node remove(E e) {
 			int cmp = compare(e, key);
 			if (cmp == 0)
