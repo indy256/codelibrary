@@ -75,7 +75,7 @@ public class RTree {
 		int v = divX ? a[high - 1].x1 + a[high - 1].x2 : a[high - 1].y1 + a[high - 1].y2;
 		int i = low - 1;
 		for (int j = low; j < high; j++)
-			if (divX && a[j].x1 + a[j].x2 <= v || !divX && a[j].y1 + a[j].y2 <= v)
+			if (divX ? a[j].x1 + a[j].x2 <= v : a[j].y1 + a[j].y2 <= v)
 				swap(a, ++i, j);
 		return i;
 	}

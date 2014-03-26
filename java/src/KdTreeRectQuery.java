@@ -73,7 +73,7 @@ public class KdTreeRectQuery {
 		int v = divX ? a[high - 1].x : a[high - 1].y;
 		int i = low - 1;
 		for (int j = low; j < high; j++)
-			if (divX && a[j].x <= v || !divX && a[j].y <= v)
+			if (divX ? a[j].x <= v : a[j].y <= v)
 				swap(a, ++i, j);
 		return i;
 	}
