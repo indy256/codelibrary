@@ -65,7 +65,7 @@ public class Sort {
 			int i = low;
 			int j = mid;
 			for (int k = 0; k < size; k++) {
-				if (j >= high || i < mid && a[i] < a[j]) {
+				if (j >= high || i < mid && a[i] <= a[j]) {
 					b[k] = a[i++];
 				} else {
 					b[k] = a[j++];

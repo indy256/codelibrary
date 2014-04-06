@@ -15,7 +15,7 @@ public class Inversions {
 		int i = low;
 		int j = mid;
 		for (int k = 0; k < size; k++) {
-			if (j >= high || i < mid && a[i] < a[j]) {
+			if (j >= high || i < mid && a[i] <= a[j]) {
 				b[k] = a[i++];
 			} else {
 				b[k] = a[j++];
@@ -31,7 +31,9 @@ public class Inversions {
 		Random rnd = new Random();
 		for (int step = 0; step < 1000; step++) {
 			int n = rnd.nextInt(100);
-			int[] p = getRandomPermutation(n, rnd);
+			int[] p = new int[n];
+			for (int i = 0; i < n; i++)
+				p[i] = rnd.nextInt(n);
 			int res1 = inversions(p.clone(), 0, p.length);
 			int res2 = slowInversions(p);
 			if (res1 != res2)
@@ -45,16 +47,6 @@ public class Inversions {
 			for (int j = 0; j < i; j++)
 				if (p[j] > p[i])
 					++res;
-		return res;
-	}
-
-	static int[] getRandomPermutation(int n, Random rnd) {
-		int[] res = new int[n];
-		for (int i = 0; i < n; i++) {
-			int j = rnd.nextInt(i + 1);
-			res[i] = res[j];
-			res[j] = i;
-		}
 		return res;
 	}
 }
