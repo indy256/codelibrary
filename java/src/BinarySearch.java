@@ -8,7 +8,8 @@ public class BinarySearch {
 		int hi = toInclusive + 1;
 		while (lo < hi - 1) {
 			// overflow resilient arithmetic mean, rounded towards negative infinity
-			int mid = (lo & hi) + ((lo ^ hi) >> 1);
+			// int mid = (lo & hi) + ((lo ^ hi) >> 1);
+			int mid = (lo + hi) >>> 1;
 			if (!predicate.test(mid)) {
 				lo = mid;
 			} else {

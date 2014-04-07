@@ -1,7 +1,9 @@
+import java.util.Random;
 import java.util.function.*;
 
 public class TernarySearch {
 
+	// finds maximum of strictly increasing and then decreasing function
 	public static double ternarySearch(DoubleUnaryOperator f, double lo, double hi) {
 		for (int step = 0; step < 1000; step++) {
 			double m1 = lo + (hi - lo) / 3;
@@ -14,28 +16,39 @@ public class TernarySearch {
 		return (lo + hi) / 2;
 	}
 
-	public static int ternarySearch(IntUnaryOperator f, int from, int to) {
-		int lo = from;
-		int hi = to + 1;
-		while (hi - lo >= 3) {
-			int m1 = lo + (hi - lo) / 3;
-			int m2 = hi - (hi - lo) / 3;
-			if (f.applyAsInt(m1) < f.applyAsInt(m2))
-				lo = m1;
-			else
-				hi = m2;
+	// finds maximum of strictly increasing and then decreasing function
+	public static int ternarySearch(IntUnaryOperator f, int fromInclusive, int toInclusive) {
+		int lo = fromInclusive - 1;
+		int hi = toInclusive;
+		while (lo < hi - 1) {
+			int mid = (lo + hi) >>> 1;
+			if (f.applyAsInt(mid) < f.applyAsInt(mid + 1)) {
+				lo = mid;
+			} else {
+				hi = mid;
+			}
 		}
-		int res = lo;
-		for (int i = lo + 1; i < hi; i++)
-			if (f.applyAsInt(res) < f.applyAsInt(i))
-				res = i;
-		return res;
+		return hi;
 	}
 
-	// Usage example
+	// random tests
 	public static void main(String[] args) {
 		System.out.println(ternarySearch((DoubleUnaryOperator) x -> -(x - 2) * (x - 2), -10, 10));
-		int[] a = {3, 10, 7, 6, 5};
-		System.out.println(1 == ternarySearch((IntUnaryOperator) i -> a[i], 0, a.length - 1));
+
+		Random rnd = new Random(1);
+		for (int step = 0; step < 1000; step++) {
+			int n = rnd.nextInt(20) + 1;
+			int p = rnd.nextInt(n);
+			int[] a = new int[n];
+			final int range = 10;
+			a[p] = rnd.nextInt(range);
+			for (int i = p - 1; i >= 0; i--)
+				a[i] = a[i + 1] - rnd.nextInt(range) - 1;
+			for (int i = p + 1; i < n; i++)
+				a[i] = a[i - 1] - rnd.nextInt(range) - 1;
+			int res = ternarySearch((IntUnaryOperator) i -> a[i], 0, a.length - 1);
+			if (a[p] != a[res])
+				throw new RuntimeException();
+		}
 	}
 }
