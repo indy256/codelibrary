@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2014 Andrey Naumenko
+ *
+ * Licensed under MIT License
+ */
+
 import java.util.*;
 
 // optimized version of http://en.wikipedia.org/wiki/Tarjan's_strongly_connected_components_algorithm
