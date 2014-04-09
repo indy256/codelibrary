@@ -1,9 +1,3 @@
-/*
- * Copyright (c) 2014 Andrey Naumenko
- *
- * Licensed under MIT License
- */
-
 import java.util.*;
 
 public class SCCTarjanNoRecursion {
