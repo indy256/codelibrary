@@ -2,14 +2,6 @@ import java.util.*;
 
 public class SCCKosaraju {
 
-	static void dfs(List<Integer>[] graph, boolean[] used, List<Integer> res, int u) {
-		used[u] = true;
-		for (int v : graph[u])
-			if (!used[v])
-				dfs(graph, used, res, v);
-		res.add(u);
-	}
-
 	public static List<List<Integer>> scc(List<Integer>[] graph) {
 		int n = graph.length;
 		boolean[] used = new boolean[n];
@@ -37,6 +29,14 @@ public class SCCKosaraju {
 			}
 
 		return components;
+	}
+
+	static void dfs(List<Integer>[] graph, boolean[] used, List<Integer> res, int u) {
+		used[u] = true;
+		for (int v : graph[u])
+			if (!used[v])
+				dfs(graph, used, res, v);
+		res.add(u);
 	}
 
 	// Usage example

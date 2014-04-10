@@ -57,12 +57,13 @@ public class SCCTarjan {
 	// Usage example
 	public static void main(String[] args) {
 		List<Integer>[] g = new List[3];
-		for (int i = 0; i < g.length; i++) {
+		for (int i = 0; i < g.length; i++)
 			g[i] = new ArrayList<>();
-		}
-		g[0].add(1);
-		g[0].add(2);
+
+		g[2].add(0);
 		g[2].add(1);
+		g[0].add(1);
+		g[1].add(0);
 
 		List<List<Integer>> components = new SCCTarjan().scc(g);
 		System.out.println(components);
