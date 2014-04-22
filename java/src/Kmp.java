@@ -1,4 +1,4 @@
-public class Kmp9 {
+public class Kmp {
 
 	public static int[] prefixFunction(String s) {
 		int[] p = new int[s.length()];

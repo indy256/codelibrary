@@ -1,35 +1,13 @@
 import java.util.*;
 
-public class Lis29 {
+public class Lis21 {
 
-	public static int[] lis(int[] a) {
-		int n = a.length;
-		int[] tail = new int[n];
-		int[] prev = new int[n];
-
-		int len = 0;
-		for (int i = 0; i < n; i++) {
-			int pos = lower_bound(a, tail, len, a[i]);
-			if (pos == len) {
-				++len;
-			}
-			prev[i] = pos > 0 ? tail[pos - 1] : -1;
-			tail[pos] = i;
-		}
-
-		int[] res = new int[len];
-		for (int i = tail[len - 1]; i >= 0; i = prev[i]) {
-			res[--len] = a[i];
-		}
-		return res;
-	}
-
-	static int lower_bound(int[] a, int[] tail, int len, int key) {
+	static int lower_bound(int[] a, int len, int key) {
 		int lo = -1;
 		int hi = len;
 		while (hi - lo > 1) {
-			int mid = (lo + hi) >>> 1;
-			if (a[tail[mid]] < key) {
+			int mid = (lo + hi) / 2;
+            if (a[mid] < key) {
 				lo = mid;
 			} else {
 				hi = mid;
@@ -38,9 +16,32 @@ public class Lis29 {
 		return hi;
 	}
 
+	public static int[] lis(int[] a) {
+		int n = a.length;
+		int[] b = new int[n];
+		int[] len = new int[n];
+
+		int cnt = 0;
+		for (int i = 0; i < n; i++) {
+			// invariant: b[j] is the smallest number that ends a strictly-increasing subsequence of a[0..i-1] of length j+1
+			// len[j] = length of LIS ending at a[j] for all j=0..i-1
+			int j = lower_bound(b, cnt, a[i]);
+			if (j == cnt) ++cnt;
+			b[j] = a[i];
+			len[i] = j + 1;
+		}
+
+		// reconstruct some LIS
+		int[] res = new int[cnt];
+		for (int i = n - 1; i >= 0; i--)
+			if (len[i] == cnt && (cnt == res.length || a[i] < res[cnt]))
+				res[--cnt] = a[i];
+		return res;
+	}
+
 	// random test
 	public static void main(String[] args) {
-		int[] a = {1, 5, 5, 4, 2, 3, 7, 6, 6};
+		int[] a = { 1, 5, 5, 4, 2, 3, 7, 6, 6 };
 		int[] lis = lis(a);
 		System.out.println(Arrays.toString(lis));
 
