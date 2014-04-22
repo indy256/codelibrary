@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class LIS21 {
+public class Lis219 {
 
 	static int lower_bound(int[] a, int len, int key) {
 		int lo = -1;
@@ -54,7 +54,7 @@ public class LIS21 {
 			int res1 = lis(s).length;
 			int res2 = lisSlow(s);
 			if (res1 != res2)
-				throw new RuntimeException("error");
+				throw new RuntimeException();
 		}
 	}
 

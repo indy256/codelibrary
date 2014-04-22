@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class LIS {
+public class Lis9 {
 
 	public static int[] getLIS(int[] x) {
 		int n = x.length;

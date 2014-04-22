@@ -60,7 +60,7 @@ public class LIS21 {
 			int res1 = getLis(s).length;
 			int res2 = getLisSlow(s);
 			if (res1 != res2)
-				throw new RuntimeException("error");
+				throw new RuntimeException();
 		}
 	}
 

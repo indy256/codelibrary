@@ -157,13 +157,13 @@ public class SegmentTreeFast {
 						res2 = t.queryOperation(res2, x[j]);
 					}
 					if (res1 != res2) {
-						throw new RuntimeException("error");
+						throw new RuntimeException();
 					}
 
 				} else {
 					for (int j = 0; j < n; j++) {
 						if (t.query(j, j) != x[j]) {
-							throw new RuntimeException("error");
+							throw new RuntimeException();
 						}
 					}
 				}

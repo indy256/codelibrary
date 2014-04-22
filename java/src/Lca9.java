@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class LCA {
+public class Lca9 {
 
 	int[] depth;
 	int[] dfs_order;
@@ -30,7 +30,7 @@ public class LCA {
 		minPos[node] = depth[minPos[2 * node + 1]] < depth[minPos[2 * node + 2]] ? minPos[2 * node + 1] : minPos[2 * node + 2];
 	}
 
-	public LCA(List<Integer>[] tree, int root) {
+	public Lca9(List<Integer>[] tree, int root) {
 		int nodes = tree.length;
 		depth = new int[nodes];
 		Arrays.fill(depth, -1);
@@ -81,7 +81,7 @@ public class LCA {
 			Arrays.fill(depth, -1);
 			int root = rnd.nextInt(n);
 			calcDepth(tree, depth, root, 0);
-			LCA q = new LCA(tree, root);
+			Lca9 q = new Lca9(tree, root);
 			for (int i = 0; i < 1000; i++) {
 				int a = rnd.nextInt(n);
 				int b = rnd.nextInt(n);
@@ -93,7 +93,7 @@ public class LCA {
 					if (depth[res2] > depth[u])
 						res2 = u;
 				if (res1 != res2)
-					throw new RuntimeException("error");
+					throw new RuntimeException();
 			}
 		}
 		System.out.println("Test passed");

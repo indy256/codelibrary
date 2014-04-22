@@ -80,7 +80,7 @@ public class SegmentTree3D {
 							for (int z = z1; z <= z2; z++)
 								res2 = Math.max(res2, tt[x][y][z]);
 					if (res1 != res2)
-						throw new RuntimeException("error");
+						throw new RuntimeException();
 				}
 			}
 		}

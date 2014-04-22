@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class LIS2 {
+public class Lis29 {
 
 	public static int[] lis(int[] a) {
 		int n = a.length;
@@ -53,7 +53,7 @@ public class LIS2 {
 			int res1 = lis(s).length;
 			int res2 = lisSlow(s);
 			if (res1 != res2)
-				throw new RuntimeException("error");
+				throw new RuntimeException();
 		}
 	}
 

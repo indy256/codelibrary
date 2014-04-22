@@ -74,16 +74,16 @@ public class MinCostFlow {
 			curflow[s] = Integer.MAX_VALUE;
 			while (!finished[t] && !q.isEmpty()) {
 				long cur = q.remove();
-				int u = (int) cur;
+				int u = (int) (cur & 0xFFFF_FFFFL);
 				int priou = (int) (cur >>> 32);
 				if (priou != prio[u])
 					continue;
 				finished[u] = true;
 				for (int i = 0; i < graph[u].size(); i++) {
 					Edge e = graph[u].get(i);
-					int v = e.to;
 					if (e.f >= e.cap)
 						continue;
+					int v = e.to;
 					int nprio = prio[u] + e.cost + pot[u] - pot[v];
 					if (prio[v] > nprio) {
 						prio[v] = nprio;

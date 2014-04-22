@@ -122,7 +122,7 @@ public class SuffixArray {
 						|| !a.substring(0, lcp[i]).equals(b.substring(0, lcp[i]))
 						|| (a + " ").charAt(lcp[i]) == (b + " ").charAt(lcp[i])
 						|| sa[i] != ra[i + 1])
-					throw new RuntimeException("error");
+					throw new RuntimeException();
 			}
 		}
 		System.out.println("Test passed");

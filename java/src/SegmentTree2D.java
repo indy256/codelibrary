@@ -68,7 +68,7 @@ public class SegmentTree2D {
 						for (int y = y1; y <= y2; y++)
 							res2 = Math.max(res2, tt[x][y]);
 					if (res1 != res2)
-						throw new RuntimeException("error");
+						throw new RuntimeException();
 				}
 			}
 		}

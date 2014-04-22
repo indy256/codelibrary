@@ -90,7 +90,7 @@ public class SuffixArrayOld {
 			int[] a = suffixArray(sb);
 			for (int i = 0; i + 1 < n; i++)
 				if (sb.substring(a[i]).compareTo(sb.substring(a[i + 1])) >= 0)
-					throw new RuntimeException("error");
+					throw new RuntimeException();
 		}
 		System.out.println("Test passed");
 	}

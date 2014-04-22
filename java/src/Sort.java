@@ -6,12 +6,12 @@ public class Sort {
 	static Random rnd = new Random();
 
 	public static void qSort(int[] a, int low, int high) {
-		if (low > high)
+		if (high - low < 1)
 			return;
 		int separator = a[low + rnd.nextInt(high - low + 1)];
 		int i = low;
 		int j = high;
-		while (true) {
+		while (i <= j) {
 			while (a[i] < separator)
 				++i;
 			while (a[j] > separator)
@@ -23,19 +23,17 @@ public class Sort {
 			a[j] = t;
 			++i;
 			--j;
-			if (i > j)
-				break;
 		}
 		qSort(a, low, j);
 		qSort(a, i, high);
 	}
 
 	public static void qSort2(int[] a, int low, int high) {
-		if (high - low > 1) {
-			int p = randomizedPartition(a, low, high);
-			qSort2(a, low, p);
-			qSort2(a, p, high);
-		}
+		if (high - low <= 1)
+			return;
+		int p = randomizedPartition(a, low, high);
+		qSort2(a, p, high);
+		qSort2(a, low, p);
 	}
 
 	static int randomizedPartition(int[] a, int low, int high) {
@@ -55,24 +53,24 @@ public class Sort {
 	}
 
 	public static void mergeSort(int[] a, int low, int high) {
-		if (low + 1 < high) {
-			int mid = (low + high) >>> 1;
-			mergeSort(a, low, mid);
-			mergeSort(a, mid, high);
+		int size = high - low;
+		if (size < 2)
+			return;
+		int mid = (low + high) >>> 1;
+		mergeSort(a, low, mid);
+		mergeSort(a, mid, high);
 
-			int size = high - low;
-			int[] b = new int[size];
-			int i = low;
-			int j = mid;
-			for (int k = 0; k < size; k++) {
-				if (j >= high || i < mid && a[i] <= a[j]) {
-					b[k] = a[i++];
-				} else {
-					b[k] = a[j++];
-				}
+		int[] b = new int[size];
+		int i = low;
+		int j = mid;
+		for (int k = 0; k < size; k++) {
+			if (i < mid && (j == high || a[i] <= a[j])) {
+				b[k] = a[i++];
+			} else {
+				b[k] = a[j++];
 			}
-			System.arraycopy(b, 0, a, low, size);
 		}
+		System.arraycopy(b, 0, a, low, size);
 	}
 
 	public static void inPlaceMergeSort(int[] a, int low, int high) {
@@ -238,7 +236,7 @@ public class Sort {
 
 	// random test
 	public static void main(String[] args) {
-		Random rnd = new Random();
+		Random rnd = new Random(1);
 		for (int step = 0; step < 1000; step++) {
 			int n = rnd.nextInt(100) + 1;
 			int[] a = new int[n];

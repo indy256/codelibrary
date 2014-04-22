@@ -10,8 +10,7 @@ public class Partition {
 		int i = low - 1;
 		for (int j = low; j < high; j++) {
 			if (a[j] <= separator) {
-				++i;
-				swap(a, i, j);
+				swap(a, ++i, j);
 			}
 		}
 		return i;
@@ -23,8 +22,7 @@ public class Partition {
 		int i = low - 1;
 		for (int j = low; j < high; j++) {
 			if (a[j] <= separator) {
-				++i;
-				swap(a, i, j);
+				swap(a, ++i, j);
 			}
 		}
 		return i;

@@ -73,11 +73,11 @@ public class SegmentTreeSum {
 					for (int j = a + 1; j <= b; j++)
 						res2 += x[j];
 					if (res1 != res2)
-						throw new RuntimeException("error");
+						throw new RuntimeException();
 				} else {
 					for (int j = 0; j < n; j++) {
 						if (t.sum(j, j) != x[j])
-							throw new RuntimeException("error");
+							throw new RuntimeException();
 					}
 				}
 			}

@@ -1,5 +1,10 @@
 public class DominoFill {
 
+	/**
+	 * .....
+	 * ..234
+	 * 01
+	 */
 	public static int method1(int R, int C) {
 		int[] prev = new int[1 << C];
 		prev[(1 << C) - 1] = 1;
@@ -25,6 +30,11 @@ public class DominoFill {
 		return prev[(1 << C) - 1];
 	}
 
+	/**
+	 * .....
+	 * ..012
+	 * 34
+	 */
 	public static int method2(int R, int C) {
 		int[] prev = new int[1 << C];
 		prev[(1 << C) - 1] = 1;
@@ -57,9 +67,8 @@ public class DominoFill {
 			for (int c = 1; c < 10; c++) {
 				int res1 = method1(r, c);
 				int res2 = method2(r, c);
-				if (res1 != res2) {
-					System.out.println(r + " " + c + " " + res1 + " " + res2);
-				}
+				if (res1 != res2)
+					throw new RuntimeException();
 			}
 		}
 	}

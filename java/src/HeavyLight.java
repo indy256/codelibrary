@@ -241,7 +241,7 @@ public class HeavyLight {
 					for (int u : path)
 						res2 = queryOperation(res2, x[u]);
 					if (res1 != res2)
-						throw new RuntimeException("error");
+						throw new RuntimeException();
 				}
 			}
 		}
@@ -274,7 +274,7 @@ public class HeavyLight {
 						res2 = queryOperation(res2, x.get(key));
 					}
 					if (res1 != res2)
-						throw new RuntimeException("error");
+						throw new RuntimeException();
 				}
 			}
 		}

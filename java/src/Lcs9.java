@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class LCS {
+public class Lcs9 {
 
 	public static int[] getLCS(int[] x, int[] y) {
 		int m = x.length;

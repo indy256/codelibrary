@@ -35,7 +35,7 @@ public class SuffixArray2 {
 			Integer[] sa = suffixArray(s);
 			for (int i = 0; i + 1 < n; i++)
 				if (s.substring(sa[i]).compareTo(s.substring(sa[i + 1])) >= 0)
-					throw new RuntimeException("error");
+					throw new RuntimeException();
 		}
 		System.out.println("Test passed");
 	}
