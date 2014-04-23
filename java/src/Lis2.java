@@ -45,7 +45,7 @@ public class Lis2 {
 		System.out.println(Arrays.toString(lis));
 
 		Random rnd = new Random(1);
-		for (int step = 0; step < 10000; step++) {
+		for (int step = 0; step < 10_000; step++) {
 			int n = rnd.nextInt(10) + 1;
 			int[] s = new int[n];
 			for (int i = 0; i < n; i++)

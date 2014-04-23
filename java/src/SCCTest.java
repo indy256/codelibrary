@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class SCCTest {
 
@@ -8,23 +9,10 @@ public class SCCTest {
 			int n = rnd.nextInt(30);
 			List<Integer>[] g = getRandomGraph(n, rnd);
 
-			List<List<Integer>> scc1 = SCCTransitiveClosure.scc(g);
-			List<List<Integer>> scc2 = SCCKosaraju.scc(g);
-			List<List<Integer>> scc3 = new SCCTarjan().scc(g);
-			List<List<Integer>> scc4 = SCCTarjanNoRecursion.scc(g);
-
-			Set<Set<Integer>> s1 = new HashSet<>();
-			for (List<Integer> c : scc1)
-				s1.add(new HashSet<>(c));
-			Set<Set<Integer>> s2 = new HashSet<>();
-			for (List<Integer> c : scc2)
-				s2.add(new HashSet<>(c));
-			Set<Set<Integer>> s3 = new HashSet<>();
-			for (List<Integer> c : scc3)
-				s3.add(new HashSet<>(c));
-			Set<Set<Integer>> s4 = new HashSet<>();
-			for (List<Integer> c : scc4)
-				s4.add(new HashSet<>(c));
+			Set<Set> s1 = SCCTransitiveClosure.scc(g).stream().map(HashSet::new).collect(Collectors.toSet());
+			Set<Set> s2 = SCCKosaraju.scc(g).stream().map(HashSet::new).collect(Collectors.toSet());
+			Set<Set> s3 = new SCCTarjan().scc(g).stream().map(HashSet::new).collect(Collectors.toSet());
+			Set<Set> s4 = SCCTarjanNoRecursion.scc(g).stream().map(HashSet::new).collect(Collectors.toSet());
 
 			if (!s1.equals(s2) || !s1.equals(s3) || !s1.equals(s4))
 				throw new RuntimeException();

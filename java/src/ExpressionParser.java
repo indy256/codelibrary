@@ -1,7 +1,5 @@
+import javax.script.*;
 import java.util.LinkedList;
-
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
 
 public class ExpressionParser {
 
@@ -84,6 +82,6 @@ public class ExpressionParser {
 
 		String exp = "1+2*3*4+3*(2+2)-100";
 		System.out.println(eval(exp));
-		System.out.println((Double) engine.eval(exp) == eval(exp));
+		System.out.println((Integer) engine.eval(exp) == eval(exp));
 	}
 }

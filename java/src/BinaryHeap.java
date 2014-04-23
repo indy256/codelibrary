@@ -1,3 +1,5 @@
+import java.util.*;
+
 public class BinaryHeap {
 	int[] heap;
 	int size;
@@ -56,17 +58,23 @@ public class BinaryHeap {
 		heap[j] = t;
 	}
 
-	// Usage example
+	// random test
 	public static void main(String[] args) {
-		BinaryHeap heap = new BinaryHeap(10);
-		heap.add(2);
-		heap.add(5);
-		heap.add(1);
-
-		// print elements in sorted order
-		while (heap.size > 0) {
-			int x = heap.removeMin();
-			System.out.println(x);
+		Random rnd = new Random(1);
+		for (int step = 0; step < 1000; step++) {
+			int n = rnd.nextInt(100) + 1;
+			PriorityQueue<Integer> q = new PriorityQueue<>();
+			BinaryHeap h = new BinaryHeap(n);
+			for (int op = 0; op < 1000; op++) {
+				if (rnd.nextBoolean() && q.size() < n) {
+					int v = rnd.nextInt();
+					q.add(v);
+					h.add(v);
+				} else if (!q.isEmpty()) {
+					if (q.remove() != h.removeMin())
+						throw new RuntimeException();
+				}
+			}
 		}
 	}
 }
