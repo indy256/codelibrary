@@ -40,36 +40,40 @@ public class Lis2 {
 
 	// random test
 	public static void main(String[] args) {
-		int[] a = {1, 5, 5, 4, 2, 3, 7, 6, 6};
-		int[] lis = lis(a);
-		System.out.println(Arrays.toString(lis));
-
 		Random rnd = new Random(1);
 		for (int step = 0; step < 10_000; step++) {
 			int n = rnd.nextInt(10) + 1;
-			int[] s = new int[n];
+			int[] a = new int[n];
 			for (int i = 0; i < n; i++)
-				s[i] = rnd.nextInt(10);
-			int res1 = lis(s).length;
-			int res2 = lisSlow(s);
-			if (res1 != res2)
-				throw new RuntimeException();
+				a[i] = rnd.nextInt(10);
+			int[] lis = lis(a);
+			checkLis(a, lis);
 		}
 	}
 
-	static int lisSlow(int[] s) {
-		int n = s.length;
-		int res = 0;
+	static void checkLis(int[] a, int[] lis) {
+		int n = a.length;
+		boolean found = false;
 		m1:
 		for (int mask = 0; mask < 1 << n; mask++) {
-			for (int i = 0, prev = -1; i < n; i++)
+			int len = Integer.bitCount(mask);
+			if (len < lis.length)
+				continue;
+			for (int i = 0, prev = Integer.MIN_VALUE; i < n; i++)
 				if ((mask & (1 << i)) != 0) {
-					if (prev >= s[i])
+					if (prev >= a[i])
 						continue m1;
-					prev = s[i];
+					prev = a[i];
 				}
-			res = Math.max(res, Integer.bitCount(mask));
+			if (len > lis.length)
+				throw new RuntimeException();
+			boolean ok = true;
+			for (int i = 0, j = 0; i < n; i++)
+				if ((mask & (1 << i)) != 0)
+					ok &= a[i] == lis[j++];
+			found |= ok;
 		}
-		return res;
+		if (!found)
+			throw new RuntimeException();
 	}
 }
