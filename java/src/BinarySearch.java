@@ -1,3 +1,4 @@
+import java.util.*;
 import java.util.function.*;
 
 public class BinarySearch {
@@ -6,7 +7,7 @@ public class BinarySearch {
 	public static int binarySearchFirstTrue(IntPredicate predicate, int fromInclusive, int toInclusive) {
 		int lo = fromInclusive - 1;
 		int hi = toInclusive + 1;
-		while (lo < hi - 1) {
+		while (hi - lo > 1) {
 			// overflow resilient arithmetic mean, rounded towards negative infinity
 			// int mid = (lo & hi) + ((lo ^ hi) >> 1);
 			int mid = (lo + hi) >>> 1;
@@ -31,10 +32,19 @@ public class BinarySearch {
 		return hi;
 	}
 
-	// Usage example
+	// random test
 	public static void main(String[] args) {
-		int[] a = {1, 2, 5, 6, 7};
-		System.out.println(3 == binarySearchFirstTrue(i -> a[i] >= 6, 0, a.length - 1));
+		Random rnd = new Random(1);
+		for (int step = 0; step < 100_000; step++) {
+			int n = rnd.nextInt(20);
+			boolean[] b = new boolean[n];
+			int firstTrue = rnd.nextInt(n + 1);
+			Arrays.fill(b, firstTrue, n, true);
+			int res = binarySearchFirstTrue(i -> b[i], 0, n - 1);
+			if (res != firstTrue)
+				throw new RuntimeException();
+		}
+
 		System.out.println(Math.sqrt(2) == binarySearch(x -> x * x >= 2, 0, 2));
 	}
 }

@@ -1,5 +1,14 @@
 public class MaxFlowFordFulkerson {
 
+	public static int maxFlow(int[][] cap, int s, int t) {
+		for (int flow = 0;;) {
+			int df = findPath(cap, new boolean[cap.length], s, t, Integer.MAX_VALUE);
+			if (df == 0)
+				return flow;
+			flow += df;
+		}
+	}
+
 	static int findPath(int[][] cap, boolean[] vis, int u, int t, int f) {
 		if (u == t)
 			return f;
@@ -14,15 +23,6 @@ public class MaxFlowFordFulkerson {
 				}
 			}
 		return 0;
-	}
-
-	public static int maxFlow(int[][] cap, int s, int t) {
-		for (int flow = 0;;) {
-			int df = findPath(cap, new boolean[cap.length], s, t, Integer.MAX_VALUE);
-			if (df == 0)
-				return flow;
-			flow += df;
-		}
 	}
 
 	// Usage example

@@ -222,8 +222,8 @@ public class Sort {
 		final int w = 32;
 		int[] t = new int[a.length];
 		for (int p = 0; p < w / d; p++) {
+			// counting-sort
 			int[] cnt = new int[1 << d];
-			// the next three for loops implement counting-sort
 			for (int i = 0; i < a.length; i++)
 				++cnt[((a[i] ^ Integer.MIN_VALUE) >>> (d * p)) & ((1 << d) - 1)];
 			for (int i = 1; i < cnt.length; i++)

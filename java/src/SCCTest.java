@@ -24,7 +24,7 @@ public class SCCTest {
 		for (int i = 0; i < n; i++) {
 			res[i] = new ArrayList<>();
 			for (int j = 0; j < n; j++)
-				if (rnd.nextBoolean())
+				if (j != i && rnd.nextBoolean())
 					res[i].add(j);
 		}
 		return res;

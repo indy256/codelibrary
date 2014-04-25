@@ -1,3 +1,5 @@
+package obsolete;
+
 import java.util.*;
 
 public class NthElement2 {

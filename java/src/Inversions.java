@@ -3,19 +3,19 @@ import java.util.*;
 public class Inversions {
 
 	public static int inversions(int[] a, int low, int high) {
-		if (low >= high - 1)
+		int size = high - low;
+		if (size <= 1)
 			return 0;
 		int mid = (low + high) >>> 1;
 		int res1 = inversions(a, low, mid);
 		int res2 = inversions(a, mid, high);
 		int res = res1 + res2;
 
-		int size = high - low;
 		int[] b = new int[size];
 		int i = low;
 		int j = mid;
 		for (int k = 0; k < size; k++) {
-			if (j >= high || i < mid && a[i] <= a[j]) {
+			if (i < mid && (j >= high || a[i] <= a[j])) {
 				b[k] = a[i++];
 			} else {
 				b[k] = a[j++];

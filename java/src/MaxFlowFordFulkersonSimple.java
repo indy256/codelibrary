@@ -1,5 +1,11 @@
 public class MaxFlowFordFulkersonSimple {
 
+	public static int maxFlow(int[][] cap, int s, int t) {
+		for (int flow = 0;; ++flow)
+			if (!augmentPath(cap, new boolean[cap.length], s, t))
+				return flow;
+	}
+
 	static boolean augmentPath(int[][] cap, boolean[] vis, int i, int t) {
 		if (i == t)
 			return true;
@@ -11,12 +17,6 @@ public class MaxFlowFordFulkersonSimple {
 				return true;
 			}
 		return false;
-	}
-
-	public static int maxFlow(int[][] cap, int s, int t) {
-		for (int flow = 0;; ++flow)
-			if (!augmentPath(cap, new boolean[cap.length], s, t))
-				return flow;
 	}
 
 	// Usage example

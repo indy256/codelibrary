@@ -20,7 +20,7 @@ public class TernarySearch {
 	public static int ternarySearch(IntUnaryOperator f, int fromInclusive, int toInclusive) {
 		int lo = fromInclusive - 1;
 		int hi = toInclusive;
-		while (lo < hi - 1) {
+		while (hi - lo > 1) {
 			int mid = (lo + hi) >>> 1;
 			if (f.applyAsInt(mid) < f.applyAsInt(mid + 1)) {
 				lo = mid;
