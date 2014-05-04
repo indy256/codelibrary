@@ -1,8 +1,9 @@
+import java.util.Random;
+
 public class Kmp {
 
 	public static int[] prefixFunction(String s) {
 		int[] p = new int[s.length()];
-		p[0] = 0;
 		int k = 0;
 		for (int i = 1; i < s.length(); i++) {
 			while (k > 0 && s.charAt(k) != s.charAt(i))
@@ -20,7 +21,7 @@ public class Kmp {
 			return 0;
 		int[] p = prefixFunction(pattern);
 		for (int i = 0, k = 0; i < s.length(); i++)
-			for (;; k = p[k - 1]) {
+			for (; ; k = p[k - 1]) {
 				if (pattern.charAt(k) == s.charAt(i)) {
 					if (++k == m)
 						return i + 1 - m;
@@ -32,9 +33,24 @@ public class Kmp {
 		return -1;
 	}
 
-	// Usage example
+	// random tests
 	public static void main(String[] args) {
-		int pos = kmpMatcher("00101", "010");
-		System.out.println(1 == pos);
+		Random rnd = new Random(1);
+		for (int step = 0; step < 10_000; step++) {
+			String s = getRandomString(rnd, 100);
+			String pattern = getRandomString(rnd, 5);
+			int pos1 = kmpMatcher(s, pattern);
+			int pos2 = s.indexOf(pattern);
+			if (pos1 != pos2)
+				throw new RuntimeException();
+		}
+	}
+
+	static String getRandomString(Random rnd, int maxlen) {
+		int n = rnd.nextInt(maxlen);
+		char[] s = new char[n];
+		for (int i = 0; i < n; i++)
+			s[i] = (char) ('a' + rnd.nextInt(3));
+		return new String(s);
 	}
 }

@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class SimpleTreap {
+public class TreapSimple {
 	static Random random = new Random();
 
 	static class Treap {
@@ -39,17 +39,17 @@ public class SimpleTreap {
 		if (root == null)
 			return new TreapPair(null, null);
 		if (root.key >= minRight) {
-			TreapPair sub = split(root.left, minRight);
-			root.left = sub.right;
+			TreapPair leftSplit = split(root.left, minRight);
+			root.left = leftSplit.right;
 			root.update();
-			sub.right = root;
-			return sub;
+			leftSplit.right = root;
+			return leftSplit;
 		} else {
-			TreapPair sub = split(root.right, minRight);
-			root.right = sub.left;
+			TreapPair rightSplit = split(root.right, minRight);
+			root.right = rightSplit.left;
 			root.update();
-			sub.left = root;
-			return sub;
+			rightSplit.left = root;
+			return rightSplit;
 		}
 	}
 
