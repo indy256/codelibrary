@@ -53,6 +53,17 @@ public class Sort {
 	}
 
 	public static void mergeSort(int[] a, int low, int high) {
+		if (high - low < 2)
+			return;
+		int mid = (low + high) >>> 1;
+		mergeSort(a, low, mid);
+		mergeSort(a, mid, high);
+		int[] b = Arrays.copyOfRange(a, low, mid);
+		for (int i = low, j = mid, k = 0; k < b.length; i++)
+			a[i] = (j == high || b[k] < a[j]) ? b[k++] : a[j++];
+	}
+
+	public static void mergeSort2(int[] a, int low, int high) {
 		int size = high - low;
 		if (size < 2)
 			return;
@@ -288,6 +299,11 @@ public class Sort {
 
 			b = a.clone();
 			mergeSort(b, 0, b.length);
+			if (!Arrays.equals(s, b))
+				throw new RuntimeException();
+
+			b = a.clone();
+			mergeSort2(b, 0, b.length);
 			if (!Arrays.equals(s, b))
 				throw new RuntimeException();
 
