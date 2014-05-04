@@ -1,7 +1,7 @@
 import java.util.*;
 
 public class CircleGeometry {
-	
+
 	static final double EPS = 1e-10;
 
 	public static double sqr(double x) {
@@ -33,29 +33,6 @@ public class CircleGeometry {
 		public boolean contains(Point p) {
 			return fastHypot(p.x - x, p.y - y) < r + EPS;
 		}
-	}
-
-	public static Circle getCircumCircle(Point a, Point b) {
-		double x = (a.x + b.x) / 2.;
-		double y = (a.y + b.y) / 2.;
-		double r = fastHypot(a.x - x, a.y - y);
-		return new Circle(x, y, r);
-	}
-
-	public static Circle getCircumCircle(Point a, Point b, Point c) {
-		double Bx = b.x - a.x;
-		double By = b.y - a.y;
-		double Cx = c.x - a.x;
-		double Cy = c.y - a.y;
-		double d = 2 * (Bx * Cy - By * Cx);
-		double z1 = Bx * Bx + By * By;
-		double z2 = Cx * Cx + Cy * Cy;
-		double cx = Cy * z1 - By * z2;
-		double cy = Bx * z2 - Cx * z1;
-		double x = cx / d;
-		double y = cy / d;
-		double r = fastHypot(x, y);
-		return new Circle(x + a.x, y + a.y, r);
 	}
 
 	public static class Line {
@@ -180,28 +157,6 @@ public class CircleGeometry {
 		return area;
 	}
 
-	static Circle minEnclosingCircleWith2Points(List<Point> points, Point q1, Point q2) {
-		Circle circle = getCircumCircle(q1, q2);
-		for (int i = 0; i < points.size(); i++) {
-			if (!circle.contains(points.get(i))) {
-				circle = getCircumCircle(q1, q2, points.get(i));
-			}
-		}
-		return circle;
-	}
-
-	static Circle minEnclosingCircleWith1Point(List<Point> pointsList, Point q) {
-		List<Point> points = new ArrayList<>(pointsList);
-		Collections.shuffle(points);
-		Circle circle = getCircumCircle(points.get(0), q);
-		for (int i = 1; i < points.size(); i++) {
-			if (!circle.contains(points.get(i))) {
-				circle = minEnclosingCircleWith2Points(points.subList(0, i), points.get(i), q);
-			}
-		}
-		return circle;
-	}
-
 	// min enclosing circle in O(n) on average
 	public static Circle minEnclosingCircle(Point[] pointsArray) {
 		if (pointsArray.length == 0) {
@@ -213,12 +168,51 @@ public class CircleGeometry {
 		List<Point> points = Arrays.asList(pointsArray);
 		Collections.shuffle(points);
 		Circle circle = getCircumCircle(points.get(0), points.get(1));
-		for (int i = 2; i < points.size(); i++) {
-			if (!circle.contains(points.get(i))) {
+		for (int i = 2; i < points.size(); i++)
+			if (!circle.contains(points.get(i)))
 				circle = minEnclosingCircleWith1Point(points.subList(0, i), points.get(i));
-			}
-		}
 		return circle;
+	}
+
+	static Circle minEnclosingCircleWith1Point(List<Point> pointsList, Point q) {
+		List<Point> points = new ArrayList<>(pointsList);
+		Collections.shuffle(points);
+		Circle circle = getCircumCircle(points.get(0), q);
+		for (int i = 1; i < points.size(); i++)
+			if (!circle.contains(points.get(i)))
+				circle = minEnclosingCircleWith2Points(points.subList(0, i), points.get(i), q);
+		return circle;
+	}
+
+	static Circle minEnclosingCircleWith2Points(List<Point> points, Point q1, Point q2) {
+		Circle circle = getCircumCircle(q1, q2);
+		for (Point point : points)
+			if (!circle.contains(point))
+				circle = getCircumCircle(q1, q2, point);
+		return circle;
+	}
+
+	public static Circle getCircumCircle(Point a, Point b) {
+		double x = (a.x + b.x) / 2.;
+		double y = (a.y + b.y) / 2.;
+		double r = fastHypot(a.x - x, a.y - y);
+		return new Circle(x, y, r);
+	}
+
+	public static Circle getCircumCircle(Point a, Point b, Point c) {
+		double Bx = b.x - a.x;
+		double By = b.y - a.y;
+		double Cx = c.x - a.x;
+		double Cy = c.y - a.y;
+		double d = 2 * (Bx * Cy - By * Cx);
+		double z1 = Bx * Bx + By * By;
+		double z2 = Cx * Cx + Cy * Cy;
+		double cx = Cy * z1 - By * z2;
+		double cy = Bx * z2 - Cx * z1;
+		double x = cx / d;
+		double y = cy / d;
+		double r = fastHypot(x, y);
+		return new Circle(x + a.x, y + a.y, r);
 	}
 
 	// Usage example
