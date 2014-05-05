@@ -22,6 +22,11 @@ public class PointToSegmentDistance {
 		return Math.sqrt(x * x + y * y);
 	}
 
+	// Line2D.ptLineDist
+	public static double pointToLineDistance(long x, long y, long a, long b, long c) {
+		return Math.abs(a * x + b * y + c) / fastHypot(a, b);
+	}
+
 	// random test
 	public static void main(String[] args) {
 		Random rnd = new Random();
