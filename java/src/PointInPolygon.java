@@ -7,7 +7,7 @@ public class PointInPolygon {
 		int n = x.length;
 		int cnt = 0;
 		for (int i = 0, j = n - 1; i < n; j = i++) {
-			if (y[i] == qy && y[j] == qy && (x[i] <= qx || x[j] <= qx) && (x[i] >= qx || x[j] >= qx))
+			if (y[i] == qy && (x[i] == qx || y[j] == qy && (x[i] <= qx || x[j] <= qx) && (x[i] >= qx || x[j] >= qx)))
 				return 0; // boundary
 			if ((y[i] > qy) != (y[j] > qy)) {
 				long det = (long) (x[i] - qx) * (y[j] - qy) - (long) (x[j] - qx) * (y[i] - qy);
@@ -51,8 +51,8 @@ public class PointInPolygon {
 	// random test
 	public static void main(String[] args) {
 		for (int step = 0; step < 10_000; step++) {
-			int n = rnd.nextInt(20) + 3;
-			int range = 100;
+			int n = rnd.nextInt(10) + 3;
+			int range = 10;
 			int[][] xy = getRandomPolygon(n, range, range);
 			int[] x = xy[0];
 			int[] y = xy[1];
