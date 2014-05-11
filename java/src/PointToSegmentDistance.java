@@ -40,7 +40,7 @@ public class PointToSegmentDistance {
 			int y2 = rnd.nextInt(r) - r / 2;
 			double res1 = pointToSegmentDistance(x, y, x1, y1, x2, y2);
 			double res2 = Line2D.ptSegDist(x1, y1, x2, y2, x, y);
-			if (Math.abs(res1 - res2) > 1e-9)
+			if (!(Math.abs(res1 - res2) < 1e-9))
 				throw new RuntimeException();
 		}
 	}

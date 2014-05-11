@@ -168,7 +168,7 @@ public class RTree {
 			RTree rTree = new RTree(segments);
 			int index = rTree.findNearestNeighbour(qx, qy);
 			Segment s = segments[index];
-			if (minDist != rTree.bestDist || Math.abs(pointToSegmentSquaredDistance(qx, qy, s.x1, s.y1, s.x2, s.y2) - minDist) > 1e-9)
+			if (minDist != rTree.bestDist || !(Math.abs(pointToSegmentSquaredDistance(qx, qy, s.x1, s.y1, s.x2, s.y2) - minDist) < 1e-9))
 				throw new RuntimeException();
 		}
 	}

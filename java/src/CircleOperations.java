@@ -228,6 +228,6 @@ public class CircleOperations {
 	}
 
 	static boolean eq(Point p1, Point p2) {
-		return fastHypot(p1.x - p2.x, p1.y - p2.y) < 1e-9;
+		return !(fastHypot(p1.x - p2.x, p1.y - p2.y) > 1e-9);
 	}
 }

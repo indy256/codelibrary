@@ -2,7 +2,7 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.util.Random;
 
-public class AngleAreaOrientationRotation {
+public class AngleAreaOrientationRotationPerpendicular {
 
 	public static double angleBetween(long ax, long ay, long bx, long by) {
 		double a = Math.atan2(ax * by - ay * bx, ax * bx + ay * by);
@@ -38,6 +38,20 @@ public class AngleAreaOrientationRotation {
 		return new Point2D.Double(p.x * Math.cos(angle) - p.y * Math.sin(angle), p.x * Math.sin(angle) + p.y * Math.cos(angle));
 	}
 
+	public Line perpendicular(Line line, long x, long y) {
+		return new Line(-line.b, line.a, line.b * x - line.a * y);
+	}
+
+	public static class Line {
+		long a, b, c;
+
+		public Line(long a, long b, long c) {
+			this.a = a;
+			this.b = b;
+			this.c = c;
+		}
+	}
+
 	// random test
 	public static void main(String[] args) {
 		Random rnd = new Random(1);
@@ -59,7 +73,7 @@ public class AngleAreaOrientationRotation {
 				continue;
 			double res1 = angleBetween(ax, ay, bx, by);
 			double res2 = angleBetween2(ax, ay, bx, by);
-			if (Math.abs(res1 - res2) > 1e-9)
+			if (!(Math.abs(res1 - res2) < 1e-9))
 				throw new RuntimeException();
 		}
 	}

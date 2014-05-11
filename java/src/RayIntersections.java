@@ -148,7 +148,7 @@ public class RayIntersections {
 									s.r = r;
 									double t1 = raySphereIntersection(ray, s);
 									double t2 = raySphereIntersection(ray, s);
-									if (!(Double.isNaN(t1) && Double.isNaN(t2) || Math.abs(t1 - t2) < eps)) {
+									if (!(Double.isNaN(t1) && Double.isNaN(t2) || !(Math.abs(t1 - t2) > eps))) {
 										System.out.println(t1 + " " + t2);
 									}
 								}
