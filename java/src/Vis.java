@@ -7,8 +7,8 @@ public class Vis extends JFrame {
 	static final int WIDTH = 500;
 	static final int HEIGHT = 500;
 	BufferedImage img;
-	Graphics2D g;
 	boolean stop;
+	public Graphics2D g;
 
 	public Vis() {
 		img = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
