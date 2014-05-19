@@ -37,6 +37,12 @@ public class RandomPermutation {
 		return Arrays.copyOf(res, m);
 	}
 
+	public static int[] getRandomCombination(int n, int m) {
+		int[] res = getRandomArrangement(n, m);
+		Arrays.sort(res);
+		return res;
+	}
+
 	// for small m
 	public static int[] getRandomArrangement2(int n, int m) {
 		Random rnd = new Random();
