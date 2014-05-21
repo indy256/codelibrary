@@ -75,8 +75,22 @@ public class TreapSimple {
 	}
 
 	static Treap remove(Treap root, int x) {
-		TreapPair t = split(root, x);
-		return merge(t.left, split(t.right, x + 1).right);
+//		TreapPair t = split(root, x);
+//		return merge(t.left, split(t.right, x + 1).right);
+		if (root == null) {
+			return null;
+		}
+		if (x < root.key) {
+			root.left = remove(root.left, x);
+			root.update();
+			return root;
+		} else if (x > root.key) {
+			root.right = remove(root.right, x);
+			root.update();
+			return root;
+		} else {
+			return merge(root.left, root.right);
+		}
 	}
 
 	static int kth(Treap root, int k) {
