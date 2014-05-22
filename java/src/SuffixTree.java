@@ -1,13 +1,15 @@
+import java.util.Random;
+
 public class SuffixTree {
 	static final String ALPHABET = "abcdefghijklmnopqrstuvwxyz1234567890\1\2";
 
 	public static class Node {
 		int begin;
 		int end;
-		int depth; // from start of suffix
+		int depth; // distance in characters from tree root to this node
 		Node parent;
 		Node[] children;
-		Node suffixLink;
+		Node suffixLink; // null means link to root
 
 		Node(int begin, int end, int depth, Node parent) {
 			children = new Node[ALPHABET.length()];
@@ -34,7 +36,7 @@ public class SuffixTree {
 		Node needsSuffixLink = null;
 		int lastRule = 0;
 		int j = 0;
-		for (int i = -1; i < n - 1; i++) {// strings s[j..i] are already in tree, add s[i+l] to it
+		for (int i = -1; i < n - 1; i++) {// strings s[j..i] are already in tree, add s[i+1] to it
 			int cur = a[i + 1]; // last char of current string
 			for (; j <= i + 1; j++) {
 				int curDepth = i + 1 - j;
@@ -88,12 +90,34 @@ public class SuffixTree {
 		return root;
 	}
 
-	// usage example
+	// random test
+	public static void main(String[] args) {
+		Random rnd = new Random(1);
+		for (int step = 0; step < 100_000; step++) {
+			int n1 = rnd.nextInt(10);
+			int n2 = rnd.nextInt(10);
+			String s1 = getRandomString(n1, rnd);
+			String s2 = getRandomString(n2, rnd);
+			// build generalized suffix tree (see Gusfield, p.125)
+			String s = s1 + '\1' + s2 + '\2';
+			Node tree = buildSuffixTree(s);
+			lcsLength = 0;
+			lcsBeginIndex = 0;
+			// find longest common substring
+			lcs(tree, s1.length(), s1.length() + s2.length() + 1);
+			int res2 = slowLcs(s1, s2);
+			if (lcsLength != res2) {
+				System.err.println(s.substring(lcsBeginIndex - 1, lcsBeginIndex + lcsLength - 1));
+				throw new RuntimeException();
+			}
+		}
+	}
+
 	static int lcsLength;
 	static int lcsBeginIndex;
 
 	// traverse suffix tree to find longest common substring
-	public static int findLCS(Node node, int i1, int i2) {
+	public static int lcs(Node node, int i1, int i2) {
 		if (node.begin <= i1 && i1 < node.end) {
 			return 1;
 		}
@@ -103,7 +127,7 @@ public class SuffixTree {
 		int mask = 0;
 		for (char f = 0; f < ALPHABET.length(); f++) {
 			if (node.children[f] != null) {
-				mask |= findLCS(node.children[f], i1, i2);
+				mask |= lcs(node.children[f], i1, i2);
 			}
 		}
 		if (mask == 3) {
@@ -116,18 +140,24 @@ public class SuffixTree {
 		return mask;
 	}
 
-	// Usage example
-	public static void main(String[] args) {
-		String s1 = "abcde";
-		String s2 = "abdbcd";
-		// build generalized suffix tree (see Gusfield, p.125)
-		String s = s1 + '\1' + s2 + '\2';
-		Node root = buildSuffixTree(s);
-		lcsLength = 0;
-		lcsBeginIndex = 0;
-		// find longest common substring
-		findLCS(root, s1.length(), s1.length() + s2.length() + 1);
-		System.out.println(3 == lcsLength);
-		System.out.println(s.substring(lcsBeginIndex - 1, lcsBeginIndex + lcsLength - 1));
+	static int slowLcs(String a, String b) {
+		int[][] lcs = new int[a.length()][b.length()];
+		int res = 0;
+		for (int i = 0; i < a.length(); i++) {
+			for (int j = 0; j < b.length(); j++) {
+				if (a.charAt(i) == b.charAt(j))
+					lcs[i][j] = 1 + (i > 0 && j > 0 ? lcs[i - 1][j - 1] : 0);
+				res = Math.max(res, lcs[i][j]);
+			}
+		}
+		return res;
+	}
+
+	static String getRandomString(int n, Random rnd) {
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < n; i++) {
+			sb.append((char) ('a' + rnd.nextInt(3)));
+		}
+		return sb.toString();
 	}
 }

@@ -115,7 +115,7 @@ public class RandomGraph {
 			}
 		}
 		List<Long> edges = new ArrayList<>(edgeSet);
-		for (int x : getRandomCombination(edges.size(), E - (V - 1), rnd)) {
+		for (int x : getRandomArrangement(edges.size(), E - (V - 1), rnd)) {
 			long e = edges.get(x);
 			int u = (int) (e >>> 32);
 			int v = (int) e;
@@ -155,7 +155,7 @@ public class RandomGraph {
 		return g;
 	}
 
-	static int[] getRandomCombination(int n, int m, Random rnd) {
+	static int[] getRandomArrangement(int n, int m, Random rnd) {
 		int[] res = new int[n];
 		for (int i = 0; i < n; i++) {
 			res[i] = i;

@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class TreapIndexedList {
+public class TreapImplicitKey {
 
 	// Modify the following 5 methods to implement your custom operations on the tree.
 	// This example implements Add/Max operations. Operations like Add/Sum, Set/Max can also be implemented.
@@ -43,6 +43,22 @@ public class TreapIndexedList {
 		return modifyOperation(delta1, delta2);
 	}
 
+	static void applyDelta(Treap root, int delta) {
+		if (root == null)
+			return;
+		root.delta = joinDeltas(root.delta, delta);
+		root.nodeValue = joinValueWithDelta(root.nodeValue, delta);
+		root.subTreeValue = joinValueWithDelta(root.subTreeValue, deltaEffectOnSegment(delta, root.count));
+	}
+
+	static void pushDelta(Treap root) {
+		if (root == null)
+			return;
+		applyDelta(root.left, root.delta);
+		applyDelta(root.right, root.delta);
+		root.delta = getNeutralDelta();
+	}
+
 	public static class Treap {
 		int nodeValue;
 		int subTreeValue;
@@ -64,22 +80,6 @@ public class TreapIndexedList {
 			subTreeValue = queryOperation(queryOperation(getSubTreeValue(left), nodeValue), getSubTreeValue(right));
 			count = 1 + getCount(left) + getCount(right);
 		}
-	}
-
-	static void applyDelta(Treap root, int delta) {
-		if (root == null)
-			return;
-		root.delta = joinDeltas(root.delta, delta);
-		root.nodeValue = joinValueWithDelta(root.nodeValue, delta);
-		root.subTreeValue = joinValueWithDelta(root.subTreeValue, deltaEffectOnSegment(delta, root.count));
-	}
-
-	static void pushDelta(Treap root) {
-		if (root == null)
-			return;
-		applyDelta(root.left, root.delta);
-		applyDelta(root.right, root.delta);
-		root.delta = getNeutralDelta();
 	}
 
 	static int getCount(Treap root) {

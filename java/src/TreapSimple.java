@@ -75,8 +75,6 @@ public class TreapSimple {
 	}
 
 	static Treap remove(Treap root, int x) {
-//		TreapPair t = split(root, x);
-//		return merge(t.left, split(t.right, x + 1).right);
 		if (root == null) {
 			return null;
 		}
