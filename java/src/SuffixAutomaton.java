@@ -2,105 +2,115 @@ import java.util.*;
 
 public class SuffixAutomaton {
 
-	static class State {
+	public static class State {
 		int length;
 		int link;
-		int endpos;
-		int[] next = new int[256];
+		int[] next = new int[128];
+
 		{
 			Arrays.fill(next, -1);
 		}
+
+		int endpos;
 		List<Integer> ilink = new ArrayList<>(0);
 	}
 
-	State[] st;
-	int size;
-	int last;
-	int lastp;
-
-	void saExtend(char c) {
-		int nlast = size++;
-		st[nlast] = new State();
-		st[nlast].length = st[last].length + 1;
-		st[nlast].endpos = st[last].length;
-		int p;
-		for (p = last; p != -1 && st[p].next[c] == -1; p = st[p].link) {
-			st[p].next[c] = nlast;
-		}
-		if (p == -1) {
-			st[nlast].link = 0;
-		} else {
-			int q = st[p].next[c];
-			if (st[p].length + 1 == st[q].length)
-				st[nlast].link = q;
-			else {
-				int clone = size++;
-				st[clone] = new State();
-				st[clone].length = st[p].length + 1;
-				st[clone].next = st[q].next.clone();
-				st[clone].link = st[q].link;
-				for (; p != -1 && st[p].next[c] != -1 && st[p].next[c] == q; p = st[p].link)
-					st[p].next[c] = clone;
-				st[q].link = clone;
-				st[nlast].link = clone;
-				st[clone].endpos = -1;
-			}
-		}
-		last = nlast;
-	}
-
-	public void buildSA(String s) {
+	public static State[] buildSuffixAutomaton(String s) {
 		int n = s.length();
-		st = new State[Math.max(2, 2 * n - 1)];
+		State[] st = new State[Math.max(2, 2 * n - 1)];
 		st[0] = new State();
 		st[0].link = -1;
 		st[0].endpos = -1;
-		last = 0;
-		size = 1;
-		for (char x : s.toCharArray()) {
-			saExtend(x);
+		int last = 0;
+		int size = 1;
+		for (char c : s.toCharArray()) {
+			int cur = size++;
+			st[cur] = new State();
+			st[cur].length = st[last].length + 1;
+			st[cur].endpos = st[last].length;
+			int p;
+			for (p = last; p != -1 && st[p].next[c] == -1; p = st[p].link) {
+				st[p].next[c] = cur;
+			}
+			if (p == -1) {
+				st[cur].link = 0;
+			} else {
+				int q = st[p].next[c];
+				if (st[p].length + 1 == st[q].length)
+					st[cur].link = q;
+				else {
+					int clone = size++;
+					st[clone] = new State();
+					st[clone].length = st[p].length + 1;
+					st[clone].next = st[q].next.clone();
+					st[clone].link = st[q].link;
+					for (; p != -1 && st[p].next[c] == q; p = st[p].link)
+						st[p].next[c] = clone;
+					st[q].link = clone;
+					st[cur].link = clone;
+					st[clone].endpos = -1;
+				}
+			}
+			last = cur;
 		}
 		for (int i = 1; i < size; i++) {
 			st[st[i].link].ilink.add(i);
 		}
+		return Arrays.copyOf(st, size);
 	}
 
-	public String lcs(String a, String b) {
-		buildSA(a);
-		int p = 0;
-		lastp = 0;
+	// random tests
+	public static void main(String[] args) {
+		Random rnd = new Random(1);
+		for (int step = 0; step < 100_000; step++) {
+			int n1 = rnd.nextInt(10);
+			int n2 = rnd.nextInt(10);
+			String s1 = getRandomString(n1, rnd);
+			String s2 = getRandomString(n2, rnd);
+			String res1 = lcs(s1, s2);
+			int res2 = slowLcs(s1, s2);
+			if (res1.length() != res2)
+				throw new RuntimeException();
+		}
+	}
+
+	static int bestState;
+
+	static String lcs(String a, String b) {
+		State[] st = buildSuffixAutomaton(a);
+		bestState = 0;
 		int len = 0;
-		int best = 0;
-		int bestpos = -1;
-		for (int i = 0; i < b.length(); ++i) {
-			char cur = b.charAt(i);
-			if (st[p].next[cur] == -1) {
-				for (; p != -1 && st[p].next[cur] == -1; p = st[p].link) {
+		int bestLen = 0;
+		int bestPos = -1;
+		for (int i = 0, cur = 0; i < b.length(); ++i) {
+			char c = b.charAt(i);
+			if (st[cur].next[c] == -1) {
+				for (; cur != -1 && st[cur].next[c] == -1; cur = st[cur].link) {
 				}
-				if (p == -1) {
-					p = 0;
+				if (cur == -1) {
+					cur = 0;
 					len = 0;
 					continue;
 				}
-				len = st[p].length;
+				len = st[cur].length;
 			}
 			++len;
-			p = st[p].next[cur];
-			if (best < len) {
-				best = len;
-				bestpos = i;
-				lastp = p;
+			cur = st[cur].next[c];
+			if (bestLen < len) {
+				bestLen = len;
+				bestPos = i;
+				bestState = cur;
 			}
 		}
-		return b.substring(bestpos - best + 1, bestpos + 1);
+		return b.substring(bestPos - bestLen + 1, bestPos + 1);
 	}
 
-	public int[] occurrences(String needle, String haystack) {
+	static int[] occurrences(String haystack, String needle) {
 		String common = lcs(haystack, needle);
 		if (!common.equals(needle))
 			return new int[0];
 		List<Integer> list = new ArrayList<>();
-		dfs(lastp, needle.length(), list);
+		dfs(buildSuffixAutomaton(haystack), bestState, needle.length(), list);
 		int[] res = new int[list.size()];
 		for (int i = 0; i < res.length; i++)
 			res[i] = list.get(i);
@@ -108,18 +118,31 @@ public class SuffixAutomaton {
 		return res;
 	}
 
-	void dfs(int p, int len, List<Integer> list) {
+	static void dfs(State[] st, int p, int len, List<Integer> list) {
 		if (st[p].endpos != -1 || p == 0)
 			list.add(st[p].endpos - len + 1);
 		for (int x : st[p].ilink)
-			dfs(x, len, list);
+			dfs(st, x, len, list);
 	}
 
-	public static void main(String[] args) {
-		SuffixAutomaton sa = new SuffixAutomaton();
-		System.out.println(sa.lcs("aab1ccc", "aazb1cz"));
+	static int slowLcs(String a, String b) {
+		int[][] lcs = new int[a.length()][b.length()];
+		int res = 0;
+		for (int i = 0; i < a.length(); i++) {
+			for (int j = 0; j < b.length(); j++) {
+				if (a.charAt(i) == b.charAt(j))
+					lcs[i][j] = 1 + (i > 0 && j > 0 ? lcs[i - 1][j - 1] : 0);
+				res = Math.max(res, lcs[i][j]);
+			}
+		}
+		return res;
+	}
 
-		int[] res = sa.occurrences("ab", "xabaabxababaxbab");
-		System.out.println(Arrays.toString(res));
+	static String getRandomString(int n, Random rnd) {
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < n; i++) {
+			sb.append((char) ('a' + rnd.nextInt(3)));
+		}
+		return sb.toString();
 	}
 }

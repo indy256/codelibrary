@@ -31,16 +31,15 @@ public class DistinctQuerySqrt {
 			a[i] = m.get(a[i]);
 		}
 		int blockSize = (int) Math.sqrt(n);
-		int blocks = (n - 1) / blockSize + 1;
+		int blocks = (n + blockSize - 1) / blockSize;
 		int[][] head = new int[blocks][blocks];
 		for (int i = 0; i < blocks; i++)
 			Arrays.fill(head[i], -1);
-		int t = queries.length;
-		int[] left = new int[t];
-		int[] right = new int[t];
-		int[] next = new int[t];
-		int[] res = new int[t];
-		for (int i = 0; i < t; i++) {
+		int q = queries.length;
+		int[] left = new int[q];
+		int[] right = new int[q];
+		int[] next = new int[q];
+		for (int i = 0; i < q; i++) {
 			left[i] = queries[i][0];
 			right[i] = queries[i][1];
 			int lb = left[i] / blockSize;
@@ -48,6 +47,7 @@ public class DistinctQuerySqrt {
 			next[i] = head[lb][rb];
 			head[lb][rb] = i;
 		}
+		int[] res = new int[q];
 		for (int leftBlock = 0; leftBlock < blocks; leftBlock++) {
 			int[] cnt = new int[id];
 			int curAnswer = 0;
@@ -69,8 +69,8 @@ public class DistinctQuerySqrt {
 	}
 
 	public static void main(String[] args) {
-		int[] a = { 1, 2, 3, 4 };
-		int[][] queries = { { 3, 3 } };
+		int[] a = {1, 2, 3, 4};
+		int[][] queries = {{3, 3}};
 		int[] res = solve(a, queries);
 		System.out.println(Arrays.toString(res));
 	}
