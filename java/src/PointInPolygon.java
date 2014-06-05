@@ -50,7 +50,7 @@ public class PointInPolygon {
 
 	// random test
 	public static void main(String[] args) {
-		for (int step = 0; step < 1000; step++) {
+		for (int step = 0; step < 10_000; step++) {
 			int n = rnd.nextInt(10) + 3;
 			int range = 10;
 			int[][] xy = getRandomPolygon(n, range, range);

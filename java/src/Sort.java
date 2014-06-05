@@ -68,8 +68,8 @@ public class Sort {
 		if (size < 2)
 			return;
 		int mid = (low + high) >>> 1;
-		mergeSort(a, low, mid);
-		mergeSort(a, mid, high);
+		mergeSort2(a, low, mid);
+		mergeSort2(a, mid, high);
 
 		int[] b = new int[size];
 		int i = low;
