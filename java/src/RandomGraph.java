@@ -16,47 +16,6 @@ public class RandomGraph {
 		return t;
 	}
 
-	static void pruferDfs(List<Integer>[] tree, int[] parent, int v) {
-		for (int i = 0; i < tree[v].size(); ++i) {
-			int to = tree[v].get(i);
-			if (to != parent[v]) {
-				parent[to] = v;
-				pruferDfs(tree, parent, to);
-			}
-		}
-	}
-
-	public static int[] tree2PruferCode(List<Integer>[] tree) {
-		int n = tree.length;
-		int[] parent = new int[n];
-		parent[n - 1] = -1;
-		pruferDfs(tree, parent, n - 1);
-		int[] degree = new int[n];
-		int ptr = -1;
-		for (int i = 0; i < n; ++i) {
-			degree[i] = tree[i].size();
-			if (degree[i] == 1 && ptr == -1)
-				ptr = i;
-		}
-		int[] res = new int[n - 2];
-		int leaf = ptr;
-		for (int i = 0; i < n - 2; ++i) {
-			int next = parent[leaf];
-			res[i] = next;
-			--degree[next];
-			if (degree[next] == 1 && next < ptr) {
-				leaf = next;
-			} else {
-				++ptr;
-				while (ptr < n && degree[ptr] != 1)
-					++ptr;
-				leaf = ptr;
-			}
-		}
-		return res;
-	}
-
-
 	public static List<Integer>[] pruferCode2Tree(int[] pruferCode) {
 		int n = pruferCode.length + 2;
 		List<Integer>[] tree = new List[n];
@@ -89,6 +48,46 @@ public class RandomGraph {
 			}
 		}
 		return tree;
+	}
+
+	public static int[] tree2PruferCode(List<Integer>[] tree) {
+		int n = tree.length;
+		int[] parent = new int[n];
+		parent[n - 1] = -1;
+		pruferDfs(tree, parent, n - 1);
+		int[] degree = new int[n];
+		int ptr = -1;
+		for (int i = 0; i < n; ++i) {
+			degree[i] = tree[i].size();
+			if (degree[i] == 1 && ptr == -1)
+				ptr = i;
+		}
+		int[] res = new int[n - 2];
+		int leaf = ptr;
+		for (int i = 0; i < n - 2; ++i) {
+			int next = parent[leaf];
+			res[i] = next;
+			--degree[next];
+			if (degree[next] == 1 && next < ptr) {
+				leaf = next;
+			} else {
+				++ptr;
+				while (ptr < n && degree[ptr] != 1)
+					++ptr;
+				leaf = ptr;
+			}
+		}
+		return res;
+	}
+
+	static void pruferDfs(List<Integer>[] tree, int[] parent, int v) {
+		for (int i = 0; i < tree[v].size(); ++i) {
+			int to = tree[v].get(i);
+			if (to != parent[v]) {
+				parent[to] = v;
+				pruferDfs(tree, parent, to);
+			}
+		}
 	}
 
 	// precondition: n >= 2

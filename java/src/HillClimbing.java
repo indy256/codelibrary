@@ -1,7 +1,6 @@
-// java8 required
 import java.util.function.BiFunction;
 
-public class GradientDescent {
+public class HillClimbing {
 
 	public static double findMinimum(BiFunction<Double, Double, Double> f) {
 		double curX = 0;
