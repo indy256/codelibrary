@@ -15,7 +15,7 @@ public class Dijkstra {
 					u = j;
 			}
 			if (prio[u] == Integer.MAX_VALUE)
-				continue;
+				break;
 			visited[u] = true;
 
 			for (Edge e : graph[u]) {
