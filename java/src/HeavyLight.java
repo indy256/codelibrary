@@ -49,7 +49,7 @@ public class HeavyLight {
 	}
 
 	int[][] value;
-	int[][] delta;
+	int[][] delta; // delta[i] affects value[i], delta[2*i+1] and delta[2*i+2]
 	int[][] len;
 
 	List<Integer>[] graph;
@@ -129,76 +129,65 @@ public class HeavyLight {
 		}
 	}
 
-	void applyDelta(int path, int i, int delta) {
-		value[path][i] = joinValueWithDelta(value[path][i], deltaEffectOnSegment(delta, len[path][i]));
-		this.delta[path][i] = joinDeltas(this.delta[path][i], delta);
-	}
-
 	void pushDelta(int path, int i) {
 		int d = 0;
 		for (; (i >> d) > 0; d++)
 			;
 		for (d -= 2; d >= 0; d--) {
 			int x = i >> d;
-			applyDelta(path, x, delta[path][x >> 1]);
-			applyDelta(path, x ^ 1, delta[path][x >> 1]);
+			value[path][x >> 1] = joinValueWithDelta0(path, x >> 1);
+			delta[path][x] = joinDeltas(delta[path][x], delta[path][x >> 1]);
+			delta[path][x ^ 1] = joinDeltas(delta[path][x ^ 1], delta[path][x >> 1]);
 			delta[path][x >> 1] = getNeutralDelta();
 		}
 	}
 
-	void modifyPath(int path, int a, int b, int delta) {
-		a += value[path].length >> 1;
-		b += value[path].length >> 1;
-		pushDelta(path, a);
-		pushDelta(path, b);
-		int ta = -1;
-		int tb = -1;
-		for (; a <= b; a = (a + 1) >> 1, b = (b - 1) >> 1) {
-			if ((a & 1) != 0) {
-				applyDelta(path, a, delta);
-				if (ta == -1)
-					ta = a;
-			}
-			if ((b & 1) == 0) {
-				applyDelta(path, b, delta);
-				if (tb == -1)
-					tb = b;
-			}
-		}
-		for (int i = ta; i > 1; i >>= 1)
-			value[path][i >> 1] = queryOperation(value[path][i], value[path][i ^ 1]);
-		for (int i = tb; i > 1; i >>= 1)
-			value[path][i >> 1] = queryOperation(value[path][i], value[path][i ^ 1]);
+	int joinValueWithDelta0(int path, int i) {
+		return joinValueWithDelta(value[path][i], deltaEffectOnSegment(delta[path][i], len[path][i]));
 	}
 
-	int queryPath(int path, int a, int b) {
-		a += value[path].length >> 1;
-		b += value[path].length >> 1;
-		pushDelta(path, a);
-		pushDelta(path, b);
+	int queryPath(int path, int from, int to) {
+		from += value[path].length >> 1;
+		to += value[path].length >> 1;
+		pushDelta(path, from);
+		pushDelta(path, to);
 		int res = getNeutralValue();
-		for (; a <= b; a = (a + 1) >> 1, b = (b - 1) >> 1) {
-			if ((a & 1) != 0)
-				res = queryOperation(res, value[path][a]);
-			if ((b & 1) == 0)
-				res = queryOperation(res, value[path][b]);
+		for (; from <= to; from = (from + 1) >> 1, to = (to - 1) >> 1) {
+			if ((from & 1) != 0)
+				res = queryOperation(res, joinValueWithDelta0(path, from));
+			if ((to & 1) == 0)
+				res = queryOperation(res, joinValueWithDelta0(path, to));
 		}
 		return res;
 	}
 
-	boolean isAncestor(int p, int ch) {
-		return tin[p] <= tin[ch] && tout[ch] <= tout[p];
+	void modifyPath(int path, int from, int to, int delta) {
+		from += value[path].length >> 1;
+		to += value[path].length >> 1;
+		pushDelta(path, from);
+		pushDelta(path, to);
+		int ta = -1;
+		int tb = -1;
+		for (; from <= to; from = (from + 1) >> 1, to = (to - 1) >> 1) {
+			if ((from & 1) != 0) {
+				this.delta[path][from] = joinDeltas(this.delta[path][from], delta);
+				if (ta == -1)
+					ta = from;
+			}
+			if ((to & 1) == 0) {
+				this.delta[path][to] = joinDeltas(this.delta[path][to], delta);
+				if (tb == -1)
+					tb = to;
+			}
+		}
+		for (int i = ta; i > 1; i >>= 1)
+			value[path][i >> 1] = queryOperation(joinValueWithDelta0(path, i), joinValueWithDelta0(path, i ^ 1));
+		for (int i = tb; i > 1; i >>= 1)
+			value[path][i >> 1] = queryOperation(joinValueWithDelta0(path, i), joinValueWithDelta0(path, i ^ 1));
 	}
 
-	public void modify(int a, int b, int delta) {
-		for (int root; !isAncestor(root = pathRoot[path[a]], b); a = parent[root])
-			modifyPath(path[a], 0, pathPos[a], delta);
-		for (int root; !isAncestor(root = pathRoot[path[b]], a); b = parent[root])
-			modifyPath(path[b], 0, pathPos[b], delta);
-		if (!VALUES_ON_VERTICES && a == b)
-			return;
-		modifyPath(path[a], Math.min(pathPos[a], pathPos[b]) + (VALUES_ON_VERTICES ? 0 : 1),
-				Math.max(pathPos[a], pathPos[b]), delta);
+	boolean isAncestor(int p, int ch) {
+		return tin[p] <= tin[ch] && tout[ch] <= tout[p];
 	}
 
 	public int query(int a, int b) {
@@ -213,6 +202,17 @@ public class HeavyLight {
 				res,
 				queryPath(path[a], Math.min(pathPos[a], pathPos[b]) + (VALUES_ON_VERTICES ? 0 : 1),
 						Math.max(pathPos[a], pathPos[b])));
+	}
+
+	public void modify(int a, int b, int delta) {
+		for (int root; !isAncestor(root = pathRoot[path[a]], b); a = parent[root])
+			modifyPath(path[a], 0, pathPos[a], delta);
+		for (int root; !isAncestor(root = pathRoot[path[b]], a); b = parent[root])
+			modifyPath(path[b], 0, pathPos[b], delta);
+		if (!VALUES_ON_VERTICES && a == b)
+			return;
+		modifyPath(path[a], Math.min(pathPos[a], pathPos[b]) + (VALUES_ON_VERTICES ? 0 : 1),
+				Math.max(pathPos[a], pathPos[b]), delta);
 	}
 
 	// Random test

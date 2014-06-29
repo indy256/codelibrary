@@ -75,6 +75,28 @@ public class SegmentTreeFast2 {
 			len[i >> 1] = len[i] + len[i ^ 1];
 	}
 
+	public int query(int from, int to) {
+		from += value.length >> 1;
+		to += value.length >> 1;
+		pushDelta(from);
+		pushDelta(to);
+		int res = 0;
+		boolean found = false;
+		for (; from <= to; from = (from + 1) >> 1, to = (to - 1) >> 1) {
+			if ((from & 1) != 0) {
+				res = found ? queryOperation(res, value[from]) : value[from];
+				found = true;
+			}
+			if ((to & 1) == 0) {
+				res = found ? queryOperation(res, value[to]) : value[to];
+				found = true;
+			}
+		}
+		if (!found)
+			throw new RuntimeException();
+		return res;
+	}
+
 	public void modify(int from, int to, int delta) {
 		from += value.length >> 1;
 		to += value.length >> 1;
@@ -100,28 +122,6 @@ public class SegmentTreeFast2 {
 			value[i >> 1] = queryOperation(value[i], value[i ^ 1]);
 		for (int i = tb; i > 1; i >>= 1)
 			value[i >> 1] = queryOperation(value[i], value[i ^ 1]);
-	}
-
-	public int query(int from, int to) {
-		from += value.length >> 1;
-		to += value.length >> 1;
-		pushDelta(from);
-		pushDelta(to);
-		int res = 0;
-		boolean found = false;
-		for (; from <= to; from = (from + 1) >> 1, to = (to - 1) >> 1) {
-			if ((from & 1) != 0) {
-				res = found ? queryOperation(res, value[from]) : value[from];
-				found = true;
-			}
-			if ((to & 1) == 0) {
-				res = found ? queryOperation(res, value[to]) : value[to];
-				found = true;
-			}
-		}
-		if (!found)
-			throw new RuntimeException();
-		return res;
 	}
 
 	// Random test
