@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class LcaSparseTable1 {
+public class LcaSparseTable {
 
 	int len;
 	int[][] up;
@@ -19,7 +19,7 @@ public class LcaSparseTable1 {
 		tout[u] = time++;
 	}
 
-	public LcaSparseTable1(List<Integer>[] tree, int root) {
+	public LcaSparseTable(List<Integer>[] tree, int root) {
 		int n = tree.length;
 		len = 1;
 		while ((1 << len) <= n) ++len;
@@ -59,7 +59,7 @@ public class LcaSparseTable1 {
 		tree[0].add(4);
 		tree[4].add(0);
 
-		LcaSparseTable1 t = new LcaSparseTable1(tree, 0);
+		LcaSparseTable t = new LcaSparseTable(tree, 0);
 		System.out.println(1 == t.lca(3, 2));
 		System.out.println(0 == t.lca(2, 4));
 	}

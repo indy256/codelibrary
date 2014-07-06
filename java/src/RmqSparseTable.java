@@ -1,10 +1,10 @@
-public class RmqSparseTable1 {
+public class RmqSparseTable {
 
 	int[] logTable;
 	int[][] rmq;
 	int[] a;
 
-	public RmqSparseTable1(int[] a) {
+	public RmqSparseTable(int[] a) {
 		this.a = a;
 		int n = a.length;
 
@@ -35,7 +35,7 @@ public class RmqSparseTable1 {
 
 	public static void main(String[] args) {
 		int[] a = { 1, 5, -2, 3 };
-		RmqSparseTable1 st = new RmqSparseTable1(a);
+		RmqSparseTable st = new RmqSparseTable(a);
 
 		System.out.println(2 == st.minPos(0, 3));
 	}
