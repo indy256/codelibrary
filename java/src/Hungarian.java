@@ -50,8 +50,27 @@ public class Hungarian {
 		return -v[0];
 	}
 
-	// test code
-	static int solveAssignmentProblem2(int[][] a) {
+	// random test
+	public static void main(String[] args) {
+		Random rnd = new Random(1);
+		for (int step = 0; step < 1000; step++) {
+			int n = rnd.nextInt(8) + 1;
+			int m = n + rnd.nextInt(9 - n);
+			int[][] a = new int[n + 1][m + 1];
+			for (int i = 1; i <= n; i++) {
+				for (int j = 1; j <= m; j++) {
+					a[i][j] = rnd.nextInt(100000);
+				}
+			}
+			int res1 = solveAssignmentProblem(a);
+			int res2 = solveAssignmentProblemSlow(a);
+			if (res1 != res2) {
+				System.err.println(res1 + " " + res2);
+			}
+		}
+	}
+
+	static int solveAssignmentProblemSlow(int[][] a) {
 		int n = a.length - 1;
 		int m = a[0].length - 1;
 		int res = Integer.MAX_VALUE;
@@ -89,24 +108,5 @@ public class Hungarian {
 			}
 		}
 		return false;
-	}
-
-	public static void main(String[] args) {
-		Random rnd = new Random(1);
-		for (int step = 0; step < 1000; step++) {
-			int n = rnd.nextInt(8) + 1;
-			int m = n + rnd.nextInt(9 - n);
-			int[][] a = new int[n + 1][m + 1];
-			for (int i = 1; i <= n; i++) {
-				for (int j = 1; j <= m; j++) {
-					a[i][j] = rnd.nextInt(100000);
-				}
-			}
-			int res1 = solveAssignmentProblem(a);
-			int res2 = solveAssignmentProblem2(a);
-			if (res1 != res2) {
-				System.err.println(res1 + " " + res2);
-			}
-		}
 	}
 }

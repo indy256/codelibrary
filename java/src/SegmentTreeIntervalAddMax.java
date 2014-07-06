@@ -27,17 +27,12 @@ public class SegmentTreeIntervalAddMax {
 		}
 		push(root);
 		int mid = (left + right) >> 1;
-		if (from <= mid && to > mid)
-			return Math.max(
-					max(from, Math.min(to, mid), 2 * root + 1, left, mid),
-					max(Math.max(from, mid + 1), to, 2 * root + 2, mid + 1, right)
-			);
-		else if (from <= mid)
-			return max(from, Math.min(to, mid), 2 * root + 1, left, mid);
+		int res = Integer.MIN_VALUE;
+		if (from <= mid)
+			res = Math.max(res, max(from, Math.min(to, mid), 2 * root + 1, left, mid));
 		else if (to > mid)
-			return max(Math.max(from, mid + 1), to, 2 * root + 2, mid + 1, right);
-		else
-			throw new RuntimeException();
+			res = Math.max(res, max(Math.max(from, mid + 1), to, 2 * root + 2, mid + 1, right));
+		return res;
 	}
 
 	public void add(int from, int to, int delta) {

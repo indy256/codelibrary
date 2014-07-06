@@ -28,7 +28,7 @@ public class BinomialCoefficients {
 	}
 
 	// n! mod p, p - prime, O(p*log(n)) complexity
-	int factorial2(int n, int p) {
+	public static int factorial2(int n, int p) {
 		int res = 1;
 		while (n > 1) {
 			res = (res * ((n / p) % 2 == 1 ? p - 1 : 1)) % p;
