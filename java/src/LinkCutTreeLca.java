@@ -14,38 +14,63 @@ public class LinkCutTreeLca {
 		}
 	}
 
-	static void connect(Node ch, Node p, boolean leftChild) {
-		if (leftChild)
-			p.left = ch;
-		else
-			p.right = ch;
+	static void connect(Node ch, Node p, Boolean isLeftChild) {
 		if (ch != null)
 			ch.parent = p;
+		if (isLeftChild != null) {
+			if (isLeftChild)
+				p.left = ch;
+			else
+				p.right = ch;
+		}
 	}
 
-	// rotate edge (x, x.parent)
+	// rotates edge (x, x.parent)
+	//        g           g
+	//       /           /
+	//      p           x
+	//     / \   -->   / \
+	//    x  p.r     x.l  p
+	//   / \             / \
+	// x.l x.r         x.r p.r
 	static void rotate(Node x) {
 		Node p = x.parent;
 		Node g = p.parent;
 		boolean isRootP = p.isRoot();
 		boolean leftChildX = (x == p.left);
 
+		// create 3 edges: (x.r(l),p), (p,x), (x,g)
 		connect(leftChildX ? x.right : x.left, p, leftChildX);
 		connect(p, x, !leftChildX);
-
-		if (!isRootP)
-			connect(x, g, p == g.left);
-		else
-			x.parent = g;
+		connect(x, g, !isRootP ? p == g.left : null);
 	}
 
+	// brings x to the root, balancing tree
+	//
+	// zig-zig case
+	//        g                                  x
+	//       / \               p                / \
+	//      p  g.r rot(p)    /   \     rot(x) x.l  p
+	//     / \      -->    x       g    -->       / \
+	//    x  p.r          / \     / \           x.r  g
+	//   / \            x.l x.r p.r g.r             / \
+	// x.l x.r                                    p.r g.r
+	//
+	// zig-zag case
+	//      g               g
+	//     / \             / \               x
+	//    p  g.r rot(x)   x  g.r rot(x)    /   \
+	//   / \      -->    / \      -->    p       g
+	// p.l  x           p  x.r          / \     / \
+	//     / \         / \            p.l x.l x.r g.r
+	//   x.l x.r     p.l x.l
 	static void splay(Node x) {
 		while (!x.isRoot()) {
 			Node p = x.parent;
 			Node g = p.parent;
 			if (!p.isRoot())
-				rotate((x == p.left) == (p == g.left) ? p : x);
-			rotate(x);
+				rotate((x == p.left) == (p == g.left) ? p/*zig-zig*/ : x/*zig-zag*/);
+			rotate(x); /*zig*/
 		}
 	}
 
@@ -68,10 +93,9 @@ public class LinkCutTreeLca {
 		return x;
 	}
 
-	// prerequisite: x is a root node, y is in another tree
 	public static void link(Node x, Node y) {
 		if (findRoot(x) == findRoot(y))
-			throw new RuntimeException("error: x and y are connected");
+			throw new RuntimeException("error: x and y are already connected");
 		expose(x);
 		if (x.right != null)
 			throw new RuntimeException("error: x is not a root node");
@@ -97,15 +121,12 @@ public class LinkCutTreeLca {
 	public static void main(String[] args) {
 		Random rnd = new Random(1);
 		for (int step = 0; step < 1000; step++) {
-			int n = rnd.nextInt(30) + 1;
+			int n = rnd.nextInt(50) + 1;
 			int[] p = new int[n];
 			Arrays.fill(p, -1);
 			Node[] nodes = new Node[n];
-			Map<Node, Integer> node2id = new IdentityHashMap<>();
-			for (int i = 0; i < n; i++) {
+			for (int i = 0; i < n; i++)
 				nodes[i] = new Node();
-				node2id.put(nodes[i], i);
-			}
 			for (int query = 0; query < 10_000; query++) {
 				int cmd = rnd.nextInt(10);
 				int u = rnd.nextInt(n);
@@ -132,7 +153,7 @@ public class LinkCutTreeLca {
 						cur = v;
 						for (; cur != -1 && !path.contains(cur); cur = p[cur])
 							path.add(cur);
-						if (node2id.get(lca) != cur)
+						if (lca != nodes[cur])
 							throw new RuntimeException();
 					}
 				} else {

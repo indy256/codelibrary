@@ -1,13 +1,17 @@
-import java.util.Random;
+import java.util.*;
 
 // Based on http://www.codeforces.com/contest/117/submission/860934
-public class LinkCutTreeConnectivity {
+public class LinkCutTreeAddSum {
 
 	public static class Node {
 		Node left;
 		Node right;
 		Node parent;
 		boolean revert;
+		int size;
+		int nodeValue;
+		int subTreeValue;
+		int delta;
 
 		// tests whether x is a root of a splay tree
 		boolean isRoot() {
@@ -25,6 +29,26 @@ public class LinkCutTreeConnectivity {
 					left.revert = !left.revert;
 				if (right != null)
 					right.revert = !right.revert;
+			}
+			if (left != null)
+				left.delta += delta;
+			if (right != null)
+				right.delta += delta;
+			nodeValue += delta;
+			subTreeValue += delta * size;
+			delta = 0;
+		}
+
+		void update() {
+			size = 1;
+			subTreeValue = nodeValue;
+			if (left != null) {
+				subTreeValue += left.subTreeValue + left.delta * left.size;
+				size += left.size;
+			}
+			if (right != null) {
+				subTreeValue += right.subTreeValue + right.delta * right.size;
+				size += right.size;
 			}
 		}
 	}
@@ -58,6 +82,7 @@ public class LinkCutTreeConnectivity {
 		connect(leftChildX ? x.right : x.left, p, leftChildX);
 		connect(p, x, !leftChildX);
 		connect(x, g, !isRootP ? p == g.left : null);
+		p.update();
 	}
 
 	// brings x to the root, balancing tree
@@ -92,6 +117,7 @@ public class LinkCutTreeConnectivity {
 			rotate(x);
 		}
 		x.push();
+		x.update();
 	}
 
 	// makes node x the root of the virtual tree, and also x becomes the leftmost node in its splay tree
@@ -142,12 +168,31 @@ public class LinkCutTreeConnectivity {
 		return x.parent != null;
 	}
 
+	public static int dist(Node x, Node y) {
+		makeRoot(x);
+		expose(y);
+		return y.size - 1;
+	}
+
+	public static void add(Node x, Node y, int delta) {
+		makeRoot(x);
+		expose(y);
+		y.delta += delta;
+	}
+
+	public static int sum(Node x, Node y) {
+		makeRoot(x);
+		expose(y);
+		return y.subTreeValue;
+	}
+
 	// random test
 	public static void main(String[] args) {
 		Random rnd = new Random(1);
 		for (int step = 0; step < 1_000; step++) {
 			int n = rnd.nextInt(50) + 1;
 			boolean[][] g = new boolean[n][n];
+			int[] val = new int[n];
 			Node[] nodes = new Node[n];
 			for (int i = 0; i < n; i++)
 				nodes[i] = new Node();
@@ -161,20 +206,31 @@ public class LinkCutTreeConnectivity {
 				if (cmd == 0) {
 					makeRoot(x);
 					expose(y);
-					if ((y.right == x && x.left == null && x.right == null) != g[u][v])
-						throw new RuntimeException();
 					if (y.right == x && x.left == null && x.right == null) {
 						cut(x, y);
 						g[u][v] = g[v][u] = false;
 					}
 				} else if (cmd == 1) {
-					if (connected(x, y) != connected(g, u, v, -1))
-						throw new RuntimeException();
+					if (connected(x, y)) {
+						List<Integer> path = new ArrayList<>();
+						getPath(g, u, v, -1, path);
+						int sum = 0;
+						for (int i : path)
+							sum += val[i];
+						if (sum(x, y) != sum)
+							throw new RuntimeException();
+					}
+				} else if (cmd == 2) {
+					if (connected(x, y)) {
+						List<Integer> path = new ArrayList<>();
+						getPath(g, u, v, -1, path);
+						int delta = rnd.nextInt(100) + 1;
+						for (int i : path)
+							val[i] += delta;
+						add(x, y, delta);
+					}
 				} else {
-					expose(x);
-					if ((findRoot(x) != findRoot(y)) != !connected(g, u, v, -1))
-						throw new RuntimeException();
-					if (findRoot(x) != findRoot(y)) {
+					if (!connected(x, y)) {
 						link(x, y);
 						g[u][v] = g[v][u] = true;
 					}
@@ -183,12 +239,14 @@ public class LinkCutTreeConnectivity {
 		}
 	}
 
-	static boolean connected(boolean[][] g, int u, int v, int p) {
+	static boolean getPath(boolean[][] g, int u, int v, int p, List<Integer> path) {
+		path.add(u);
 		if (u == v)
 			return true;
 		for (int i = 0; i < g.length; i++)
-			if (i != p && g[u][i] && connected(g, i, v, u))
+			if (i != p && g[u][i] && getPath(g, i, v, u, path))
 				return true;
+		path.remove(path.size() - 1);
 		return false;
 	}
 }

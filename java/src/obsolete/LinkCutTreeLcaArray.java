@@ -1,3 +1,5 @@
+package obsolete;
+
 public class LinkCutTreeLcaArray {
 	static int[] left;
 	static int[] right;

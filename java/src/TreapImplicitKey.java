@@ -48,7 +48,7 @@ public class TreapImplicitKey {
 			return;
 		root.delta = joinDeltas(root.delta, delta);
 		root.nodeValue = joinValueWithDelta(root.nodeValue, delta);
-		root.subTreeValue = joinValueWithDelta(root.subTreeValue, deltaEffectOnSegment(delta, root.count));
+		root.subTreeValue = joinValueWithDelta(root.subTreeValue, deltaEffectOnSegment(delta, root.size));
 	}
 
 	static void pushDelta(Treap root) {
@@ -63,7 +63,7 @@ public class TreapImplicitKey {
 		int nodeValue;
 		int subTreeValue;
 		int delta;
-		int count;
+		int size;
 		long prio;
 		Treap left;
 		Treap right;
@@ -72,18 +72,18 @@ public class TreapImplicitKey {
 			nodeValue = value;
 			subTreeValue = value;
 			delta = getNeutralDelta();
-			count = 1;
+			size = 1;
 			prio = random.nextLong();
 		}
 
 		void update() {
 			subTreeValue = queryOperation(queryOperation(getSubTreeValue(left), nodeValue), getSubTreeValue(right));
-			count = 1 + getCount(left) + getCount(right);
+			size = 1 + getSize(left) + getSize(right);
 		}
 	}
 
-	static int getCount(Treap root) {
-		return root == null ? 0 : root.count;
+	static int getSize(Treap root) {
+		return root == null ? 0 : root.size;
 	}
 
 	static int getSubTreeValue(Treap root) {
@@ -104,14 +104,14 @@ public class TreapImplicitKey {
 		if (root == null)
 			return new TreapPair(null, null);
 		pushDelta(root);
-		if (getCount(root.left) >= minRight) {
+		if (getSize(root.left) >= minRight) {
 			TreapPair sub = split(root.left, minRight);
 			root.left = sub.right;
 			root.update();
 			sub.right = root;
 			return sub;
 		} else {
-			TreapPair sub = split(root.right, minRight - getCount(root.left) - 1);
+			TreapPair sub = split(root.right, minRight - getSize(root.left) - 1);
 			root.right = sub.left;
 			root.update();
 			sub.left = root;
@@ -144,7 +144,7 @@ public class TreapImplicitKey {
 
 	public static Treap remove(Treap root, int index) {
 		TreapPair t = split(root, index);
-		return merge(t.left, split(t.right, index + 1 - getCount(t.left)).right);
+		return merge(t.left, split(t.right, index + 1 - getSize(t.left)).right);
 	}
 
 	public static Treap modify(Treap root, int a, int b, int delta) {

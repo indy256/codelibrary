@@ -8,21 +8,21 @@ public class TreapSimple {
 		long prio;
 		Treap left;
 		Treap right;
-		int count;
+		int size;
 
 		Treap(int key) {
 			this.key = key;
 			prio = random.nextLong();
-			count = 1;
+			size = 1;
 		}
 
 		void update() {
-			count = 1 + getCount(left) + getCount(right);
+			size = 1 + getSize(left) + getSize(right);
 		}
 	}
 
-	static int getCount(Treap root) {
-		return root == null ? 0 : root.count;
+	static int getSize(Treap root) {
+		return root == null ? 0 : root.size;
 	}
 
 	static class TreapPair {
@@ -92,10 +92,10 @@ public class TreapSimple {
 	}
 
 	static int kth(Treap root, int k) {
-		if (k < getCount(root.left))
+		if (k < getSize(root.left))
 			return kth(root.left, k);
-		else if (k > getCount(root.left))
-			return kth(root.right, k - getCount(root.left) - 1);
+		else if (k > getSize(root.left))
+			return kth(root.right, k - getSize(root.left) - 1);
 		return root.key;
 	}
 
@@ -120,7 +120,7 @@ public class TreapSimple {
 				treap = insert(treap, x);
 				set.add(x);
 			}
-			if (set.size() != getCount(treap))
+			if (set.size() != getSize(treap))
 				throw new RuntimeException();
 		}
 		// print(treap);
