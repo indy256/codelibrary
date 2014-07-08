@@ -1,10 +1,12 @@
+package experimental;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class MaxFlowDinicLinkCutSlow {
+public class MaxFlowDinicLinkCut {
 
-	static class Edge {
+	public static class Edge {
 		int t, rev, cap, f;
 
 		public Edge(int t, int rev, int cap) {
@@ -50,48 +52,53 @@ public class MaxFlowDinicLinkCutSlow {
 		while (dinicBfs(graph, src, dest, dist)) {
 			int[] ptr = new int[graph.length];
 
-			TreeForestValue.Node[] nodes = new TreeForestValue.Node[graph.length];
+			LinkCutTreeMin.Node[] nodes = new LinkCutTreeMin.Node[graph.length];
 			for (int i = 0; i < nodes.length; i++) {
-				nodes[i] = new TreeForestValue.Node(i, Integer.MAX_VALUE);
+				nodes[i] = new LinkCutTreeMin.Node(i, Integer.MAX_VALUE);
 			}
 
-			final TreeForestValue.Node s = nodes[src];
-			final TreeForestValue.Node t = nodes[dest];
+			final LinkCutTreeMin.Node s = nodes[src];
+			final LinkCutTreeMin.Node t = nodes[dest];
 			List<Integer>[] lists = new List[graph.length];
 			for (int i = 0; i < lists.length; i++) {
 				lists[i] = new ArrayList<>();
 			}
 			while (true) {
-				TreeForestValue.Node v = TreeForestValue.findRoot(s);
+				LinkCutTreeMin.Node v = LinkCutTreeMin.findRoot(s);
 				if (v == t) {
-					v = nodes[TreeForestValue.minId(s)];
-					flow += v.value;
-					TreeForestValue.add(s, -v.value);
+					v = nodes[LinkCutTreeMin.minId(s)];
+					LinkCutTreeMin.expose(v);
+					flow += v.min;
+					LinkCutTreeMin.add(s, -v.min);
 
 					while (true) {
-						v = nodes[TreeForestValue.minId(s)];
+						v = nodes[LinkCutTreeMin.minId(s)];
+						LinkCutTreeMin.expose(v);
 						if (v.value > 0)
 							break;
 						Edge edge = (Edge) v.o;
 						int df = edge.cap - edge.f;
 						edge.f += df;
 						graph[edge.t].get(edge.rev).f -= df;
-						TreeForestValue.cut(v);
+						LinkCutTreeMin.cut(v);
 					}
 				} else {
 					if (ptr[v.id] < graph[v.id].size()) {
 						Edge e = graph[v.id].get(ptr[v.id]++);
 						if (dist[e.t] == dist[v.id] + 1 && e.f < e.cap) {
-							TreeForestValue.link(v, nodes[e.t], e.cap - e.f, e);
+							LinkCutTreeMin.link(v, nodes[e.t], e.cap - e.f, e);
 							lists[e.t].add(v.id);
 						}
 					} else {
 						if (v == s) {
 							for (List<Integer> list : lists) {
 								for (int u : list) {
-									if(nodes[u].parent==null)continue;
+									if(LinkCutTreeMin.findRoot(nodes[u]) == nodes[u])
+										continue;
 									Edge edge = (Edge) nodes[u].o;
-									int df = edge.cap - edge.f - (nodes[u].value < Integer.MAX_VALUE / 2 ? nodes[u].value : nodes[u].savedValue);
+
+									LinkCutTreeMin.expose(nodes[u]);
+									long df = edge.cap - edge.f - (nodes[u].value < Integer.MAX_VALUE / 2 ? nodes[u].value : nodes[u].savedValue);
 									edge.f += df;
 									graph[edge.t].get(edge.rev).f -= df;
 								}
@@ -100,13 +107,15 @@ public class MaxFlowDinicLinkCutSlow {
 							break;
 						}
 						for (int u : lists[v.id]) {
-							if(nodes[u].parent==null)continue;
+							if(LinkCutTreeMin.findRoot(nodes[u]) == nodes[u])
+								continue;
 							Edge edge = (Edge) nodes[u].o;
 
-							int df = edge.cap - edge.f - nodes[u].value;
+							LinkCutTreeMin.expose(nodes[u]);
+							long df = edge.cap - edge.f - nodes[u].value;
 							edge.f += df;
 							graph[edge.t].get(edge.rev).f -= df;
-							TreeForestValue.cut(nodes[u]);
+							LinkCutTreeMin.cut(nodes[u]);
 						}
 						lists[v.id].clear();
 					}

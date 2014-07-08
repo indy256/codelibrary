@@ -1,4 +1,4 @@
-package obsolete;
+package experimental;
 
 public class LinkCutTreeLcaArray {
 	static int[] left;

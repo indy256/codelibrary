@@ -1,3 +1,5 @@
+package experimental;
+
 public class LinkedCutTree {
 
 	static final int MAXN = 110000;

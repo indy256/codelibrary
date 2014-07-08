@@ -1,4 +1,4 @@
-import obsolete.MaxFlowDinicMatrix;
+import experimental.MaxFlowDinicLinkCut;
 
 import java.util.List;
 import java.util.Random;
