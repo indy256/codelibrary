@@ -14,7 +14,6 @@ public class LinkCutTreeConnectivity {
 			return parent == null || (parent.left != this && parent.right != this);
 		}
 
-		// push revert flag down
 		void push() {
 			if (revert) {
 				revert = false;
@@ -106,20 +105,22 @@ public class LinkCutTreeConnectivity {
 		return last;
 	}
 
-	public static Node findRoot(Node x) {
-		expose(x);
-		while (x.right != null)
-			x = x.right;
-		return x;
-	}
-
 	public static void makeRoot(Node x) {
 		expose(x);
 		x.revert = !x.revert;
 	}
 
+	public static boolean connected(Node x, Node y) {
+		if (x == y)
+			return true;
+		expose(x);
+		// now x.parent is null
+		expose(y);
+		return x.parent != null;
+	}
+
 	public static void link(Node x, Node y) {
-		if (findRoot(x) == findRoot(y))
+		if (connected(x, y))
 			throw new RuntimeException("error: x and y are already connected");
 		makeRoot(x);
 		x.parent = y;
@@ -128,18 +129,11 @@ public class LinkCutTreeConnectivity {
 	public static void cut(Node x, Node y) {
 		makeRoot(x);
 		expose(y);
+		// check that exposed path consists of a single edge (y,x)
 		if (y.right != x || x.left != null || x.right != null)
 			throw new RuntimeException("error: no edge (x,y)");
 		y.right.parent = null;
 		y.right = null;
-	}
-
-	public static boolean connected(Node x, Node y) {
-		if (x == y)
-			return true;
-		expose(x);
-		expose(y);
-		return x.parent != null;
 	}
 
 	// random test
@@ -157,7 +151,6 @@ public class LinkCutTreeConnectivity {
 				int v = rnd.nextInt(n);
 				Node x = nodes[u];
 				Node y = nodes[v];
-				findRoot(y);
 				if (cmd == 0) {
 					makeRoot(x);
 					expose(y);
@@ -172,9 +165,9 @@ public class LinkCutTreeConnectivity {
 						throw new RuntimeException();
 				} else {
 					expose(x);
-					if ((findRoot(x) != findRoot(y)) != !connected(g, u, v, -1))
+					if (connected(x,y) != connected(g, u, v, -1))
 						throw new RuntimeException();
-					if (findRoot(x) != findRoot(y)) {
+					if (!connected(x,y)) {
 						link(x, y);
 						g[u][v] = g[v][u] = true;
 					}

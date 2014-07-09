@@ -70,7 +70,7 @@ public class LinkCutTreeLca {
 			Node g = p.parent;
 			if (!p.isRoot())
 				rotate((x == p.left) == (p == g.left) ? p/*zig-zig*/ : x/*zig-zag*/);
-			rotate(x); /*zig*/
+			rotate(x);
 		}
 	}
 
@@ -90,6 +90,7 @@ public class LinkCutTreeLca {
 		expose(x);
 		while (x.right != null)
 			x = x.right;
+		splay(x);
 		return x;
 	}
 
