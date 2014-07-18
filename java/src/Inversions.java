@@ -2,27 +2,20 @@ import java.util.*;
 
 public class Inversions {
 
+	// warning: a is modified during processing
 	public static int inversions(int[] a, int low, int high) {
-		int size = high - low;
-		if (size <= 1)
+		if (high - low < 2)
 			return 0;
 		int mid = (low + high) >>> 1;
-		int res1 = inversions(a, low, mid);
-		int res2 = inversions(a, mid, high);
-		int res = res1 + res2;
-
-		int[] b = new int[size];
-		int i = low;
-		int j = mid;
-		for (int k = 0; k < size; k++) {
-			if (i < mid && (j >= high || a[i] <= a[j])) {
-				b[k] = a[i++];
+		int res = inversions(a, low, mid) + inversions(a, mid, high);
+		int[] b = Arrays.copyOfRange(a, low, mid);
+		for (int i = low, j = mid, k = 0; k < b.length; i++)
+			if (j == high || b[k] <= a[j]) {
+				a[i] = b[k++];
 			} else {
-				b[k] = a[j++];
-				res += mid - i;
+				a[i] = a[j++];
+				res += b.length - k;
 			}
-		}
-		System.arraycopy(b, 0, a, low, size);
 		return res;
 	}
 
@@ -37,7 +30,7 @@ public class Inversions {
 			int res1 = inversions(p.clone(), 0, p.length);
 			int res2 = slowInversions(p);
 			if (res1 != res2)
-				throw new RuntimeException(res1 + " " + res2);
+				throw new RuntimeException();
 		}
 	}
 

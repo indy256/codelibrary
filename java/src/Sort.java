@@ -59,8 +59,13 @@ public class Sort {
 		mergeSort(a, low, mid);
 		mergeSort(a, mid, high);
 		int[] b = Arrays.copyOfRange(a, low, mid);
-		for (int i = low, j = mid, k = 0; k < b.length; i++)
-			a[i] = (j == high || b[k] < a[j]) ? b[k++] : a[j++];
+		for (int i = low, j = mid, k = 0; k < b.length; i++) {
+			if ((j == high || b[k] <= a[j])) {
+				a[i] = b[k++];
+			} else {
+				a[i] = a[j++];
+			}
+		}
 	}
 
 	public static void mergeSort2(int[] a, int low, int high) {
@@ -70,7 +75,6 @@ public class Sort {
 		int mid = (low + high) >>> 1;
 		mergeSort2(a, low, mid);
 		mergeSort2(a, mid, high);
-
 		int[] b = new int[size];
 		int i = low;
 		int j = mid;
