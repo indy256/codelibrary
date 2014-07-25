@@ -1,25 +1,47 @@
 public class BinaryHeapWithIncreasePriority {
-	int[] heap;
+	long[] heap;
 	int[] pos2Id;
 	int[] id2Pos;
 	int size;
 
 	public BinaryHeapWithIncreasePriority(int n) {
-		heap = new int[n];
+		heap = new long[n];
 		pos2Id = new int[n];
 		id2Pos = new int[n];
 	}
 
 	public int remove() {
-		int removed = pos2Id[0];
+		int removedId = pos2Id[0];
 		heap[0] = heap[--size];
 		pos2Id[0] = pos2Id[size];
 		id2Pos[pos2Id[0]] = 0;
-		pushDown(0);
-		return removed;
+		down(0);
+		return removedId;
 	}
 
-	void pushDown(int pos) {
+	public void add(int id, long value) {
+		heap[size] = value;
+		pos2Id[size] = id;
+		id2Pos[id] = size;
+		up(size++);
+	}
+
+	public void increasePriority(int id, long value) {
+		heap[id2Pos[id]] = value;
+		up(id2Pos[id]);
+	}
+
+	void up(int pos) {
+		while (pos > 0) {
+			int parent = (pos - 1) / 2;
+			if (heap[pos] >= heap[parent])
+				break;
+			swap(pos, parent);
+			pos = parent;
+		}
+	}
+
+	void down(int pos) {
 		while (true) {
 			int child = 2 * pos + 1;
 			if (child >= size)
@@ -33,33 +55,11 @@ public class BinaryHeapWithIncreasePriority {
 		}
 	}
 
-	public void add(int id, int value) {
-		heap[size] = value;
-		pos2Id[size] = id;
-		id2Pos[id] = size;
-		popUp(size++);
-	}
-
-	public void increasePriority(int id, int value) {
-		heap[id2Pos[id]] = value;
-		popUp(id2Pos[id]);
-	}
-
-	void popUp(int pos) {
-		while (pos > 0) {
-			int parent = (pos - 1) / 2;
-			if (heap[pos] >= heap[parent])
-				break;
-			swap(pos, parent);
-			pos = parent;
-		}
-	}
-
 	void swap(int i, int j) {
-		int t = heap[i];
+		long tt = heap[i];
 		heap[i] = heap[j];
-		heap[j] = t;
-		t = pos2Id[i];
+		heap[j] = tt;
+		int t = pos2Id[i];
 		pos2Id[i] = pos2Id[j];
 		pos2Id[j] = t;
 		id2Pos[pos2Id[i]] = i;

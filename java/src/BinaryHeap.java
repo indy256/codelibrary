@@ -13,17 +13,32 @@ public class BinaryHeap {
 		heap = values.clone();
 		size = values.length;
 		for (int pos = size / 2 - 1; pos >= 0; pos--)
-			pushDown(pos);
+			down(pos);
 	}
 
 	public int removeMin() {
 		int removed = heap[0];
 		heap[0] = heap[--size];
-		pushDown(0);
+		down(0);
 		return removed;
 	}
 
-	void pushDown(int pos) {
+	public void add(int value) {
+		heap[size] = value;
+		up(size++);
+	}
+
+	void up(int pos) {
+		while (pos > 0) {
+			int parent = (pos - 1) / 2;
+			if (heap[pos] >= heap[parent])
+				break;
+			swap(pos, parent);
+			pos = parent;
+		}
+	}
+
+	void down(int pos) {
 		while (true) {
 			int child = 2 * pos + 1;
 			if (child >= size)
@@ -34,21 +49,6 @@ public class BinaryHeap {
 				break;
 			swap(pos, child);
 			pos = child;
-		}
-	}
-
-	public void add(int value) {
-		heap[size] = value;
-		popUp(size++);
-	}
-
-	void popUp(int pos) {
-		while (pos > 0) {
-			int parent = (pos - 1) / 2;
-			if (heap[pos] >= heap[parent])
-				break;
-			swap(pos, parent);
-			pos = parent;
 		}
 	}
 

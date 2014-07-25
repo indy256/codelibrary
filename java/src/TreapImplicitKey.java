@@ -189,9 +189,9 @@ public class TreapImplicitKey {
 			int cmd = rnd.nextInt(6);
 			if (cmd < 2 && list.size() < 100) {
 				int pos = rnd.nextInt(list.size() + 1);
-				int delta = rnd.nextInt(100);
-				list.add(pos, delta);
-				treap = insert(treap, pos, delta);
+				int value = rnd.nextInt(100);
+				list.add(pos, value);
+				treap = insert(treap, pos, value);
 			} else if (cmd < 3 && list.size() > 0) {
 				int pos = rnd.nextInt(list.size());
 				list.remove(pos);
@@ -204,11 +204,8 @@ public class TreapImplicitKey {
 					res = queryOperation(res, list.get(i));
 				TreapAndResult tr = query(treap, a, b);
 				treap = tr.treap;
-				if (res != tr.value) {
-					System.out.println(list);
-					print(treap);
-					return;
-				}
+				if (res != tr.value)
+					throw new RuntimeException();
 			} else if (cmd < 5 && list.size() > 0) {
 				int b = rnd.nextInt(list.size());
 				int a = rnd.nextInt(b + 1);
@@ -221,11 +218,8 @@ public class TreapImplicitKey {
 					TreapAndResult tr = query(treap, i, i);
 					treap = tr.treap;
 					int v = tr.value;
-					if (list.get(i) != v) {
-						System.out.println(list);
-						print(treap);
-						return;
-					}
+					if (list.get(i) != v)
+						throw new RuntimeException();
 				}
 			}
 		}

@@ -26,7 +26,8 @@ public class DijkstraHeap {
 	}
 
 	static class Edge {
-		int t, cost;
+		int t;
+		int cost;
 
 		public Edge(int t, int cost) {
 			this.t = t;
