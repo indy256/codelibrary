@@ -18,44 +18,44 @@ public class SimulatedAnnealing extends JFrame {
 	}
 
 	public void anneal() {
-		double coolingFactor = 0.999998;
 		int[] curState = new int[n];
 		for (int i = 0; i < n; i++)
 			curState[i] = i;
 		double curEnergy = eval(curState);
 		bestState = curState;
 		double bestEnergy = curEnergy;
-		for (double temperature = 1; temperature > 1e-4; temperature *= coolingFactor) {
+		for (double temperature = 1, coolingFactor = 0.999999; temperature > 1e-4; temperature *= coolingFactor) {
 			int[] newState = neighbour(curState);
 			double newEnergy = eval(newState);
-
 			double delta = newEnergy - curEnergy;
 			if (delta < 0 || Math.exp(-delta / temperature) > rnd.nextDouble()) {
 				curState = newState;
 				curEnergy = newEnergy;
-			}
 
-			if (bestEnergy > newEnergy) {
-				bestState = newState;
-				bestEnergy = newEnergy;
-				repaint();
+				if (bestEnergy > newEnergy) {
+					bestState = newState;
+					bestEnergy = newEnergy;
+					repaint();
+				}
 			}
 		}
 	}
 
+	// http://en.wikipedia.org/wiki/2-opt
 	int[] neighbour(int[] state) {
 		int n = state.length;
 		int i = rnd.nextInt(n);
-		int j = (i + rnd.nextInt(n - 1) + 1) % n;
+		int j = (i + 1 + rnd.nextInt(n - 1)) % n;
 		int[] newState = state.clone();
-		int sign = Integer.compare(i, j);
 		// reverse order from i to j
-		while (sign * (i - j) > 0) {
+		while (true) {
 			int t = newState[i];
 			newState[i] = newState[j];
 			newState[j] = t;
 			i = (i + 1) % n;
+			if (i == j) break;
 			j = (j - 1 + n) % n;
+			if (i == j) break;
 		}
 		return newState;
 	}
@@ -87,7 +87,7 @@ public class SimulatedAnnealing extends JFrame {
 				for (int i = 0; i < n; i++)
 					g.drawOval((int) (x[i] * w) - 1, (int) ((1 - y[i]) * h) - 1, 3, 3);
 				g.setColor(Color.BLACK);
-				g.drawString(String.format("length = %.3f", eval(bestState)), 5, h + 20);
+				g.drawString(String.format("length: %.3f", eval(bestState)), 5, h + 20);
 			}
 		});
 		setSize(new Dimension(600, 600));
