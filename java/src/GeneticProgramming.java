@@ -108,14 +108,13 @@ public class GeneticProgramming extends JFrame {
 		int i = rnd.nextInt(n);
 		int j = (i + 1 + rnd.nextInt(n - 1)) % n;
 		// reverse order from i to j
-		while (true) {
+		while (i != j) {
 			int t = p[i];
 			p[i] = p[j];
 			p[j] = t;
 			i = (i + 1) % n;
 			if (i == j) break;
 			j = (j - 1 + n) % n;
-			if (i == j) break;
 		}
 	}
 

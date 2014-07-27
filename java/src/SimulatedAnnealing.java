@@ -48,14 +48,13 @@ public class SimulatedAnnealing extends JFrame {
 		int j = (i + 1 + rnd.nextInt(n - 1)) % n;
 		int[] newState = state.clone();
 		// reverse order from i to j
-		while (true) {
+		while (i != j) {
 			int t = newState[i];
 			newState[i] = newState[j];
 			newState[j] = t;
 			i = (i + 1) % n;
 			if (i == j) break;
 			j = (j - 1 + n) % n;
-			if (i == j) break;
 		}
 		return newState;
 	}
