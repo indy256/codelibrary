@@ -22,19 +22,24 @@ public class SimulatedAnnealing extends JFrame {
 		for (int i = 0; i < n; i++)
 			curState[i] = i;
 		double curEnergy = eval(curState);
-		bestState = curState;
+		bestState = curState.clone();
 		double bestEnergy = curEnergy;
-		for (double temperature = 1, coolingFactor = 0.999999; temperature > 1e-4; temperature *= coolingFactor) {
-			int[] newState = neighbour(curState);
-			double newEnergy = eval(newState);
-			double delta = newEnergy - curEnergy;
+		for (double temperature = 0.1, coolingFactor = 0.999999; temperature > 1e-4; temperature *= coolingFactor) {
+			int i = rnd.nextInt(n);
+			int j = (i + 1 + rnd.nextInt(n - 2)) % n;
+			int i1 = (i - 1 + n) % n;
+			int j1 = (j + 1) % n;
+			double delta = dist(x[curState[i1]], y[curState[i1]], x[curState[j]], y[curState[j]])
+					+ dist(x[curState[i]], y[curState[i]], x[curState[j1]], y[curState[j1]])
+					- dist(x[curState[i1]], y[curState[i1]], x[curState[i]], y[curState[i]])
+					- dist(x[curState[j]], y[curState[j]], x[curState[j1]], y[curState[j1]]);
 			if (delta < 0 || Math.exp(-delta / temperature) > rnd.nextDouble()) {
-				curState = newState;
-				curEnergy = newEnergy;
+				reverse(curState, i, j);
+				curEnergy += delta;
 
-				if (bestEnergy > newEnergy) {
-					bestState = newState;
-					bestEnergy = newEnergy;
+				if (bestEnergy > curEnergy) {
+					bestEnergy = curEnergy;
+					System.arraycopy(curState, 0, bestState, 0, n);
 					repaint();
 				}
 			}
@@ -42,31 +47,30 @@ public class SimulatedAnnealing extends JFrame {
 	}
 
 	// http://en.wikipedia.org/wiki/2-opt
-	int[] neighbour(int[] state) {
-		int n = state.length;
-		int i = rnd.nextInt(n);
-		int j = (i + 1 + rnd.nextInt(n - 1)) % n;
-		int[] newState = state.clone();
+	static void reverse(int[] p, int i, int j) {
+		int n = p.length;
 		// reverse order from i to j
 		while (i != j) {
-			int t = newState[i];
-			newState[i] = newState[j];
-			newState[j] = t;
+			int t = p[j];
+			p[j] = p[i];
+			p[i] = t;
 			i = (i + 1) % n;
 			if (i == j) break;
 			j = (j - 1 + n) % n;
 		}
-		return newState;
 	}
 
 	double eval(int[] state) {
 		double res = 0;
-		for (int i = 0, j = state.length - 1; i < state.length; j = i++) {
-			double dx = x[state[i]] - x[state[j]];
-			double dy = y[state[i]] - y[state[j]];
-			res += Math.sqrt(dx * dx + dy * dy);
-		}
+		for (int i = 0, j = state.length - 1; i < state.length; j = i++)
+			res += dist(x[state[i]], y[state[i]], x[state[j]], y[state[j]]);
 		return res;
+	}
+
+	static double dist(double x1, double y1, double x2, double y2) {
+		double dx = x1 - x2;
+		double dy = y1 - y2;
+		return Math.sqrt(dx * dx + dy * dy);
 	}
 
 	// visualization code

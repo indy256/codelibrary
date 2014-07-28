@@ -50,7 +50,7 @@ public class RandomPolygon extends JFrame {
 	}
 
 	// http://en.wikipedia.org/wiki/2-opt
-	static int[] reverse(int[] p, int i, int j) {
+	static void reverse(int[] p, int i, int j) {
 		int n = p.length;
 		// reverse order from i to j
 		while (i != j) {
@@ -61,7 +61,6 @@ public class RandomPolygon extends JFrame {
 			if (i == j) break;
 			j = (j - 1 + n) % n;
 		}
-		return p;
 	}
 
 	static double len(int[] x, int[] y, int[] p) {

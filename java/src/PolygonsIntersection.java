@@ -224,18 +224,18 @@ public class PolygonsIntersection {
 		}
 	}
 
-	static int[] reverse(int[] p, int i, int j) {
+	// http://en.wikipedia.org/wiki/2-opt
+	static void reverse(int[] p, int i, int j) {
 		int n = p.length;
-		int sign = Integer.compare(i, j);
 		// reverse order from i to j
-		while (sign * (i - j) > 0) {
+		while (i != j) {
 			int t = p[j];
 			p[j] = p[i];
 			p[i] = t;
 			i = (i + 1) % n;
+			if (i == j) break;
 			j = (j - 1 + n) % n;
 		}
-		return p;
 	}
 
 	static double len(int[] x, int[] y, int[] p) {
