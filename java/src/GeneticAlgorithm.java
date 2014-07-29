@@ -1,11 +1,9 @@
-package experimental;
-
 import javax.swing.*;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
 
-public class GeneticProgramming extends JFrame {
+public class GeneticAlgorithm extends JFrame {
 	Random rnd = new Random(1);
 	int n = rnd.nextInt(300) + 250;
 
@@ -28,14 +26,14 @@ public class GeneticProgramming extends JFrame {
 		final int populationLimit = 100;
 		final Population population = new Population(populationLimit);
 		final int n = x.length;
-		for (int i = 0; i < populationLimit; i++) {
-			population.chromosomes.add(new Chromosome(getRandomPermutation(n)));
-		}
+		for (int i = 0; i < populationLimit; i++)
+			population.chromosomes.add(new Chromosome(optimize(getRandomPermutation(n))));
 
 		final double mutationRate = 0.3;
-		final int generations = 100_000;
+		final int generations = 10_000;
 
 		for (generation = 0; generation < generations; generation++) {
+			int i = 0;
 			while (population.chromosomes.size() < population.populationLimit) {
 				int i1 = rnd.nextInt(population.chromosomes.size());
 				int i2 = (i1 + 1 + rnd.nextInt(population.chromosomes.size() - 1)) % population.chromosomes.size();
@@ -43,13 +41,15 @@ public class GeneticProgramming extends JFrame {
 				Chromosome parent1 = population.chromosomes.get(i1);
 				Chromosome parent2 = population.chromosomes.get(i2);
 
-				int[] child = crossOver(parent1.p, parent2.p);
+				int[][] pair = crossOver(parent1.p, parent2.p);
 
 				if (rnd.nextDouble() < mutationRate) {
-					mutate(child);
+					mutate(pair[0]);
+					mutate(pair[1]);
 				}
 
-				population.chromosomes.add(new Chromosome(child));
+				population.chromosomes.add(new Chromosome(optimize(pair[0])));
+				population.chromosomes.add(new Chromosome(optimize(pair[1])));
 			}
 			population.nextGeneration();
 			bestState = population.chromosomes.get(0).p;
@@ -57,63 +57,72 @@ public class GeneticProgramming extends JFrame {
 		}
 	}
 
-	// http://en.wikipedia.org/wiki/Edge_recombination_operator
-	int[] crossOver(int[] p1, int[] p2) {
+	int[][] crossOver(int[] p1, int[] p2) {
 		int n = p1.length;
-		int[] p = new int[4 * n];
-		Arrays.fill(p, -1);
-		for (int i = 0; i < n; i++) {
-			int pos = p1[i] * 4;
-			while (p[pos] != -1) ++pos;
-			p[pos] = p1[(i + 1) % n];
-			p[pos] = p1[(i - 1 + n) % n];
-			pos = p2[i] * 4;
-			while (p[pos] != -1) ++pos;
-			p[pos] = p2[(i + 1) % n];
-			p[pos] = p2[(i - 1 + n) % n];
-		}
-		boolean[] used = new boolean[n];
-		int[] child = new int[n];
-		int k = 0;
-		for (int i = 0; i < n; i++) {
-			if (used[i]) continue;
-			for (int cur = i; cur != -1; ) {
-				child[k++] = cur;
-				used[cur] = true;
-				int best = Integer.MAX_VALUE;
-				int next = -1;
-				for (int d1 = 0; d1 < 4; d1++) {
-					int v = p[cur * 4 + d1];
-					if (v == -1 || used[v]) continue;
-					int cnt = 0;
-					for (int d2 = 0; d2 < 4; d2++) {
-						if (p[v * 4 + d2] == cur) {
-							p[v * 4 + d2] = -1;
-						} else if (p[v * 4 + d2] != -1) {
-							++cnt;
-						}
-					}
-					if (best > cnt) {
-						best = cnt;
-						next = v;
-					}
-				}
-				cur = next;
+		int i1 = rnd.nextInt(n);
+		int i2 = (i1 + 1 + rnd.nextInt(n - 1)) % n;
+
+		int[] n1 = p1.clone();
+		int[] n2 = p2.clone();
+
+		boolean[] used1 = new boolean[n];
+		boolean[] used2 = new boolean[n];
+
+		for (int i = i1; ; i = (i + 1) % n) {
+			n1[i] = p2[i];
+			used1[n1[i]] = true;
+			n2[i] = p1[i];
+			used2[n2[i]] = true;
+			if (i == i2) {
+				break;
 			}
 		}
-		return child;
+
+		for (int i = (i2 + 1) % n; i != i1; i = (i + 1) % n) {
+			if (used1[n1[i]]) {
+				n1[i] = -1;
+			} else {
+				used1[n1[i]] = true;
+			}
+			if (used2[n2[i]]) {
+				n2[i] = -1;
+			} else {
+				used2[n2[i]] = true;
+			}
+		}
+
+		int pos1 = 0;
+		int pos2 = 0;
+		for (int i = 0; i < n; i++) {
+			if (n1[i] == -1) {
+				while (used1[pos1])
+					++pos1;
+				n1[i] = pos1++;
+			}
+			if (n2[i] == -1) {
+				while (used2[pos2])
+					++pos2;
+				n2[i] = pos2++;
+			}
+		}
+		return new int[][]{n1, n2};
 	}
 
-	// http://en.wikipedia.org/wiki/2-opt
 	void mutate(int[] p) {
 		int n = p.length;
 		int i = rnd.nextInt(n);
 		int j = (i + 1 + rnd.nextInt(n - 1)) % n;
+		reverse(p, i, j);
+	}
+
+	// http://en.wikipedia.org/wiki/2-opt
+	static void reverse(int[] p, int i, int j) {
+		int n = p.length;
 		// reverse order from i to j
 		while (i != j) {
-			int t = p[i];
-			p[i] = p[j];
-			p[j] = t;
+			int t = p[j];
+			p[j] = p[i];
+			p[i] = t;
 			i = (i + 1) % n;
 			if (i == j) break;
 			j = (j - 1 + n) % n;
@@ -122,12 +131,15 @@ public class GeneticProgramming extends JFrame {
 
 	double eval(int[] state) {
 		double res = 0;
-		for (int i = 0, j = state.length - 1; i < state.length; j = i++) {
-			double dx = x[state[i]] - x[state[j]];
-			double dy = y[state[i]] - y[state[j]];
-			res += Math.sqrt(dx * dx + dy * dy);
-		}
+		for (int i = 0, j = state.length - 1; i < state.length; j = i++)
+			res += dist(x[state[i]], y[state[i]], x[state[j]], y[state[j]]);
 		return res;
+	}
+
+	static double dist(double x1, double y1, double x2, double y2) {
+		double dx = x1 - x2;
+		double dy = y1 - y2;
+		return Math.sqrt(dx * dx + dy * dy);
 	}
 
 	int[] getRandomPermutation(int n) {
@@ -136,6 +148,30 @@ public class GeneticProgramming extends JFrame {
 			int j = rnd.nextInt(i + 1);
 			res[i] = res[j];
 			res[j] = i;
+		}
+		return res;
+	}
+
+	// try all 2-opt moves
+	int[] optimize(int[] p) {
+		int[] res = p.clone();
+		for (boolean improved = true; improved; ) {
+			improved = false;
+			for (int i = 0; i < n; i++) {
+				for (int j = 0; j < n; j++) {
+					if (i == j || (j + 1) % n == i) continue;
+					int i1 = (i - 1 + n) % n;
+					int j1 = (j + 1) % n;
+					double delta = dist(x[res[i1]], y[res[i1]], x[res[j]], y[res[j]])
+							+ dist(x[res[i]], y[res[i]], x[res[j1]], y[res[j1]])
+							- dist(x[res[i1]], y[res[i1]], x[res[i]], y[res[i]])
+							- dist(x[res[j]], y[res[j]], x[res[j1]], y[res[j1]]);
+					if (delta < -1e-9) {
+						reverse(res, i, j);
+						improved = true;
+					}
+				}
+			}
 		}
 		return res;
 	}
@@ -149,9 +185,7 @@ public class GeneticProgramming extends JFrame {
 		}
 
 		public double getCost() {
-			if (Double.isNaN(cost))
-				cost = eval(p);
-			return cost;
+			return Double.isNaN(cost) ? cost = eval(p) : cost;
 		}
 
 		@Override
@@ -175,7 +209,7 @@ public class GeneticProgramming extends JFrame {
 	}
 
 	// visualization code
-	public GeneticProgramming() {
+	public GeneticAlgorithm() {
 		setContentPane(new JPanel() {
 			protected void paintComponent(Graphics g) {
 				super.paintComponent(g);
@@ -202,6 +236,6 @@ public class GeneticProgramming extends JFrame {
 	}
 
 	public static void main(String[] args) {
-		new GeneticProgramming();
+		new GeneticAlgorithm();
 	}
 }
