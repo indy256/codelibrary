@@ -25,17 +25,11 @@ public class LinKernighan extends JFrame {
 		repaint();
 		for (boolean improved = true; improved; ) {
 			improved = false;
-			for (int rev = 0; rev < 2; rev++) {
+			for (int rev = -1; rev <= 1; rev += 2) {
 				for (int i = 0; i < n; i++) {
 					int[] p = new int[n];
 					for (int j = 0; j < n; j++)
-						p[j] = bestState[(j + i) % n];
-					if (rev == 1)
-						for (int i1 = 0, j1 = n - 1; i1 < j1; i1++, j1--) {
-							int t = p[i1];
-							p[i1] = p[j1];
-							p[j1] = t;
-						}
+						p[j] = bestState[(i + rev * j + n) % n];
 					boolean[][] added = new boolean[n][n];
 					double cost = eval(p);
 					double delta = -dist(x[p[n - 1]], y[p[n - 1]], x[p[0]], y[p[0]]);
@@ -144,16 +138,11 @@ public class LinKernighan extends JFrame {
 				super.paintComponent(g);
 				((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 				((Graphics2D) g).setStroke(new BasicStroke(3));
-				g.setColor(Color.BLUE);
 				int w = getWidth() - 5;
 				int h = getHeight() - 30;
 				for (int i = 0, j = n - 1; i < n; j = i++)
 					g.drawLine((int) (x[bestState[i]] * w), (int) ((1 - y[bestState[i]]) * h),
 							(int) (x[bestState[j]] * w), (int) ((1 - y[bestState[j]]) * h));
-				g.setColor(Color.RED);
-				for (int i = 0; i < n; i++)
-					g.drawOval((int) (x[i] * w) - 1, (int) ((1 - y[i]) * h) - 1, 3, 3);
-				g.setColor(Color.BLACK);
 				g.drawString(String.format("length: %.3f", eval(bestState)), 5, h + 20);
 			}
 		});
