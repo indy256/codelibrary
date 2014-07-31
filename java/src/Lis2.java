@@ -38,6 +38,17 @@ public class Lis2 {
 		return hi;
 	}
 
+	public static int lisSize(int[] a) {
+		NavigableSet<Integer> s = new TreeSet<>();
+		for (int v : a)
+			if (s.add(v)) {
+				Integer higher = s.higher(v);
+				if (higher != null)
+					s.remove(higher);
+			}
+		return s.size();
+	}
+
 	// random test
 	public static void main(String[] args) {
 		Random rnd = new Random(1);
@@ -48,6 +59,8 @@ public class Lis2 {
 				a[i] = rnd.nextInt(10);
 			int[] lis = lis(a);
 			checkLis(a, lis);
+			if (lis.length != lisSize(a))
+				throw new RuntimeException();
 		}
 	}
 

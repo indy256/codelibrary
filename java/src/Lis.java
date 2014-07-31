@@ -2,7 +2,7 @@ import java.util.*;
 
 public class Lis {
 
-	public static int[] getLIS(int[] x) {
+	public static int[] getLis(int[] x) {
 		int n = x.length;
 		int[] len = new int[n];
 		Arrays.fill(len, 1);
@@ -33,7 +33,7 @@ public class Lis {
 	// Usage example
 	public static void main(String[] args) {
 		int[] a = { 1, 5, 4, 2, 3, 7, 6 };
-		int[] lis = getLIS(a);
+		int[] lis = getLis(a);
 		System.out.println(Arrays.toString(lis));
 	}
 }
