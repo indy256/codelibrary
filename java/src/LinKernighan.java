@@ -9,7 +9,7 @@ public class LinKernighan extends JFrame {
 	double[] x = new double[n];
 	double[] y = new double[n];
 	int[] bestState;
-	double bestDist;
+	double bestDist = Double.POSITIVE_INFINITY;
 
 	{
 		for (int i = 0; i < n; i++) {
@@ -19,17 +19,16 @@ public class LinKernighan extends JFrame {
 	}
 
 	public void linKernighan() {
-		bestState = getRandomPermutation(n);
-		bestState = optimize(bestState);
-		bestDist = eval(bestState);
-		repaint();
+		int[] curState = optimize(getRandomPermutation(n));
+		double curDist = eval(curState);
+		updateBest(curState, curDist);
 		for (boolean improved = true; improved; ) {
 			improved = false;
 			for (int rev = -1; rev <= 1; rev += 2) {
 				for (int i = 0; i < n; i++) {
 					int[] p = new int[n];
 					for (int j = 0; j < n; j++)
-						p[j] = bestState[(i + rev * j + n) % n];
+						p[j] = curState[(i + rev * j + n) % n];
 					boolean[][] added = new boolean[n][n];
 					double cost = eval(p);
 					double delta = -dist(x[p[n - 1]], y[p[n - 1]], x[p[0]], y[p[0]]);
@@ -56,20 +55,26 @@ public class LinKernighan extends JFrame {
 						delta += best;
 						reverse(p, bestPos + 1, n - 1);
 						double closeEdge = dist(x[p[n - 1]], y[p[n - 1]], x[p[0]], y[p[0]]);
-						if (bestDist > cost + delta + closeEdge) {
-							bestDist = cost + delta + closeEdge;
-							bestState = p.clone();
+						if (curDist > cost + delta + closeEdge) {
+							curDist = cost + delta + closeEdge;
+							curState = p.clone();
+							updateBest(curState, curDist);
 							improved = true;
-							repaint();
 							break;
 						}
 					}
 				}
 			}
 		}
-		bestState = optimize(bestState);
-		bestDist = eval(bestState);
-		repaint();
+		updateBest(curState, curDist);
+	}
+
+	void updateBest(int[] curState, double curDist) {
+		if (bestDist > curDist) {
+			bestDist = curDist;
+			bestState = curState.clone();
+			repaint();
+		}
 	}
 
 	// reverse order from i to j
@@ -136,6 +141,7 @@ public class LinKernighan extends JFrame {
 		setContentPane(new JPanel() {
 			protected void paintComponent(Graphics g) {
 				super.paintComponent(g);
+				if (bestState == null) return;
 				((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 				((Graphics2D) g).setStroke(new BasicStroke(3));
 				int w = getWidth() - 5;
