@@ -58,6 +58,7 @@ public class TreapSimple {
 			return right;
 		if (right == null)
 			return left;
+		// if (random.nextInt(left.size + right.size) >= left.size) {
 		if (left.prio > right.prio) {
 			left.right = merge(left.right, right);
 			left.update();
