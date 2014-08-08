@@ -3,6 +3,7 @@ import java.util.*;
 public class PointLocation {
 
 	public static int[] locatePoints(int[][] polygonX, int[][] polygonY, int[] qx, int[] qy) {
+		// preprocessing
 		Map<Long, Integer> endPoints = new HashMap<>();
 		Map<Integer, NavigableSet<Segment>> verticalSegments = new HashMap<>();
 		List<Event> events = new ArrayList<>();
@@ -23,8 +24,8 @@ public class PointLocation {
 			}
 		}
 		Collections.sort(events, eventComparator);
-		Treap[] treaps = new Treap[events.size()];
 		int[] eventsX = new int[events.size()];
+		Treap[] treaps = new Treap[events.size()];
 		int cnt = 0;
 		Treap treap = null;
 		for (Event event : events) {
@@ -38,6 +39,7 @@ public class PointLocation {
 			eventsX[cnt - 1] = event.x;
 			treaps[cnt - 1] = treap;
 		}
+		// answering queries
 		int[] res = new int[qx.length];
 		for (int i = 0; i < qx.length; i++) {
 			Integer polygonId = endPoints.get(((long) qx[i] << 32) + qy[i]);
@@ -146,7 +148,7 @@ public class PointLocation {
 		return (bx - ax) * (cy - ay) - (by - ay) * (cx - ax);
 	}
 
-	static Random random = new Random();
+	static Random random = new Random(1);
 
 	// persistent treap
 	static class Treap {

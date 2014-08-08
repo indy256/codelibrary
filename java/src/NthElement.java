@@ -15,7 +15,7 @@ public class NthElement {
 		}
 	}
 
-	static Random rnd = new Random();
+	static Random rnd = new Random(1);
 
 	static int randomizedPartition(int[] a, int low, int high) {
 		swap(a, low + rnd.nextInt(high - low), high - 1);

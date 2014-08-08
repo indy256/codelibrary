@@ -66,7 +66,7 @@ public class KdTreeRectQuery {
 		}
 	}
 
-	static final Random rnd = new Random();
+	static final Random rnd = new Random(1);
 
 	static int randomizedPartition(Point[] a, int low, int high, boolean divX) {
 		swap(a, low + rnd.nextInt(high - low), high - 1);

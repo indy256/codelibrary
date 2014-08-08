@@ -2,7 +2,7 @@ import java.util.*;
 
 public class Partition {
 
-	static Random rnd = new Random();
+	static Random rnd = new Random(1);
 
 	public static int randomizedPartition(int[] a, int low, int high) {
 		swap(a, low + rnd.nextInt(high - low), high - 1);

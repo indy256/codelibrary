@@ -5,7 +5,7 @@ import java.util.Random;
 public class RandomPolygon extends JFrame {
 
 	public static int[][] getRandomPolygon(int n, int maxWidth, int maxHeight) {
-		Random rnd = new Random();
+		Random rnd = new Random(1);
 		int[] x = new int[n];
 		int[] y = new int[n];
 		int[] p = new int[n];

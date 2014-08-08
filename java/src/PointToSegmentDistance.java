@@ -29,7 +29,7 @@ public class PointToSegmentDistance {
 
 	// random test
 	public static void main(String[] args) {
-		Random rnd = new Random();
+		Random rnd = new Random(1);
 		for (int step = 0; step < 1000_000; step++) {
 			int r = 10;
 			int x = rnd.nextInt(r) - r / 2;

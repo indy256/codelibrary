@@ -135,7 +135,7 @@ public class PointLocationOffline {
 		return (bx - ax) * (cy - ay) - (by - ay) * (cx - ax);
 	}
 
-	static Random random = new Random();
+	static Random random = new Random(1);
 
 	static class Treap {
 		Segment key;

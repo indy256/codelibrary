@@ -1,6 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.Point2D;
+import java.awt.geom.*;
 import java.util.*;
 import java.util.List;
 import java.util.Queue;
@@ -201,7 +201,7 @@ public class DelaunayVoronoi extends JFrame {
 		 * vertices are a unique set which includes
 		 * all vertices in the subdivision.
 		 * The frame vertices can be included if required.
-		 * <p/>
+		 * <p>
 		 * This is useful for algorithms which require traversing the
 		 * subdivision starting at all vertices.
 		 * Returning a quadedge for each vertex
@@ -268,7 +268,7 @@ public class DelaunayVoronoi extends JFrame {
 		/**
 		 * Gets a List of {@link Polygon}s for the Voronoi cells
 		 * of this triangulation.
-		 * <p/>
+		 * <p>
 		 * The userData of each polygon is set to be the {@link Point.Double)
 		 * of the cell site.  This allows easily associating external
 		 * data associated with the sites to the cells.
@@ -277,8 +277,8 @@ public class DelaunayVoronoi extends JFrame {
 		 * @return a List of Polygons
 		 */
 		List<Point.Double[]> getVoronoiCellPolygons() {
-      /*
-               * Compute circumcentres of triangles as vertices for dual edges.
+	  /*
+			   * Compute circumcentres of triangles as vertices for dual edges.
                * Precomputing the circumcentres is more efficient,
                * and more importantly ensures that the computed centres
                * are consistent across the Voronoi cells.
@@ -295,7 +295,7 @@ public class DelaunayVoronoi extends JFrame {
 		/**
 		 * Gets the Voronoi cell around a site specified
 		 * by the origin of a QuadEdge.
-		 * <p/>
+		 * <p>
 		 * The userData of the polygon is set to be the {@link Point.Double)
 		 * of the site.  This allows attaching external
 		 * data associated with the site to this cell polygon.
@@ -562,12 +562,11 @@ public class DelaunayVoronoi extends JFrame {
 
 	// visualization
 	Random rnd = new Random(1);
-	JPanel panel;
 	List<Point.Double> points = new ArrayList<>();
 	List<Point2D.Double[]> tr = Collections.emptyList();
 	List<Point2D.Double[]> voronoiCellPolygons = Collections.emptyList();
 
-	public DelaunayVoronoi() throws HeadlessException {
+	public DelaunayVoronoi() {
 		int n = 100;
 		for (int i = 0; i < n; i++) {
 			int x = rnd.nextInt(950) + 1;
@@ -575,8 +574,7 @@ public class DelaunayVoronoi extends JFrame {
 			Point.Double c = new Point.Double(x, y);
 			points.add(c);
 		}
-
-		panel = new JPanel() {
+		setContentPane(new JPanel() {
 			protected void paintComponent(Graphics g) {
 				super.paintComponent(g);
 				Graphics2D g2 = ((Graphics2D) g);
@@ -602,31 +600,26 @@ public class DelaunayVoronoi extends JFrame {
 					g.drawOval((int) point.x - 2, (int) point.y - 2, 5, 5);
 				}
 			}
-		};
-		setContentPane(panel);
-	}
-
-	public static void main(String[] args) {
-		final DelaunayVoronoi dv = new DelaunayVoronoi();
-		dv.setSize(new Dimension(1024, 768));
-		dv.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		dv.setVisible(true);
+		});
+		setSize(new Dimension(1024, 768));
+		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		setVisible(true);
 		new Thread() {
 			public void run() {
 				while (true) {
-					final Point2D.Double pivot = dv.points.get(0);
-					pivot.x += dv.rnd.nextInt(4);
-					pivot.y += dv.rnd.nextInt(2);
+					final Point2D.Double pivot = points.get(0);
+					pivot.x += rnd.nextInt(4);
+					pivot.y += rnd.nextInt(2);
 					pivot.x %= 950;
 					pivot.y %= 700;
 
-					Set<Point.Double> uniquePoints = new HashSet<>(dv.points);
+					Set<Point.Double> uniquePoints = new HashSet<>(points);
 					SubDivision subdivision = new SubDivision(uniquePoints);
 					for (Point.Double p : uniquePoints) subdivision.insertSite(p);
-					dv.tr = subdivision.getTriangleCoordinates();
-					dv.voronoiCellPolygons = subdivision.getVoronoiCellPolygons();
+					tr = subdivision.getTriangleCoordinates();
+					voronoiCellPolygons = subdivision.getVoronoiCellPolygons();
 
-					dv.panel.repaint();
+					repaint();
 					try {
 						Thread.sleep(15);
 					} catch (InterruptedException e) {
@@ -635,5 +628,9 @@ public class DelaunayVoronoi extends JFrame {
 				}
 			}
 		}.start();
+	}
+
+	public static void main(String[] args) {
+		new DelaunayVoronoi();
 	}
 }

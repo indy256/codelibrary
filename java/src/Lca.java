@@ -73,7 +73,7 @@ public class Lca {
 
 	// Random test
 	public static void main(String[] args) {
-		Random rnd = new Random();
+		Random rnd = new Random(1);
 		for (int step = 0; step < 1000; step++) {
 			int n = rnd.nextInt(50) + 1;
 			List<Integer>[] tree = getRandomTree(n, rnd);

@@ -21,7 +21,7 @@ public class Inversions {
 
 	// random test
 	public static void main(String[] args) {
-		Random rnd = new Random();
+		Random rnd = new Random(1);
 		for (int step = 0; step < 1000; step++) {
 			int n = rnd.nextInt(100);
 			int[] p = new int[n];

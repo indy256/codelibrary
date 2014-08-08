@@ -185,7 +185,7 @@ public class TreapImplicitKey {
 	public static void main(String[] args) {
 		Treap treap = null;
 		List<Integer> list = new ArrayList<>();
-		Random rnd = new Random();
+		Random rnd = new Random(1);
 		for (int step = 0; step < 100000; step++) {
 			int cmd = rnd.nextInt(6);
 			if (cmd < 2 && list.size() < 100) {
