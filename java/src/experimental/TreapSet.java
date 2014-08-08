@@ -1,3 +1,5 @@
+package experimental;
+
 import java.lang.reflect.Method;
 import java.util.*;
 
@@ -343,6 +345,7 @@ public class TreapSet<E> extends AbstractSet<E> implements NavigableSet<E> {
 			}
 		}
 
+		// todo: fix case for equal element
 		protected Node insert(Node node) {
 			if (node.priority > priority) {
 				Node[] result = split(node.key);

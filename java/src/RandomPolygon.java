@@ -36,9 +36,11 @@ public class RandomPolygon extends JFrame {
 			}
 			boolean ok = true;
 			for (int i = 0; i < n; i++) {
-				int i1 = (i - 1 + n) % n;
-				int i2 = (i + 1) % n;
-				ok &= x[i1] * y[i2] - x[i2] * y[i1] != 0 || x[i1] * x[i2] + y[i1] * y[i2] <= 0;
+				long x1 = x[(i - 1 + n) % n] - x[i];
+				long y1 = y[(i - 1 + n) % n] - y[i];
+				long x2 = x[(i + 1) % n] - x[i];
+				long y2 = y[(i + 1) % n] - y[i];
+				ok &= x1 * y2 - x2 * y1 != 0 || x1 * x2 + y1 * y2 <= 0;
 			}
 			for (int i2 = 0, i1 = n - 1; i2 < n; i1 = i2++)
 				for (int j2 = 0, j1 = n - 1; j2 < n; j1 = j2++)

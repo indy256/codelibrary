@@ -61,7 +61,7 @@ public class PolygonCircleIntersection {
 
 	// random tests
 	public static void main(String[] args) {
-		for (int step = 0; step < 10_000; step++) {
+		for (int step = 0; step < 1000; step++) {
 			System.out.println(step);
 			int n = rnd.nextInt(10) + 3;
 			int range = 10;
@@ -89,8 +89,8 @@ public class PolygonCircleIntersection {
 			miny = Math.min(miny, y[i]);
 			maxy = Math.max(maxy, y[i]);
 		}
-		for (double px = minx; px <= maxx; px += 0.01)
-			for (double py = miny; py <= maxy; py += 0.01) {
+		for (double px = minx; px <= maxx; px += 0.005)
+			for (double py = miny; py <= maxy; py += 0.005) {
 				++count;
 				if (pointInPolygon(px, py, x, y) >= 0 && px * px + py * py <= r * r)
 					++hits;
@@ -148,9 +148,11 @@ public class PolygonCircleIntersection {
 			}
 			boolean ok = true;
 			for (int i = 0; i < n; i++) {
-				int i1 = (i - 1 + n) % n;
-				int i2 = (i + 1) % n;
-				ok &= x[i1] * y[i2] - x[i2] * y[i1] != 0 || x[i1] * x[i2] + y[i1] * y[i2] <= 0;
+				long x1 = x[(i - 1 + n) % n] - x[i];
+				long y1 = y[(i - 1 + n) % n] - y[i];
+				long x2 = x[(i + 1) % n] - x[i];
+				long y2 = y[(i + 1) % n] - y[i];
+				ok &= x1 * y2 - x2 * y1 != 0 || x1 * x2 + y1 * y2 <= 0;
 			}
 			for (int i2 = 0, i1 = p.length - 1; i2 < p.length; i1 = i2++)
 				for (int j2 = 0, j1 = p.length - 1; j2 < p.length; j1 = j2++)

@@ -67,19 +67,16 @@ public class SegmentsIntersectionScanline2 {
 	}
 
 	static final Comparator<Segment> segmentComparator = (a, b) -> {
-		if (a.x1 == b.x1)
-			return Integer.compare(a.y1, b.y1);
 		if (a.x1 < b.x1) {
 			long v = cross(a.x1, a.y1, a.x2, a.y2, b.x1, b.y1);
 			if (v != 0)
 				return v > 0 ? -1 : 1;
-			return Integer.compare(a.y1, b.y1);
-		} else {
+		} else if (a.x1 > b.x1) {
 			long v = cross(b.x1, b.y1, b.x2, b.y2, a.x1, a.y1);
 			if (v != 0)
 				return v < 0 ? -1 : 1;
-			return Integer.compare(a.y1, b.y1);
 		}
+		return Integer.compare(a.y1, b.y1);
 	};
 
 	static class Event {
