@@ -59,7 +59,7 @@ public class Hungarian {
 			int[][] a = new int[n + 1][m + 1];
 			for (int i = 1; i <= n; i++) {
 				for (int j = 1; j <= m; j++) {
-					a[i][j] = rnd.nextInt(100000);
+					a[i][j] = rnd.nextInt(100_000) - 50_000;
 				}
 			}
 			int res1 = solveAssignmentProblem(a);
