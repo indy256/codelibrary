@@ -1,6 +1,6 @@
 Collection of algorithms and data structures
 
 Available at:
-- http://www.codelibrary.tk/permutations/java
-- http://www.codelibrary2.tk/permutations/java
+- http://codelibrary.tk/
+- http://codelibrary2.tk/
 - https://sites.google.com/site/indy256/
