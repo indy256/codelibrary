@@ -1,3 +1,6 @@
 Collection of algorithms and data structures
 
-Outdated version of index is available at https://sites.google.com/site/indy256/
+Available at:
+- http://www.codelibrary.tk/permutations/java
+- http://www.codelibrary2.tk/permutations/java
+- https://sites.google.com/site/indy256/
