@@ -1,6 +1,5 @@
 Collection of algorithms and data structures
 
 Available at:
-- http://codelibrary.tk/
-- http://codelibrary2.tk/
+- http://codelibrary.ml/
 - https://sites.google.com/site/indy256/
