@@ -10,7 +10,7 @@ public class PointInPolygon {
 			if (y[i] == qy && (x[i] == qx || y[j] == qy && (x[i] <= qx || x[j] <= qx) && (x[i] >= qx || x[j] >= qx)))
 				return 0; // boundary
 			if ((y[i] > qy) != (y[j] > qy)) {
-				long det = (long) (x[i] - qx) * (y[j] - qy) - (long) (x[j] - qx) * (y[i] - qy);
+				long det = ((long) x[i] - qx) * ((long) y[j] - qy) - ((long) x[j] - qx) * ((long) y[i] - qy);
 				if (det == 0)
 					return 0; // boundary
 				if ((det > 0) != (y[j] - y[i] > 0))
