@@ -13,7 +13,7 @@ public class PointInPolygon {
 				long det = ((long) x[i] - qx) * ((long) y[j] - qy) - ((long) x[j] - qx) * ((long) y[i] - qy);
 				if (det == 0)
 					return 0; // boundary
-				if ((det > 0) != (y[j] - y[i] > 0))
+				if ((det > 0) != (y[j] > y[i]))
 					++cnt;
 			}
 		}
