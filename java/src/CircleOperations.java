@@ -146,33 +146,28 @@ public class CircleOperations {
 	}
 
 	// min enclosing circle in O(n) on average
-	public static Circle minEnclosingCircle(Point[] pointsArray) {
-		if (pointsArray.length == 0)
+	public static Circle minEnclosingCircle(Point[] points) {
+		if (points.length == 0)
 			return new Circle(0, 0, 0);
-		if (pointsArray.length == 1)
-			return new Circle(pointsArray[0].x, pointsArray[0].y, 0);
-		List<Point> points = Arrays.asList(pointsArray);
-		Collections.shuffle(points);
-		Circle circle = getCircumCircle(points.get(0), points.get(1));
-		for (int i = 2; i < points.size(); i++)
-			if (!circle.contains(points.get(i)))
-				circle = minEnclosingCircleWith1Point(points.subList(0, i), points.get(i));
-		return circle;
-	}
-
-	static Circle minEnclosingCircleWith1Point(List<Point> points, Point q) {
-		Circle circle = getCircumCircle(points.get(0), q);
-		for (int i = 1; i < points.size(); i++)
-			if (!circle.contains(points.get(i)))
-				circle = minEnclosingCircleWith2Points(points.subList(0, i), points.get(i), q);
-		return circle;
-	}
-
-	static Circle minEnclosingCircleWith2Points(List<Point> points, Point q1, Point q2) {
-		Circle circle = getCircumCircle(q1, q2);
-		for (Point point : points)
-			if (!circle.contains(point))
-				circle = getCircumCircle(q1, q2, point);
+		if (points.length == 1)
+			return new Circle(points[0].x, points[0].y, 0);
+		Collections.shuffle(Arrays.asList(points));
+		Circle circle = getCircumCircle(points[0], points[1]);
+		for (int i = 2; i < points.length; i++) {
+			if (!circle.contains(points[i])) {
+				circle = getCircumCircle(points[0], points[i]);
+				for (int j = 1; j < i; j++) {
+					if (!circle.contains(points[j])) {
+						circle = getCircumCircle(points[j], points[i]);
+						for (int k = 0; k < j; k++) {
+							if (!circle.contains(points[k])) {
+								circle = getCircumCircle(points[i], points[j], points[k]);
+							}
+						}
+					}
+				}
+			}
+		}
 		return circle;
 	}
 
