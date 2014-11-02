@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class BiconnectedComponents {
+public class Biconnectivity {
 
 	List<Integer>[] graph;
 	boolean[] visited;
@@ -8,11 +8,11 @@ public class BiconnectedComponents {
 	int time;
 	int[] tin;
 	int[] lowlink;
-	List<List<Integer>> components;
+	List<List<Integer>> edgeBiconnectedComponents;
 	List<Integer> cutPoints;
 	List<String> bridges;
 
-	public List<List<Integer>> biconnectedComponents(List<Integer>[] graph) {
+	public List<List<Integer>> biconnectivity(List<Integer>[] graph) {
 		int n = graph.length;
 		this.graph = graph;
 		visited = new boolean[n];
@@ -20,7 +20,7 @@ public class BiconnectedComponents {
 		time = 0;
 		tin = new int[n];
 		lowlink = new int[n];
-		components = new ArrayList<>();
+		edgeBiconnectedComponents = new ArrayList<>();
 		cutPoints = new ArrayList<>();
 		bridges = new ArrayList<>();
 
@@ -28,7 +28,7 @@ public class BiconnectedComponents {
 			if (!visited[u])
 				dfs(u, -1);
 
-		return components;
+		return edgeBiconnectedComponents;
 	}
 
 	void dfs(int u, int p) {
@@ -65,28 +65,45 @@ public class BiconnectedComponents {
 				if (x == u)
 					break;
 			}
-			components.add(component);
+			edgeBiconnectedComponents.add(component);
 		}
+	}
+
+	// tree of edge-biconnected components
+	public static List<Integer>[] ebcTree(List<Integer>[] graph, List<List<Integer>> components) {
+		int[] comp = new int[graph.length];
+		for (int i = 0; i < components.size(); i++)
+			for (int u : components.get(i))
+				comp[u] = i;
+		List<Integer>[] g = new List[components.size()];
+		for (int i = 0; i < g.length; i++)
+			g[i] = new ArrayList<>();
+		for (int u = 0; u < graph.length; u++)
+			for (int v : graph[u])
+				if (comp[u] != comp[v])
+					g[comp[u]].add(comp[v]);
+		return g;
 	}
 
 	// Usage example
 	public static void main(String[] args) {
-		int n = 6;
-		List<Integer>[] graph = new List[n];
-		for (int i = 0; i < n; i++) {
+		List<Integer>[] graph = new List[6];
+		for (int i = 0; i < graph.length; i++) {
 			graph[i] = new ArrayList<>();
 		}
-		int[][] edges = {{0, 1}, {1, 2}, {0, 2}, {2, 3}, {3, 4}, {4, 5}, {3, 5}};
-		for (int[] edge : edges) {
+
+		int[][] esges = {{0, 1}, {1, 2}, {0, 2}, {2, 3}, {1, 4}, {4, 5}, {5, 1}};
+		for (int[] edge : esges) {
 			graph[edge[0]].add(edge[1]);
 			graph[edge[1]].add(edge[0]);
 		}
 
-		BiconnectedComponents bc = new BiconnectedComponents();
-		List<List<Integer>> components = bc.biconnectedComponents(graph);
+		Biconnectivity bc = new Biconnectivity();
+		List<List<Integer>> components = bc.biconnectivity(graph);
 
-		System.out.println("biconnected components:" + components);
-		System.out.println("cutPoints: " + bc.cutPoints);
+		System.out.println("edge-biconnected components:" + components);
+		System.out.println("cut points: " + bc.cutPoints);
 		System.out.println("bridges:" + bc.bridges);
+		System.out.println("condensation tree:" + Arrays.toString(ebcTree(graph, components)));
 	}
 }

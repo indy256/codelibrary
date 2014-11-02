@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class TreapImplicitKey {
+public class TreapImplicitKey2 {
 
 	// Modify the following 5 methods to implement your custom operations on the tree.
 	// This example implements Add/Max operations. Operations like Add/Sum, Set/Max can also be implemented.
@@ -43,15 +43,19 @@ public class TreapImplicitKey {
 		return modifyOperation(delta1, delta2);
 	}
 
+	static void applyDelta(Treap root, int delta) {
+		if (root == null)
+			return;
+		root.delta = joinDeltas(root.delta, delta);
+		root.nodeValue = joinValueWithDelta(root.nodeValue, delta);
+		root.subTreeValue = joinValueWithDelta(root.subTreeValue, deltaEffectOnSegment(delta, root.size));
+	}
+
 	static void pushDelta(Treap root) {
 		if (root == null)
 			return;
-		root.nodeValue = joinValueWithDelta(root.nodeValue, root.delta);
-		root.subTreeValue = joinValueWithDelta(root.subTreeValue, deltaEffectOnSegment(root.delta, root.size));
-		if (root.left != null)
-			root.left.delta = joinDeltas(root.left.delta, root.delta);
-		if (root.right != null)
-			root.right.delta = joinDeltas(root.right.delta, root.delta);
+		applyDelta(root.left, root.delta);
+		applyDelta(root.right, root.delta);
 		root.delta = getNeutralDelta();
 	}
 
@@ -73,7 +77,7 @@ public class TreapImplicitKey {
 		}
 
 		void update() {
-			subTreeValue = queryOperation(queryOperation(getSubTreeValue(left), joinValueWithDelta(nodeValue, delta)), getSubTreeValue(right));
+			subTreeValue = queryOperation(queryOperation(getSubTreeValue(left), nodeValue), getSubTreeValue(right));
 			size = 1 + getSize(left) + getSize(right);
 		}
 	}
@@ -83,7 +87,7 @@ public class TreapImplicitKey {
 	}
 
 	static int getSubTreeValue(Treap root) {
-		return root == null ? getNeutralValue() : joinValueWithDelta(root.subTreeValue, deltaEffectOnSegment(root.delta, root.size));
+		return root == null ? getNeutralValue() : root.subTreeValue;
 	}
 
 	public static class TreapPair {
@@ -147,7 +151,7 @@ public class TreapImplicitKey {
 	public static Treap modify(Treap root, int a, int b, int delta) {
 		TreapPair t1 = split(root, b + 1);
 		TreapPair t2 = split(t1.left, a);
-		t2.right.delta = joinDeltas(t2.right.delta, delta);
+		applyDelta(t2.right, delta);
 		return merge(merge(t2.left, t2.right), t1.right);
 	}
 

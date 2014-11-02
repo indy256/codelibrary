@@ -14,7 +14,7 @@ public class FenwickTreeExtended {
 		return res;
 	}
 
-	public static int[] createTreeFromArray(int[] a) {
+	public static int[] createFromArray(int[] a) {
 		int[] res = new int[a.length];
 		for (int i = 0; i < a.length; i++) {
 			res[i] += a[i];
@@ -93,11 +93,11 @@ public class FenwickTreeExtended {
 		add(t, 9, -2);
 		System.out.println(-1 == sum(t, 0, 9));
 
-		t = createTreeFromArray(new int[]{1, 2, 3, 4, 5, 6});
+		t = createFromArray(new int[]{1, 2, 3, 4, 5, 6});
 		for (int i = 0; i < t.length; i++)
 			System.out.print(get(t, i) + " ");
 		System.out.println();
-		t = createTreeFromArray(new int[]{0, 0, 1, 0, 0, 1, 0, 0});
+		t = createFromArray(new int[]{0, 0, 1, 0, 0, 1, 0, 0});
 		System.out.println(5 == lower_bound(t, 2));
 
 		int[] t1 = new int[10];

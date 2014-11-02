@@ -39,12 +39,29 @@ public class SCCKosaraju {
 		res.add(u);
 	}
 
+	// DAG of strongly connected components
+	public static List<Integer>[] sccGraph(List<Integer>[] graph, List<List<Integer>> components) {
+		int[] comp = new int[graph.length];
+		for (int i = 0; i < components.size(); i++)
+			for (int u : components.get(i))
+				comp[u] = i;
+		List<Integer>[] g = new List[components.size()];
+		for (int i = 0; i < g.length; i++)
+			g[i] = new ArrayList<>();
+		Set<Long> edges = new HashSet<>();
+		for (int u = 0; u < graph.length; u++)
+			for (int v : graph[u])
+				if (comp[u] != comp[v] && edges.add(((long) comp[u] << 32) + comp[v]))
+					g[comp[u]].add(comp[v]);
+		return g;
+	}
+
 	// Usage example
 	public static void main(String[] args) {
 		List<Integer>[] g = new List[3];
 		for (int i = 0; i < g.length; i++)
 			g[i] = new ArrayList<>();
-		
+
 		g[2].add(0);
 		g[2].add(1);
 		g[0].add(1);
@@ -52,5 +69,6 @@ public class SCCKosaraju {
 
 		List<List<Integer>> components = scc(g);
 		System.out.println(components);
+		System.out.println(Arrays.toString(sccGraph(g, components)));
 	}
 }

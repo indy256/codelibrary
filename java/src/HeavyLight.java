@@ -52,7 +52,7 @@ public class HeavyLight {
 	int[][] delta; // delta[i] affects value[i], delta[2*i+1] and delta[2*i+2]
 	int[][] len;
 
-	List<Integer>[] graph;
+	List<Integer>[] tree;
 	int[] size;
 	int[] parent;
 	int[] tin;
@@ -64,9 +64,9 @@ public class HeavyLight {
 	int[] pathRoot;
 	int pathCount;
 
-	public HeavyLight(List<Integer>[] graph) {
-		this.graph = graph;
-		int n = graph.length;
+	public HeavyLight(List<Integer>[] tree) {
+		this.tree = tree;
+		int n = tree.length;
 
 		size = new int[n];
 		parent = new int[n];
@@ -107,7 +107,7 @@ public class HeavyLight {
 		tin[u] = time++;
 		parent[u] = p;
 		size[u] = 1;
-		for (int v : graph[u])
+		for (int v : tree[u])
 			if (v != p) {
 				calcSizeParentTinTout(v, u);
 				size[u] += size[v];
@@ -123,7 +123,7 @@ public class HeavyLight {
 	void buildPaths(int u, int path) {
 		this.path[u] = path;
 		pathPos[u] = pathSize[path]++;
-		for (int v : graph[u]) {
+		for (int v : tree[u]) {
 			if (v != parent[u])
 				buildPaths(v, 2 * size[v] >= size[u] ? path : newPath(v));
 		}
@@ -229,7 +229,7 @@ public class HeavyLight {
 				int a = rnd.nextInt(n);
 				int b = rnd.nextInt(n);
 				List<Integer> path = new ArrayList<>();
-				getPath(tree, a, b, -1, path);
+				getPathFromAtoB(tree, a, b, -1, path);
 				if (rnd.nextBoolean()) {
 					int delta = rnd.nextInt(50) - 100;
 					hl.modify(a, b, delta);
@@ -258,7 +258,7 @@ public class HeavyLight {
 				int a = rnd.nextInt(n);
 				int b = rnd.nextInt(n);
 				List<Integer> path = new ArrayList<>();
-				getPath(tree, a, b, -1, path);
+				getPathFromAtoB(tree, a, b, -1, path);
 				if (rnd.nextBoolean()) {
 					int delta = rnd.nextInt(50) - 100;
 					hl.modify(a, b, delta);
@@ -285,12 +285,12 @@ public class HeavyLight {
 		return ((long) Math.min(u, v) << 16) + Math.max(u, v);
 	}
 
-	static boolean getPath(List<Integer>[] tree, int a, int b, int p, List<Integer> path) {
+	static boolean getPathFromAtoB(List<Integer>[] tree, int a, int b, int p, List<Integer> path) {
 		path.add(a);
 		if (a == b)
 			return true;
 		for (int u : tree[a])
-			if (u != p && getPath(tree, u, b, a, path))
+			if (u != p && getPathFromAtoB(tree, u, b, a, path))
 				return true;
 		path.remove(path.size() - 1);
 		return false;
@@ -300,15 +300,12 @@ public class HeavyLight {
 		List<Integer>[] t = new List[n];
 		for (int i = 0; i < n; i++)
 			t[i] = new ArrayList<>();
-		List<Integer> p = new ArrayList<>();
-		for (int i = 0; i < n; i++)
-			p.add(i);
-		Collections.shuffle(p, rnd);
+		int[] p = new int[n];
+		for (int i = 0, j; i < n; j = rnd.nextInt(i + 1), p[i] = p[j], p[j] = i, i++) ; // random permutation
 		for (int i = 1; i < n; i++) {
-			int child = p.get(i);
-			int parent = p.get(rnd.nextInt(i));
-			t[parent].add(child);
-			t[child].add(parent);
+			int parent = p[rnd.nextInt(i)];
+			t[parent].add(p[i]);
+			t[p[i]].add(parent);
 		}
 		return t;
 	}

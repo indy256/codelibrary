@@ -1,15 +1,15 @@
 public class SegmentTreeKth {
 
-	public static void add(int[] tree, int i, int delta, int root, int left, int right) {
+	public static void add(int[] tree, int i, int value, int root, int left, int right) {
 		if (left == right) {
-			tree[root] += delta;
+			tree[root] += value;
 			return;
 		}
 		int mid = (left + right) >> 1;
 		if (i <= mid)
-			add(tree, i, delta, 2 * root + 1, left, mid);
+			add(tree, i, value, 2 * root + 1, left, mid);
 		else
-			add(tree, i, delta, 2 * root + 2, mid + 1, right);
+			add(tree, i, value, 2 * root + 2, mid + 1, right);
 		tree[root] = tree[2 * root + 1] + tree[2 * root + 2];
 	}
 

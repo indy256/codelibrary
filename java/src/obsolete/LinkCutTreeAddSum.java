@@ -1,3 +1,5 @@
+package obsolete;
+
 import java.util.*;
 
 // Based on http://www.codeforces.com/contest/117/submission/860934
@@ -80,7 +82,7 @@ public class LinkCutTreeAddSum {
 		// create 3 edges: (x.r(l),p), (p,x), (x,g)
 		connect(leftChildX ? x.right : x.left, p, leftChildX);
 		connect(p, x, !leftChildX);
-		connect(x, g, !isRootP ? p == g.left : null);
+		connect(x, g, isRootP ? null : p == g.left);
 		p.update();
 	}
 
@@ -200,7 +202,7 @@ public class LinkCutTreeAddSum {
 				} else if (cmd == 1) {
 					if (connected(x, y)) {
 						List<Integer> path = new ArrayList<>();
-						getPath(g, u, v, -1, path);
+						getPathFromAtoB(g, u, v, -1, path);
 						int sum = 0;
 						for (int i : path)
 							sum += val[i];
@@ -210,7 +212,7 @@ public class LinkCutTreeAddSum {
 				} else if (cmd == 2) {
 					if (connected(x, y)) {
 						List<Integer> path = new ArrayList<>();
-						getPath(g, u, v, -1, path);
+						getPathFromAtoB(g, u, v, -1, path);
 						int delta = rnd.nextInt(100) + 1;
 						for (int i : path)
 							val[i] += delta;
@@ -226,12 +228,12 @@ public class LinkCutTreeAddSum {
 		}
 	}
 
-	static boolean getPath(boolean[][] g, int u, int v, int p, List<Integer> path) {
+	static boolean getPathFromAtoB(boolean[][] tree, int u, int v, int p, List<Integer> path) {
 		path.add(u);
 		if (u == v)
 			return true;
-		for (int i = 0; i < g.length; i++)
-			if (i != p && g[u][i] && getPath(g, i, v, u, path))
+		for (int i = 0; i < tree.length; i++)
+			if (i != p && tree[u][i] && getPathFromAtoB(tree, i, v, u, path))
 				return true;
 		path.remove(path.size() - 1);
 		return false;
