@@ -1,3 +1,5 @@
+package obsolete.trees;
+
 public class SegmentTreeKth {
 
 	public static void add(int[] tree, int i, int value, int root, int left, int right) {

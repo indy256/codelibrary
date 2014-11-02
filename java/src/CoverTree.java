@@ -33,7 +33,7 @@ public class CoverTree {
 		}
 
 		public List<Node> getChildren(int level) {
-			return children[level] != null ? children[level] : Collections.<Node> emptyList();
+			return children[level] != null ? children[level] : Collections.<Node>emptyList();
 		}
 
 		public Node(double x, double y) {

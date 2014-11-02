@@ -1,4 +1,4 @@
-package experimental.trees;
+package experimental;
 public class SegmentTreeAddZeroCount {
 	int[] add;
 	int[] minCount;

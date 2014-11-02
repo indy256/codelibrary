@@ -1,4 +1,4 @@
-package experimental.trees;
+package obsolete.trees;
 public class SegmentTreeIntervalAddSum {
 
 	int n;
