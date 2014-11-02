@@ -58,7 +58,7 @@ public class TreapImplicitKey {
 	public static class Treap {
 		int nodeValue;
 		int subTreeValue;
-		int delta;
+		int delta; // delta affects nodeValue, subTreeValue, left.delta and right.delta
 		int size;
 		long prio;
 		Treap left;

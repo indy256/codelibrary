@@ -46,7 +46,7 @@ public class LinkCutTree {
 	public static class Node {
 		int nodeValue;
 		int subTreeValue;
-		int delta;
+		int delta; // delta affects nodeValue, subTreeValue, left.delta and right.delta
 		int size;
 		boolean revert;
 		Node left;
