@@ -5,14 +5,14 @@ public class Trie {
 	}
 
 	public static void insertString(TrieNode root, String s) {
-		TrieNode v = root;
+		TrieNode cur = root;
 		for (char ch : s.toCharArray()) {
-			TrieNode next = v.children[ch];
-			if (next == null)
-				v.children[ch] = next = new TrieNode();
-			v = next;
+			if (cur.children[ch] == null) {
+				cur.children[ch] = new TrieNode();
+			}
+			cur = cur.children[ch];
 		}
-		v.leaf = true;
+		cur.leaf = true;
 	}
 
 	public static void printSorted(TrieNode node, String s) {
