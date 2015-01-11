@@ -10,9 +10,7 @@ public class Lis2 {
 		int len = 0;
 		for (int i = 0; i < n; i++) {
 			int pos = lower_bound(a, tail, len, a[i]);
-			if (pos == len) {
-				++len;
-			}
+			len = Math.max(len, pos + 1);
 			prev[i] = pos > 0 ? tail[pos - 1] : -1;
 			tail[pos] = i;
 		}
@@ -59,9 +57,35 @@ public class Lis2 {
 				a[i] = rnd.nextInt(10);
 			int[] lis = lis(a);
 			checkLis(a, lis);
-			if (lis.length != lisSize(a))
+			if (lis.length != lisSize(a) || lis.length != lisSize2(a))
 				throw new RuntimeException();
 		}
+	}
+
+	static int lisSize2(int[] a) {
+		int[] last = new int[a.length];
+		Arrays.fill(last, Integer.MAX_VALUE);
+		int len = 0;
+		for (int v : a) {
+			int pos = lower_bound(last, v);
+			last[pos] = v;
+			len = Math.max(len, pos + 1);
+		}
+		return len;
+	}
+
+	static int lower_bound(int[] a, int key) {
+		int lo = -1;
+		int hi = a.length;
+		while (hi - lo > 1) {
+			int mid = (lo + hi) >>> 1;
+			if (a[mid] < key) {
+				lo = mid;
+			} else {
+				hi = mid;
+			}
+		}
+		return hi;
 	}
 
 	static void checkLis(int[] a, int[] lis) {
