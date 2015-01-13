@@ -108,7 +108,6 @@ public class RecursiveDescentParser {
             this.value = value;
             this.op1 = op1;
             this.op2 = op2;
-            this.op3 = op3;
         }
     }
 
@@ -246,9 +245,9 @@ public class RecursiveDescentParser {
     }
 
     static class Compiler {
-        final List<Object> program = new ArrayList<>();
-
         List<Object> compile(Node node) {
+            List<Object> program = new ArrayList<>();
+
             switch (node.kind) {
                 case VAR:
                     program.add(Command.IFETCH);
