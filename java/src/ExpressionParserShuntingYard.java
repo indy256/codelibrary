@@ -1,7 +1,7 @@
 import javax.script.*;
 import java.util.LinkedList;
 
-public class ExpressionParser {
+public class ExpressionParserShuntingYard {
 
 	static boolean isDelim(char c) {
 		return c == ' ';
@@ -48,8 +48,8 @@ public class ExpressionParser {
 	}
 
 	public static int eval(String s) {
-		LinkedList<Integer> st = new LinkedList<Integer>();
-		LinkedList<Character> op = new LinkedList<Character>();
+		LinkedList<Integer> st = new LinkedList<>();
+		LinkedList<Character> op = new LinkedList<>();
 		for (int i = 0; i < s.length(); i++) {
 			char c = s.charAt(i);
 			if (isDelim(c))
