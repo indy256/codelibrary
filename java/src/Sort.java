@@ -3,7 +3,7 @@ import java.util.function.IntPredicate;
 
 public class Sort {
 
-	static Random rnd = new Random();
+	static Random rnd = new Random(1);
 
 	public static void qSort(int[] a, int low, int high) {
 		if (high - low < 1)

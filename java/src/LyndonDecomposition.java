@@ -2,6 +2,25 @@ import java.util.*;
 
 public class LyndonDecomposition {
 
+	public static String minCyclicShift(String a) {
+		char[] s = (a + a).toCharArray();
+		int n = s.length;
+		int res = 0;
+		for (int i = 0; i < n / 2; ) {
+			res = i;
+			int j = i + 1, k = i;
+			while (j < n && s[k] <= s[j]) {
+				if (s[k] < s[j])
+					k = i;
+				else
+					++k;
+				++j;
+			}
+			while (i <= k) i += j - k;
+		}
+		return new String(s, res, n / 2);
+	}
+
 	public static String[] decompose(String s) {
 		List<String> res = new ArrayList<>();
 		char[] a = s.toCharArray();
@@ -28,5 +47,6 @@ public class LyndonDecomposition {
 		String s = "bara";
 		String[] decompose = decompose(s);
 		System.out.println(Arrays.toString(decompose));
+		System.out.println(minCyclicShift(s));
 	}
 }
