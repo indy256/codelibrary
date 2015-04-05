@@ -5,8 +5,8 @@ public class PointLocationRtree {
 	static class Polygon {
 		final int[] x;
 		final int[] y;
-		final double centerX;
-		final double centerY;
+		final int centerX;
+		final int centerY;
 		final int id;
 
 		public Polygon(int[] x, int[] y, int id) {
@@ -17,11 +17,11 @@ public class PointLocationRtree {
 			this.id = id;
 		}
 
-		static double average(int[] a) {
-			double res = 0;
+		static int average(int[] a) {
+			long res = 0;
 			for (int v : a)
 				res += v;
-			return res / a.length;
+			return (int) (res / a.length);
 		}
 	}
 
@@ -134,7 +134,6 @@ public class PointLocationRtree {
 	// random test
 	public static void main(String[] args) {
 		for (int step = 0; step < 10_000; step++) {
-			System.out.println(step);
 			int range = 10;
 			int R = 3;
 			int C = 3;

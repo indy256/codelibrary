@@ -1,68 +1,93 @@
+package obsolete;
+
 import java.util.Random;
 
-public class SuffixTree {
-	static final String ALPHABET = "abcdefghijklmnopqrstuvwxyz0123456789\1\2";
+public class SuffixTreeOld {
+	static final String ALPHABET = "abcdefghijklmnopqrstuvwxyz1234567890\1\2";
 
 	public static class Node {
 		int begin;
 		int end;
-		int depth; // distance in characters from root to this node
+		int depth; // distance in characters from tree root to this node
 		Node parent;
 		Node[] children;
-		Node suffixLink;
+		Node suffixLink; // null means link to root
 
 		Node(int begin, int end, int depth, Node parent) {
+			children = new Node[ALPHABET.length()];
 			this.begin = begin;
 			this.end = end;
 			this.parent = parent;
 			this.depth = depth;
-			children = new Node[ALPHABET.length()];
+		}
+
+		boolean contains(int d) {
+			return depth <= d && d < depth + (end - begin);
 		}
 	}
 
 	public static Node buildSuffixTree(CharSequence s) {
 		int n = s.length();
 		byte[] a = new byte[n];
-		for (int i = 0; i < n; i++) a[i] = (byte) ALPHABET.indexOf(s.charAt(i));
+		for (int i = 0; i < n; i++)
+			a[i] = (byte) ALPHABET.indexOf(s.charAt(i));
 		Node root = new Node(0, 0, 0, null);
-		Node node = root;
-		for (int i = 0, tail = 0; i < n; i++, tail++) {
-			Node last = null;
-			while (tail >= 0) {
-				Node ch = node.children[a[i - tail]];
-				while (ch != null && tail >= ch.end - ch.begin) {
-					tail -= ch.end - ch.begin;
-					node = ch;
-					ch = ch.children[a[i - tail]];
-				}
-				if (ch == null) {
-					node.children[a[i]] = new Node(i, n, node.depth + node.end - node.begin, node);
-					if (last != null) last.suffixLink = node;
-					last = null;
-				} else {
-					byte t = a[ch.begin + tail];
-					if (t == a[i]) {
-						if (last != null) last.suffixLink = node;
-						break;
-					} else {
-						Node splitNode = new Node(ch.begin, ch.begin + tail, node.depth + node.end - node.begin, node);
-						splitNode.children[a[i]] = new Node(i, n, ch.depth + tail, splitNode);
-						splitNode.children[t] = ch;
-						ch.begin += tail;
-						ch.depth += tail;
-						ch.parent = splitNode;
-						node.children[a[i - tail]] = splitNode;
-						if (last != null) last.suffixLink = splitNode;
-						last = splitNode;
+		Node cn = root;
+		// root.suffixLink must be null, but that way it gets more convenient processing
+		root.suffixLink = root;
+		Node needsSuffixLink = null;
+		int lastRule = 0;
+		for (int i = 0, j = 0; i < n; i++) {// strings s[j..i-1] are already in tree, add s[i] to it
+			int cur = a[i]; // last char of current string
+			for (; j <= i; j++) {
+				int curDepth = i - j;
+				if (lastRule != 3) {
+					cn = cn.suffixLink != null ? cn.suffixLink : cn.parent.suffixLink;
+					int k = j + cn.depth;
+					while (curDepth > 0 && !cn.contains(curDepth - 1)) {
+						k += cn.end - cn.begin;
+						cn = cn.children[a[k]];
 					}
 				}
-				if (node == root) {
-					--tail;
-				} else {
-					node = node.suffixLink;
+				if (!cn.contains(curDepth)) { // explicit node
+					if (needsSuffixLink != null) {
+						needsSuffixLink.suffixLink = cn;
+						needsSuffixLink = null;
+					}
+					if (cn.children[cur] == null) {
+						// no extension - add leaf
+						cn.children[cur] = new Node(i, n, curDepth, cn);
+						lastRule = 2;
+					} else {
+						cn = cn.children[cur];
+						lastRule = 3; // already exists
+						break;
+					}
+				} else { // implicit node
+					int end = cn.begin + curDepth - cn.depth;
+					if (a[end] != cur) { // split implicit node here
+						Node newn = new Node(cn.begin, end, cn.depth, cn.parent);
+						newn.children[cur] = new Node(i, n, curDepth, newn);
+						newn.children[a[end]] = cn;
+						cn.parent.children[a[cn.begin]] = newn;
+						if (needsSuffixLink != null) {
+							needsSuffixLink.suffixLink = newn;
+						}
+						cn.begin = end;
+						cn.depth = curDepth;
+						cn.parent = newn;
+						cn = needsSuffixLink = newn;
+						lastRule = 2;
+					} else if (cn.end != n || cn.begin - cn.depth < j) {
+						lastRule = 3;
+						break;
+					} else {
+						lastRule = 1;
+					}
 				}
 			}
 		}
+		root.suffixLink = null;
 		return root;
 	}
 
@@ -74,7 +99,7 @@ public class SuffixTree {
 			int n2 = rnd.nextInt(10);
 			String s1 = getRandomString(n1, rnd);
 			String s2 = getRandomString(n2, rnd);
-			// build generalized suffix tree
+			// build generalized suffix tree (see Gusfield, p.125)
 			String s = s1 + '\1' + s2 + '\2';
 			Node tree = buildSuffixTree(s);
 			lcsLength = 0;
@@ -84,9 +109,6 @@ public class SuffixTree {
 			int res2 = slowLcs(s1, s2);
 			if (lcsLength != res2) {
 				System.err.println(s.substring(lcsBeginIndex - 1, lcsBeginIndex + lcsLength - 1));
-				System.err.println(s1);
-				System.err.println(s2);
-				System.err.println(lcsLength + " " + res2);
 				throw new RuntimeException();
 			}
 		}
