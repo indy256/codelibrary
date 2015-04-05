@@ -1,5 +1,6 @@
 import java.util.Random;
 
+// See http://codeforces.ru/blog/entry/16780 for description
 public class SuffixTree {
 	static final String ALPHABET = "abcdefghijklmnopqrstuvwxyz0123456789\1\2";
 
