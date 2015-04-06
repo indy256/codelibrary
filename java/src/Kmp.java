@@ -20,16 +20,14 @@ public class Kmp {
 		if (m == 0)
 			return 0;
 		int[] p = prefixFunction(pattern);
-		for (int i = 0, k = 0; i < s.length(); i++)
-			for (; ; k = p[k - 1]) {
-				if (pattern.charAt(k) == s.charAt(i)) {
-					if (++k == m)
-						return i + 1 - m;
-					break;
-				}
-				if (k == 0)
-					break;
-			}
+		for (int i = 0, k = 0; i < s.length(); i++) {
+			while (k > 0 && pattern.charAt(k) != s.charAt(i))
+				k = p[k - 1];
+			if (pattern.charAt(k) == s.charAt(i))
+				++k;
+			if (k == m)
+				return i + 1 - m;
+		}
 		return -1;
 	}
 
