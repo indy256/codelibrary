@@ -18,8 +18,6 @@ public class ZFunction {
 		return z;
 	}
 
-	// Usage example
-
 	// random tests
 	public static void main(String[] args) {
 		Random rnd = new Random(1);
