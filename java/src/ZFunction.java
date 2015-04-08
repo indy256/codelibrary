@@ -1,4 +1,4 @@
-import java.util.Arrays;
+import java.util.Random;
 
 public class ZFunction {
 
@@ -10,7 +10,7 @@ public class ZFunction {
 				z[i] = Math.min(r - i + 1, z[i - l]);
 			while (i + z[i] < z.length && s.charAt(z[i]) == s.charAt(i + z[i]))
 				++z[i];
-			if (i + z[i] - 1 > r) {
+			if (r < i + z[i] - 1) {
 				l = i;
 				r = i + z[i] - 1;
 			}
@@ -19,7 +19,33 @@ public class ZFunction {
 	}
 
 	// Usage example
+
+	// random tests
 	public static void main(String[] args) {
-		System.out.println(Arrays.toString(zFunction("0010010")));
+		Random rnd = new Random(1);
+		for (int step = 0; step < 10_000; step++) {
+			String s = getRandomString(rnd, 100);
+			String pattern = getRandomString(rnd, 5);
+			int pos1 = find(s, pattern);
+			int pos2 = s.indexOf(pattern);
+			if (pos1 != pos2)
+				throw new RuntimeException();
+		}
+	}
+
+	static int find(String s, String pattern) {
+		int[] z = zFunction(pattern + "\0" + s);
+		for (int i = pattern.length() + 1; i < z.length; i++)
+			if (z[i] == pattern.length())
+				return i - pattern.length() - 1;
+		return -1;
+	}
+
+	static String getRandomString(Random rnd, int maxlen) {
+		int n = rnd.nextInt(maxlen) + 1;
+		char[] s = new char[n];
+		for (int i = 0; i < n; i++)
+			s[i] = (char) ('a' + rnd.nextInt(3));
+		return new String(s);
 	}
 }
