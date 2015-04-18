@@ -2,7 +2,7 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.util.Random;
 
-public class AngleAreaOrientationRotationPerpendicular {
+public class AngleAreaOrientationSortRotationPerpendicular {
 
 	public static double angleBetween(long ax, long ay, long bx, long by) {
 		double a = Math.atan2(ax * by - ay * bx, ax * bx + ay * by);
@@ -32,6 +32,20 @@ public class AngleAreaOrientationRotationPerpendicular {
 		cy -= ay;
 		long cross = bx * cy - by * cx;
 		return cross < 0 ? -1 : cross > 0 ? 1 : 0;
+	}
+
+	public static class Point implements Comparable<Point> {
+		int x;
+		int y;
+
+		@Override
+		public int compareTo(Point o) {
+			boolean up1 = y > 0 || (y == 0 && x > 0);
+			boolean up2 = o.y > 0 || (o.y == 0 && o.x > 0);
+			if (up1 != up2) return up1 ? -1 : 1;
+			return Long.signum((long) o.x * y - (long) o.y * x);
+			//return Double.compare(Math.atan2(y, x), Math.atan2(o.y, o.x));
+		}
 	}
 
 	public Point2D.Double rotateCCW(Point2D.Double p, double angle) {
