@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <iostream>
+
 using namespace std;
 
 const int maxn = 200000;
@@ -7,8 +8,8 @@ int Rank[maxn];
 int p[maxn];
 int n;
 
-void init(int _n) {
-	n = _n;
+void init(int n) {
+	::n = n;
 	fill(Rank, Rank + n, 0);
 	for (int i = 0; i < n; i++) p[i] = i;
 }
