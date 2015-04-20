@@ -9,24 +9,31 @@ long long cross(const point &a, const point &b, const point &c) {
 	return (b.first - a.first) * (c.second - a.second) - (b.second - a.second) * (c.first - a.first);
 }
 
-vector<point> convexHull(vector<point> p) {
-	int n = p.size();
-	if (n <= 1)
-		return p;
-	sort(p.begin(), p.end());
-	vector<point> q;
-	for (int i = 0; i < n; q.push_back(p[i++]))
-		while (q.size() >= 2 && cross(q.end()[-2], q.back(), p[i]) >= 0)
-			q.pop_back();
-	for (int i = n - 2, t = q.size(); i >= 0; q.push_back(p[i--]))
-		while (q.size() > t && cross(q.end()[-2], q.back(), p[i]) >= 0)
-			q.pop_back();
-	q.resize(q.size() - 1 - (q[0] == q[1]));
-	return q;
+vector<point> convexHull(vector<point> points) {
+	if (points.size() <= 1)
+		return points;
+	sort(points.begin(), points.end());
+	vector<point> h;
+	for (auto p: points) {
+		while (h.size() >= 2 && cross(h.end()[-2], h.back(), p) >= 0)
+			h.pop_back();
+		h.push_back(p);
+	}
+	reverse(points.begin(), points.end());
+	int upper = h.size();
+	for (auto p: points) {
+		while (h.size() > upper && cross(h.end()[-2], h.back(), p) >= 0)
+			h.pop_back();
+		h.push_back(p);
+	}
+	h.resize(h.size() - 1 - (h[0] == h[1]));
+	return h;
 }
 
+// Usage example
 int main() {
-	vector<point> points = {point(0, 0), point(3, 0), point(0, 3), point(1, 1)};
-	vector<point> hull = convexHull(points);
-	cout << (3 == hull.size()) << endl;
+	vector<point> hull1 = convexHull((vector<point>) {point(0, 0), point(3, 0), point(0, 3), point(1, 1)});
+	cout << (3 == hull1.size()) << endl;
+	vector<point> hull2 = convexHull((vector<point>) {point(0, 0), point(0, 0)});
+	cout << (1 == hull2.size()) << endl;
 }
