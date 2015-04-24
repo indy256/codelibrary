@@ -1,5 +1,4 @@
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class SuffixAutomaton {
 
@@ -80,11 +79,9 @@ public class SuffixAutomaton {
 		}
 	}
 
-	static int bestState;
-
 	static String lcs(String a, String b) {
 		State[] st = buildSuffixAutomaton(a);
-		bestState = 0;
+		int bestState = 0;
 		int len = 0;
 		int bestLen = 0;
 		int bestPos = -1;
