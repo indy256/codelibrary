@@ -127,14 +127,14 @@ public class Sort {
 	}
 
 	static void rotate(int[] a, int first, int middle, int last) {
-		reverse(a, first, middle);
-		reverse(a, middle, last);
-		reverse(a, first, last);
-	}
-
-	static void reverse(int[] a, int from, int to) {
-		while (from < --to)
-			swap(a, from++, to);
+		int next = middle;
+		while (first != next) {
+			swap(a, first++, next++);
+			if (next == last)
+				next = middle;
+			else if (first == middle)
+				middle = next;
+		}
 	}
 
 	static int binarySearchFirstTrue(IntPredicate predicate, int fromInclusive, int toExclusive) {
