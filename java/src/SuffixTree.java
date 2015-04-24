@@ -41,14 +41,14 @@ public class SuffixTree {
 					if (last != null) last.suffixLink = node;
 					last = null;
 				} else {
-					byte t = a[ch.begin + tail];
-					if (t == a[i]) {
+					byte afterTail = a[ch.begin + tail];
+					if (afterTail == a[i]) {
 						if (last != null) last.suffixLink = node;
 						break;
 					} else {
 						Node splitNode = new Node(ch.begin, ch.begin + tail, node.depth + node.end - node.begin, node);
 						splitNode.children[a[i]] = new Node(i, n, ch.depth + tail, splitNode);
-						splitNode.children[t] = ch;
+						splitNode.children[afterTail] = ch;
 						ch.begin += tail;
 						ch.depth += tail;
 						ch.parent = splitNode;
@@ -134,10 +134,6 @@ public class SuffixTree {
 	}
 
 	static String getRandomString(int n, Random rnd) {
-		StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < n; i++) {
-			sb.append((char) ('a' + rnd.nextInt(3)));
-		}
-		return sb.toString();
+		return rnd.ints(n, 0, 3).mapToObj(i -> String.valueOf((char) (i + 'a'))).reduce("", (a, b) -> a + b);
 	}
 }

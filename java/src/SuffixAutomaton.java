@@ -79,7 +79,7 @@ public class SuffixAutomaton {
 		}
 	}
 
-	static int[] occurrences(String haystack, String needle) {
+	public static int[] occurrences(String haystack, String needle) {
 		State[] automaton = buildSuffixAutomaton(haystack);
 		int node = 0;
 		for (char c : needle.toCharArray()) {
@@ -104,7 +104,7 @@ public class SuffixAutomaton {
 		return occurrences.stream().mapToInt(Integer::intValue).sorted().toArray();
 	}
 
-	static String lcs(String a, String b) {
+	public static String lcs(String a, String b) {
 		State[] st = buildSuffixAutomaton(a);
 		int bestState = 0;
 		int len = 0;

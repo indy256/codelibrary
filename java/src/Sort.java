@@ -254,10 +254,7 @@ public class Sort {
 		Random rnd = new Random(1);
 		for (int step = 0; step < 1000; step++) {
 			int n = rnd.nextInt(100) + 1;
-			int[] a = new int[n];
-			for (int i = 0; i < n; i++) {
-				a[i] = rnd.nextInt(1000);
-			}
+			int[] a = rnd.ints(n, 0, 1000).toArray();
 			int[] s = a.clone();
 			Arrays.sort(s);
 
@@ -284,10 +281,7 @@ public class Sort {
 
 		for (int step = 0; step < 10; step++) {
 			int n = rnd.nextInt(50_000) + 100_000;
-			int[] a = new int[n];
-			for (int i = 0; i < n; i++) {
-				a[i] = rnd.nextInt();
-			}
+			int[] a = rnd.ints(n).toArray();
 			int[] s = a.clone();
 			Arrays.sort(s);
 
