@@ -1,60 +1,60 @@
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class SuffixAutomaton {
 
 	public static class State {
 		int length;
 		int suffLink;
+		List<Integer> invSuffLinks = new ArrayList<>(0);
+		int firstPos = -1;
 		int[] next = new int[128];
 
 		{
 			Arrays.fill(next, -1);
 		}
-
-		int endpos;
-		List<Integer> ilink = new ArrayList<>(0);
 	}
 
-	public static State[] buildSuffixAutomaton(String s) {
+	public static State[] buildSuffixAutomaton(CharSequence s) {
 		int n = s.length();
 		State[] st = new State[Math.max(2, 2 * n - 1)];
 		st[0] = new State();
 		st[0].suffLink = -1;
-		st[0].endpos = -1;
 		int last = 0;
 		int size = 1;
-		for (char c : s.toCharArray()) {
+		for (int i = 0; i < s.length(); i++) {
+			char c = s.charAt(i);
 			int cur = size++;
 			st[cur] = new State();
-			st[cur].length = st[last].length + 1;
-			st[cur].endpos = st[last].length;
-			int p;
-			for (p = last; p != -1 && st[p].next[c] == -1; p = st[p].suffLink) {
+			st[cur].length = i + 1;
+			st[cur].firstPos = i;
+			int p = last;
+			for (; p != -1 && st[p].next[c] == -1; p = st[p].suffLink) {
 				st[p].next[c] = cur;
 			}
 			if (p == -1) {
 				st[cur].suffLink = 0;
 			} else {
 				int q = st[p].next[c];
-				if (st[p].length + 1 == st[q].length)
+				if (st[p].length + 1 == st[q].length) {
 					st[cur].suffLink = q;
-				else {
+				} else {
 					int clone = size++;
 					st[clone] = new State();
 					st[clone].length = st[p].length + 1;
-					st[clone].next = st[q].next.clone();
+					System.arraycopy(st[q].next, 0, st[clone].next, 0, st[q].next.length);
 					st[clone].suffLink = st[q].suffLink;
-					for (; p != -1 && st[p].next[c] == q; p = st[p].suffLink)
+					for (; p != -1 && st[p].next[c] == q; p = st[p].suffLink) {
 						st[p].next[c] = clone;
+					}
 					st[q].suffLink = clone;
 					st[cur].suffLink = clone;
-					st[clone].endpos = -1;
 				}
 			}
 			last = cur;
 		}
 		for (int i = 1; i < size; i++) {
-			st[st[i].suffLink].ilink.add(i);
+			st[st[i].suffLink].invSuffLinks.add(i);
 		}
 		return Arrays.copyOf(st, size);
 	}
@@ -63,19 +63,19 @@ public class SuffixAutomaton {
 	public static void main(String[] args) {
 		Random rnd = new Random(1);
 		for (int step = 0; step < 100_000; step++) {
-			int n1 = rnd.nextInt(20);
-			int n2 = rnd.nextInt(20) + 1;
-			String a = getRandomString(n1, rnd);
-			String b = getRandomString(n2, rnd);
+			int len1 = rnd.nextInt(20);
+			int len2 = rnd.nextInt(20) + 1;
+			String a = getRandomString(len1, rnd);
+			String b = getRandomString(len2, rnd);
 			String res1 = lcs(a, b);
 			int res2 = slowLcs(a, b);
 			if (res1.length() != res2)
 				throw new RuntimeException();
-			Integer[] occurrences1 = occurrences(a, b);
+			int[] occurrences1 = occurrences(a, b);
 			List<Integer> occurrences2 = new ArrayList<>();
 			for (int p = a.indexOf(b); p != -1; p = a.indexOf(b, p + 1))
 				occurrences2.add(p);
-			if (!Arrays.equals(occurrences1, occurrences2.toArray(new Integer[occurrences2.size()])))
+			if (!Arrays.equals(occurrences1, occurrences2.stream().mapToInt(Integer::intValue).toArray()))
 				throw new RuntimeException();
 		}
 	}
@@ -111,21 +111,26 @@ public class SuffixAutomaton {
 		return b.substring(bestPos - bestLen + 1, bestPos + 1);
 	}
 
-	static Integer[] occurrences(String haystack, String needle) {
-		String common = lcs(haystack, needle);
-		if (!common.equals(needle))
-			return new Integer[0];
-		List<Integer> list = new ArrayList<>();
-		occurrencesDfs(buildSuffixAutomaton(haystack), bestState, needle.length(), list);
-		Collections.sort(list);
-		return list.toArray(new Integer[list.size()]);
+	static int[] occurrences(String haystack, String needle) {
+		State[] automaton = buildSuffixAutomaton(haystack);
+		int node = 0;
+		for (char c : needle.toCharArray()) {
+			int next = automaton[node].next[c];
+			if (next == -1) {
+				return new int[0];
+			}
+			node = next;
+		}
+		List<Integer> occurrences = new ArrayList<>();
+		collectOccurrences(automaton, node, needle.length(), occurrences);
+		return occurrences.stream().mapToInt(Integer::intValue).sorted().toArray();
 	}
 
-	static void occurrencesDfs(State[] st, int p, int len, List<Integer> list) {
-		if (st[p].endpos != -1 || p == 0)
-			list.add(st[p].endpos - len + 1);
-		for (int x : st[p].ilink)
-			occurrencesDfs(st, x, len, list);
+	static void collectOccurrences(State[] automaton, int curNode, int searchLength, List<Integer> occurrences) {
+		if (automaton[curNode].firstPos != -1)
+			occurrences.add(automaton[curNode].firstPos - searchLength + 1);
+		for (int nextNode : automaton[curNode].invSuffLinks)
+			collectOccurrences(automaton, nextNode, searchLength, occurrences);
 	}
 
 	static int slowLcs(String a, String b) {
@@ -142,10 +147,6 @@ public class SuffixAutomaton {
 	}
 
 	static String getRandomString(int n, Random rnd) {
-		StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < n; i++) {
-			sb.append((char) ('a' + rnd.nextInt(3)));
-		}
-		return sb.toString();
+		return rnd.ints(n, 0, 3).mapToObj(i -> String.valueOf((char) (i + 'a'))).reduce("", (a, b) -> a + b);
 	}
 }
