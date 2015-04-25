@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class SuffixAutomaton {
 
@@ -97,9 +98,7 @@ public class SuffixAutomaton {
 			if (automaton[curNode].firstPos != -1) {
 				occurrences.add(automaton[curNode].firstPos - needle.length() + 1);
 			}
-			for (int nextNode : automaton[curNode].invSuffLinks) {
-				q.add(nextNode);
-			}
+			q.addAll(automaton[curNode].invSuffLinks);
 		}
 		return occurrences.stream().mapToInt(Integer::intValue).sorted().toArray();
 	}
