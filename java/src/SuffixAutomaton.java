@@ -105,7 +105,6 @@ public class SuffixAutomaton {
 
 	public static String lcs(String a, String b) {
 		State[] st = buildSuffixAutomaton(a);
-		int bestState = 0;
 		int len = 0;
 		int bestLen = 0;
 		int bestPos = -1;
@@ -126,7 +125,6 @@ public class SuffixAutomaton {
 			if (bestLen < len) {
 				bestLen = len;
 				bestPos = i;
-				bestState = cur;
 			}
 		}
 		return b.substring(bestPos - bestLen + 1, bestPos + 1);
