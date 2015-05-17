@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.stream.Stream;
 
 public class DijkstraHeap {
 
@@ -39,9 +40,8 @@ public class DijkstraHeap {
 	public static void main(String[] args) {
 		int[][] cost = { { 0, 3, 2 }, { 0, 0, -2 }, { 0, 0, 0 } };
 		int n = cost.length;
-		List<Edge>[] edges = new List[n];
+		List<Edge>[] edges = Stream.generate(ArrayList::new).limit(n).toArray(List[]::new);
 		for (int i = 0; i < n; i++) {
-			edges[i] = new ArrayList<>();
 			for (int j = 0; j < n; j++) {
 				if (cost[i][j] != 0) {
 					edges[i].add(new Edge(j, cost[i][j]));

@@ -22,18 +22,19 @@ public class Euclid {
 
 	// returns { gcd(a,b), x, y } such that gcd(a,b) = a*x + b*y
 	public static long[] euclid(long a, long b) {
-		long x = 1, y = 0, x1 = 0, y1 = 1, t;
+		long x = 1, y = 0, x1 = 0, y1 = 1;
+		// invariant: a=a*x+b*y, b=a*x1+b*y1
 		while (b != 0) {
 			long q = a / b;
-			t = x;
-			x = x1;
-			x1 = t - q * x1;
-			t = y;
-			y = y1;
-			y1 = t - q * y1;
-			t = b;
+			long _x1 = x1;
+			long _y1 = y1;
+			long _b = b;
+			x1 = x - q * x1;
+			y1 = y - q * y1;
 			b = a - q * b;
-			a = t;
+			x = _x1;
+			y = _y1;
+			a = _b;
 		}
 		return a > 0 ? new long[]{a, x, y} : new long[]{-a, -x, -y};
 	}

@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.stream.Stream;
 
 public class BellmanFord {
 
@@ -78,10 +79,7 @@ public class BellmanFord {
 
 	// Usage example
 	public static void main(String[] args) {
-		List<Edge>[] graph = new List[4];
-		for (int i = 0; i < graph.length; i++) {
-			graph[i] = new ArrayList<>();
-		}
+		List<Edge>[] graph = Stream.generate(ArrayList::new).limit(4).toArray(List[]::new);
 		graph[0].add(new Edge(1, 1));
 		graph[1].add(new Edge(0, 1));
 		graph[1].add(new Edge(2, 1));

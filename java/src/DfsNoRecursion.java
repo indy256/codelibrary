@@ -1,5 +1,5 @@
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Stream;
 
 public class DfsNoRecursion {
 
@@ -26,9 +26,7 @@ public class DfsNoRecursion {
 
 	// Usage example
 	public static void main(String[] args) {
-		List<Integer>[] g = new List[3];
-		for (int i = 0; i < g.length; i++)
-			g[i] = new ArrayList<>();
+		List<Integer>[] g = Stream.generate(ArrayList::new).limit(3).toArray(List[]::new);
 
 		g[0].add(1);
 		g[1].add(0);

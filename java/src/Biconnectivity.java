@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.stream.Stream;
 
 public class Biconnectivity {
 
@@ -75,9 +76,7 @@ public class Biconnectivity {
 		for (int i = 0; i < components.size(); i++)
 			for (int u : components.get(i))
 				comp[u] = i;
-		List<Integer>[] g = new List[components.size()];
-		for (int i = 0; i < g.length; i++)
-			g[i] = new ArrayList<>();
+		List<Integer>[] g = Stream.generate(ArrayList::new).limit(components.size()).toArray(List[]::new);
 		for (int u = 0; u < graph.length; u++)
 			for (int v : graph[u])
 				if (comp[u] != comp[v])
@@ -87,10 +86,7 @@ public class Biconnectivity {
 
 	// Usage example
 	public static void main(String[] args) {
-		List<Integer>[] graph = new List[6];
-		for (int i = 0; i < graph.length; i++) {
-			graph[i] = new ArrayList<>();
-		}
+		List<Integer>[] graph = Stream.generate(ArrayList::new).limit(6).toArray(List[]::new);
 
 		int[][] esges = {{0, 1}, {1, 2}, {0, 2}, {2, 3}, {1, 4}, {4, 5}, {5, 1}};
 		for (int[] edge : esges) {

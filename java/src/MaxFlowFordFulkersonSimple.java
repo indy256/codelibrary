@@ -1,7 +1,7 @@
 public class MaxFlowFordFulkersonSimple {
 
 	public static int maxFlow(int[][] cap, int s, int t) {
-		for (int flow = 0;; ++flow)
+		for (int flow = 0; ; ++flow)
 			if (!augmentPath(cap, new boolean[cap.length], s, t))
 				return flow;
 	}
@@ -21,7 +21,7 @@ public class MaxFlowFordFulkersonSimple {
 
 	// Usage example
 	public static void main(String[] args) {
-		int[][] capacity = { { 0, 3, 2 }, { 0, 0, 2 }, { 0, 0, 0 } };
-		System.out.println(4 == maxFlow(capacity, 0, 2));
+		int[][] capacity = {{0, 1, 1, 0}, {1, 0, 1, 1}, {1, 1, 0, 1}, {0, 1, 1, 0}};
+		System.out.println(2 == maxFlow(capacity, 0, 3));
 	}
 }

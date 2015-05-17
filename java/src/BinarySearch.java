@@ -9,7 +9,7 @@ public class BinarySearch {
 		int lo = fromInclusive - 1;
 		int hi = toInclusive + 1;
 		while (hi - lo > 1) {
-			int mid = (lo + hi) >>> 1;
+			int mid = (lo + hi) / 2;
 			if (!predicate.test(mid)) {
 				lo = mid;
 			} else {
@@ -25,6 +25,7 @@ public class BinarySearch {
 		int lo = fromInclusive;
 		int hi = toExclusive;
 		while (lo < hi) {
+			// int mid = lo + ((hi - lo) >>> 1);
 			int mid = (lo & hi) + ((lo ^ hi) >> 1);
 			if (!predicate.test(mid)) {
 				lo = mid + 1;

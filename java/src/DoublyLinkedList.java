@@ -4,6 +4,7 @@ public class DoublyLinkedList {
 	int[] prev;
 
 	public DoublyLinkedList(int maxSize) {
+		// 0 - dummy element
 		next = new int[maxSize + 1];
 		prev = new int[maxSize + 1];
 	}

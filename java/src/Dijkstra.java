@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.stream.Stream;
 
 public class Dijkstra {
 
@@ -42,9 +43,8 @@ public class Dijkstra {
 	public static void main(String[] args) {
 		int[][] cost = {{0, 3, 2}, {0, 0, -2}, {0, 0, 0}};
 		int n = cost.length;
-		List<Edge>[] graph = new List[n];
+		List<Edge>[] graph = Stream.generate(ArrayList::new).limit(n).toArray(List[]::new);
 		for (int i = 0; i < n; i++) {
-			graph[i] = new ArrayList<>();
 			for (int j = 0; j < n; j++) {
 				if (cost[i][j] != 0) {
 					graph[i].add(new Edge(j, cost[i][j]));

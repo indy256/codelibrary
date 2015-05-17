@@ -2,18 +2,24 @@ import java.util.*;
 
 public class ConvexHull {
 
-	public static Point[] convexHull(Point[] p) {
-		int n = p.length;
-		if (n <= 1)
-			return p;
-		Arrays.sort(p, (a, b) -> Integer.compare(a.x, b.x) != 0 ? Integer.compare(a.x, b.x) : Integer.compare(a.y, b.y));
-		Point[] q = new Point[n * 2];
+	public static Point[] convexHull(Point[] points) {
+		Arrays.sort(points, (a, b) -> Integer.compare(a.x, b.x) != 0 ? Integer.compare(a.x, b.x) : Integer.compare(a.y, b.y));
+		int n = points.length;
+		Point[] hull = new Point[n * 2];
 		int cnt = 0;
-		for (int i = 0; i < n; q[cnt++] = p[i++])
-			for (; cnt > 1 && cross(q[cnt - 2], q[cnt - 1], p[i]) >= 0; --cnt) ;
-		for (int i = n - 2, t = cnt; i >= 0; q[cnt++] = p[i--])
-			for (; cnt > t && cross(q[cnt - 2], q[cnt - 1], p[i]) >= 0; --cnt) ;
-		return Arrays.copyOf(q, cnt - 1 - (q[0].x == q[1].x && q[0].y == q[1].y ? 1 : 0));
+		for (int i = 0; i < 2 * n; i++) {
+			int j = i < n ? i : 2 * n - 1 - i;
+			while (cnt >= 2 && removeMiddle(hull[cnt - 2], hull[cnt - 1], points[j]))
+				--cnt;
+			hull[cnt++] = points[j];
+		}
+		return Arrays.copyOf(hull, cnt - 1);
+	}
+
+	static boolean removeMiddle(Point a, Point b, Point c) {
+		long cross = (long) (a.x - b.x) * (c.y - b.y) - (long) (a.y - b.y) * (c.x - b.x);
+		long dot = (long) (a.x - b.x) * (c.x - b.x) + (long) (a.y - b.y) * (c.y - b.y);
+		return cross < 0 || cross == 0 && dot <= 0;
 	}
 
 	public static class Point {
@@ -25,6 +31,22 @@ public class ConvexHull {
 		}
 	}
 
+	public static Point[] convexHull2(Point[] p) {
+		int n = p.length;
+		if (n <= 1)
+			return p;
+		Arrays.sort(p, (a, b) -> Integer.compare(a.x, b.x) != 0 ? Integer.compare(a.x, b.x) : Integer.compare(a.y, b.y));
+		Point[] h = new Point[n * 2];
+		int cnt = 0;
+		for (int i = 0; i < n; h[cnt++] = p[i++])
+			while (cnt > 1 && cross(h[cnt - 2], h[cnt - 1], p[i]) >= 0)
+				--cnt;
+		for (int i = n - 2, t = cnt; i >= 0; h[cnt++] = p[i--])
+			while (cnt > t && cross(h[cnt - 2], h[cnt - 1], p[i]) >= 0)
+				--cnt;
+		return Arrays.copyOf(h, cnt - 1 - (h[0].x == h[1].x && h[0].y == h[1].y ? 1 : 0));
+	}
+
 	static long cross(Point a, Point b, Point c) {
 		return (long) (b.x - a.x) * (c.y - a.y) - (long) (b.y - a.y) * (c.x - a.x);
 	}
@@ -32,14 +54,18 @@ public class ConvexHull {
 	// random test
 	public static void main(String[] args) {
 		Random rnd = new Random(1);
-		for (int step = 0; step < 1000_000; step++) {
+		for (int step = 0; step < 100_000; step++) {
 			int n = rnd.nextInt(10) + 1;
 			Point[] points = new Point[n];
 			for (int i = 0; i < n; i++) {
-				int rangle = 10;
-				points[i] = new Point(rnd.nextInt(rangle) - rangle / 2, rnd.nextInt(rangle) - rangle / 2);
+				int range = 10;
+				points[i] = new Point(rnd.nextInt(range) - range / 2, rnd.nextInt(range) - range / 2);
 			}
 			Point[] convexHull = convexHull(points);
+			Point[] convexHull2 = convexHull2(points);
+			for (int i = 0; i < Math.max(convexHull.length, convexHull2.length); i++)
+				if (convexHull[i].x != convexHull2[i].x || convexHull[i].y != convexHull2[i].y)
+					throw new RuntimeException();
 			for (int i = 0; i <= convexHull.length; i++) {
 				final Point[] hull;
 				if (i == 0) {
