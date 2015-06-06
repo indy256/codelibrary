@@ -1,4 +1,4 @@
-import java.util.Arrays;
+import java.util.*;
 
 public class AhoCorasick {
 
@@ -66,11 +66,14 @@ public class AhoCorasick {
 		ahoCorasick.addString("bc");
 		ahoCorasick.addString("abc");
 
-		String s = "tabc";
+		String s = "tabcbc";
 		int node = 0;
-		for (char ch : s.toCharArray()) {
-			node = ahoCorasick.transition(node, ch);
+		List<Integer> positions = new ArrayList<>();
+		for (int i = 0; i < s.length(); i++) {
+			node = ahoCorasick.transition(node, s.charAt(i));
+			if (ahoCorasick.nodes[node].leaf)
+				positions.add(i);
 		}
-		System.out.println(ahoCorasick.nodes[node].leaf);
+		System.out.println(positions);
 	}
 }

@@ -6,33 +6,32 @@ public class MaximumZeroSubmatrix {
 		int R = a.length;
 		int C = a[0].length;
 
-		int ans = 0;
+		int res = 0;
 		int[] d = new int[C];
 		Arrays.fill(d, -1);
 		int[] d1 = new int[C];
 		int[] d2 = new int[C];
-		Stack<Integer> st = new Stack<>();
+		int[] st = new int[C];
 		for (int r = 0; r < R; ++r) {
 			for (int c = 0; c < C; ++c)
 				if (a[r][c] == 1)
 					d[c] = r;
-			while (!st.empty()) st.pop();
+			int size = 0;
 			for (int c = 0; c < C; ++c) {
-				while (!st.empty() && d[st.peek()] <= d[c]) st.pop();
-				d1[c] = st.empty() ? -1 : st.peek();
-				st.push(c);
+				while (size > 0 && d[st[size - 1]] <= d[c]) --size;
+				d1[c] = size == 0 ? -1 : st[size - 1];
+				st[size++] = c;
 			}
-			while (!st.empty()) st.pop();
+			size = 0;
 			for (int c = C - 1; c >= 0; --c) {
-				while (!st.empty() && d[st.peek()] <= d[c]) st.pop();
-				d2[c] = st.empty() ? C : st.peek();
-				st.push(c);
+				while (size > 0 && d[st[size - 1]] <= d[c]) --size;
+				d2[c] = size == 0 ? C : st[size - 1];
+				st[size++] = c;
 			}
 			for (int j = 0; j < C; ++j)
-				ans = Math.max(ans, (r - d[j]) * (d2[j] - d1[j] - 1));
+				res = Math.max(res, (r - d[j]) * (d2[j] - d1[j] - 1));
 		}
-
-		return ans;
+		return res;
 	}
 
 	// random test
