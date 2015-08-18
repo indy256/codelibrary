@@ -1,3 +1,4 @@
+// https://en.wikipedia.org/wiki/Trie
 public class Trie {
 	static class TrieNode {
 		TrieNode[] children = new TrieNode[128];

@@ -1,6 +1,7 @@
 import java.util.*;
 import java.util.stream.IntStream;
 
+// https://en.wikipedia.org/wiki/Suffix_array
 public class SuffixArray {
 
 	// sort suffixes of S in O(n*log(n))

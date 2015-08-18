@@ -1,5 +1,6 @@
 import java.util.*;
 
+// https://en.wikipedia.org/wiki/R-tree
 public class PointLocationRtree {
 
 	static class Polygon {

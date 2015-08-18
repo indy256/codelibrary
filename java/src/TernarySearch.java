@@ -2,6 +2,7 @@ import java.util.Random;
 import java.util.function.DoubleUnaryOperator;
 import java.util.function.IntUnaryOperator;
 
+// https://en.wikipedia.org/wiki/Ternary_search
 public class TernarySearch {
 
 	// finds maximum of strictly increasing and then strictly decreasing function

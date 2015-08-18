@@ -1,5 +1,6 @@
 import java.util.*;
 
+// https://en.wikipedia.org/wiki/Treap
 public class TreapImplicitKey {
 
 	// Modify the following 5 methods to implement your custom operations on the tree.

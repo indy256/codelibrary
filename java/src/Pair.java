@@ -1,44 +1,41 @@
 import java.util.*;
 
-public class Pair implements Comparable<Pair> {
-	final long u;
-	final long v;
+public class Pair<U extends Comparable<U>, V extends Comparable<V>> implements Comparable<Pair<U, V>> {
+	final U u;
+	final V v;
 
-	public Pair(long u, long v) {
+	public Pair(U u, V v) {
 		this.u = u;
 		this.v = v;
 	}
 
 	public int hashCode() {
-		int hu = (int) (u ^ (u >>> 32));
-		int hv = (int) (v ^ (v >>> 32));
-		return 31 * hu + hv;
+		return (u == null ? 0 : u.hashCode() * 31) + (v == null ? 0 : v.hashCode());
 	}
 
 	public boolean equals(Object o) {
-		Pair other = (Pair) o;
-		return u == other.u && v == other.v;
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
+		Pair<U, V> p = (Pair<U, V>) o;
+		return (u == null ? p.u == null : u.equals(p.u)) && (v == null ? p.v == null : v.equals(p.v));
 	}
 
-	public int compareTo(Pair other) {
-		return Long.compare(u, other.u) != 0 ? Long.compare(u, other.u) : Long.compare(v, other.v);
-	}
-
-	public String toString() {
-		return "[u=" + u + ", v=" + v + "]";
+	public int compareTo(Pair<U, V> b) {
+		int cmpU = u.compareTo(b.u);
+		return cmpU != 0 ? cmpU : v.compareTo(b.v);
 	}
 
 	// Usage example
 	public static void main(String[] args) {
-		Set<Pair> set1 = new TreeSet<>();
-		Set<Pair> set2 = new HashSet<>();
-		for (int i = 0; i < 20; i++) {
-			Pair p = new Pair(i % 5, i % 10);
-			set1.add(p);
-			set2.add(p);
+		Pair<Integer, Integer>[] a = new Pair[10];
+		for (int i = 0; i < a.length; i++) {
+			a[i] = new Pair(a.length - i, i);
 		}
-		System.out.println(true == (set1.size() == set2.size()));
-		System.out.println(set1);
-		System.out.println(set2);
+		Arrays.sort(a);
+		for (Pair p : a) {
+			System.out.println(p.u + " " + p.v);
+		}
 	}
 }

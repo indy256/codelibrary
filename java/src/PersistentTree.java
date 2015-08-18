@@ -1,3 +1,4 @@
+// https://en.wikipedia.org/wiki/Persistent_data_structure
 public class PersistentTree {
 
 	public static class Node {

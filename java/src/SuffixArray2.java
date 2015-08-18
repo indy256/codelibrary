@@ -1,6 +1,7 @@
 import java.util.*;
 import java.util.stream.IntStream;
 
+// https://en.wikipedia.org/wiki/Suffix_array
 public class SuffixArray2 {
 
 	// suffix array in O(n*log^2(n))

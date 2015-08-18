@@ -1,5 +1,6 @@
 import java.util.*;
 
+// https://en.wikipedia.org/wiki/Deterministic_finite_automaton
 public class SuffixAutomaton {
 
 	public static class State {

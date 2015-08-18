@@ -1,5 +1,6 @@
 import java.util.*;
 
+// https://en.wikipedia.org/wiki/Pr?fer_sequence
 public class RandomGraph {
 
 	public static List<Integer>[] getRandomTree2(int n, Random rnd) {

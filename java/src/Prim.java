@@ -1,5 +1,6 @@
 import java.util.Arrays;
 
+// https://en.wikipedia.org/wiki/Prim%27s_algorithm
 public class Prim {
 
 	public static long mstPrim(int[][] d) {

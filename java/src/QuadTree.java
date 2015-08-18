@@ -1,3 +1,4 @@
+// https://en.wikipedia.org/wiki/Quadtree
 public class QuadTree {
 
 	static class Node {

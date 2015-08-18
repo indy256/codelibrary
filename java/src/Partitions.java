@@ -1,5 +1,6 @@
 import java.util.*;
 
+// https://en.wikipedia.org/wiki/Partition_(number_theory)
 public class Partitions {
 
 	public static boolean nextPartition(List<Integer> p) {

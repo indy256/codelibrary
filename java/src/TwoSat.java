@@ -1,5 +1,6 @@
 import java.util.*;
 
+// https://en.wikipedia.org/wiki/2-satisfiability
 public class TwoSat {
 
 	static void dfs1(List<Integer>[] graph, boolean[] used, List<Integer> order, int u) {

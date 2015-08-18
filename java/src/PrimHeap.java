@@ -1,5 +1,6 @@
 import java.util.*;
 
+// https://en.wikipedia.org/wiki/Prim%27s_algorithm
 public class PrimHeap {
 
 	public static long mst(List<Edge>[] edges, int[] pred) {

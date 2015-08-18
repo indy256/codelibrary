@@ -1,5 +1,6 @@
 import java.util.*;
 
+// https://en.wikipedia.org/wiki/Point_location
 public class PointLocationOffline {
 
 	public static int[] locatePoints(int[][] polygonX, int[][] polygonY, int[] qx, int[] qy) {
