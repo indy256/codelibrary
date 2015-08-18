@@ -2,7 +2,7 @@
 
 ## The following topics are covered:
 
-* **Trees**: segment tree, Fenwick tree, k-d tree, R-tree, quadtree, persistent tree, link/cut tree, binary heap, disjoint-sets, treap
+* **Trees**: segment tree, Fenwick tree, k-d tree, R-tree, metric tree, quadtree, persistent tree, link/cut tree, binary heap, disjoint-sets, treap
 * **Graph algorithms**: shortest paths, maximum flow, biconnectivity
 * **String algorithms**: suffix tree, suffix automata, suffix array, trie, Knuth–Morris–Pratt algorithm, Z-function
 * **Sorting algorithms**: quick-sort, merge, heap, bubble, selection, insertion, counting, radix; Kth order statistic
