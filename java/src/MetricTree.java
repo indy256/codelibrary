@@ -9,12 +9,13 @@ public class MetricTree {
 	public MetricTree(int[] x, int[] y) {
 		this.x = x;
 		this.y = y;
-		int n = x.length;
-		build(0, n);
+		build(0, x.length);
 	}
 
+	static final Random rnd = new Random(1);
+
 	void build(int low, int high) {
-		if (low >= high - 2)
+		if (high - low <= 2)
 			return;
 		swap(low + rnd.nextInt(high - low), low);
 		int mid = (low + 1 + high) >>> 1;
@@ -37,8 +38,6 @@ public class MetricTree {
 				return;
 		}
 	}
-
-	static final Random rnd = new Random(1);
 
 	int randomizedPartition(int center, int low, int high) {
 		swap(low + rnd.nextInt(high - low), high - 1);
@@ -75,7 +74,7 @@ public class MetricTree {
 	}
 
 	void findNearestNeighbour(int low, int high, int px, int py) {
-		if (low >= high)
+		if (high - low <= 0)
 			return;
 		long d2 = dist2(px, py, x[low], y[low]);
 		if (bestDist > d2) {
@@ -83,7 +82,7 @@ public class MetricTree {
 			bestNode = low;
 		}
 
-		if (low + 1 >= high)
+		if (high - low <= 1)
 			return;
 
 		int mid = (low + 1 + high) >>> 1;
@@ -121,7 +120,7 @@ public class MetricTree {
 			}
 			MetricTree metricTree = new MetricTree(x, y);
 			int index = metricTree.findNearestNeighbour(qx, qy);
-			if (minDist != metricTree.bestDist || (long) (x[index] - qx) * (x[index] - qx) + (long) (y[index] - qy) * (y[index] - qy) != minDist)
+			if (minDist != metricTree.bestDist || dist2(qx, qy, x[index], y[index]) != minDist)
 				throw new RuntimeException();
 		}
 	}

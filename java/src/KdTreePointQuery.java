@@ -8,12 +8,11 @@ public class KdTreePointQuery {
 	public KdTreePointQuery(int[] x, int[] y) {
 		this.x = x;
 		this.y = y;
-		int n = x.length;
-		build(0, n, true);
+		build(0, x.length, true);
 	}
 
 	void build(int low, int high, boolean divX) {
-		if (low >= high - 1)
+		if (high - low <= 1)
 			return;
 		int mid = (low + high) >>> 1;
 		nth_element(low, high, mid, divX);
@@ -66,7 +65,7 @@ public class KdTreePointQuery {
 	}
 
 	void findNearestNeighbour(int low, int high, int px, int py, boolean divX) {
-		if (low >= high)
+		if (high - low <= 0)
 			return;
 		int mid = (low + high) >>> 1;
 		long dx = px - x[mid];
