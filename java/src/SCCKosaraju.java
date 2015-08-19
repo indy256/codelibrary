@@ -1,5 +1,6 @@
 import java.util.*;
 
+// https://en.wikipedia.org/wiki/Kosaraju%27s_algorithm
 public class SCCKosaraju {
 
 	public static List<List<Integer>> scc(List<Integer>[] graph) {

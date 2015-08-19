@@ -1,6 +1,6 @@
 import java.util.*;
 
-// optimized version of http://en.wikipedia.org/wiki/Tarjan's_strongly_connected_components_algorithm
+// optimized version of https://en.wikipedia.org/wiki/Tarjan%27s_strongly_connected_components_algorithm
 public class SCCTarjan {
 
 	List<Integer>[] graph;

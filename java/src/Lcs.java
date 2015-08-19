@@ -1,5 +1,6 @@
 import java.util.*;
 
+// https://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 public class Lcs {
 
 	public static int[] getLCS(int[] x, int[] y) {

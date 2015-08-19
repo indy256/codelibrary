@@ -1,5 +1,6 @@
 import java.util.Random;
 
+// https://en.wikipedia.org/wiki/Knuth–Morris–Pratt_algorithm
 public class Kmp {
 
 	public static int[] prefixFunction(String s) {

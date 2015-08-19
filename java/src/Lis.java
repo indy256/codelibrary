@@ -1,5 +1,6 @@
 import java.util.*;
 
+// https://en.wikipedia.org/wiki/Longest_increasing_subsequence
 public class Lis {
 
 	public static int[] getLis(int[] x) {
