@@ -1,5 +1,6 @@
 import java.util.*;
 
+// https://ru.wikipedia.org/wiki/Размещение
 public class Arrangements {
 
 	public static boolean nextArrangement(int[] a, int n) {

@@ -1,6 +1,7 @@
 import java.io.*;
 import java.util.*;
 
+// https://en.wikipedia.org/wiki/Arithmetic_coding
 public class ArithmeticCoding {
 
 	final int BITS = 30;

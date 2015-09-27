@@ -1,5 +1,6 @@
 import java.util.*;
 
+// https://en.wikipedia.org/wiki/Combination
 public class Combinations {
 
 	public static boolean nextCombination(int[] p, int n) {

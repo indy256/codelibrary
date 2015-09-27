@@ -1,38 +1,28 @@
 import java.math.BigInteger;
 
 public class Rational implements Comparable<Rational> {
-	final BigInteger num;
-	final BigInteger den;
-
 	public static final Rational ZERO = new Rational(0);
 	public static final Rational ONE = new Rational(1);
 	public static final Rational POSITIVE_INFINITY = new Rational(1, 0);
 	public static final Rational NEGATIVE_INFINITY = new Rational(-1, 0);
 
-	public Rational(long num) {
-		this.num = BigInteger.valueOf(num);
-		this.den = BigInteger.ONE;
+	final BigInteger num;
+	final BigInteger den;
+
+	public Rational(BigInteger num, BigInteger den) {
+		BigInteger gcd = num.gcd(den);
+		BigInteger g = den.signum() > 0 ? gcd : den.signum() > 0 ? gcd.negate() : BigInteger.ONE;
+		this.num = num.divide(g);
+		this.den = den.divide(g);
 	}
 
 	public Rational(long num, long den) {
 		this(BigInteger.valueOf(num), BigInteger.valueOf(den));
 	}
 
-	public Rational(BigInteger num, BigInteger den) {
-		// reduce
-		if (!den.abs().equals(BigInteger.ONE)) {
-			BigInteger gcd = num.gcd(den);
-			if (gcd.signum() != 0 && !gcd.equals(BigInteger.ONE)) {
-				num = num.divide(gcd);
-				den = den.divide(gcd);
-			}
-		}
-		if (den.signum() < 0) {
-			num = num.negate();
-			den = den.negate();
-		}
-		this.num = num;
-		this.den = den;
+	public Rational(long num) {
+		this.num = BigInteger.valueOf(num);
+		this.den = BigInteger.ONE;
 	}
 
 	public Rational add(Rational r) {

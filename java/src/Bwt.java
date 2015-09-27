@@ -1,6 +1,7 @@
 import java.io.*;
 import java.util.*;
 
+// https://en.wikipedia.org/wiki/Burrows–Wheeler_transform
 public class Bwt {
 
 	public static TransformedData bwt(byte[] s) {
