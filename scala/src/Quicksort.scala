@@ -1,13 +1,12 @@
 object Quicksort {
 
   // functional implementation. slow
-  def quicksort(a: Array[Int]): Array[Int] = {
+  def quicksort(a: Array[Int]): Array[Int] =
     if (a.length <= 1) a
     else {
       val pivot = a(a.length / 2)
       quicksort(a filter (pivot >)) ++ (a filter (pivot ==)) ++ quicksort(a filter (pivot <))
     }
-  }
 
   // imperative implementation. fast
   def quicksort2(a: Array[Int]) {
@@ -37,12 +36,12 @@ object Quicksort {
 
   // test
   def main(args: Array[String]) {
-    val N = 1000000
-    var a = scala.util.Random.shuffle((0 until N).asInstanceOf[Seq[Int]]).toArray
+    val N = 100000
+    var a = scala.util.Random.shuffle(0 until N: Seq[Int]).toArray
 
     val start = System.currentTimeMillis
     a = quicksort(a)
-    //  quicksort2(a)
+    // quicksort2(a)
     println(System.currentTimeMillis - start)
 
     (0 until N).foreach(i => assert(i == a(i)))
