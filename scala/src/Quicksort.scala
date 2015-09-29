@@ -1,12 +1,14 @@
 object Quicksort {
 
   // functional implementation. slow
-  def quicksort(a: Array[Int]): Array[Int] =
-    if (a.length <= 1) a
-    else {
-      val pivot = a(a.length / 2)
-      quicksort(a filter (pivot >)) ++ (a filter (pivot ==)) ++ quicksort(a filter (pivot <))
-    }
+  def quicksort(xs: Array[Int]): Array[Int] =
+    if (xs.length <= 1) xs
+    else quicksort(xs filter (xs(0) >)) ++ (xs filter (xs(0) ==)) ++ quicksort(xs filter (xs(0) <))
+
+  def quicksort_(xs: Array[Int]): Array[Int] = xs match {
+    case Array() => xs
+    case Array(x, s@_*) => quicksort(Array(s: _*) filter (x >=)) ++ Array(x) ++ quicksort(Array(s: _*) filter (x <))
+  }
 
   // imperative implementation. fast
   def quicksort2(a: Array[Int]) {

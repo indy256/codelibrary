@@ -2,9 +2,12 @@ import scala.language.implicitConversions
 import scala.math.BigInt
 
 class Rational(num: BigInt, den: BigInt = 1) extends Ordered[Rational] {
-  private val g = if (den.signum > 0) num.gcd(den) else if (den.signum < 0) -num.gcd(den) else BigInt(1)
-  val n = num / g
-  val d = den / g
+  private def normalize(num: BigInt, den: BigInt) = {
+    val g = if (den.signum > 0) num.gcd(den) else if (den.signum < 0) -num.gcd(den) else BigInt(1)
+    (num / g, den / g)
+  }
+
+  val (n, d) = normalize(num, den)
 
   def +(that: Rational) = new Rational(n * that.d + that.n * d, d * that.d)
 
@@ -52,7 +55,7 @@ object Rational {
 
   // Usage example
   def main(args: Array[String]) {
-    val a = new Rational(1, 3)
+    val a = 1 / new Rational(3)
     val b = new Rational(1, 6)
     val c = new Rational(1, 2)
     assert(c == a + b)
