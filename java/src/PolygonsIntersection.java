@@ -97,10 +97,20 @@ public class PolygonsIntersection {
 				return false;
 			}
 			Event e = (Event) obj;
-			if (y == e.y) {
+			if (Double.compare(y, e.y) == 0) {
 				return Integer.compare(maskDelta, e.maskDelta) == 0;
 			}
-			return Double.compare(y, e.y) == 0;
+			return false;
+		}
+
+		@Override
+		public int hashCode() {
+			int hash = 17;
+			long yBits = Double.doubleToLongBits(y);
+			int yHash = (int) (yBits ^ (yBits >>> 32));
+			hash = (hash << 5) - hash + yHash;
+			hash = (hash << 5) - hash + maskDelta;
+			return hash;
 		}
 	}
 

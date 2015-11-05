@@ -201,6 +201,14 @@ public class GeneticAlgorithm extends JFrame {
 			Chromosome c = (Chromosome) obj;
 			return Double.compare(getCost(), c.getCost()) == 0;
 		}
+
+		@Override
+		public int hashCode() {
+			int hash = 17;
+			long tmp = Double.doubleToLongBits(getCost());
+			int costHash = (int) (tmp ^ (tmp >>> 32));
+			return (hash << 5) - hash + costHash;
+		}
 	}
 
 	static class Population {

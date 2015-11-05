@@ -55,6 +55,14 @@ public class AngleAreaOrientationSortRotationPerpendicular {
 			Point p = (Point) obj;
 			return Long.signum((long) p.x * y - (long) p.y * x) == 0;
 		}
+
+		@Override
+		public int hashCode() {
+			int hash = 17; // Just as Mr.Bloch said...
+			hash = (hash << 5) - hash + x;
+			hash = (hash << 5) - hash + y;
+			return hash;
+		}
 	}
 
 	public Point2D.Double rotateCCW(Point2D.Double p, double angle) {

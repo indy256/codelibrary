@@ -50,6 +50,16 @@ public class SegmentsUnion {
 			}
 			return Double.compare(x, p.x) == 0;
 		}
+
+		@Override
+		public int hashCode() {
+			int hash = 17;
+			long xBits = Double.doubleToLongBits(x);
+			int xHash = (int) (xBits ^ (xBits >>> 32));
+			hash = (hash << 5) - hash + xHash;
+			hash = (hash << 5) - hash + type;
+			return hash;
+		}
 	}
 
 	// Usage example
