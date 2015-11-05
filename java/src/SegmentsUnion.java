@@ -37,6 +37,19 @@ public class SegmentsUnion {
 			double eps = 1e-7;
 			return Math.abs(x - o.x) > eps ? Double.compare(x, o.x) : Integer.compare(type, o.type);
 		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (obj == null || !(obj instanceof Point)) {
+				return false;
+			}
+			Point p = (Point) obj;
+			double eps = 1e-7;
+			if (Math.abs(x - p.x) <= eps) {
+				return Integer.compare(type, p.type) == 0;
+			}
+			return Double.compare(x, p.x) == 0;
+		}
 	}
 
 	// Usage example

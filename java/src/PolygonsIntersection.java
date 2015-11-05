@@ -90,6 +90,18 @@ public class PolygonsIntersection {
 				return Double.compare(y, o.y);
 			return Integer.compare(maskDelta, o.maskDelta);
 		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (obj == null || !(obj instanceof Event)) {
+				return false;
+			}
+			Event e = (Event) obj;
+			if (y == e.y) {
+				return Integer.compare(maskDelta, e.maskDelta) == 0;
+			}
+			return Double.compare(y, e.y) == 0;
+		}
 	}
 
 	static final double eps = 1e-9;

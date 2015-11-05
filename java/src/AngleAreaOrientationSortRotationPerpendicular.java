@@ -46,6 +46,15 @@ public class AngleAreaOrientationSortRotationPerpendicular {
 			return Long.signum((long) o.x * y - (long) o.y * x);
 			//return Double.compare(Math.atan2(y, x), Math.atan2(o.y, o.x));
 		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (obj == null || !(obj instanceof Point)) {
+				return false;
+			}
+			Point p = (Point) obj;
+			return Long.signum((long) p.x * y - (long) p.y * x) == 0;
+		}
 	}
 
 	public Point2D.Double rotateCCW(Point2D.Double p, double angle) {

@@ -37,6 +37,15 @@ public class LineGeometry {
 			// return Double.compare(Math.atan2(y, x), Math.atan2(o.y, o.x));
 			return Double.compare(x, o.x) != 0 ? Double.compare(x, o.x) : Double.compare(y, o.y);
 		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (obj == null || !(obj instanceof Point)) {
+				return false;
+			}
+			Point p = (Point) obj;
+			return (Double.compare(x, p.x) == 0) && (Double.compare(y, p.y) == 0);
+		}
 	}
 
 	public static class Line {

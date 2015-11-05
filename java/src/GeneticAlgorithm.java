@@ -192,6 +192,15 @@ public class GeneticAlgorithm extends JFrame {
 		public int compareTo(Chromosome o) {
 			return Double.compare(getCost(), o.getCost());
 		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (obj == null || !(obj instanceof Chromosome)) {
+				return false;
+			}
+			Chromosome c = (Chromosome) obj;
+			return Double.compare(getCost(), c.getCost()) == 0;
+		}
 	}
 
 	static class Population {
