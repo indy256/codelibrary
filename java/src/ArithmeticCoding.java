@@ -190,7 +190,7 @@ public class ArithmeticCoding {
 
 		encodedBits = codec.encode(a);
 		Locale.setDefault(Locale.US);
-		System.out.printf("%d -> %d (%.0f)\n", a.length, encodedBits.length / 8, optimalCompressedLength(a));
+		System.out.printf("%d -> %d (%.0f)%n", a.length, encodedBits.length / 8, optimalCompressedLength(a));
 		System.out.println(Arrays.equals(a, codec.decode(encodedBits)));
 	}
 

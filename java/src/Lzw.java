@@ -26,7 +26,7 @@ public class Lzw {
 		int[] res = new int[result.size()];
 		for (int i = 0; i < res.length; i++)
 			res[i] = result.get(i);
-		System.out.printf("Dict items: %,d\n", dict.size());
+		System.out.printf("Dict items: %,d%n", dict.size());
 //		System.out.printf("Dict size: %,d\n", SizingAgent.deepSizeOf(dict));
 		return res;
 	}
@@ -80,7 +80,7 @@ public class Lzw {
 			data2[i] = (byte) s2.charAt(i);
 		System.out.println(Arrays.equals(data, data2));
 		Locale.setDefault(Locale.US);
-		System.out.printf("%d -> %.0f\n", s.length(), optimalCompressedLength(encoded));
+		System.out.printf("%d -> %.0f%n", s.length(), optimalCompressedLength(encoded));
 	}
 
 	static double optimalCompressedLength(int[] a) {
