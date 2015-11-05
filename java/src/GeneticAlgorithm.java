@@ -52,7 +52,7 @@ public class GeneticAlgorithm extends JFrame {
 				population.chromosomes.add(new Chromosome(optimize(pair[1])));
 			}
 			population.nextGeneration();
-			bestState = population.chromosomes.get(0).p;
+			bestState = population.chromosomes.get(0).p.clone();
 			repaint();
 		}
 	}

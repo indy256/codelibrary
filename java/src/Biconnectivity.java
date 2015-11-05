@@ -15,7 +15,7 @@ public class Biconnectivity {
 
 	public List<List<Integer>> biconnectivity(List<Integer>[] graph) {
 		int n = graph.length;
-		this.graph = graph;
+		this.graph = graph.clone();
 		visited = new boolean[n];
 		stack = new Stack<>();
 		time = 0;

@@ -67,7 +67,7 @@ public class ArithmeticCoding {
 	}
 
 	public int[] decode(int[] bits) {
-		this.bits = bits;
+		this.bits = bits.clone();
 		cumFreq = createFenwickTree(END + 1);
 		decodedBytes = new ArrayList<>();
 

@@ -6,8 +6,8 @@ public class KdTreePointQuery {
 	int[] y;
 
 	public KdTreePointQuery(int[] x, int[] y) {
-		this.x = x;
-		this.y = y;
+		this.x = x.clone();
+		this.y = y.clone();
 		build(0, x.length, true);
 	}
 

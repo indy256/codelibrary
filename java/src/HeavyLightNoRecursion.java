@@ -66,7 +66,7 @@ public class HeavyLightNoRecursion {
 	int pathCount;
 
 	public HeavyLightNoRecursion(List<Integer>[] tree) {
-		this.tree = tree;
+		this.tree = tree.clone();
 		int n = tree.length;
 
 		size = new int[n];

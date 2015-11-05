@@ -7,8 +7,8 @@ public class MetricTree {
 	int[] y;
 
 	public MetricTree(int[] x, int[] y) {
-		this.x = x;
-		this.y = y;
+		this.x = x.clone();
+		this.y = y.clone();
 		build(0, x.length);
 	}
 
