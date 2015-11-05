@@ -56,7 +56,9 @@ public class Factorization {
 
 	public static long pollard(long n) {
 		Random rnd = new Random(1);
-		long x = Math.abs(rnd.nextLong()) % n;
+		long r = rnd.nextLong();
+		if (r < 0) r = -r;
+		long x = r % n; //Math.abs(Integer.MIN_VALUE) == Integer.MIN_VALUE)
 		long y = x;
 		while (true) {
 			x = f(x, n);

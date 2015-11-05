@@ -4,10 +4,10 @@ import java.util.*;
 // https://en.wikipedia.org/wiki/Arithmetic_coding
 public class ArithmeticCoding {
 
-	final int BITS = 30;
-	final int HIGHEST_BIT = 1 << (BITS - 1);
-	final int MASK = (1 << BITS) - 1;
-	final int END = 256;
+	final static int BITS = 30;
+	final static int HIGHEST_BIT = 1 << (BITS - 1);
+	final static int MASK = (1 << BITS) - 1;
+	final static int END = 256;
 
 	long low, high;
 	int additionalBits;

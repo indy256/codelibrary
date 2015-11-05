@@ -65,7 +65,8 @@ public class RayIntersections {
 
 	// algebraic solution
 	public static double rayPlaneIntersection(Ray ray, Plane p) {
-		double b = p.n.dot(ray.dir);
+		double b = p.n.dot(ray.dir); // Bug? 'n' field is never written therefore this line will throw NullPointerException
+		// Also note, that 'n' is package-private, so no one who use this library will be able to write to it.
 		if (Math.abs(b) < eps)
 			return Double.NaN;
 		double a = -(p.n.dot(ray.org) + p.d);
