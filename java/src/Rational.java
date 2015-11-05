@@ -70,6 +70,9 @@ public class Rational implements Comparable<Rational> {
 	}
 
 	public boolean equals(Object obj) {
+		if ((obj == null) || !(obj instanceof Rational)) {
+			return false;
+		}
 		return num.equals(((Rational) obj).num) && den.equals(((Rational) obj).den);
 	}
 
