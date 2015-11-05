@@ -36,7 +36,7 @@ public class MaxPalindrome {
 			}
 		}
 
-		String res = "";
+		StringBuilder res = new StringBuilder();
 
 		while (x > 0 && y > 0) {
 			int a = dp[x - 1][y - 1];
@@ -44,7 +44,7 @@ public class MaxPalindrome {
 			int c = dp[x][y - 1];
 			int m = Math.min(a, Math.min(b, c));
 			if (a == m) {
-				res += s[x - 1];
+				res.append(s[x - 1]);
 				--x;
 				--y;
 			} else if (b == m) {
@@ -54,7 +54,7 @@ public class MaxPalindrome {
 			}
 		}
 
-		return new StringBuilder(res).reverse() + middle + res;
+		return res.reverse() + middle + res;
 	}
 
 	// Usage example

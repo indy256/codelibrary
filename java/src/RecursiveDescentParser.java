@@ -71,13 +71,13 @@ public class RecursiveDescentParser {
                     value = val;
                     sym = Lexeme.NUM;
                 } else if (Character.isLetter(ch)) {
-                    String ident = "";
+                    StringBuilder ident = new StringBuilder();
                     while (ch != null && Character.isLetter(ch)) {
-                        ident += ch;
+                        ident.append(ch);
                         readCh();
                     }
-                    if (WORDS.containsKey(ident)) {
-                        sym = Lexer.WORDS.get(ident);
+                    if (WORDS.containsKey(ident.toString())) {
+                        sym = Lexer.WORDS.get(ident.toString());
                     } else if (ident.length() == 1) {
                         sym = Lexeme.ID;
                         value = ident.charAt(0) - 'a';

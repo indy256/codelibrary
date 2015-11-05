@@ -67,11 +67,11 @@ public class ExpressionParserShuntingYard {
 					processOperator(st, op.removeLast());
 				op.add(c);
 			} else {
-				String operand = "";
+				StringBuilder operand = new StringBuilder();
 				while (i < s.length() && Character.isDigit(s.charAt(i)))
-					operand += s.charAt(i++);
+					operand.append(s.charAt(i++));
 				--i;
-				st.add(Integer.parseInt(operand));
+				st.add(Integer.parseInt(operand.toString()));
 			}
 		}
 		while (!op.isEmpty())
