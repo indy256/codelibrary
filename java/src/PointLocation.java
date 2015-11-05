@@ -72,7 +72,7 @@ public class PointLocation {
 				res[i] = min.key.polygonId;
 			} else if (max != null && max.key.contains(qx[i], qy[i])) {
 				res[i] = max.key.polygonId;
-			} else if (getSize(treapPair.left) % 2 == 1) {
+			} else if (getSize(treapPair.left) % 2 != 0) {
 				res[i] = max.key.polygonId;
 			} else {
 				res[i] = -1;

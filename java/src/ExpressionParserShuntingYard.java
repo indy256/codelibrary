@@ -44,6 +44,8 @@ public class ExpressionParserShuntingYard {
 		case '%':
 			st.add(l % r);
 			break;
+		default:
+			throw new RuntimeException("Wrong operation: " + op);
 		}
 	}
 

@@ -24,7 +24,7 @@ public class Closest2Points {
 	static long rec(Point[] points, int l, int r, Point[] result, long mindist) {
 		if (l == r)
 			return Long.MAX_VALUE;
-		int mid = (l + r) >> 1;
+		int mid = (l + r) >>> 1; //(l + r) >> 1 lead to overflow
 		long midx = points[mid].x;
 		long d1 = rec(points, l, mid, result, mindist);
 		mindist = Math.min(mindist, d1);

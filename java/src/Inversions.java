@@ -9,9 +9,9 @@ public class Inversions {
 		int mid = (low + high) >>> 1;
 		int res = inversions(a, low, mid) + inversions(a, mid, high);
 		int[] b = Arrays.copyOfRange(a, low, mid);
-		for (int i = low, j = mid, k = 0; k < b.length; i++)
+		for (int i = low, j = mid, k = 0; k < b.length; i++, k++)
 			if (j == high || b[k] <= a[j]) {
-				a[i] = b[k++];
+				a[i] = b[k];
 			} else {
 				a[i] = a[j++];
 				res += b.length - k;

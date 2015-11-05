@@ -4,7 +4,6 @@ public class MatrixChainMultiply {
 
 	public static int solveIterative(int[] s) {
 		int n = s.length - 1;
-		int[][] p = new int[n][n];
 		int[][] m = new int[n][n];
 		for (int len = 2; len <= n; len++) {
 			for (int a = 0; a + len <= n; a++) {
@@ -14,7 +13,6 @@ public class MatrixChainMultiply {
 					int v = m[a][c] + m[c + 1][b] + s[a] * s[c + 1] * s[b + 1];
 					if (m[a][b] > v) {
 						m[a][b] = v;
-						p[a][b] = c;
 					}
 				}
 			}

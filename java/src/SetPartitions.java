@@ -17,7 +17,7 @@ public class SetPartitions {
 		for (int i = 0, pos = 0; i < p.length; i++) {
 			for (int j = 0; j <= m[i]; j++, pos++) {
 				System.arraycopy(p[i], 0, res[pos], 0, n - 1);
-				res[pos][n - 1] = (i % 2 == 1 ? j + 1 : m[i] - j + 1) % (m[i] + 1);
+				res[pos][n - 1] = (i % 2 != 0 ? j + 1 : m[i] - j + 1) % (m[i] + 1); //x % 2 == 1 won't work for negative numbers :)
 			}
 		}
 		return res;

@@ -258,7 +258,7 @@ public class RecursiveDescentParser {
                 case ADD:
                     compile(node.op1);
                     compile(node.op2);
-                    program.add(Command.IADD);
+                    program.add(Command.IADD); // value is not checked, bad.
                     break;
                 case SUB:
                     compile(node.op1);
@@ -330,6 +330,8 @@ public class RecursiveDescentParser {
                     compile(node.op1);
                     program.add(Command.HALT);
                     break;
+                default:
+                    throw new RuntimeException("Wrong node.kind: " + node.kind);
             }
             return program;
         }
