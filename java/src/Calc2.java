@@ -108,20 +108,20 @@ public class Calc2 {
 		default:
 			if (Character.isDigit(x) || x == '.') {
 				curr_tok = TOKEN.NUMBER;
-				String s = "" + x;
+				StringBuilder builder = new StringBuilder(String.valueOf(x));
 				while (pos < input.length() && (Character.isDigit(input.charAt(pos)) || input.charAt(pos) == '.')) {
-					s += input.charAt(pos);
+					builder.append(input.charAt(pos));
 					++pos;
 				}
-				number_value = Double.parseDouble(s);
+				number_value = Double.parseDouble(builder.toString());
 			} else if (Character.isLetter(x)) {
 				curr_tok = TOKEN.FUNCTION;
-				String s = "" + x;
+				StringBuilder builder = new StringBuilder(String.valueOf(x));
 				while (pos < input.length() && Character.isLetter(input.charAt(pos))) {
-					s += input.charAt(pos);
+					builder.append(input.charAt(pos));;
 					++pos;
 				}
-				function_name = s;
+				function_name = builder.toString();
 			}
 		}
 	}

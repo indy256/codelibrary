@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-// https://en.wikipedia.org/wiki/Burrows–Wheeler_transform
+// https://en.wikipedia.org/wiki/Burrowsï¿½Wheeler_transform
 public class Bwt {
 
 	public static TransformedData bwt(byte[] s) {
@@ -134,7 +134,7 @@ public class Bwt {
 		System.out.println(Arrays.equals(data, data2));
 		System.out.println(Arrays.equals(bwt.last, last2));
 		Locale.setDefault(Locale.US);
-		System.out.printf("%d -> %.0f\n", len, optimalCompressedLength(encodedInts));
+		System.out.printf("%d -> %.0f%n", len, optimalCompressedLength(encodedInts));
 	}
 
 	static double optimalCompressedLength(int[] a) {

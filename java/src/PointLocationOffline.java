@@ -57,7 +57,7 @@ public class PointLocationOffline {
 					res[event.queryId] = min.key.polygonId;
 				} else if (max != null && max.key.contains(event.x, event.y)) {
 					res[event.queryId] = max.key.polygonId;
-				} else if (getSize(treapPair.left) % 2 == 1) {
+				} else if (getSize(treapPair.left) % 2 != 0) {
 					res[event.queryId] = max.key.polygonId;
 				}
 				treap = merge(treapPair.left, treapPair.right);

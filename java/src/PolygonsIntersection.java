@@ -90,6 +90,28 @@ public class PolygonsIntersection {
 				return Double.compare(y, o.y);
 			return Integer.compare(maskDelta, o.maskDelta);
 		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (obj == null || !(obj instanceof Event)) {
+				return false;
+			}
+			Event e = (Event) obj;
+			if (Double.compare(y, e.y) == 0) {
+				return Integer.compare(maskDelta, e.maskDelta) == 0;
+			}
+			return false;
+		}
+
+		@Override
+		public int hashCode() {
+			int hash = 17;
+			long yBits = Double.doubleToLongBits(y);
+			int yHash = (int) (yBits ^ (yBits >>> 32));
+			hash = (hash << 5) - hash + yHash;
+			hash = (hash << 5) - hash + maskDelta;
+			return hash;
+		}
 	}
 
 	static final double eps = 1e-9;

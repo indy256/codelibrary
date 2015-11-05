@@ -105,6 +105,8 @@ public class Determinant {
 
 			return result.divide(BigDecimal.valueOf(1), 0, BigDecimal.ROUND_HALF_EVEN).toBigInteger();
 
+		} catch (RuntimeException e) {
+			throw e;
 		} catch (Exception e) {
 			return BigInteger.ZERO;
 		}

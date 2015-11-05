@@ -37,6 +37,29 @@ public class SegmentsUnion {
 			double eps = 1e-7;
 			return Math.abs(x - o.x) > eps ? Double.compare(x, o.x) : Integer.compare(type, o.type);
 		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (obj == null || !(obj instanceof Point)) {
+				return false;
+			}
+			Point p = (Point) obj;
+			double eps = 1e-7;
+			if (Math.abs(x - p.x) <= eps) {
+				return Integer.compare(type, p.type) == 0;
+			}
+			return Double.compare(x, p.x) == 0;
+		}
+
+		@Override
+		public int hashCode() {
+			int hash = 17;
+			long xBits = Double.doubleToLongBits(x);
+			int xHash = (int) (xBits ^ (xBits >>> 32));
+			hash = (hash << 5) - hash + xHash;
+			hash = (hash << 5) - hash + type;
+			return hash;
+		}
 	}
 
 	// Usage example

@@ -1,9 +1,9 @@
 import java.util.*;
 
-// https://en.wikipedia.org/wiki/Bron–Kerbosch_algorithm
+// https://en.wikipedia.org/wiki/Bronï¿½Kerbosch_algorithm
 public class BronKerbosh {
 
-	public static int BronKerbosch(long[] g, long cur, long allowed, long forbidden, int[] weights) {
+	public static int bronKerbosch(long[] g, long cur, long allowed, long forbidden, int[] weights) {
 		if (allowed == 0 && forbidden == 0) {
 			int res = 0;
 			for (int u = Long.numberOfTrailingZeros(cur); u < g.length; u += Long.numberOfTrailingZeros(cur >> (u + 1)) + 1)
@@ -16,7 +16,7 @@ public class BronKerbosh {
 		int pivot = Long.numberOfTrailingZeros(allowed | forbidden);
 		long z = allowed & ~g[pivot];
 		for (int u = Long.numberOfTrailingZeros(z); u < g.length; u += Long.numberOfTrailingZeros(z >> (u + 1)) + 1) {
-			res = Math.max(res, BronKerbosch(g, cur | (1L << u), allowed & g[u], forbidden & g[u], weights));
+			res = Math.max(res, bronKerbosch(g, cur | (1L << u), allowed & g[u], forbidden & g[u], weights));
 			allowed ^= 1L << u;
 			forbidden |= 1L << u;
 		}
@@ -38,7 +38,7 @@ public class BronKerbosh {
 						g[i] |= 1L << j;
 						g[j] |= 1L << i;
 					}
-			int res1 = BronKerbosch(g, 0, (1L << n) - 1, 0, weights);
+			int res1 = bronKerbosch(g, 0, (1L << n) - 1, 0, weights);
 			int res2 = maxCliqueSlow(g, weights);
 			if (res1 != res2)
 				throw new RuntimeException();

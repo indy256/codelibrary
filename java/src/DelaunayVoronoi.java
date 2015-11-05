@@ -322,7 +322,7 @@ public class DelaunayVoronoi extends JFrame {
 				coordList.add(coordList.get(coordList.size() - 1));
 			}
 
-			Point.Double v = startQE.orig();
+			//Point.Double v = startQE.orig(); probably bug, but who knows why it was there...
 			Point.Double[] pts = coordList.toArray(new Point.Double[0]);
 			return pts;
 		}

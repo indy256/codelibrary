@@ -15,7 +15,11 @@ public class PairLong implements Comparable<PairLong> {
 		return 31 * hu + hv;
 	}
 
+	@Override
 	public boolean equals(Object o) {
+		if ((o == null) || !(o instanceof PairLong)) {
+			return false;
+		}
 		PairLong other = (PairLong) o;
 		return u == other.u && v == other.v;
 	}

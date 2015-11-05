@@ -5,7 +5,6 @@ public class Prim {
 
 	public static long mstPrim(int[][] d) {
 		int n = d.length;
-		int[] prev = new int[n];
 		int[] dist = new int[n];
 		Arrays.fill(dist, Integer.MAX_VALUE);
 		dist[0] = 0;
@@ -22,7 +21,6 @@ public class Prim {
 			for (int j = 0; j < n; j++) {
 				if (!visited[j] && dist[j] > d[u][j]) {
 					dist[j] = d[u][j];
-					prev[j] = u;
 				}
 			}
 		}

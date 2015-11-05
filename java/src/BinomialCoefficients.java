@@ -31,7 +31,7 @@ public class BinomialCoefficients {
 	public static int factorial2(int n, int p) {
 		int res = 1;
 		while (n > 1) {
-			res = (res * ((n / p) % 2 == 1 ? p - 1 : 1)) % p;
+			res = (res * ((n / p) % 2 != 0 ? p - 1 : 1)) % p; //x % 2 == 1 won't work for negative numbers :)
 			for (int i = 2; i <= n % p; ++i)
 				res = (res * i) % p;
 			n /= p;

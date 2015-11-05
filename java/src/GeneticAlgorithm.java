@@ -52,7 +52,7 @@ public class GeneticAlgorithm extends JFrame {
 				population.chromosomes.add(new Chromosome(optimize(pair[1])));
 			}
 			population.nextGeneration();
-			bestState = population.chromosomes.get(0).p;
+			bestState = population.chromosomes.get(0).p.clone();
 			repaint();
 		}
 	}
@@ -191,6 +191,23 @@ public class GeneticAlgorithm extends JFrame {
 		@Override
 		public int compareTo(Chromosome o) {
 			return Double.compare(getCost(), o.getCost());
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (obj == null || !(obj instanceof Chromosome)) {
+				return false;
+			}
+			Chromosome c = (Chromosome) obj;
+			return Double.compare(getCost(), c.getCost()) == 0;
+		}
+
+		@Override
+		public int hashCode() {
+			int hash = 17;
+			long tmp = Double.doubleToLongBits(getCost());
+			int costHash = (int) (tmp ^ (tmp >>> 32));
+			return (hash << 5) - hash + costHash;
 		}
 	}
 

@@ -44,8 +44,7 @@ public class RecursiveDescentParser {
         }
 
         void error(String message) {
-            System.out.println("Lexer error: " + message);
-            System.exit(1);
+            throw new RuntimeException("Lexer error: " + message);
         }
 
         void readCh() {
@@ -72,13 +71,13 @@ public class RecursiveDescentParser {
                     value = val;
                     sym = Lexeme.NUM;
                 } else if (Character.isLetter(ch)) {
-                    String ident = "";
+                    StringBuilder ident = new StringBuilder();
                     while (ch != null && Character.isLetter(ch)) {
-                        ident += ch;
+                        ident.append(ch);
                         readCh();
                     }
-                    if (WORDS.containsKey(ident)) {
-                        sym = Lexer.WORDS.get(ident);
+                    if (WORDS.containsKey(ident.toString())) {
+                        sym = Lexer.WORDS.get(ident.toString());
                     } else if (ident.length() == 1) {
                         sym = Lexeme.ID;
                         value = ident.charAt(0) - 'a';
@@ -119,8 +118,7 @@ public class RecursiveDescentParser {
         }
 
         void error(String message) {
-            System.out.println("Parser error: " + message);
-            System.exit(1);
+            throw new RuntimeException("Parser error: " + message);
         }
 
         Node term() {
@@ -260,7 +258,7 @@ public class RecursiveDescentParser {
                 case ADD:
                     compile(node.op1);
                     compile(node.op2);
-                    program.add(Command.IADD);
+                    program.add(Command.IADD); // value is not checked, bad.
                     break;
                 case SUB:
                     compile(node.op1);
@@ -332,6 +330,8 @@ public class RecursiveDescentParser {
                     compile(node.op1);
                     program.add(Command.HALT);
                     break;
+                default:
+                    throw new RuntimeException("Wrong node.kind: " + node.kind);
             }
             return program;
         }

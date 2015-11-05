@@ -22,10 +22,10 @@ public class ExpressionParserRecursiveDescent {
 			if (Character.isSpaceChar(c))
 				continue;
 			if (Character.isDigit(c) || c == '.') {
-				String operand = "" + c;
+				StringBuilder operand = new StringBuilder(String.valueOf(c));
 				while (pos < s.length() && isDigitOrDot(s.charAt(pos)))
-					operand += c = s.charAt(pos++);
-				tokval = Double.parseDouble(operand);
+					operand.append(s.charAt(pos++));
+				tokval = Double.parseDouble(operand.toString());
 				return token = 'n';
 			}
 			throw new RuntimeException("Bad character: " + c);

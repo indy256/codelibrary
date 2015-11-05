@@ -12,7 +12,7 @@ public class SCCTarjan {
 
 	public List<List<Integer>> scc(List<Integer>[] graph) {
 		int n = graph.length;
-		this.graph = graph;
+		this.graph = graph.clone();
 		visited = new boolean[n];
 		stack = new Stack<>();
 		time = 0;

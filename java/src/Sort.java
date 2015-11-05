@@ -59,9 +59,9 @@ public class Sort {
 		mergeSort(a, low, mid);
 		mergeSort(a, mid, high);
 		int[] b = Arrays.copyOfRange(a, low, mid);
-		for (int i = low, j = mid, k = 0; k < b.length; i++) {
+		for (int i = low, j = mid, k = 0; k < b.length; i++, k++) {
 			if ((j == high || b[k] <= a[j])) {
-				a[i] = b[k++];
+				a[i] = b[k];
 			} else {
 				a[i] = a[j++];
 			}

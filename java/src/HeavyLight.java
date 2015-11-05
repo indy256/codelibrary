@@ -65,8 +65,8 @@ public class HeavyLight {
 	int[] pathRoot;
 	int pathCount;
 
-	public HeavyLight(List<Integer>[] tree) {
-		this.tree = tree;
+	public HeavyLight(List<Integer>[] tree) { //arrays mix with collections...nightmare. no offense, but... really.
+		this.tree = tree.clone();
 		int n = tree.length;
 
 		size = new int[n];

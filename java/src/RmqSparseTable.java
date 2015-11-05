@@ -5,7 +5,7 @@ public class RmqSparseTable {
 	int[] a;
 
 	public RmqSparseTable(int[] a) {
-		this.a = a;
+		this.a = a.clone();
 		int n = a.length;
 
 		logTable = new int[n + 1];
