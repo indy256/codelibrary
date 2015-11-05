@@ -5,7 +5,7 @@ import java.util.*;
  */
 public class ContractionHierarchies {
 
-	public static class LayerGraph implements Cloneable {
+	public static final class LayerGraph implements Cloneable {
 		final int nodes;
 		int edges = 0;
 		final int[] levels;
