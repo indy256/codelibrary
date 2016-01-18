@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class HeavyLightNoRecursion {
+public class HeavyLight2 {
 
 	// true - values on vertices, false - values on edges
 	static boolean VALUES_ON_VERTICES = true;
@@ -65,7 +65,7 @@ public class HeavyLightNoRecursion {
 	int[] pathRoot;
 	int pathCount;
 
-	public HeavyLightNoRecursion(List<Integer>[] tree) {
+	public HeavyLight2(List<Integer>[] tree) {
 		this.tree = tree;
 		int n = tree.length;
 
@@ -73,13 +73,13 @@ public class HeavyLightNoRecursion {
 		parent = new int[n];
 		tin = new int[n];
 		tout = new int[n];
-		calcSizeParentTinTout(0);
+		calcSizeParentTinTout(0, -1);
 
 		path = new int[n];
 		pathSize = new int[n];
 		pathPos = new int[n];
 		pathRoot = new int[n];
-		buildPaths(0);
+		buildPaths(0, newPath(0));
 
 		value = new int[pathCount][];
 		delta = new int[pathCount][];
@@ -104,62 +104,21 @@ public class HeavyLightNoRecursion {
 		}
 	}
 
-	void calcSizeParentTinTout(int root) {
-		int n = tree.length;
-		int[] curEdge = new int[n];
-		int[] stack = new int[n];
-		stack[0] = root;
-		parent[root] = -1;
-		for (int top = 0; top >= 0; ) {
-			int u = stack[top];
-			if (curEdge[u] == 0) {
-				tin[u] = time++;
-				size[u] = 1;
+	void calcSizeParentTinTout(int u, int p) {
+		tin[u] = time++;
+		parent[u] = p;
+		size[u] = 1;
+		for (int v : tree[u])
+			if (v != p) {
+				calcSizeParentTinTout(v, u);
+				size[u] += size[v];
 			}
-			if (curEdge[u] < tree[u].size()) {
-				int v = tree[u].get(curEdge[u]++);
-				if (curEdge[v] == 0) {
-					stack[++top] = v;
-					parent[v] = u;
-				}
-			} else {
-				--top;
-				if (parent[u] != -1)
-					size[parent[u]] += size[u];
-				tout[u] = time++;
-			}
-		}
+		tout[u] = time++;
 	}
 
 	int newPath(int u) {
 		pathRoot[pathCount] = u;
 		return pathCount++;
-	}
-
-	void buildPaths(int root) {
-		int n = tree.length;
-		int[] curEdge = new int[n];
-		int[] stackPath = new int[n];
-		int[] stack = new int[n];
-		stack[0] = root;
-		stackPath[0] = newPath(root);
-		for (int top = 0; top >= 0; ) {
-			int u = stack[top];
-			int path = stackPath[top];
-			if (curEdge[u] == 0) {
-				this.path[u] = path;
-				pathPos[u] = pathSize[path]++;
-			}
-			if (curEdge[u] < tree[u].size()) {
-				int v = tree[u].get(curEdge[u]++);
-				if (curEdge[v] == 0) {
-					stack[++top] = v;
-					stackPath[top] = 2 * size[v] >= size[u] ? path : newPath(v);
-				}
-			} else {
-				--top;
-			}
-		}
 	}
 
 	void buildPaths(int u, int path) {
@@ -266,7 +225,7 @@ public class HeavyLightNoRecursion {
 			List<Integer>[] tree = getRandomTree(n, rnd);
 			int[] x = new int[n];
 			Arrays.fill(x, getInitValue());
-			HeavyLightNoRecursion hl = new HeavyLightNoRecursion(tree);
+			HeavyLight2 hl = new HeavyLight2(tree);
 			for (int i = 0; i < 1000; i++) {
 				int a = rnd.nextInt(n);
 				int b = rnd.nextInt(n);
@@ -295,7 +254,7 @@ public class HeavyLightNoRecursion {
 			for (int u = 0; u < tree.length; u++)
 				for (int v : tree[u])
 					x.put(edge(u, v), getInitValue());
-			HeavyLightNoRecursion hl = new HeavyLightNoRecursion(tree);
+			HeavyLight2 hl = new HeavyLight2(tree);
 			for (int i = 0; i < 1000; i++) {
 				int a = rnd.nextInt(n);
 				int b = rnd.nextInt(n);
