@@ -1,12 +1,11 @@
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
-// Based on http://www.codeforces.com/contest/117/submission/860934
+// LinkCut tree with path queries. Query complexity is O(log(n)) amortized.
+// Based on Daniel Sleator's implementation http://www.codeforces.com/contest/117/submission/860934
 public class LinkCutTree {
 
 	// Modify the following 5 methods to implement your custom operations on the tree.
-	// This example implements Add/Max operations. Operations like Add/Sum, Set/Max can also be implemented.
+	// This example implements Add/Sum operations. Operations like Add/Max, Set/Max can also be implemented.
 	static int modifyOperation(int x, int y) {
 		return x + y;
 	}
@@ -33,6 +32,7 @@ public class LinkCutTree {
 		return 0;
 	}
 
+	// generic code
 	static int joinValueWithDelta(int value, int delta) {
 		if (delta == getNeutralDelta()) return value;
 		return modifyOperation(value, delta);
@@ -250,10 +250,10 @@ public class LinkCutTree {
 					if (connected(x, y)) {
 						List<Integer> path = new ArrayList<>();
 						getPathFromAtoB(g, u, v, -1, path);
-						int sum = 0;
+						int res = getNeutralValue();
 						for (int i : path)
-							sum += val[i];
-						if (query(x, y) != sum)
+							res = queryOperation(res, val[i]);
+						if (query(x, y) != res)
 							throw new RuntimeException();
 					}
 				} else if (cmd == 2) {
@@ -262,7 +262,7 @@ public class LinkCutTree {
 						getPathFromAtoB(g, u, v, -1, path);
 						int delta = rnd.nextInt(100) + 1;
 						for (int i : path)
-							val[i] += delta;
+							val[i] = joinValueWithDelta(val[i], delta);
 						modify(x, y, delta);
 					}
 				} else {
