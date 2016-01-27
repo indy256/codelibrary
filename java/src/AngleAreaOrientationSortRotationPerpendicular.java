@@ -30,8 +30,7 @@ public class AngleAreaOrientationSortRotationPerpendicular {
 		by -= ay;
 		cx -= ax;
 		cy -= ay;
-		long cross = bx * cy - by * cx;
-		return cross < 0 ? -1 : cross > 0 ? 1 : 0;
+		return Long.signum(bx * cy - by * cx);
 	}
 
 	public static class Point implements Comparable<Point> {

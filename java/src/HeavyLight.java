@@ -6,25 +6,24 @@ import java.util.function.BiConsumer;
 // Based on the code from http://codeforces.com/blog/entry/22072
 public class HeavyLight {
 
-	// true - values on vertices, false - values on edges
-	static boolean VALUES_ON_VERTICES = true;
-
 	int getNeutralValue() {
-		return Integer.MIN_VALUE;
+		return 0;
 	}
 
-	List<Integer>[] tree;
-	SegmentTree segmentTree;
-	int[] parent;
-	int[] heavy;
-	int[] depth;
-	int[] pathRoot;
-	int[] pos;
+	final List<Integer>[] tree;
+	final boolean valuesOnVertices; // true - values on vertices, false - values on edges
+	final SegmentTree segmentTree;
+	final int[] parent;
+	final int[] heavy;
+	final int[] depth;
+	final int[] pathRoot;
+	final int[] pos;
 
-	public HeavyLight(List<Integer>[] tree) {
+	public HeavyLight(List<Integer>[] tree, boolean valuesOnVertices) {
 		this.tree = tree;
+		this.valuesOnVertices = valuesOnVertices;
 		int n = tree.length;
-		this.segmentTree = new SegmentTree(n);
+		segmentTree = new SegmentTree(n);
 
 		parent = new int[n];
 		heavy = new int[n];
@@ -65,7 +64,7 @@ public class HeavyLight {
 	}
 
 	public int query(int u, int v) {
-		AtomicInteger res = new AtomicInteger(getNeutralValue()); // mutable integer
+		AtomicInteger res = new AtomicInteger(getNeutralValue()); // just mutable integer
 		processPath(u, v, (a, b) -> res.set(segmentTree.queryOperation(res.get(), segmentTree.query(a, b))));
 		return res.get();
 	}
@@ -83,8 +82,8 @@ public class HeavyLight {
 			}
 			op.accept(pos[pathRoot[v]], pos[v]);
 		}
-		if (!VALUES_ON_VERTICES && u == v) return;
-		op.accept(Math.min(pos[u], pos[v]) + (VALUES_ON_VERTICES ? 0 : 1), Math.max(pos[u], pos[v]));
+		if (!valuesOnVertices && u == v) return;
+		op.accept(Math.min(pos[u], pos[v]) + (valuesOnVertices ? 0 : 1), Math.max(pos[u], pos[v]));
 	}
 
 	static class SegmentTree {
@@ -208,11 +207,10 @@ public class HeavyLight {
 	// Random test
 	public static void main(String[] args) {
 		Random rnd = new Random(1);
-		VALUES_ON_VERTICES = true;
 		for (int step = 0; step < 1000; step++) {
 			int n = rnd.nextInt(50) + 1;
 			List<Integer>[] tree = getRandomTree(n, rnd);
-			HeavyLight hl = new HeavyLight(tree);
+			HeavyLight hl = new HeavyLight(tree, true);
 			int[] x = new int[n];
 			Arrays.fill(x, hl.segmentTree.getInitValue());
 			for (int i = 0; i < 1000; i++) {
@@ -236,11 +234,10 @@ public class HeavyLight {
 			}
 		}
 
-		VALUES_ON_VERTICES = false;
 		for (int step = 0; step < 1000; step++) {
 			int n = rnd.nextInt(50) + 1;
 			List<Integer>[] tree = getRandomTree(n, rnd);
-			HeavyLight hl = new HeavyLight(tree);
+			HeavyLight hl = new HeavyLight(tree, false);
 			Map<Long, Integer> x = new HashMap<>();
 			for (int u = 0; u < tree.length; u++)
 				for (int v : tree[u])
