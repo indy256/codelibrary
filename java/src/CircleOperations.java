@@ -9,7 +9,7 @@ public class CircleOperations {
 	}
 
 	public static class Point {
-		public double x, y;
+		double x, y;
 
 		public Point(double x, double y) {
 			this.x = x;
@@ -18,7 +18,7 @@ public class CircleOperations {
 	}
 
 	public static class Circle {
-		public double r, x, y;
+		double r, x, y;
 
 		public Circle(double x, double y, double r) {
 			this.x = x;

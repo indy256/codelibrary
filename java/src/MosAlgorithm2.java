@@ -1,6 +1,7 @@
 import java.util.*;
 
-public class DistinctQuerySqrt {
+// Solution of http://www.spoj.com/problems/DQUERY/en/
+public class MosAlgorithm2 {
 
 	static int solveSlow(int[] cnt, int[] a, int haveLeft, int haveRight, int needLeft, int needRight) {
 		int res = 0;
