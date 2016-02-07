@@ -39,10 +39,12 @@ public class AngleAreaOrientationSortRotationPerpendicular {
 
 		@Override
 		public int compareTo(Point o) {
-			boolean up1 = y > 0 || (y == 0 && x > 0);
-			boolean up2 = o.y > 0 || (o.y == 0 && o.x > 0);
+			boolean up1 = y > 0 || (y == 0 && x >= 0);
+			boolean up2 = o.y > 0 || (o.y == 0 && o.x >= 0);
 			if (up1 != up2) return up1 ? -1 : 1;
-			return Long.signum((long) o.x * y - (long) o.y * x);
+			int cmp = Long.signum((long) o.x * y - (long) o.y * x);
+			if (cmp != 0) return cmp;
+			return Long.compare((long) x * x + (long) y * y, (long) o.x * o.x + (long) o.y * o.y);
 			//return Double.compare(Math.atan2(y, x), Math.atan2(o.y, o.x));
 		}
 	}

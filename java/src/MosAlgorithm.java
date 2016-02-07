@@ -1,5 +1,6 @@
 import java.util.Arrays;
 
+// https://www.hackerearth.com/notes/mos-algorithm/
 // Solution of http://www.spoj.com/problems/DQUERY/en/
 public class MosAlgorithm {
 

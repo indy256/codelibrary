@@ -48,7 +48,7 @@ public class Combinations {
 		return res;
 	}
 
-	public static long binomial(long n, long m) {
+	static long binomial(long n, long m) {
 		m = Math.min(m, n - m);
 		long res = 1;
 		for (long i = 0; i < m; i++) {

@@ -1,3 +1,5 @@
+// https://en.wikipedia.org/wiki/Disjoint-set_data_structure with path compression heuristic
+// Complexity of operations is O(log(n)) on average
 public class DisjointSets {
 
 	public static int[] createSets(int size) {
@@ -11,11 +13,14 @@ public class DisjointSets {
 		return x == p[x] ? x : (p[x] = root(p, p[x]));
 	}
 
-	public static void unite(int[] p, int a, int b) {
+	public static boolean unite(int[] p, int a, int b) {
 		a = root(p, a);
 		b = root(p, b);
-		if (a != b)
+		if (a != b) {
 			p[a] = b;
+			return true;
+		}
+		return false;
 	}
 
 	// Usage example

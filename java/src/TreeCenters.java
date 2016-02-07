@@ -1,10 +1,11 @@
 import java.util.*;
+import java.util.stream.Stream;
 
 public class TreeCenters {
 
 	// returns 1 or 2 tree centers
 	// http://en.wikipedia.org/wiki/Graph_center
-	public static List<Integer> findCenters(List<Integer>[] tree) {
+	public static List<Integer> findTreeCenters(List<Integer>[] tree) {
 		int n = tree.length;
 		List<Integer> leaves = new ArrayList<>();
 		int[] degree = new int[n];
@@ -31,13 +32,13 @@ public class TreeCenters {
 	}
 
 	// returns vertex that has all its subtrees sizes <= n/2
-	public static int findCentroid(List<Integer>[] tree, int u, int p) {
+	public static int findTreeCentroid(List<Integer>[] tree, int u, int p) {
 		int n = tree.length;
 		int cnt = 1;
 		boolean goodCenter = true;
 		for (int v : tree[u]) {
 			if (v == p) continue;
-			int res = findCentroid(tree, v, u);
+			int res = findTreeCentroid(tree, v, u);
 			if (res >= 0)
 				return res;
 			int size = -res;
@@ -64,18 +65,15 @@ public class TreeCenters {
 	// Usage example
 	public static void main(String[] args) {
 		int n = 4;
-		List<Integer>[] tree = new List[n];
-		for (int i = 0; i < n; i++) {
-			tree[i] = new ArrayList<>();
-		}
+		List<Integer>[] tree = Stream.generate(ArrayList::new).limit(n).toArray(List[]::new);
 		tree[3].add(0);
 		tree[0].add(3);
 		tree[3].add(1);
 		tree[1].add(3);
 		tree[3].add(2);
 		tree[2].add(3);
-		System.out.println(3 == findCentroid(tree, 0, -1));
-		System.out.println(3 == findCenters(tree).get(0));
+		System.out.println(3 == findTreeCentroid(tree, 0, -1));
+		System.out.println(3 == findTreeCenters(tree).get(0));
 		System.out.println(2 == diameter(tree));
 	}
 }
