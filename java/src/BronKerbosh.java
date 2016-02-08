@@ -1,6 +1,6 @@
 import java.util.*;
 
-// https://en.wikipedia.org/wiki/Bron–Kerbosch_algorithm
+// https://en.wikipedia.org/wiki/Bronâ€“Kerbosch_algorithm
 public class BronKerbosh {
 
 	public static int BronKerbosch(long[] g, long cur, long allowed, long forbidden, int[] weights) {

@@ -60,10 +60,12 @@ public class IFFT {
 		for (int i = 0; i < b.length; i++)
 			bReal[i] = b[i];
 
-		final int mod = 0x1c000001;
-		final int root = 899;
-//		final int mod = 7340033;
-//		final int root = 5;
+		final int mod = 913 * (1 << 20) + 1;
+		final int root = 23;
+//		final int mod = 918 * (1 << 20) + 1;
+//		final int root = 106;
+//		final int mod = 997 * (1 << 20) + 1;
+//		final int root = 363;
 
 		fft(aReal, false, mod, root);
 		fft(bReal, false, mod, root);
@@ -108,6 +110,20 @@ public class IFFT {
 			BigInteger mul = new BigInteger(s1).multiply(new BigInteger(s2));
 			if (!mul.equals(new BigInteger(s)))
 				throw new RuntimeException();
+		}
+
+		generatePrimitiveRoots(1 << 20);
+	}
+
+	static void generatePrimitiveRoots(int N) {
+		for (int i = 900; i < 1000; i++) {
+			int mod = N * i + 1;
+			for (int root = 2; root < 10_00; root++) {
+				if (pow(root, N, mod) == 1 && pow(root, N / 2, mod) != 1) {
+					System.out.println(i + " " + mod + " " + root);
+					break;
+				}
+			}
 		}
 	}
 }
