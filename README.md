@@ -10,5 +10,5 @@
 
 ### Index available at:
 
-- http://codelibrary.ml/
+- http://www.codelibrary.ml/
 - https://sites.google.com/site/indy256/
