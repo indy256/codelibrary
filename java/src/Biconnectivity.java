@@ -42,14 +42,12 @@ public class Biconnectivity {
 			if (v == p)
 				continue;
 			if (visited[v]) {
-				// lowlink[u] = Math.min(lowlink[u], lowlink[v]);
-				lowlink[u] = Math.min(lowlink[u], tin[v]);
+				lowlink[u] = Math.min(lowlink[u], tin[v]); // or lowlink[u] = Math.min(lowlink[u], lowlink[v]);
 			} else {
 				dfs(v, u);
 				lowlink[u] = Math.min(lowlink[u], lowlink[v]);
-				cutPoint |= lowlink[v] >= tin[u];
-				//if (lowlink[v] == tin[v])
-				if (lowlink[v] > tin[u])
+				cutPoint |=  tin[u] <= lowlink[v];
+				if (tin[u] < lowlink[v]) // or if (lowlink[v] == tin[v])
 					bridges.add("(" + u + "," + v + ")");
 				++children;
 			}
@@ -58,7 +56,7 @@ public class Biconnectivity {
 			cutPoint = children >= 2;
 		if (cutPoint)
 			cutPoints.add(u);
-		if (lowlink[u] == tin[u]) {
+		if (tin[u] == lowlink[u]) {
 			List<Integer> component = new ArrayList<>();
 			while (true) {
 				int x = stack.pop();
