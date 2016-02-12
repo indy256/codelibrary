@@ -4,23 +4,23 @@ import java.util.stream.Stream;
 // https://en.wikipedia.org/wiki/Topological_sorting
 public class TopologicalSort {
 
-	static void dfs(List<Integer>[] graph, boolean[] used, List<Integer> res, int u) {
+	static void dfs(List<Integer>[] graph, boolean[] used, List<Integer> order, int u) {
 		used[u] = true;
 		for (int v : graph[u])
 			if (!used[v])
-				dfs(graph, used, res, v);
-		res.add(u);
+				dfs(graph, used, order, v);
+		order.add(u);
 	}
 
 	public static List<Integer> topologicalSort(List<Integer>[] graph) {
 		int n = graph.length;
 		boolean[] used = new boolean[n];
-		List<Integer> res = new ArrayList<>();
+		List<Integer> order = new ArrayList<>();
 		for (int i = 0; i < n; i++)
 			if (!used[i])
-				dfs(graph, used, res, i);
-		Collections.reverse(res);
-		return res;
+				dfs(graph, used, order, i);
+		Collections.reverse(order);
+		return order;
 	}
 
 	// Usage example
@@ -30,7 +30,7 @@ public class TopologicalSort {
 		g[2].add(1);
 		g[0].add(1);
 
-		List<Integer> res = topologicalSort(g);
-		System.out.println(res);
+		List<Integer> order = topologicalSort(g);
+		System.out.println(order);
 	}
 }

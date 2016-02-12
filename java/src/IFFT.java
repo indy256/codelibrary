@@ -118,6 +118,7 @@ public class IFFT {
 	static void generatePrimitiveRoots(int N) {
 		for (int i = 900; i < 1000; i++) {
 			int mod = N * i + 1;
+			if (!BigInteger.valueOf(mod).isProbablePrime(100)) continue;
 			for (int root = 2; root < 10_00; root++) {
 				if (pow(root, N, mod) == 1 && pow(root, N / 2, mod) != 1) {
 					System.out.println(i + " " + mod + " " + root);

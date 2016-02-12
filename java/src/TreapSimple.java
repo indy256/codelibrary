@@ -71,21 +71,52 @@ public class TreapSimple {
 		}
 	}
 
-	static Treap insert(Treap root, int x) {
-		TreapPair t = split(root, x);
-		return merge(merge(t.left, new Treap(x)), t.right);
+	static Treap insert(Treap root, int key) {
+		TreapPair t = split(root, key);
+		return merge(merge(t.left, new Treap(key)), t.right);
 	}
 
-	static Treap remove(Treap root, int x) {
+	static Treap insert2(Treap root, int key) { // alternative implementation
+		return insert0(root, new Treap(key));
+	}
+
+	static Treap insert0(Treap root, Treap node) {
+		if (root == null) {
+			return node;
+		}
+		if (root.prio < node.prio) {
+			TreapPair t = split(root, node.key);
+			node.left = t.left;
+			node.right = t.right;
+			node.update();
+			return node;
+		}
+		if (node.key < root.key) {
+			root.left = insert0(root.left, node);
+			root.update();
+			return root;
+		} else {
+			root.right = insert0(root.right, node);
+			root.update();
+			return root;
+		}
+	}
+
+	static Treap remove(Treap root, int key) {
+		TreapPair t = split(root, key);
+		return merge(t.left, split(t.right, key + 1).right);
+	}
+
+	static Treap remove2(Treap root, int key) { // alternative implementation
 		if (root == null) {
 			return null;
 		}
-		if (x < root.key) {
-			root.left = remove(root.left, x);
+		if (key < root.key) {
+			root.left = remove(root.left, key);
 			root.update();
 			return root;
-		} else if (x > root.key) {
-			root.right = remove(root.right, x);
+		} else if (key > root.key) {
+			root.right = remove(root.right, key);
 			root.update();
 			return root;
 		} else {
@@ -111,20 +142,26 @@ public class TreapSimple {
 
 	// random test
 	public static void main(String[] args) {
+		long time = System.currentTimeMillis();
 		Treap treap = null;
 		Set<Integer> set = new TreeSet<>();
-		for (int i = 0; i < 100000; i++) {
-			int x = random.nextInt(100000);
+		for (int i = 0; i < 1000_000; i++) {
+			int key = random.nextInt(100_000);
 			if (random.nextBoolean()) {
-				treap = remove(treap, x);
-				set.remove(x);
-			} else if (!set.contains(x)) {
-				treap = insert(treap, x);
-				set.add(x);
+				treap = remove(treap, key);
+				set.remove(key);
+			} else if (!set.contains(key)) {
+				treap = insert(treap, key);
+				set.add(key);
 			}
 			if (set.size() != getSize(treap))
 				throw new RuntimeException();
 		}
+		for (int i = 0; i < getSize(treap); i++) {
+			if (!set.contains(kth(treap, i)))
+				throw new RuntimeException();
+		}
+		System.out.println(System.currentTimeMillis() - time);
 		// print(treap);
 	}
 }
