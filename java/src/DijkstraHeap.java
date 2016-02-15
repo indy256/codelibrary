@@ -1,6 +1,7 @@
 import java.util.*;
 import java.util.stream.Stream;
 
+// https://en.wikipedia.org/wiki/Dijkstra's_algorithm in O(E*log(V))
 public class DijkstraHeap {
 
 	public static void shortestPaths(List<Edge>[] edges, int s, int[] prio, int[] pred) {

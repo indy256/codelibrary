@@ -21,9 +21,13 @@ def convex_hull(points):
 
     return lower[:-1] + upper[:-1]
 
-# tests
-import random
 
-assert convex_hull([(0, 0), (0, 0)]) == [(0, 0)]
-assert convex_hull([(i // 10, i % 10) for i in range(100)]) == [(0, 0), (0, 9), (9, 9), (9, 0)]
-print(len(convex_hull([(random.randint(0, 10000), random.randint(0, 10000)) for i in range(10000)])))
+def test():
+    import random
+
+    assert convex_hull([(0, 0), (0, 0)]) == [(0, 0)]
+    assert convex_hull([(i // 10, i % 10) for i in range(100)]) == [(0, 0), (0, 9), (9, 9), (9, 0)]
+    print(len(convex_hull([(random.randint(0, 10000), random.randint(0, 10000)) for i in range(10000)])))
+
+
+test()

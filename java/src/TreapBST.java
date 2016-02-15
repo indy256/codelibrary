@@ -1,7 +1,7 @@
 import java.util.*;
 
 // https://en.wikipedia.org/wiki/Treap
-public class TreapSimple {
+public class TreapBST {
 	static Random random = new Random();
 
 	static class Treap {
