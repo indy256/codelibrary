@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.stream.Stream;
 
 public class MaxFlowDinic {
 
@@ -10,13 +11,6 @@ public class MaxFlowDinic {
 			this.rev = rev;
 			this.cap = cap;
 		}
-	}
-
-	public static List<Edge>[] createGraph(int nodes) {
-		List<Edge>[] graph = new List[nodes];
-		for (int i = 0; i < nodes; i++)
-			graph[i] = new ArrayList<>();
-		return graph;
 	}
 
 	public static void addEdge(List<Edge>[] graph, int s, int t, int cap) {
@@ -76,7 +70,7 @@ public class MaxFlowDinic {
 
 	// Usage example
 	public static void main(String[] args) {
-		List<Edge>[] graph = createGraph(3);
+		List<Edge>[] graph = Stream.generate(ArrayList::new).limit(3).toArray(List[]::new);
 		addEdge(graph, 0, 1, 3);
 		addEdge(graph, 0, 2, 2);
 		addEdge(graph, 1, 2, 2);
