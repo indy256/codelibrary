@@ -5,7 +5,7 @@ public class ConvexHull {
 	public static Point[] convexHull(Point[] points) {
 		Arrays.sort(points, (a, b) -> Integer.compare(a.x, b.x) != 0 ? Integer.compare(a.x, b.x) : Integer.compare(a.y, b.y));
 		int n = points.length;
-		Point[] hull = new Point[n * 2];
+		Point[] hull = new Point[n + 1];
 		int cnt = 0;
 		for (int i = 0; i < 2 * n; i++) {
 			int j = i < n ? i : 2 * n - 1 - i;
@@ -16,9 +16,9 @@ public class ConvexHull {
 		return Arrays.copyOf(hull, cnt - 1);
 	}
 
-	static boolean removeMiddle(Point a, Point b, Point c) {
-		long cross = (long) (a.x - b.x) * (c.y - b.y) - (long) (a.y - b.y) * (c.x - b.x);
-		long dot = (long) (a.x - b.x) * (c.x - b.x) + (long) (a.y - b.y) * (c.y - b.y);
+	static boolean removeMiddle(Point a, Point mid, Point b) {
+		long cross = (long) (a.x - mid.x) * (b.y - mid.y) - (long) (a.y - mid.y) * (b.x - mid.x);
+		long dot = (long) (a.x - mid.x) * (b.x - mid.x) + (long) (a.y - mid.y) * (b.y - mid.y);
 		return cross < 0 || cross == 0 && dot <= 0;
 	}
 

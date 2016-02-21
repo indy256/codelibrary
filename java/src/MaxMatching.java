@@ -1,5 +1,6 @@
 import java.util.*;
 
+// https://en.wikipedia.org/wiki/Matching_(graph_theory)#In_unweighted_bipartite_graphs in O(V^3)
 public class MaxMatching {
 
 	public static int maxMatching(boolean[][] graph) {

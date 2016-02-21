@@ -1,5 +1,6 @@
 import java.util.*;
 
+// https://en.wikipedia.org/wiki/Blossom_algorithm in O(V^3)
 public class MaxMatchingEdmonds {
 
 	static int lca(int[] match, int[] base, int[] p, int a, int b) {

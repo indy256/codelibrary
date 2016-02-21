@@ -1,6 +1,7 @@
 import java.util.*;
 import java.util.stream.Stream;
 
+// https://en.wikipedia.org/wiki/Dinic%27s_algorithm in O(V^2 * E)
 public class MaxFlowDinic {
 
 	static class Edge {

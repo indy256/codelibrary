@@ -1,5 +1,6 @@
 import java.util.*;
 
+// https://en.wikipedia.org/wiki/Matching_(graph_theory)#In_unweighted_bipartite_graphs in O(V * E)
 public class MaxMatching2 {
 
 	public static int maxMatching(List<Integer>[] graph, int n2) {
