@@ -11,7 +11,7 @@ def add(t, i, value):
 
 
 def max_value(t, a, b):
-    res = -2 * 10 ** 9
+    res = float('-inf')
     a += len(t) // 2
     b += len(t) // 2
     while a <= b:

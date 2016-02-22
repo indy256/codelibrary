@@ -11,8 +11,7 @@ class Edge:
 def dijkstra(graph, s):
     n = len(graph)
     pred = [-1] * n
-    MAX_PRIO = 2 * 10 ** 9
-    prio = [MAX_PRIO] * n
+    prio = [float('inf')] * n
     prio[s] = 0
     q = [(0, s)]
     while q:

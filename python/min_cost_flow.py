@@ -18,7 +18,7 @@ def add_edge(graph, s, t, cap, cost):
 
 def bellman_ford(graph, s, dist):
     n = len(graph)
-    dist[:] = [2 * 10 ** 9] * n
+    dist[:] = [float('inf')] * n
     dist[s] = 0
     inqueue = [False] * n
     q = [0] * n
@@ -45,7 +45,6 @@ def bellman_ford(graph, s, dist):
 
 
 def min_cost_flow(graph, s, t, maxf):
-    MAX = 2 * 10 ** 9
     n = len(graph)
     prio = [0] * n
     curflow = [0] * n
@@ -58,10 +57,10 @@ def min_cost_flow(graph, s, t, maxf):
     flow_cost = 0
     while flow < maxf:
         q = [(0, s)]
-        prio[:] = [MAX] * n
+        prio[:] = [float('inf')] * n
         prio[s] = 0
         finished = [False] * n
-        curflow[s] = MAX
+        curflow[s] = float('inf')
         while not finished[t] and q:
             (prio_u, u) = heappop(q)
             if prio_u != prio[u]:
@@ -79,7 +78,7 @@ def min_cost_flow(graph, s, t, maxf):
                     prevnode[v] = u
                     prevedge[v] = i
                     curflow[v] = min(curflow[u], e.cap - e.f)
-        if prio[t] == MAX:
+        if prio[t] == float('inf'):
             break
         for i in range(n):
             if finished[i]:
@@ -102,7 +101,7 @@ def test():
     add_edge(graph, 0, 1, 3, 1)
     add_edge(graph, 0, 2, 2, 1)
     add_edge(graph, 1, 2, 2, 1)
-    assert (4, 6) == min_cost_flow(graph, 0, 2, 2 * 10 ** 9)
+    assert (4, 6) == min_cost_flow(graph, 0, 2, float('inf'))
 
 
 test()

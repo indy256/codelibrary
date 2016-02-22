@@ -53,7 +53,7 @@ def max_flow(graph, src, dest):
     while dinic_bfs(graph, src, dest, dist):
         ptr = [0] * len(graph)
         while True:
-            df = dinic_dfs(graph, ptr, dist, dest, src, 2 * 10 ** 9)
+            df = dinic_dfs(graph, ptr, dist, dest, src, float('inf'))
             if df == 0:
                 break
             flow += df

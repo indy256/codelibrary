@@ -8,8 +8,7 @@ class Edge:
 def dijkstra(graph, s):
     n = len(graph)
     pred = [-1] * n
-    MAX_PRIO = 2 * 10 ** 9
-    prio = [MAX_PRIO] * n
+    prio = [float('inf')] * n
     prio[s] = 0
     visited = [False] * n
     for i in range(n):
@@ -18,7 +17,7 @@ def dijkstra(graph, s):
             if not visited[j] and (u == -1 or prio[u] > prio[j]):
                 u = j
 
-        if prio[u] == MAX_PRIO:
+        if prio[u] == float('inf'):
             break
 
         visited[u] = True
