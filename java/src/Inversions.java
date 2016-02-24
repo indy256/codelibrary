@@ -23,10 +23,8 @@ public class Inversions {
 	public static void main(String[] args) {
 		Random rnd = new Random(1);
 		for (int step = 0; step < 1000; step++) {
-			int n = rnd.nextInt(100);
-			int[] p = new int[n];
-			for (int i = 0; i < n; i++)
-				p[i] = rnd.nextInt(n);
+			int n = rnd.nextInt(100) + 1;
+			int[] p = rnd.ints(n, 0, n).toArray();
 			int res1 = inversions(p.clone(), 0, p.length);
 			int res2 = slowInversions(p);
 			if (res1 != res2)

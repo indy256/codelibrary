@@ -56,9 +56,7 @@ public class ArrayRotate {
 		for (int step = 0; step < 1000; step++) {
 			int n = rnd.nextInt(2) + 1;
 			int middle = rnd.nextInt(n);
-			int[] a = new int[n];
-			for (int i = 0; i < n; i++)
-				a[i] = rnd.nextInt(10);
+			int[] a = rnd.ints(n, 0, 10).toArray();
 			int[] b1 = a.clone();
 			rotate1(b1, 0, middle, n);
 			int[] b2 = a.clone();

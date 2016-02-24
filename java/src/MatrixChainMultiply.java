@@ -54,10 +54,7 @@ public class MatrixChainMultiply {
 		Random rnd = new Random(1);
 		for (int step = 0; step < 1000; step++) {
 			int n = rnd.nextInt(6) + 2;
-			int[] s = new int[n];
-			for (int i = 0; i < n; i++) {
-				s[i] = rnd.nextInt(10) + 1;
-			}
+			int[] s = rnd.ints(n, 1, 11).toArray();
 			int res1 = solveIterative(s);
 			int res2 = solveRecursive(s);
 			if (res1 != res2) {

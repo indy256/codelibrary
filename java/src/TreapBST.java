@@ -77,10 +77,10 @@ public class TreapBST {
 	}
 
 	static Treap insert2(Treap root, int key) { // alternative implementation
-		return insert0(root, new Treap(key));
+		return insert_(root, new Treap(key));
 	}
 
-	static Treap insert0(Treap root, Treap node) {
+	static Treap insert_(Treap root, Treap node) {
 		if (root == null) {
 			return node;
 		}
@@ -92,11 +92,11 @@ public class TreapBST {
 			return node;
 		}
 		if (node.key < root.key) {
-			root.left = insert0(root.left, node);
+			root.left = insert_(root.left, node);
 			root.update();
 			return root;
 		} else {
-			root.right = insert0(root.right, node);
+			root.right = insert_(root.right, node);
 			root.update();
 			return root;
 		}
@@ -140,6 +140,45 @@ public class TreapBST {
 		print(root.right);
 	}
 
+	// O(n) treap creation (if not counting keys sorting)
+	// http://wcipeg.com/wiki/Cartesian_tree
+	static Treap createTreap(int[] keys) {
+		Treap[] nodes = Arrays.stream(keys).mapToObj(Treap::new).sorted((a, b) -> Integer.compare(a.key, b.key)).toArray(Treap[]::new);
+		int n = keys.length;
+		int[] parent = new int[n];
+		Arrays.fill(parent, -1);
+		Treap root = n > 0 ? nodes[0] : null;
+		for (int i = 1; i < n; i++) {
+			int last = i - 1;
+			if (nodes[last].prio >= nodes[i].prio) {
+				nodes[last].right = nodes[i];
+				parent[i] = last;
+			} else {
+				while (nodes[last].prio < nodes[i].prio && parent[last] != -1) {
+					last = parent[last];
+				}
+				if (nodes[last].prio < nodes[i].prio) {
+					nodes[i].left = nodes[last];
+					root = nodes[i];
+				} else {
+					nodes[i].left = nodes[last].right;
+					nodes[last].right = nodes[i];
+					parent[i] = last;
+				}
+			}
+		}
+		updateSizes(root);
+		return root;
+	}
+
+	private static void updateSizes(Treap root) {
+		if (root == null)
+			return;
+		updateSizes(root.left);
+		updateSizes(root.right);
+		root.update();
+	}
+
 	// random test
 	public static void main(String[] args) {
 		long time = System.currentTimeMillis();
@@ -162,6 +201,28 @@ public class TreapBST {
 				throw new RuntimeException();
 		}
 		System.out.println(System.currentTimeMillis() - time);
-		// print(treap);
+
+		for (int step = 0; step < 1000; step++) {
+			int n = random.nextInt(10) + 1;
+			int[] keys = random.ints(n, 0, 100).toArray();
+			Treap t = createTreap(keys);
+			Arrays.sort(keys);
+			for (int i = 0; i < n; i++) {
+				if (kth(t, i) != keys[i])
+					throw new RuntimeException();
+			}
+			checkHeapInvariant(t);
+		}
+	}
+
+	private static void checkHeapInvariant(Treap root) {
+		if (root == null)
+			return;
+		if (root.left != null && root.left.prio > root.prio)
+			throw new RuntimeException();
+		if (root.right != null && root.right.prio > root.prio)
+			throw new RuntimeException();
+		checkHeapInvariant(root.left);
+		checkHeapInvariant(root.right);
 	}
 }

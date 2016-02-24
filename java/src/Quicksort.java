@@ -30,10 +30,7 @@ public class Quicksort {
 	// test
 	public static void main(String[] args) {
 		int n = 10_000_000;
-		int[] a1 = new int[n];
-		for (int i = 0; i < n; i++) {
-			a1[i] = rnd.nextInt();
-		}
+		int[] a1 = rnd.ints(n).toArray();
 
 		int[] a2 = a1.clone();
 		Arrays.sort(a2);

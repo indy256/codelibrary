@@ -37,9 +37,7 @@ public class NthElement {
 	public static void main(String[] args) {
 		for (int step = 0; step < 100_000; step++) {
 			int n = rnd.nextInt(10) + 1;
-			int[] a = new int[n];
-			for (int i = 0; i < n; i++)
-				a[i] = rnd.nextInt(10);
+			int[] a = rnd.ints(n, 0, 10).toArray();
 			int k = rnd.nextInt(n);
 			nth_element(a, 0, n, k);
 			int[] s = a.clone();
