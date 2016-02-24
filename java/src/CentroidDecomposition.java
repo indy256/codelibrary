@@ -1,6 +1,7 @@
 import java.util.*;
 import java.util.stream.Stream;
 
+// https://sai16vicky.wordpress.com/2014/11/01/divide-and-conquer-on-trees-centroid-decomposition/
 public class CentroidDecomposition {
 
 	static void calcSizes(List<Integer>[] tree, int[] size, boolean[] deleted, int u, int p) {
