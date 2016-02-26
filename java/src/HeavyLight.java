@@ -1,6 +1,7 @@
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiConsumer;
+import java.util.stream.Stream;
 
 // Heavy-light decomposition with path queries. Query complexity is O(log^2(n)).
 // Based on the code from http://codeforces.com/blog/entry/22072
@@ -285,9 +286,7 @@ public class HeavyLight {
 	}
 
 	static List<Integer>[] getRandomTree(int n, Random rnd) {
-		List<Integer>[] t = new List[n];
-		for (int i = 0; i < n; i++)
-			t[i] = new ArrayList<>();
+		List<Integer>[] t = Stream.generate(ArrayList::new).limit(n).toArray(List[]::new);
 		int[] p = new int[n];
 		for (int i = 0, j; i < n; j = rnd.nextInt(i + 1), p[i] = p[j], p[j] = i, i++) ; // random permutation
 		for (int i = 1; i < n; i++) {

@@ -1,12 +1,11 @@
 import java.util.*;
+import java.util.stream.Stream;
 
 // https://en.wikipedia.org/wiki/Pr?fer_sequence
 public class RandomGraph {
 
 	public static List<Integer>[] getRandomTree2(int n, Random rnd) {
-		List<Integer>[] t = new List[n];
-		for (int i = 0; i < n; i++)
-			t[i] = new ArrayList<>();
+		List<Integer>[] t = Stream.generate(ArrayList::new).limit(n).toArray(List[]::new);
 		int[] p = new int[n];
 		for (int i = 0, j; i < n; j = rnd.nextInt(i + 1), p[i] = p[j], p[j] = i, i++) ; // random permutation
 		for (int i = 1; i < n; i++) {
@@ -19,9 +18,7 @@ public class RandomGraph {
 
 	public static List<Integer>[] pruferCode2Tree(int[] pruferCode) {
 		int n = pruferCode.length + 2;
-		List<Integer>[] tree = new List[n];
-		for (int i = 0; i < n; i++)
-			tree[i] = new ArrayList<>();
+		List<Integer>[] tree = Stream.generate(ArrayList::new).limit(n).toArray(List[]::new);
 		int[] degree = new int[n];
 		Arrays.fill(degree, 1);
 		for (int v : pruferCode)

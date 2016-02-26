@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.stream.Stream;
 
 public class HeavyLight2 {
 
@@ -298,9 +299,7 @@ public class HeavyLight2 {
 	}
 
 	static List<Integer>[] getRandomTree(int n, Random rnd) {
-		List<Integer>[] t = new List[n];
-		for (int i = 0; i < n; i++)
-			t[i] = new ArrayList<>();
+		List<Integer>[] t = Stream.generate(ArrayList::new).limit(n).toArray(List[]::new);
 		int[] p = new int[n];
 		for (int i = 0, j; i < n; j = rnd.nextInt(i + 1), p[i] = p[j], p[j] = i, i++) ; // random permutation
 		for (int i = 1; i < n; i++) {

@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.stream.Stream;
 
 // https://en.wikipedia.org/wiki/Matching_(graph_theory)#In_unweighted_bipartite_graphs in O(V * E)
 public class MaxMatching2 {
@@ -33,9 +34,7 @@ public class MaxMatching2 {
 		for (int step = 0; step < 1000; step++) {
 			int n1 = rnd.nextInt(20) + 1;
 			int n2 = rnd.nextInt(20) + 1;
-			List<Integer>[] g = new List[n1];
-			for (int i = 0; i < n1; i++)
-				g[i] = new ArrayList<>();
+			List<Integer>[] g = Stream.generate(ArrayList::new).limit(n1).toArray(List[]::new);
 			for (int i = 0; i < n1; i++)
 				for (int j = 0; j < n2; j++)
 					g[i].add(j);

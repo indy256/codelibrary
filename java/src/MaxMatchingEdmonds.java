@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.stream.Stream;
 
 // https://en.wikipedia.org/wiki/Blossom_algorithm in O(V^3)
 public class MaxMatchingEdmonds {
@@ -97,11 +98,7 @@ public class MaxMatchingEdmonds {
 
 	// Usage example
 	public static void main(String[] args) {
-		int n = 4;
-		List<Integer>[] g = new List[n];
-		for (int i = 0; i < n; i++) {
-			g[i] = new ArrayList<>();
-		}
+		List<Integer>[] g = Stream.generate(ArrayList::new).limit(4).toArray(List[]::new);
 		g[0].add(1);
 		g[1].add(0);
 		g[1].add(2);

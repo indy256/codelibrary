@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.stream.Stream;
 
 // https://en.wikipedia.org/wiki/Kosaraju%27s_algorithm
 public class SCCKosaraju {
@@ -11,9 +12,7 @@ public class SCCKosaraju {
 			if (!used[i])
 				dfs(graph, used, order, i);
 
-		List<Integer>[] reverseGraph = new List[n];
-		for (int i = 0; i < n; i++)
-			reverseGraph[i] = new ArrayList<>();
+		List<Integer>[] reverseGraph = Stream.generate(ArrayList::new).limit(n).toArray(List[]::new);
 		for (int i = 0; i < n; i++)
 			for (int j : graph[i])
 				reverseGraph[j].add(i);
@@ -46,9 +45,7 @@ public class SCCKosaraju {
 		for (int i = 0; i < components.size(); i++)
 			for (int u : components.get(i))
 				comp[u] = i;
-		List<Integer>[] g = new List[components.size()];
-		for (int i = 0; i < g.length; i++)
-			g[i] = new ArrayList<>();
+		List<Integer>[] g = Stream.generate(ArrayList::new).limit(components.size()).toArray(List[]::new);
 		Set<Long> edges = new HashSet<>();
 		for (int u = 0; u < graph.length; u++)
 			for (int v : graph[u])
@@ -59,10 +56,7 @@ public class SCCKosaraju {
 
 	// Usage example
 	public static void main(String[] args) {
-		List<Integer>[] g = new List[3];
-		for (int i = 0; i < g.length; i++)
-			g[i] = new ArrayList<>();
-
+		List<Integer>[] g = Stream.generate(ArrayList::new).limit(3).toArray(List[]::new);
 		g[2].add(0);
 		g[2].add(1);
 		g[0].add(1);
