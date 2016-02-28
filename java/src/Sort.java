@@ -28,24 +28,6 @@ public class Sort {
 		qSort(a, i, high);
 	}
 
-	public static void qSort2(int[] a, int low, int high) {
-		if (high - low <= 1)
-			return;
-		int p = randomizedPartition(a, low, high);
-		qSort2(a, p, high);
-		qSort2(a, low, p);
-	}
-
-	static int randomizedPartition(int[] a, int low, int high) {
-		swap(a, low + rnd.nextInt(high - low), high - 1);
-		int x = a[high - 1];
-		int i = low - 1;
-		for (int j = low; j < high; j++)
-			if (a[j] <= x)
-				swap(a, ++i, j);
-		return i;
-	}
-
 	static void swap(int[] a, int i, int j) {
 		int t = a[j];
 		a[j] = a[i];
@@ -60,7 +42,7 @@ public class Sort {
 		mergeSort(a, mid, high);
 		int[] b = Arrays.copyOfRange(a, low, mid);
 		for (int i = low, j = mid, k = 0; k < b.length; i++) {
-			if ((j == high || b[k] <= a[j])) {
+			if (j == high || b[k] <= a[j]) {
 				a[i] = b[k++];
 			} else {
 				a[i] = a[j++];
@@ -281,17 +263,12 @@ public class Sort {
 
 		for (int step = 0; step < 10; step++) {
 			int n = rnd.nextInt(50_000) + 100_000;
-			int[] a = rnd.ints(n).toArray();
+			int[] a = step == 0 ? new int[n] : rnd.ints(n).toArray();
 			int[] s = a.clone();
 			Arrays.sort(s);
 
 			int[] b = a.clone();
 			qSort(b, 0, b.length - 1);
-			if (!Arrays.equals(s, b))
-				throw new RuntimeException();
-
-			b = a.clone();
-			qSort2(b, 0, b.length);
 			if (!Arrays.equals(s, b))
 				throw new RuntimeException();
 
