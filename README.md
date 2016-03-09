@@ -7,7 +7,7 @@
 * **String algorithms**: suffix tree, suffix automata, suffix array, trie, Aho-Corasick algorithm, Knuth-Morris-Pratt algorithm, Z-function
 * **Sorting algorithms**: quick-, merge-, heap-, bubble-, selection-, insertion-, counting-, radix-sorting; Kth order statistic
 * **Geometry algorithms**: segments/lines/circles intersection, point in polygon query, convex hull, closest/furthest pair of points
-* Other: fast polynom multiplication via fast Fourier transform.
+* Other: big numbers multiplication via fast Fourier transform.
 
 ### Index available at:
 
