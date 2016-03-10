@@ -1,5 +1,6 @@
 import java.util.*;
 
+// https://en.wikipedia.org/wiki/Hungarian_algorithm in O(n^2 * m)
 public class Hungarian {
 
 	// a[n][m], n <= m, sum(a[i][p[i]] -> min
@@ -80,21 +81,20 @@ public class Hungarian {
 		int[] dp = new int[1 << (n + m)];
 		Arrays.fill(dp, Integer.MAX_VALUE / 2);
 		dp[0] = 0;
+		int res = Integer.MAX_VALUE;
 		for (int mask = 0; mask < dp.length; mask++) {
 			for (int i = 0; i < n; i++) {
 				if ((mask & (1 << i)) == 0) {
 					for (int j = 0; j < m; j++) {
 						if ((mask & (1 << (j + n))) == 0) {
 							dp[mask | (1 << i) | (1 << (j + n))] = Math.min(dp[mask | (1 << i) | (1 << (j + n))], dp[mask] + a[i + 1][j + 1]);
+							if (Integer.bitCount(mask & ((1 << n) - 1)) == n - 1)
+								res = Math.min(res, dp[mask | (1 << i) | (1 << (j + n))]);
 						}
 					}
 					break;
 				}
 			}
-		}
-		int res = Integer.MAX_VALUE;
-		for (int i = 0; i < 1 << m; i++) {
-			res = Math.min(res, dp[(i << n) | ((1 << n) - 1)]);
 		}
 		return res;
 	}

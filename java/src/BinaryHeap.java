@@ -1,5 +1,7 @@
 import java.util.*;
 
+// https://en.wikipedia.org/wiki/Binary_heap
+// invariant: heap[parent] <= heap[child]
 public class BinaryHeap {
 	int[] heap;
 	int size;

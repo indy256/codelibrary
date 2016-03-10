@@ -6,7 +6,7 @@ public class Sort {
 	static Random rnd = new Random(1);
 
 	public static void qSort(int[] a, int low, int high) {
-		if (high - low < 1)
+		if (low >= high)
 			return;
 		int separator = a[low + rnd.nextInt(high - low + 1)];
 		int i = low;

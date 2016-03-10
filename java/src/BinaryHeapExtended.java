@@ -1,10 +1,12 @@
-public class BinaryHeapWithIncreasePriority {
+// https://en.wikipedia.org/wiki/Binary_heap
+// invariant: heap[parent] <= heap[child]
+public class BinaryHeapExtended {
 	long[] heap;
 	int[] pos2Id;
 	int[] id2Pos;
 	int size;
 
-	public BinaryHeapWithIncreasePriority(int n) {
+	public BinaryHeapExtended(int n) {
 		heap = new long[n];
 		pos2Id = new int[n];
 		id2Pos = new int[n];
@@ -26,9 +28,22 @@ public class BinaryHeapWithIncreasePriority {
 		up(size++);
 	}
 
-	public void increasePriority(int id, long value) {
-		heap[id2Pos[id]] = value;
-		up(id2Pos[id]);
+	public void changePriority(int id, long value) {
+		int pos = id2Pos[id];
+		if (heap[pos] < value) {
+			heap[pos] = value;
+			down(pos);
+		} else if (heap[pos] > value) {
+			heap[pos] = value;
+			up(pos);
+		}
+	}
+
+	public void remove(int id) {
+		int pos = id2Pos[id];
+		pos2Id[pos] = pos2Id[--size];
+		id2Pos[pos2Id[pos]] = pos;
+		changePriority(pos2Id[pos], heap[size]);
 	}
 
 	void up(int pos) {
@@ -68,12 +83,14 @@ public class BinaryHeapWithIncreasePriority {
 
 	// Usage example
 	public static void main(String[] args) {
-		BinaryHeapWithIncreasePriority heap = new BinaryHeapWithIncreasePriority(10);
+		BinaryHeapExtended heap = new BinaryHeapExtended(10);
 		heap.add(0, 4);
 		heap.add(1, 5);
 		heap.add(2, 2);
 
-		heap.increasePriority(1, 3);
+		heap.changePriority(1, 3);
+		heap.changePriority(2, 6);
+		heap.remove(0);
 
 		// print elements in sorted order
 		while (heap.size != 0) {

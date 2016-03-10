@@ -5,7 +5,7 @@ public class Quicksort {
 	static Random rnd = new Random();
 
 	public static void quickSort(int[] a, int low, int high) {
-		if (low > high)
+		if (low >= high)
 			return;
 		int separator = a[low + rnd.nextInt(high - low + 1)];
 		int i = low;
