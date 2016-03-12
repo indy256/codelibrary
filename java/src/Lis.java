@@ -9,6 +9,7 @@ public class Lis {
 		Arrays.fill(len, 1);
 		int[] pred = new int[n];
 		Arrays.fill(pred, -1);
+		int bi = 0;
 		for (int i = 1; i < n; i++) {
 			for (int j = 0; j < i; j++) {
 				if (x[j] < x[i] && len[i] < len[j] + 1) {
@@ -16,9 +17,6 @@ public class Lis {
 					pred[i] = j;
 				}
 			}
-		}
-		int bi = 0;
-		for (int i = 1; i < n; i++) {
 			if (len[bi] < len[i]) {
 				bi = i;
 			}
