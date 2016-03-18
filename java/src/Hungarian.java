@@ -4,7 +4,7 @@ import java.util.*;
 public class Hungarian {
 
 	// a[n][m], n <= m, sum(a[i][p[i]] -> min
-	public static int minimumWeightPerfectMatching(int[][] a) {
+	public static int minWeightPerfectMatching(int[][] a) {
 		int n = a.length - 1;
 		int m = a[0].length - 1;
 		int[] u = new int[n + 1];
@@ -67,15 +67,15 @@ public class Hungarian {
 					a[i][j] = rnd.nextInt(100_000) - 50_000;
 				}
 			}
-			int res1 = minimumWeightPerfectMatching(a);
-			int res2 = minimumWeightPerfectMatchingSlow(a);
+			int res1 = minWeightPerfectMatching(a);
+			int res2 = minWeightPerfectMatchingSlow(a);
 			if (res1 != res2) {
 				System.err.println(res1 + " " + res2);
 			}
 		}
 	}
 
-	static int minimumWeightPerfectMatchingSlow(int[][] a) {
+	static int minWeightPerfectMatchingSlow(int[][] a) {
 		int n = a.length - 1;
 		int m = a[0].length - 1;
 		int[] dp = new int[1 << (n + m)];
