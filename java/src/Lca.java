@@ -1,6 +1,7 @@
 import java.util.*;
 import java.util.stream.Stream;
 
+// Answering LCA queries in O(log(n)) with O(n) preprocessing
 public class Lca {
 
 	int[] depth;

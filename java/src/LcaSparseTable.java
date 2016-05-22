@@ -1,6 +1,7 @@
 import java.util.*;
 import java.util.stream.Stream;
 
+// Answering LCA queries in O(1) with O(n*log(n)) preprocessing
 public class LcaSparseTable {
 
 	int len;
