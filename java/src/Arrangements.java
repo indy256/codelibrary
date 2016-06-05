@@ -1,6 +1,6 @@
 import java.util.*;
 
-// https://ru.wikipedia.org/wiki/Размещение
+// https://en.wikipedia.org/wiki/Partial_permutation
 public class Arrangements {
 
 	public static boolean nextArrangement(int[] a, int n) {
