@@ -2,32 +2,12 @@ import java.util.Random;
 
 public class Partition {
 
-	static Random rnd = new Random(1);
-
-	public static int randomizedPartition(int[] a, int i, int j) {
-		int high = j;
-		int separator = a[i + rnd.nextInt(j - i + 1)];
-		do {
-			while (a[i] < separator)
-				++i;
-			while (a[j] > separator)
-				--j;
-			if (i > j)
-				break;
-			int t = a[i];
-			a[i] = a[j];
-			a[j] = t;
-			++i;
-			--j;
-		} while (i <= j);
-		return Math.max(0, j);
-	}
-
+	// like http://www.cplusplus.com/reference/algorithm/partition/
+	// but additionally places separator in the end of the first group
 	public static int partition(int[] a, int fromInclusive, int toExclusive, int separatorIndex) {
 		int i = fromInclusive;
 		int j = toExclusive - 1;
-		if (i >= j)
-			return j;
+		if (i >= j) return j;
 
 		int separator = a[separatorIndex];
 		a[separatorIndex] = a[i];
@@ -53,23 +33,26 @@ public class Partition {
 
 	// Random test
 	public static void main(String[] args) {
+		Random rnd = new Random(1);
 		for (int step = 0; step < 100_000; step++) {
-			int n = rnd.nextInt(10) + 2;
+			int n = rnd.nextInt(10) + 1;
 			int[] a = rnd.ints(n, 0, 10).toArray();
-			int[] b = a.clone();
-			check(a, randomizedPartition(a, 0, n - 1), n - 2);
 			for (int i = 0; i < n; i++) {
-				int[] c = b.clone();
-				check(c, partition(c, 0, n, i), n - 1);
+				for (int j = i; j < n; j++) {
+					for (int k = i; k <= j; k++) {
+						int[] b = a.clone();
+						check(b, partition(b, i, j + 1, k), i, j);
+					}
+				}
 			}
 		}
 	}
 
-	static void check(int[] a, int k, int maxpos) {
-		if (k < 0 || k > maxpos)
+	static void check(int[] a, int k, int lo, int hi) {
+		if (k < lo || k > hi)
 			throw new RuntimeException();
-		for (int i = 0; i < k; i++)
-			for (int j = k + 1; j < a.length; j++)
+		for (int i = lo; i <= k; i++)
+			for (int j = k; j <= hi; j++)
 				if (a[i] > a[j])
 					throw new RuntimeException();
 	}
