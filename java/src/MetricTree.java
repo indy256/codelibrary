@@ -29,7 +29,7 @@ public class MetricTree {
 	void nth_element(int low, int high, int n) {
 		int center = low - 1;
 		while (true) {
-			int k = randomizedPartition(center, low, high);
+			int k = partition(center, low, high, low + rnd.nextInt(high - low));
 			if (n < k)
 				high = k;
 			else if (n > k)
@@ -39,14 +39,23 @@ public class MetricTree {
 		}
 	}
 
-	int randomizedPartition(int center, int low, int high) {
-		swap(low + rnd.nextInt(high - low), high - 1);
-		long R = dist2(x[center], y[center], x[high - 1], y[high - 1]);
-		int i = low - 1;
-		for (int j = low; j < high; j++)
-			if (dist2(x[center], y[center], x[j], y[j]) <= R)
-				swap(++i, j);
-		return i;
+	int partition(int center, int fromInclusive, int toExclusive, int separatorIndex) {
+		int i = fromInclusive;
+		int j = toExclusive - 1;
+		if (i >= j) return j;
+		long separator = dist2(x[center], y[center], x[separatorIndex], y[separatorIndex]);
+		swap(i++, separatorIndex);
+		while (i <= j) {
+			while (i <= j && (dist2(x[center], y[center], x[i], y[i]) < separator))
+				++i;
+			while (i <= j && (dist2(x[center], y[center], x[j], y[j]) > separator))
+				--j;
+			if (i >= j)
+				break;
+			swap(i++, j--);
+		}
+		swap(j, fromInclusive);
+		return j;
 	}
 
 	static long dist2(int x1, int y1, int x2, int y2) {

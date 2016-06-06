@@ -8,11 +8,8 @@ public class Partition {
 		int i = fromInclusive;
 		int j = toExclusive - 1;
 		if (i >= j) return j;
-
 		int separator = a[separatorIndex];
-		a[separatorIndex] = a[i];
-		a[i] = separator;
-		++i;
+		swap(a, i++, separatorIndex);
 		while (i <= j) {
 			while (i <= j && a[i] < separator)
 				++i;
@@ -20,15 +17,16 @@ public class Partition {
 				--j;
 			if (i >= j)
 				break;
-			int t = a[j];
-			a[j] = a[i];
-			a[i] = t;
-			++i;
-			--j;
+			swap(a, i++, j--);
 		}
-		a[fromInclusive] = a[j];
-		a[j] = separator;
+		swap(a, j, fromInclusive);
 		return j;
+	}
+
+	static void swap(int[] a, int i, int j) {
+		int t = a[j];
+		a[j] = a[i];
+		a[i] = t;
 	}
 
 	// Random test
