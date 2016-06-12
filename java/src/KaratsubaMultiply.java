@@ -45,7 +45,7 @@ public class KaratsubaMultiply {
 
 	// Usage example
 	public static void main(String[] args) {
-		// (2*x+1)*(4*x+3) = 8*x^2+10*x+3
-		System.out.println(Arrays.equals(new int[]{3, 10, 8, 0}, karatsubaMultiply(new int[]{1, 2}, new int[]{3, 4})));
+		// (3*x^2+2*x+1) * (4*x+3) = 12*x^3 + 17*x^2 + 10*x + 3
+		System.out.println(Arrays.equals(new int[]{3, 10, 17, 12, 0, 0}, karatsubaMultiply(new int[]{1, 2, 3}, new int[]{3, 4})));
 	}
 }
