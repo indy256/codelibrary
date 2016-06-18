@@ -26,7 +26,7 @@ public class DijkstraCustomHeap {
 		}
 	}
 
-	static class Edge {
+	public static class Edge {
 		int t;
 		int cost;
 
