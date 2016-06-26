@@ -1,8 +1,9 @@
 import java.util.*;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 // https://en.wikipedia.org/wiki/2-satisfiability
-public class TwoSat {
+public class Sat2 {
 
 	static void dfs1(List<Integer>[] graph, boolean[] used, List<Integer> order, int u) {
 		used[u] = true;
@@ -66,5 +67,7 @@ public class TwoSat {
 
 		boolean[] solution = solve2Sat(g);
 		System.out.println(Arrays.toString(solution));
+
+		IntStream.range(0, 10).reduce( (x,y)->x*y).getAsInt();
 	}
 }

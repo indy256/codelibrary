@@ -7,7 +7,7 @@ object Quicksort {
 
   def quicksort_(xs: Array[Int]): Array[Int] = xs match {
     case Array() => xs
-    case Array(x, s@_*) => quicksort(Array(s: _*) filter (x >=)) ++ Array(x) ++ quicksort(Array(s: _*) filter (x <))
+    case Array(x, s@_*) => quicksort_(Array(s filter (x >=): _*)) ++ Array(x) ++ quicksort_(Array(s: _*) filter (x <))
   }
 
   // imperative implementation. fast
