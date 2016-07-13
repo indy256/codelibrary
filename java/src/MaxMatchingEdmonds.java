@@ -1,73 +1,8 @@
 import java.util.*;
+import java.util.stream.*;
 
+// https://en.wikipedia.org/wiki/Blossom_algorithm in O(V^3)
 public class MaxMatchingEdmonds {
-
-	static int lca(int[] match, int[] base, int[] p, int a, int b) {
-		boolean[] used = new boolean[match.length];
-		while (true) {
-			a = base[a];
-			used[a] = true;
-			if (match[a] == -1) break;
-			a = p[match[a]];
-		}
-		while (true) {
-			b = base[b];
-			if (used[b]) return b;
-			b = p[match[b]];
-		}
-	}
-
-	static void markPath(int[] match, int[] base, boolean[] blossom, int[] p, int v, int b, int children) {
-		for (; base[v] != b; v = p[match[v]]) {
-			blossom[base[v]] = blossom[base[match[v]]] = true;
-			p[v] = children;
-			children = match[v];
-		}
-	}
-
-	static int findPath(List<Integer>[] graph, int[] match, int[] p, int root) {
-		int n = graph.length;
-		boolean[] used = new boolean[n];
-		Arrays.fill(p, -1);
-		int[] base = new int[n];
-		for (int i = 0; i < n; ++i)
-			base[i] = i;
-
-		used[root] = true;
-		int qh = 0;
-		int qt = 0;
-		int[] q = new int[n];
-		q[qt++] = root;
-		while (qh < qt) {
-			int v = q[qh++];
-
-			for (int to : graph[v]) {
-				if (base[v] == base[to] || match[v] == to) continue;
-				if (to == root || match[to] != -1 && p[match[to]] != -1) {
-					int curbase = lca(match, base, p, v, to);
-					boolean[] blossom = new boolean[n];
-					markPath(match, base, blossom, p, v, curbase, to);
-					markPath(match, base, blossom, p, to, curbase, v);
-					for (int i = 0; i < n; ++i)
-						if (blossom[base[i]]) {
-							base[i] = curbase;
-							if (!used[i]) {
-								used[i] = true;
-								q[qt++] = i;
-							}
-						}
-				} else if (p[to] == -1) {
-					p[to] = v;
-					if (match[to] == -1)
-						return to;
-					to = match[to];
-					used[to] = true;
-					q[qt++] = to;
-				}
-			}
-		}
-		return -1;
-	}
 
 	public static int maxMatching(List<Integer>[] graph) {
 		int n = graph.length;
@@ -86,29 +21,107 @@ public class MaxMatchingEdmonds {
 				}
 			}
 		}
-
-		int matches = 0;
-		for (int i = 0; i < n; ++i)
-			if (match[i] != -1)
-				++matches;
-		return matches / 2;
+		return (int) Arrays.stream(match).filter(x -> x != -1).count() / 2;
 	}
 
-	// Usage example
-	public static void main(String[] args) {
-		int n = 4;
-		List<Integer>[] g = new List[n];
-		for (int i = 0; i < n; i++) {
-			g[i] = new ArrayList<>();
+	static int findPath(List<Integer>[] graph, int[] match, int[] p, int root) {
+		Arrays.fill(p, -1);
+		int n = graph.length;
+		int[] base = IntStream.range(0, n).toArray();
+
+		boolean[] used = new boolean[n];
+		int[] q = new int[n];
+		int qt = 0;
+		used[root] = true;
+		q[qt++] = root;
+		for (int qh = 0; qh < qt; qh++) {
+			int u = q[qh];
+			for (int v : graph[u]) {
+				if (base[u] == base[v] || match[u] == v) continue;
+				if (v == root || match[v] != -1 && p[match[v]] != -1) {
+					int curbase = lca(match, base, p, u, v);
+					boolean[] blossom = new boolean[n];
+					markPath(match, base, blossom, p, u, curbase, v);
+					markPath(match, base, blossom, p, v, curbase, u);
+					for (int i = 0; i < n; ++i)
+						if (blossom[base[i]]) {
+							base[i] = curbase;
+							if (!used[i]) {
+								used[i] = true;
+								q[qt++] = i;
+							}
+						}
+				} else if (p[v] == -1) {
+					p[v] = u;
+					if (match[v] == -1)
+						return v;
+					v = match[v];
+					used[v] = true;
+					q[qt++] = v;
+				}
+			}
 		}
-		g[0].add(1);
-		g[1].add(0);
-		g[1].add(2);
-		g[2].add(1);
-		g[2].add(3);
-		g[3].add(2);
-		g[0].add(3);
-		g[3].add(0);
-		System.out.println(2 == maxMatching(g));
+		return -1;
+	}
+
+	static void markPath(int[] match, int[] base, boolean[] blossom, int[] p, int u, int curbase, int child) {
+		for (; base[u] != curbase; u = p[match[u]]) {
+			blossom[base[u]] = blossom[base[match[u]]] = true;
+			p[u] = child;
+			child = match[u];
+		}
+	}
+
+	static int lca(int[] match, int[] base, int[] p, int a, int b) {
+		boolean[] used = new boolean[match.length];
+		while (true) {
+			a = base[a];
+			used[a] = true;
+			if (match[a] == -1) break;
+			a = p[match[a]];
+		}
+		while (true) {
+			b = base[b];
+			if (used[b]) return b;
+			b = p[match[b]];
+		}
+	}
+
+	// random test
+	public static void main(String[] args) {
+		Random rnd = new Random(1);
+		for (int step = 0; step < 1000; step++) {
+			int n = rnd.nextInt(10) + 1;
+			boolean[][] g = new boolean[n][n];
+			List<Integer>[] graph = Stream.generate(ArrayList::new).limit(n).toArray(List[]::new);
+			for (int i = 0; i < n; i++) {
+				for (int j = i + 1; j < n; j++) {
+					g[i][j] = g[j][i] = rnd.nextBoolean();
+					if (g[i][j]) {
+						graph[i].add(j);
+						graph[j].add(i);
+					}
+				}
+			}
+			int res1 = maxMatching(graph);
+			int res2 = maxMatchingSlow(g);
+			if (res1 != res2) {
+				System.err.println(res1 + " " + res2);
+			}
+		}
+	}
+
+	static int maxMatchingSlow(boolean[][] g) {
+		int n = g.length;
+		int[] dp = new int[1 << n];
+		for (int mask = 0; mask < dp.length; mask++)
+			for (int i = 0; i < n; i++)
+				if ((mask & (1 << i)) == 0) {
+					for (int j = i + 1; j < n; j++)
+						if ((mask & (1 << j)) == 0 && g[i][j])
+							dp[mask | (1 << i) | (1 << j)] = Math.max(dp[mask | (1 << i) | (1 << j)], dp[mask] + 1);
+					break;
+				}
+		return dp[dp.length - 1];
 	}
 }

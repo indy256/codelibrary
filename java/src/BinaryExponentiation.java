@@ -1,4 +1,5 @@
-public class BinaryPow {
+// https://en.wikipedia.org/wiki/Exponentiation_by_squaring
+public class BinaryExponentiation {
 
 	public static int pow(int x, int n, int mod) {
 		int res = 1;

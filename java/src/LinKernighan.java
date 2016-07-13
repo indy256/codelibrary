@@ -1,7 +1,9 @@
 import javax.swing.*;
 import java.awt.*;
 import java.util.Random;
+import java.util.stream.IntStream;
 
+// https://en.wikipedia.org/wiki/Lin–Kernighan_heuristic
 public class LinKernighan extends JFrame {
 	Random rnd = new Random(1);
 	int n = rnd.nextInt(300) + 250;
@@ -19,7 +21,7 @@ public class LinKernighan extends JFrame {
 	}
 
 	public void linKernighan() {
-		int[] curState = optimize(getRandomPermutation(n));
+		int[] curState = IntStream.range(0,n).toArray();
 		double curDist = eval(curState);
 		updateBest(curState, curDist);
 		for (boolean improved = true; improved; ) {
@@ -54,9 +56,9 @@ public class LinKernighan extends JFrame {
 						added[p[bestPos]][p[n - 1]] = true;
 						delta += best;
 						reverse(p, bestPos + 1, n - 1);
-						double closeEdge = dist(x[p[n - 1]], y[p[n - 1]], x[p[0]], y[p[0]]);
-						if (curDist > cost + delta + closeEdge) {
-							curDist = cost + delta + closeEdge;
+						double closingEdge = dist(x[p[n - 1]], y[p[n - 1]], x[p[0]], y[p[0]]);
+						if (curDist > cost + delta + closingEdge) {
+							curDist = cost + delta + closingEdge;
 							curState = p.clone();
 							updateBest(curState, curDist);
 							improved = true;
@@ -101,39 +103,6 @@ public class LinKernighan extends JFrame {
 		double dx = x1 - x2;
 		double dy = y1 - y2;
 		return Math.sqrt(dx * dx + dy * dy);
-	}
-
-	int[] getRandomPermutation(int n) {
-		int[] res = new int[n];
-		for (int i = 0; i < n; i++) {
-			int j = rnd.nextInt(i + 1);
-			res[i] = res[j];
-			res[j] = i;
-		}
-		return res;
-	}
-
-	int[] optimize(int[] p) {
-		int[] res = p.clone();
-		for (boolean improved = true; improved; ) {
-			improved = false;
-			for (int i = 0; i < n; i++) {
-				for (int j = 0; j < n; j++) {
-					if (i == j || (j + 1) % n == i) continue;
-					int i1 = (i - 1 + n) % n;
-					int j1 = (j + 1) % n;
-					double delta = dist(x[res[i1]], y[res[i1]], x[res[j]], y[res[j]])
-							+ dist(x[res[i]], y[res[i]], x[res[j1]], y[res[j1]])
-							- dist(x[res[i1]], y[res[i1]], x[res[i]], y[res[i]])
-							- dist(x[res[j]], y[res[j]], x[res[j1]], y[res[j1]]);
-					if (delta < -1e-9) {
-						reverse(res, i, j);
-						improved = true;
-					}
-				}
-			}
-		}
-		return res;
 	}
 
 	// visualization code

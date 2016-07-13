@@ -1,3 +1,4 @@
+// https://en.wikipedia.org/wiki/Ford–Fulkerson_algorithm in O(V^2 * flow)
 public class MaxFlowFordFulkersonSimple {
 
 	public static int maxFlow(int[][] cap, int s, int t) {

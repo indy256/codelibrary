@@ -3,16 +3,16 @@ import java.util.*;
 public class PrimesAndDivisors {
 
 	public static int[] generatePrimes(int n) {
-		boolean[] prime = new boolean[n + 1];
-		Arrays.fill(prime, 2, n + 1, true);
+		boolean[] sieve = new boolean[n + 1];
+		Arrays.fill(sieve, 2, n + 1, true);
 		for (int i = 2; i * i <= n; i++)
-			if (prime[i])
+			if (sieve[i])
 				for (int j = i * i; j <= n; j += i)
-					prime[j] = false;
+					sieve[j] = false;
 		int[] primes = new int[n + 1];
 		int cnt = 0;
-		for (int i = 0; i < prime.length; i++)
-			if (prime[i])
+		for (int i = 0; i < sieve.length; i++)
+			if (sieve[i])
 				primes[cnt++] = i;
 
 		return Arrays.copyOf(primes, cnt);

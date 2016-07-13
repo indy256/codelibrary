@@ -26,7 +26,7 @@ public class ArrayRotate {
 
 	public static void rotate3(int[] a, int first, int middle, int last) {
 		int n = last - first;
-		int jump = last - middle;
+		int jump = middle - first;
 		int gcd = gcd(jump, n);
 		int cycle = n / gcd;
 		for (int i = 0; i < gcd; i++) {
@@ -54,11 +54,9 @@ public class ArrayRotate {
 	public static void main(String[] args) {
 		Random rnd = new Random(1);
 		for (int step = 0; step < 1000; step++) {
-			int n = rnd.nextInt(2) + 1;
+			int n = rnd.nextInt(10) + 1;
 			int middle = rnd.nextInt(n);
-			int[] a = new int[n];
-			for (int i = 0; i < n; i++)
-				a[i] = rnd.nextInt(10);
+			int[] a = rnd.ints(n, 0, 10).toArray();
 			int[] b1 = a.clone();
 			rotate1(b1, 0, middle, n);
 			int[] b2 = a.clone();

@@ -1,7 +1,9 @@
 import java.util.*;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 // https://en.wikipedia.org/wiki/2-satisfiability
-public class TwoSat {
+public class Sat2 {
 
 	static void dfs1(List<Integer>[] graph, boolean[] used, List<Integer> order, int u) {
 		used[u] = true;
@@ -26,9 +28,7 @@ public class TwoSat {
 			if (!used[i])
 				dfs1(graph, used, order, i);
 
-		List<Integer>[] reverseGraph = new List[n];
-		for (int i = 0; i < n; i++)
-			reverseGraph[i] = new ArrayList<>();
+		List<Integer>[] reverseGraph = Stream.generate(ArrayList::new).limit(n).toArray(List[]::new);
 		for (int i = 0; i < n; i++)
 			for (int j : graph[i])
 				reverseGraph[j].add(i);
@@ -53,10 +53,7 @@ public class TwoSat {
 
 	public static void main(String[] args) {
 		int n = 6;
-		List<Integer>[] g = new List[n];
-		for (int i = 0; i < n; i++) {
-			g[i] = new ArrayList<>();
-		}
+		List<Integer>[] g = Stream.generate(ArrayList::new).limit(n).toArray(List[]::new);
 		// (a || b) && (b || !c)
 		// !a => b
 		// !b => a
@@ -70,5 +67,7 @@ public class TwoSat {
 
 		boolean[] solution = solve2Sat(g);
 		System.out.println(Arrays.toString(solution));
+
+		IntStream.range(0, 10).reduce( (x,y)->x*y).getAsInt();
 	}
 }

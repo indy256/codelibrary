@@ -1,6 +1,6 @@
 import java.util.Random;
 
-// Based on http://www.codeforces.com/contest/117/submission/860934
+// Based on Daniel Sleator's implementation http://www.codeforces.com/contest/117/submission/860934
 public class LinkCutTreeConnectivity {
 
 	public static class Node {

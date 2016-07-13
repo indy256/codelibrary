@@ -5,7 +5,7 @@ public class Quicksort {
 	static Random rnd = new Random();
 
 	public static void quickSort(int[] a, int low, int high) {
-		if (low > high)
+		if (low >= high)
 			return;
 		int separator = a[low + rnd.nextInt(high - low + 1)];
 		int i = low;
@@ -30,10 +30,7 @@ public class Quicksort {
 	// test
 	public static void main(String[] args) {
 		int n = 10_000_000;
-		int[] a1 = new int[n];
-		for (int i = 0; i < n; i++) {
-			a1[i] = rnd.nextInt();
-		}
+		int[] a1 = rnd.ints(n).toArray();
 
 		int[] a2 = a1.clone();
 		Arrays.sort(a2);

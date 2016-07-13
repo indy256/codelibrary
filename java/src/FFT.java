@@ -3,6 +3,7 @@ import java.util.Random;
 
 public class FFT {
 
+	// a.length == b.length == 2^x
 	public static void fft(double[] a, double[] b, boolean invert) {
 		int n = a.length;
 		int shift = 32 - Integer.numberOfTrailingZeros(n);
@@ -68,8 +69,12 @@ public class FFT {
 		}
 		fft(aReal, aImaginary, true);
 		long[] result = new long[resultSize];
-		for (int i = 0; i < resultSize; i++)
-			result[i] = Math.round(aReal[i]);
+		long carry = 0;
+		for (int i = 0; i < resultSize; i++) {
+			result[i] = Math.round(aReal[i]) + carry;
+			carry = result[i] / 10;
+			result[i] %= 10;
+		}
 		return result;
 	}
 
@@ -94,13 +99,9 @@ public class FFT {
 				b[i] = x;
 			}
 			long[] res = multiply(a, b);
-			long carry = 0;
 			String s = "";
-			for (int i = 0; i < res.length; ++i) {
-				res[i] = res[i] + carry;
-				carry = res[i] / 10;
-				res[i] %= 10;
-				s = res[i] + s;
+			for (long v : res) {
+				s = v + s;
 			}
 			BigInteger mul = new BigInteger(s1).multiply(new BigInteger(s2));
 			if (!mul.equals(new BigInteger(s)))

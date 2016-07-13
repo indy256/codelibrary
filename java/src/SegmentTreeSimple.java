@@ -11,7 +11,6 @@ public class SegmentTreeSimple {
 			t[i >> 1] = Math.max(t[i], t[i ^ 1]);
 	}
 
-	// max[a, b]
 	public static int max(int[] t, int a, int b) {
 		int res = Integer.MIN_VALUE;
 		for (a += t.length / 2, b += t.length / 2; a <= b; a = (a + 1) >> 1, b = (b - 1) >> 1) {

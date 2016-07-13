@@ -3,14 +3,14 @@ import java.util.*;
 public class SegmentTreeFast {
 
 	// Modify the following 5 methods to implement your custom operations on the tree.
-	// This example implements Add/Max operations. Operations like Add/Sum, Set/Max can also be implemented.
+	// This example implements Add/Sum operations. Operations like Add/Max, Set/Max can also be implemented.
 	int modifyOperation(int x, int y) {
 		return x + y;
 	}
 
 	// query (or combine) operation
 	int queryOperation(int leftValue, int rightValue) {
-		return Math.max(leftValue, rightValue);
+		return leftValue + rightValue;
 	}
 
 	int deltaEffectOnSegment(int delta, int segmentLength) {
@@ -19,7 +19,7 @@ public class SegmentTreeFast {
 		// int result = delta;
 		// for (int i = 1; i < segmentLength; i++) result = queryOperation(result, delta);
 		// return result;
-		return delta;
+		return delta * segmentLength;
 	}
 
 	int getNeutralDelta() {
@@ -33,7 +33,6 @@ public class SegmentTreeFast {
 	// generic code
 	int[] value;
 	int[] delta; // delta[i] affects value[i], delta[2*i+1] and delta[2*i+2]
-	int[] len;
 
 	int joinValueWithDelta(int value, int delta) {
 		if (delta == getNeutralDelta()) return value;
@@ -52,7 +51,7 @@ public class SegmentTreeFast {
 		}
 		for (d -= 2; d >= 0; d--) {
 			int x = i >> d;
-			value[x >> 1] = joinValueWithDelta(x >> 1);
+			value[x >> 1] = joinNodeValueWithDelta(x >> 1, 1 << (d + 1));
 			delta[x] = joinDeltas(delta[x], delta[x >> 1]);
 			delta[x ^ 1] = joinDeltas(delta[x ^ 1], delta[x >> 1]);
 			delta[x >> 1] = getNeutralDelta();
@@ -67,19 +66,12 @@ public class SegmentTreeFast {
 		for (int i = 2 * n - 1; i > 1; i -= 2) {
 			value[i >> 1] = queryOperation(value[i], value[i ^ 1]);
 		}
-
 		delta = new int[2 * n];
 		Arrays.fill(delta, getNeutralDelta());
-
-		len = new int[2 * n];
-		Arrays.fill(len, n, 2 * n, 1);
-		for (int i = 2 * n - 1; i > 1; i -= 2) {
-			len[i >> 1] = len[i] + len[i ^ 1];
-		}
 	}
 
-	int joinValueWithDelta(int i) {
-		return joinValueWithDelta(value[i], deltaEffectOnSegment(delta[i], len[i]));
+	int joinNodeValueWithDelta(int i, int len) {
+		return joinValueWithDelta(value[i], deltaEffectOnSegment(delta[i], len));
 	}
 
 	public int query(int from, int to) {
@@ -89,18 +81,17 @@ public class SegmentTreeFast {
 		pushDelta(to);
 		int res = 0;
 		boolean found = false;
-		for (; from <= to; from = (from + 1) >> 1, to = (to - 1) >> 1) {
+		for (int len = 1; from <= to; from = (from + 1) >> 1, to = (to - 1) >> 1, len <<= 1) {
 			if ((from & 1) != 0) {
-				res = found ? queryOperation(res, joinValueWithDelta(from)) : joinValueWithDelta(from);
+				res = found ? queryOperation(res, joinNodeValueWithDelta(from, len)) : joinNodeValueWithDelta(from, len);
 				found = true;
 			}
 			if ((to & 1) == 0) {
-				res = found ? queryOperation(res, joinValueWithDelta(to)) : joinValueWithDelta(to);
+				res = found ? queryOperation(res, joinNodeValueWithDelta(to, len)) : joinNodeValueWithDelta(to, len);
 				found = true;
 			}
 		}
-		if (!found)
-			throw new RuntimeException();
+		if (!found) throw new RuntimeException();
 		return res;
 	}
 
@@ -109,27 +100,21 @@ public class SegmentTreeFast {
 		to += value.length >> 1;
 		pushDelta(from);
 		pushDelta(to);
-		int ta = -1;
-		int tb = -1;
+		int a = from;
+		int b = to;
 		for (; from <= to; from = (from + 1) >> 1, to = (to - 1) >> 1) {
 			if ((from & 1) != 0) {
 				this.delta[from] = joinDeltas(this.delta[from], delta);
-				if (ta == -1) {
-					ta = from;
-				}
 			}
 			if ((to & 1) == 0) {
 				this.delta[to] = joinDeltas(this.delta[to], delta);
-				if (tb == -1) {
-					tb = to;
-				}
 			}
 		}
-		for (int i = ta; i > 1; i >>= 1) {
-			value[i >> 1] = queryOperation(joinValueWithDelta(i), joinValueWithDelta(i ^ 1));
+		for (int i = a, len = 1; i > 1; i >>= 1, len <<= 1) {
+			value[i >> 1] = queryOperation(joinNodeValueWithDelta(i, len), joinNodeValueWithDelta(i ^ 1, len));
 		}
-		for (int i = tb; i > 1; i >>= 1) {
-			value[i >> 1] = queryOperation(joinValueWithDelta(i), joinValueWithDelta(i ^ 1));
+		for (int i = b, len = 1; i > 1; i >>= 1, len <<= 1) {
+			value[i >> 1] = queryOperation(joinNodeValueWithDelta(i, len), joinNodeValueWithDelta(i ^ 1, len));
 		}
 	}
 

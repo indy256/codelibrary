@@ -18,6 +18,7 @@ public class TernarySearch {
 		return (lo + hi) / 2;
 	}
 
+	// finds maximum of strictly increasing and then strictly decreasing function
 	public static int ternarySearch(IntUnaryOperator f, int fromInclusive, int toInclusive) {
 		int lo = fromInclusive;
 		int hi = toInclusive;
@@ -65,8 +66,9 @@ public class TernarySearch {
 				a[i] = a[i + 1] - rnd.nextInt(range) - 1;
 			for (int i = p + 1; i < n; i++)
 				a[i] = a[i - 1] - rnd.nextInt(range) - 1;
-			int res = ternarySearch((IntUnaryOperator) i -> a[i], 0, a.length - 1);
-			if (a[p] != a[res])
+			int res1 = ternarySearch((IntUnaryOperator) i -> a[i], 0, a.length - 1);
+			int res2 = ternarySearch2(i -> a[i], 0, a.length - 1);
+			if (p != res1 || p != res2)
 				throw new RuntimeException();
 		}
 	}

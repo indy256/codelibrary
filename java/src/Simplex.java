@@ -113,6 +113,7 @@ public class Simplex {
 		res = simplex(cnv(a), cnv(b), cnv(c), null);
 		System.out.println(null == res);
 
+		// unbounded problem
 		a = new long[][] { { -4, 1 }, { -2, -1 }, { -5, 2 } };
 		b = new long[] { -8, -10, 2 };
 		c = new long[] { 1, 1 };
@@ -126,7 +127,7 @@ public class Simplex {
 		res = simplex(cnv(a), cnv(b), cnv(c), null);
 		System.out.println(null == res);
 
-		// infinite solutions, but only one is returned
+		// infinite number of solutions, but only one is returned
 		a = new long[][] { { 1, 1 } };
 		b = new long[] { 0 };
 		c = new long[] { 1, 1 };

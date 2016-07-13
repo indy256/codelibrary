@@ -1,23 +1,17 @@
 import java.util.*;
+import java.util.stream.Stream;
 
 public class MinCostFlow {
 
 	static class Edge {
 		int to, f, cap, cost, rev;
 
-		Edge(int v, int cap, int cost, int rev) {
-			this.to = v;
+		Edge(int to, int cap, int cost, int rev) {
+			this.to = to;
 			this.cap = cap;
 			this.cost = cost;
 			this.rev = rev;
 		}
-	}
-
-	public static List<Edge>[] createGraph(int n) {
-		List<Edge>[] graph = new List[n];
-		for (int i = 0; i < n; i++)
-			graph[i] = new ArrayList<>();
-		return graph;
 	}
 
 	public static void addEdge(List<Edge>[] graph, int s, int t, int cap, int cost) {
@@ -61,8 +55,7 @@ public class MinCostFlow {
 		int[] prevnode = new int[n];
 		int[] pot = new int[n];
 
-		// bellmanFord invocation can be skipped if edges costs are non-negative
-		bellmanFord(graph, s, pot);
+		bellmanFord(graph, s, pot); // bellmanFord invocation can be skipped if edges costs are non-negative
 		int flow = 0;
 		int flowCost = 0;
 		while (flow < maxf) {
@@ -113,7 +106,7 @@ public class MinCostFlow {
 
 	// Usage example
 	public static void main(String[] args) {
-		List<Edge>[] graph = createGraph(3);
+		List<Edge>[] graph = Stream.generate(ArrayList::new).limit(3).toArray(List[]::new);
 		addEdge(graph, 0, 1, 3, 1);
 		addEdge(graph, 0, 2, 2, 1);
 		addEdge(graph, 1, 2, 2, 1);

@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.stream.Stream;
 
 // optimized version of https://en.wikipedia.org/wiki/Tarjan%27s_strongly_connected_components_algorithm
 public class SCCTarjan {
@@ -56,10 +57,7 @@ public class SCCTarjan {
 
 	// Usage example
 	public static void main(String[] args) {
-		List<Integer>[] g = new List[3];
-		for (int i = 0; i < g.length; i++)
-			g[i] = new ArrayList<>();
-
+		List<Integer>[] g = Stream.generate(ArrayList::new).limit(3).toArray(List[]::new);
 		g[2].add(0);
 		g[2].add(1);
 		g[0].add(1);

@@ -1,4 +1,4 @@
-import java.util.*;
+import java.util.Random;
 
 public class KdTreeRectQuery {
 
@@ -53,10 +53,12 @@ public class KdTreeRectQuery {
 		build(mid + 1, high, !divX, points);
 	}
 
+	static final Random rnd = new Random(1);
+
 	// See: http://www.cplusplus.com/reference/algorithm/nth_element
 	static void nth_element(Point[] a, int low, int high, int n, boolean divX) {
 		while (true) {
-			int k = randomizedPartition(a, low, high, divX);
+			int k = partition(a, low, high, low + rnd.nextInt(high - low), divX);
 			if (n < k)
 				high = k;
 			else if (n > k)
@@ -66,16 +68,23 @@ public class KdTreeRectQuery {
 		}
 	}
 
-	static final Random rnd = new Random(1);
-
-	static int randomizedPartition(Point[] a, int low, int high, boolean divX) {
-		swap(a, low + rnd.nextInt(high - low), high - 1);
-		int v = divX ? a[high - 1].x : a[high - 1].y;
-		int i = low - 1;
-		for (int j = low; j < high; j++)
-			if (divX ? a[j].x <= v : a[j].y <= v)
-				swap(a, ++i, j);
-		return i;
+	static int partition(Point[] a, int fromInclusive, int toExclusive, int separatorIndex, boolean divX) {
+		int i = fromInclusive;
+		int j = toExclusive - 1;
+		if (i >= j) return j;
+		double separator = divX ? a[separatorIndex].x : a[separatorIndex].y;
+		swap(a, i++, separatorIndex);
+		while (i <= j) {
+			while (i <= j && (divX ? a[i].x : a[i].y) < separator)
+				++i;
+			while (i <= j && (divX ? a[j].x : a[j].y) > separator)
+				--j;
+			if (i >= j)
+				break;
+			swap(a, i++, j--);
+		}
+		swap(a, j, fromInclusive);
+		return j;
 	}
 
 	static void swap(Point[] a, int i, int j) {

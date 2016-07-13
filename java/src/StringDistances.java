@@ -1,8 +1,8 @@
-import java.util.*;
+import java.util.Arrays;
 
-// https://en.wikipedia.org/wiki/Longest_common_subsequence_problem
-public class Lcs {
+public class StringDistances {
 
+	// https://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 	public static int[] getLCS(int[] x, int[] y) {
 		int m = x.length;
 		int n = y.length;
@@ -32,11 +32,38 @@ public class Lcs {
 		return res;
 	}
 
+	// https://en.wikipedia.org/wiki/Levenshtein_distance
+	public static int getLevensteinDistance(String a, String b) {
+		int m = a.length();
+		int n = b.length();
+		int[][] len = new int[m + 1][n + 1];
+		for (int i = 0; i <= m; i++) {
+			len[i][0] = i;
+		}
+		for (int j = 0; j <= n; j++) {
+			len[0][j] = j;
+		}
+		for (int i = 0; i < m; i++) {
+			for (int j = 0; j < n; j++) {
+				if (a.charAt(i) == b.charAt(j)) {
+					len[i + 1][j + 1] = len[i][j];
+				} else {
+					len[i + 1][j + 1] = 1 + Math.min(len[i][j], Math.min(len[i + 1][j], len[i][j + 1]));
+				}
+			}
+		}
+		return len[m][n];
+	}
+
 	// Usage example
 	public static void main(String[] args) {
 		int[] x = {1, 5, 4, 2, 3, 7, 6};
 		int[] y = {2, 7, 1, 3, 5, 4, 6};
 		int[] lcs = getLCS(x, y);
 		System.out.println(Arrays.toString(lcs));
+
+		String a = "abc";
+		String b = "ac";
+		System.out.println(getLevensteinDistance(a, b));
 	}
 }

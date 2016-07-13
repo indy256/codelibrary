@@ -44,8 +44,7 @@ public class RecursiveDescentParser {
         }
 
         void error(String message) {
-            System.out.println("Lexer error: " + message);
-            System.exit(1);
+            throw new RuntimeException("Lexer error: " + message);
         }
 
         void readCh() {
@@ -119,8 +118,7 @@ public class RecursiveDescentParser {
         }
 
         void error(String message) {
-            System.out.println("Parser error: " + message);
-            System.exit(1);
+			throw new RuntimeException("Parser error: " + message);
         }
 
         Node term() {

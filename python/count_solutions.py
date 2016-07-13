@@ -7,4 +7,9 @@ def count_solutions(a, b):
             dp[j] += dp[j - a[i]]
     return dp[b]
 
-print(5 == count_solutions([1, 2, 3], 5))
+
+def test():
+    print(5 == count_solutions([1, 2, 3], 5))
+
+
+test()

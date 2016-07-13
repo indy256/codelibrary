@@ -1,6 +1,6 @@
 import java.util.*;
 
-// Based on http://www.codeforces.com/contest/117/submission/860934
+// Based on Daniel Sleator's implementation http://www.codeforces.com/contest/117/submission/860934
 public class LinkCutTreeLca {
 
 	public static class Node {
@@ -152,8 +152,7 @@ public class LinkCutTreeLca {
 						for (; cur != -1; cur = p[cur])
 							path.add(cur);
 						cur = v;
-						for (; cur != -1 && !path.contains(cur); cur = p[cur])
-							path.add(cur);
+						for (; cur != -1 && !path.contains(cur); cur = p[cur]);
 						if (lca != nodes[cur])
 							throw new RuntimeException();
 					}

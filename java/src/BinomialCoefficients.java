@@ -19,6 +19,12 @@ public class BinomialCoefficients {
 		return res;
 	}
 
+	// for (int i = 1; i < f.length; i++) f[i] = f[i - 1] + Math.log(i);
+	public static double binomial(int n, int m, double[] f) {
+		if (m < 0 || m > n) return 0;
+		return Math.exp(f[n] - f[m] - f[n - m]);
+	}
+
 	// n! % mod
 	public static int factorial(int n, int mod) {
 		long res = 1;

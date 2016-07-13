@@ -27,7 +27,7 @@ public class DijkstraSegmentTree {
 		}
 	}
 
-	static class Edge {
+	public static class Edge {
 		int t;
 		int cost;
 

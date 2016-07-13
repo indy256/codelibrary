@@ -1,7 +1,10 @@
-import java.util.*;
+import java.util.Arrays;
+import java.util.Random;
 
 // https://en.wikipedia.org/wiki/R-tree
 public class PointLocationRtree {
+
+	static Random random = new Random(1);
 
 	static class Polygon {
 		final int[] x;
@@ -66,7 +69,7 @@ public class PointLocationRtree {
 		// See: http://www.cplusplus.com/reference/algorithm/nth_element
 		static void nth_element(Polygon[] a, int low, int high, int n, boolean divX) {
 			while (true) {
-				int k = randomizedPartition(a, low, high, divX);
+				int k = partition(a, low, high, low + random.nextInt(high - low), divX);
 				if (n < k)
 					high = k;
 				else if (n > k)
@@ -76,14 +79,23 @@ public class PointLocationRtree {
 			}
 		}
 
-		static int randomizedPartition(Polygon[] a, int low, int high, boolean divX) {
-			swap(a, low + random.nextInt(high - low), high - 1);
-			double v = divX ? a[high - 1].centerX : a[high - 1].centerY;
-			int i = low - 1;
-			for (int j = low; j < high; j++)
-				if (divX ? a[j].centerX <= v : a[j].centerY <= v)
-					swap(a, ++i, j);
-			return i;
+		static int partition(Polygon[] a, int fromInclusive, int toExclusive, int separatorIndex, boolean divX) {
+			int i = fromInclusive;
+			int j = toExclusive - 1;
+			if (i >= j) return j;
+			double separator = divX ? a[separatorIndex].centerX : a[separatorIndex].centerY;
+			swap(a, i++, separatorIndex);
+			while (i <= j) {
+				while (i <= j && (divX ? a[i].centerX : a[i].centerY) < separator)
+					++i;
+				while (i <= j && (divX ? a[j].centerX : a[j].centerY) > separator)
+					--j;
+				if (i >= j)
+					break;
+				swap(a, i++, j--);
+			}
+			swap(a, j, fromInclusive);
+			return j;
 		}
 
 		static void swap(Polygon[] a, int i, int j) {
@@ -129,8 +141,6 @@ public class PointLocationRtree {
 		}
 		return res;
 	}
-
-	static Random random = new Random(1);
 
 	// random test
 	public static void main(String[] args) {

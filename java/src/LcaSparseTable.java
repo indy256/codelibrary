@@ -1,5 +1,7 @@
 import java.util.*;
+import java.util.stream.Stream;
 
+// Answering LCA queries in O(1) with O(n*log(n)) preprocessing
 public class LcaSparseTable {
 
 	int len;
@@ -44,12 +46,9 @@ public class LcaSparseTable {
 		return up[0][a];
 	}
 
+	// Usage example
 	public static void main(String[] args) {
-		int n = 5;
-		List<Integer>[] tree = new List[n];
-		for (int i = 0; i < n; i++) {
-			tree[i] = new ArrayList<>();
-		}
+		List<Integer>[] tree = Stream.generate(ArrayList::new).limit(5).toArray(List[]::new);
 		tree[0].add(1);
 		tree[1].add(0);
 		tree[1].add(2);

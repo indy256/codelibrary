@@ -71,7 +71,7 @@ public class Euclid {
 		return res;
 	}
 
-	// returns x = a[i] (mod p[i]), where gcd(p[i], p[j]) == 1
+	// returns x ≡ a[i] (mod p[i]), where gcd(p[i], p[j]) == 1
 	public static BigInteger garnerRestore(int[] a, int[] p) {
 		int[] x = a.clone();
 		for (int i = 0; i < x.length; ++i)
@@ -86,7 +86,7 @@ public class Euclid {
 		return res;
 	}
 
-	// returns x = a[i] (mod p[i]), where gcd(p[i], p[j]) == 1
+	// returns x ≡ a[i] (mod p[i]), where gcd(p[i], p[j]) == 1
 	public static int simpleRestore(int[] a, int[] p) {
 		int res = 0;
 		for (int i = 0, m = 1; i < a.length; i++, m *= p[i])

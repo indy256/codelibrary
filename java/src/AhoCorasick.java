@@ -1,6 +1,6 @@
 import java.util.*;
 
-// https://en.wikipedia.org/wiki/Aho–Corasick_algorithm
+// https://en.wikipedia.org/wiki/Ahoâ€“Corasick_algorithm
 public class AhoCorasick {
 
 	static final int ALPHABET_SIZE = 26;

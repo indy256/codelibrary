@@ -1,6 +1,5 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Stream;
 
 public class MaxFlowRetreat {
 
@@ -13,13 +12,6 @@ public class MaxFlowRetreat {
 			this.rev = rev;
 			this.cap = cap;
 		}
-	}
-
-	public static List<Edge>[] createGraph(int nodes) {
-		List<Edge>[] graph = new List[nodes];
-		for (int i = 0; i < nodes; i++)
-			graph[i] = new ArrayList<>();
-		return graph;
 	}
 
 	public static void addEdge(List<Edge>[] graph, int s, int t, int cap) {
@@ -118,7 +110,7 @@ public class MaxFlowRetreat {
 	public static void main(String[] args) {
 		int[][] capacity = {{0, 3, 2}, {0, 0, 2}, {0, 0, 0}};
 		int n = capacity.length;
-		List<Edge>[] graph = createGraph(n);
+		List<Edge>[] graph = Stream.generate(ArrayList::new).limit(n).toArray(List[]::new);
 		for (int i = 0; i < n; i++)
 			for (int j = 0; j < n; j++)
 				if (capacity[i][j] != 0)

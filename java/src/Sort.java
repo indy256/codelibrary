@@ -6,12 +6,12 @@ public class Sort {
 	static Random rnd = new Random(1);
 
 	public static void qSort(int[] a, int low, int high) {
-		if (high - low < 1)
+		if (low >= high)
 			return;
 		int separator = a[low + rnd.nextInt(high - low + 1)];
 		int i = low;
 		int j = high;
-		while (i <= j) {
+		do {
 			while (a[i] < separator)
 				++i;
 			while (a[j] > separator)
@@ -23,33 +23,9 @@ public class Sort {
 			a[j] = t;
 			++i;
 			--j;
-		}
+		} while (i <= j);
 		qSort(a, low, j);
 		qSort(a, i, high);
-	}
-
-	public static void qSort2(int[] a, int low, int high) {
-		if (high - low <= 1)
-			return;
-		int p = randomizedPartition(a, low, high);
-		qSort2(a, p, high);
-		qSort2(a, low, p);
-	}
-
-	static int randomizedPartition(int[] a, int low, int high) {
-		swap(a, low + rnd.nextInt(high - low), high - 1);
-		int x = a[high - 1];
-		int i = low - 1;
-		for (int j = low; j < high; j++)
-			if (a[j] <= x)
-				swap(a, ++i, j);
-		return i;
-	}
-
-	static void swap(int[] a, int i, int j) {
-		int t = a[j];
-		a[j] = a[i];
-		a[i] = t;
 	}
 
 	public static void mergeSort(int[] a, int low, int high) {
@@ -60,7 +36,7 @@ public class Sort {
 		mergeSort(a, mid, high);
 		int[] b = Arrays.copyOfRange(a, low, mid);
 		for (int i = low, j = mid, k = 0; k < b.length; i++) {
-			if ((j == high || b[k] <= a[j])) {
+			if (j == high || b[k] <= a[j]) {
 				a[i] = b[k++];
 			} else {
 				a[i] = a[j++];
@@ -124,6 +100,12 @@ public class Sort {
 		mid = firstCut + (secondCut - mid);
 		inPlaceMerge(a, from, firstCut, mid);
 		inPlaceMerge(a, mid, secondCut, to);
+	}
+
+	static void swap(int[] a, int i, int j) {
+		int t = a[j];
+		a[j] = a[i];
+		a[i] = t;
 	}
 
 	static void rotate(int[] a, int first, int middle, int last) {
@@ -253,7 +235,7 @@ public class Sort {
 	public static void main(String[] args) {
 		Random rnd = new Random(1);
 		for (int step = 0; step < 1000; step++) {
-			int n = rnd.nextInt(100) + 1;
+			int n = rnd.nextInt(10) + 1;
 			int[] a = rnd.ints(n, 0, 1000).toArray();
 			int[] s = a.clone();
 			Arrays.sort(s);
@@ -277,21 +259,21 @@ public class Sort {
 			countingSort(b);
 			if (!Arrays.equals(s, b))
 				throw new RuntimeException();
+
+			b = a.clone();
+			qSort(b, 0, b.length - 1);
+			if (!Arrays.equals(s, b))
+				throw new RuntimeException();
 		}
 
 		for (int step = 0; step < 10; step++) {
 			int n = rnd.nextInt(50_000) + 100_000;
-			int[] a = rnd.ints(n).toArray();
+			int[] a = step == 0 ? new int[n] : rnd.ints(n).toArray();
 			int[] s = a.clone();
 			Arrays.sort(s);
 
 			int[] b = a.clone();
 			qSort(b, 0, b.length - 1);
-			if (!Arrays.equals(s, b))
-				throw new RuntimeException();
-
-			b = a.clone();
-			qSort2(b, 0, b.length);
 			if (!Arrays.equals(s, b))
 				throw new RuntimeException();
 

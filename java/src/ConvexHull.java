@@ -5,18 +5,18 @@ public class ConvexHull {
 	public static Point[] convexHull(Point[] points) {
 		Arrays.sort(points, (a, b) -> Integer.compare(a.x, b.x) != 0 ? Integer.compare(a.x, b.x) : Integer.compare(a.y, b.y));
 		int n = points.length;
-		Point[] hull = new Point[n * 2];
+		Point[] hull = new Point[n + 1];
 		int cnt = 0;
 		for (int i = 0; i < 2 * n; i++) {
 			int j = i < n ? i : 2 * n - 1 - i;
-			while (cnt >= 2 && removeMiddle(hull[cnt - 2], hull[cnt - 1], points[j]))
+			while (cnt >= 2 && isNotRightTurn(hull[cnt - 2], hull[cnt - 1], points[j]))
 				--cnt;
 			hull[cnt++] = points[j];
 		}
 		return Arrays.copyOf(hull, cnt - 1);
 	}
 
-	static boolean removeMiddle(Point a, Point b, Point c) {
+	static boolean isNotRightTurn(Point a, Point b, Point c) {
 		long cross = (long) (a.x - b.x) * (c.y - b.y) - (long) (a.y - b.y) * (c.x - b.x);
 		long dot = (long) (a.x - b.x) * (c.x - b.x) + (long) (a.y - b.y) * (c.y - b.y);
 		return cross < 0 || cross == 0 && dot <= 0;

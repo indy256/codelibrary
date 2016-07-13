@@ -34,9 +34,7 @@ public class MonotonicApproximation {
 		Random rnd = new Random(1);
 		for (int step = 0; step < 10000; step++) {
 			int n = rnd.nextInt(100) + 1;
-			int[] a = new int[n];
-			for (int i = 0; i < n; i++)
-				a[i] = rnd.nextInt(1000);
+			int[] a = rnd.ints(n, 0, 1000).toArray();
 			long res1 = monotonicApproximation(a);
 			long res2 = slowMonotonicApproximation(a);
 			if (res1 != res2)

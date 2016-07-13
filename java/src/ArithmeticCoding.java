@@ -170,9 +170,7 @@ public class ArithmeticCoding {
 		Random rnd = new Random();
 		for (int step = 0; step < 10_000; step++) {
 			int n = rnd.nextInt(100) + 1;
-			int[] inputBytes = new int[n];
-			for (int i = 0; i < n; i++)
-				inputBytes[i] = rnd.nextInt(255);
+			int[] inputBytes = rnd.ints(n, 0, 255).toArray();
 
 			encodedBits = codec.encode(inputBytes);
 			int[] decodedBytes = codec.decode(encodedBits);

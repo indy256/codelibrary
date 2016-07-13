@@ -1,5 +1,6 @@
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
+import java.util.Arrays;
 import java.util.Random;
 
 public class AngleAreaOrientationSortRotationPerpendicular {
@@ -30,21 +31,40 @@ public class AngleAreaOrientationSortRotationPerpendicular {
 		by -= ay;
 		cx -= ax;
 		cy -= ay;
-		long cross = bx * cy - by * cx;
-		return cross < 0 ? -1 : cross > 0 ? 1 : 0;
+		return Long.signum(bx * cy - by * cx);
+	}
+
+	public static boolean isMiddle(long a, long m, long b) {
+		return Math.min(a, b) <= m && m <= Math.max(a, b);
+	}
+
+	public static boolean isMiddle(long ax, long ay, long mx, long my, long bx, long by) {
+		return orientation(ax, ay, mx, my, bx, by) == 0 && isMiddle(ax, mx, bx) && isMiddle(ay, my, by);
 	}
 
 	public static class Point implements Comparable<Point> {
 		int x;
 		int y;
 
+		public Point(int x, int y) {
+			this.x = x;
+			this.y = y;
+		}
+
 		@Override
 		public int compareTo(Point o) {
-			boolean up1 = y > 0 || (y == 0 && x > 0);
-			boolean up2 = o.y > 0 || (o.y == 0 && o.x > 0);
+			boolean up1 = y > 0 || (y == 0 && x >= 0);
+			boolean up2 = o.y > 0 || (o.y == 0 && o.x >= 0);
 			if (up1 != up2) return up1 ? -1 : 1;
-			return Long.signum((long) o.x * y - (long) o.y * x);
+			int cmp = Long.signum((long) o.x * y - (long) o.y * x);
+			if (cmp != 0) return cmp;
+			return Long.compare((long) x * x + (long) y * y, (long) o.x * o.x + (long) o.y * o.y);
 			//return Double.compare(Math.atan2(y, x), Math.atan2(o.y, o.x));
+		}
+
+		@Override
+		public String toString() {
+			return "(" + x + ',' + y + ')';
 		}
 	}
 
@@ -90,5 +110,8 @@ public class AngleAreaOrientationSortRotationPerpendicular {
 			if (!(Math.abs(res1 - res2) < 1e-9))
 				throw new RuntimeException();
 		}
+		Point[] points = new Point[]{new Point(1, 1), new Point(1, -1), new Point(0, 0)};
+		Arrays.sort(points);
+		System.out.println(Arrays.toString(points));
 	}
 }

@@ -1,6 +1,7 @@
 import java.util.*;
+import java.util.stream.Stream;
 
-public class HeavyLightNoRecursion {
+public class HeavyLight2NoRecursion {
 
 	// true - values on vertices, false - values on edges
 	static boolean VALUES_ON_VERTICES = true;
@@ -65,7 +66,7 @@ public class HeavyLightNoRecursion {
 	int[] pathRoot;
 	int pathCount;
 
-	public HeavyLightNoRecursion(List<Integer>[] tree) {
+	public HeavyLight2NoRecursion(List<Integer>[] tree) {
 		this.tree = tree;
 		int n = tree.length;
 
@@ -266,7 +267,7 @@ public class HeavyLightNoRecursion {
 			List<Integer>[] tree = getRandomTree(n, rnd);
 			int[] x = new int[n];
 			Arrays.fill(x, getInitValue());
-			HeavyLightNoRecursion hl = new HeavyLightNoRecursion(tree);
+			HeavyLight2NoRecursion hl = new HeavyLight2NoRecursion(tree);
 			for (int i = 0; i < 1000; i++) {
 				int a = rnd.nextInt(n);
 				int b = rnd.nextInt(n);
@@ -295,7 +296,7 @@ public class HeavyLightNoRecursion {
 			for (int u = 0; u < tree.length; u++)
 				for (int v : tree[u])
 					x.put(edge(u, v), getInitValue());
-			HeavyLightNoRecursion hl = new HeavyLightNoRecursion(tree);
+			HeavyLight2NoRecursion hl = new HeavyLight2NoRecursion(tree);
 			for (int i = 0; i < 1000; i++) {
 				int a = rnd.nextInt(n);
 				int b = rnd.nextInt(n);
@@ -339,9 +340,7 @@ public class HeavyLightNoRecursion {
 	}
 
 	static List<Integer>[] getRandomTree(int n, Random rnd) {
-		List<Integer>[] t = new List[n];
-		for (int i = 0; i < n; i++)
-			t[i] = new ArrayList<>();
+		List<Integer>[] t = Stream.generate(ArrayList::new).limit(n).toArray(List[]::new);
 		int[] p = new int[n];
 		for (int i = 0, j; i < n; j = rnd.nextInt(i + 1), p[i] = p[j], p[j] = i, i++) ; // random permutation
 		for (int i = 1; i < n; i++) {
