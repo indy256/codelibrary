@@ -39,7 +39,7 @@ object Quicksort {
   // test
   def main(args: Array[String]) {
     val N = 100000
-    var a = scala.util.Random.shuffle(0 until N: Seq[Int]).toArray
+    var a = scala.util.Random.shuffle[Int, Traversable](0 until N).toArray
 
     val start = System.currentTimeMillis
     a = quicksort(a)
