@@ -39,16 +39,14 @@ class SegmentTree(n: Int) {
     }
   }
 
-  def joinValueWithDelta(value: Int, delta: Int): Int = {
-    if (delta == getNeutralDelta) return value
-    modifyOperation(value, delta)
-  }
+  def joinValueWithDelta(value: Int, delta: Int): Int =
+    if (delta == getNeutralDelta) value
+    else modifyOperation(value, delta)
 
-  def joinDeltas(delta1: Int, delta2: Int): Int = {
-    if (delta1 == getNeutralDelta) return delta2
-    if (delta2 == getNeutralDelta) return delta1
-    modifyOperation(delta1, delta2)
-  }
+  def joinDeltas(delta1: Int, delta2: Int): Int =
+    if (delta1 == getNeutralDelta) delta2
+    else if (delta2 == getNeutralDelta) delta1
+    else modifyOperation(delta1, delta2)
 
   def pushDelta(root: Int, left: Int, right: Int) {
     value(root) = joinValueWithDelta(value(root), deltaEffectOnSegment(delta(root), right - left + 1))
@@ -60,13 +58,15 @@ class SegmentTree(n: Int) {
   def query(from: Int, to: Int): Int = query(from, to, 0, 0, n - 1)
 
   def query(from: Int, to: Int, root: Int, left: Int, right: Int): Int = {
-    if (from == left && to == right) return joinValueWithDelta(value(root), deltaEffectOnSegment(delta(root), right - left + 1))
-    pushDelta(root, left, right)
-    val mid: Int = (left + right) >> 1
-    if (from <= mid && to > mid) queryOperation(query(from, math.min(to, mid), root * 2 + 1, left, mid), query(math.max(from, mid + 1), to, root * 2 + 2, mid + 1, right))
-    else if (from <= mid) query(from, math.min(to, mid), root * 2 + 1, left, mid)
-    else if (to > mid) query(math.max(from, mid + 1), to, root * 2 + 2, mid + 1, right)
-    else throw new RuntimeException("Incorrect query from " + from + " to " + to)
+    if (from == left && to == right) joinValueWithDelta(value(root), deltaEffectOnSegment(delta(root), right - left + 1))
+    else {
+      pushDelta(root, left, right)
+      val mid = (left + right) >> 1
+      if (from <= mid && to > mid) queryOperation(query(from, math.min(to, mid), root * 2 + 1, left, mid), query(math.max(from, mid + 1), to, root * 2 + 2, mid + 1, right))
+      else if (from <= mid) query(from, math.min(to, mid), root * 2 + 1, left, mid)
+      else if (to > mid) query(math.max(from, mid + 1), to, root * 2 + 2, mid + 1, right)
+      else throw new RuntimeException("Incorrect query from " + from + " to " + to)
+    }
   }
 
   def modify(from: Int, to: Int, delta: Int) {
@@ -76,13 +76,13 @@ class SegmentTree(n: Int) {
   def modify(from: Int, to: Int, delta: Int, root: Int, left: Int, right: Int) {
     if (from == left && to == right) {
       this.delta(root) = joinDeltas(this.delta(root), delta)
-      return
+    } else {
+      pushDelta(root, left, right)
+      val mid = (left + right) >> 1
+      if (from <= mid) modify(from, math.min(to, mid), delta, 2 * root + 1, left, mid)
+      if (to > mid) modify(math.max(from, mid + 1), to, delta, 2 * root + 2, mid + 1, right)
+      value(root) = queryOperation(joinValueWithDelta(value(2 * root + 1), deltaEffectOnSegment(this.delta(2 * root + 1), mid - left + 1)), joinValueWithDelta(value(2 * root + 2), deltaEffectOnSegment(this.delta(2 * root + 2), right - mid)))
     }
-    pushDelta(root, left, right)
-    val mid: Int = (left + right) >> 1
-    if (from <= mid) modify(from, math.min(to, mid), delta, 2 * root + 1, left, mid)
-    if (to > mid) modify(math.max(from, mid + 1), to, delta, 2 * root + 2, mid + 1, right)
-    value(root) = queryOperation(joinValueWithDelta(value(2 * root + 1), deltaEffectOnSegment(this.delta(2 * root + 1), mid - left + 1)), joinValueWithDelta(value(2 * root + 2), deltaEffectOnSegment(this.delta(2 * root + 2), right - mid)))
   }
 }
 
