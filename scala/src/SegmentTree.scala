@@ -3,7 +3,7 @@ import java.util.Random
 class SegmentTree(n: Int) {
   // Modify the following 5 methods to implement your custom operations on the tree.
   // This example implements Add/Max operations. Operations like Add/Sum, Set/Max can also be implemented.
-  def modifyOperation(x: Int, y: Int) = x + y
+  def modifyOperation(x: Int, y: Int): Int = x + y
 
   // query (or combine) operation
   def queryOperation(leftValue: Int, rightValue: Int): Int = math.max(leftValue, rightValue)
