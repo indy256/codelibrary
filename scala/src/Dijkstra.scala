@@ -20,7 +20,7 @@ object Dijkstra {
         for (j <- 0 until n)
           if (!visited(j) && (u == -1 || prio(u) > prio(j)))
             u = j
-        if (prio(u) == Integer.MAX_VALUE)
+        if (prio(u) == Int.MaxValue)
           Breaks.break
         visited(u) = true
         for (e <- graph(u)) {
