@@ -21,7 +21,7 @@ object TopologicalSort {
 
   // Usage example
   def main(args: Array[String]) {
-    val g: Array[ArrayBuffer[Int]] = Array.fill(3)(ArrayBuffer())
+    val g = Array.fill(3)(ArrayBuffer[Int]())
 
     g(2) += 0
     g(2) += 1
