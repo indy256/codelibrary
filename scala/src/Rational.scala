@@ -7,7 +7,7 @@ class Rational(num: BigInt, den: BigInt = 1) extends Ordered[Rational] {
     (num / g, den / g)
   }
 
-  private val (n, d) = normalize(num, den)
+  val (n, d) = normalize(num, den)
 
   def +(that: Rational) = new Rational(n * that.d + that.n * d, d * that.d)
 

@@ -7,7 +7,7 @@ object SegmentTreeSimple {
     t(j) += value
 
     while (j > 1) {
-      t(j >> 1) = Math.max(t(j), t(j ^ 1))
+      t(j >> 1) = math.max(t(j), t(j ^ 1))
       j >>= 1
     }
   }
