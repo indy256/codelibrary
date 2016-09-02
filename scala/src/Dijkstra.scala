@@ -1,5 +1,3 @@
-import java.util
-
 import scala.collection.mutable.ArrayBuffer
 import scala.util.control.Breaks
 
@@ -8,10 +6,10 @@ object Dijkstra {
 
   case class Edge(t: Int, cost: Int)
 
-  def shortestPaths(graph: Array[ArrayBuffer[Edge]], s: Int, prio: Array[Int], pred: Array[Int]) {
+  def shortestPaths(graph: Array[ArrayBuffer[Edge]], s: Int): (Array[Int], Array[Int]) = {
     val n = graph.length
-    util.Arrays.fill(pred, -1)
-    util.Arrays.fill(prio, Int.MaxValue)
+    val pred = Array.fill(n)(-1)
+    val prio = Array.fill(n)(Int.MaxValue)
     prio(s) = 0
     val visited = new Array[Boolean](n)
     Breaks.breakable {
@@ -29,11 +27,11 @@ object Dijkstra {
           if (prio(v) > nprio) {
             prio(v) = nprio
             pred(v) = u
-
           }
         }
       }
     }
+    (prio, pred)
   }
 
   // Usage example
@@ -49,10 +47,8 @@ object Dijkstra {
         if (cost(i)(j) != 0) graph(i) += Edge(j, cost(i)(j))
       }
     }
-    print(graph mkString " ")
-    val dist = new Array[Int](n)
-    val pred = new Array[Int](n)
-    shortestPaths(graph, 0, dist, pred)
+    println(graph mkString " ")
+    val (dist, pred) = shortestPaths(graph, 0)
     println(0 == dist(0))
     println(3 == dist(1))
     println(1 == dist(2))
