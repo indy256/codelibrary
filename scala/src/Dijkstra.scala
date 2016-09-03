@@ -1,4 +1,4 @@
-import scala.collection.mutable.ArrayBuffer
+import scala.collection.immutable.IndexedSeq
 import scala.util.control.Breaks
 
 // https://en.wikipedia.org/wiki/Dijkstra's_algorithm in O(V^2)
@@ -6,7 +6,7 @@ object Dijkstra {
 
   case class Edge(t: Int, cost: Int)
 
-  def shortestPaths(graph: Array[ArrayBuffer[Edge]], s: Int): (Array[Int], Array[Int]) = {
+  def shortestPaths(graph: IndexedSeq[IndexedSeq[Edge]], s: Int): (Array[Int], Array[Int]) = {
     val n = graph.length
     val pred = Array.fill(n)(-1)
     val prio = Array.fill(n)(Int.MaxValue)
@@ -36,18 +36,10 @@ object Dijkstra {
 
   // Usage example
   def main(args: Array[String]) {
-    val cost = Array(
-      Array(0, 3, 2),
-      Array(0, 0, -2),
-      Array(0, 0, 0))
+    val cost = Array(Array(0, 3, 2), Array(0, 0, -2), Array(0, 0, 0))
     val n = cost.length
-    val graph = Array.fill(n)(ArrayBuffer[Edge]())
-    for (i <- 0 until n) {
-      for (j <- 0 until n) {
-        if (cost(i)(j) != 0) graph(i) += Edge(j, cost(i)(j))
-      }
-    }
-    println(graph mkString " ")
+    val graph = for (i <- 0 until n) yield for (j <- 0 until n; if cost(i)(j) != 0) yield Edge(j, cost(i)(j))
+    println(graph)
     val (dist, pred) = shortestPaths(graph, 0)
     println(0 == dist(0))
     println(3 == dist(1))
