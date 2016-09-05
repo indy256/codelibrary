@@ -1,4 +1,3 @@
-import scala.collection.immutable.IndexedSeq
 import scala.util.control.Breaks
 
 // https://en.wikipedia.org/wiki/Dijkstra's_algorithm in O(V^2)
@@ -6,7 +5,7 @@ object Dijkstra {
 
   case class Edge(t: Int, cost: Int)
 
-  def shortestPaths(graph: IndexedSeq[IndexedSeq[Edge]], s: Int): (Array[Int], Array[Int]) = {
+  def shortestPaths(graph: Array[Array[Edge]], s: Int): (Array[Int], Array[Int]) = {
     val n = graph.length
     val pred = Array.fill(n)(-1)
     val prio = Array.fill(n)(Int.MaxValue)
@@ -14,10 +13,7 @@ object Dijkstra {
     val visited = new Array[Boolean](n)
     Breaks.breakable {
       for (i <- 0 until n) {
-        var u = -1
-        for (j <- 0 until n)
-          if (!visited(j) && (u == -1 || prio(u) > prio(j)))
-            u = j
+        val u = prio.zipWithIndex.filter(x => !visited(x._2)).minBy(_._1)._2
         if (prio(u) == Int.MaxValue)
           Breaks.break
         visited(u) = true
@@ -36,16 +32,18 @@ object Dijkstra {
 
   // Usage example
   def main(args: Array[String]) {
-    val cost = Array(Array(0, 3, 2), Array(0, 0, -2), Array(0, 0, 0))
-    val n = cost.length
-    val graph = for (i <- 0 until n) yield for (j <- 0 until n; if cost(i)(j) != 0) yield Edge(j, cost(i)(j))
-    println(graph)
+    val cost = Array.ofDim[Int](3, 3)
+    cost(0)(1) = 1
+    cost(0)(2) = 5
+    cost(1)(2) = 2
+    val graph = (for (i <- cost.indices) yield (for (j <- cost.indices; if cost(i)(j) != 0) yield Edge(j, cost(i)(j))).toArray).toArray
+
     val (dist, pred) = shortestPaths(graph, 0)
-    println(0 == dist(0))
-    println(3 == dist(1))
-    println(1 == dist(2))
-    println(-1 == pred(0))
-    println(0 == pred(1))
-    println(1 == pred(2))
+
+    println(graph.map(_.mkString("(", " ", ")")).mkString(" "))
+    println(dist.mkString(" "))
+    println(pred.mkString(" "))
+    println(Array(0, 1, 3) sameElements dist)
+    println(Array(-1, 0, 1) sameElements pred)
   }
 }
