@@ -1,14 +1,8 @@
 // https://en.wikipedia.org/wiki/Ford–Fulkerson_algorithm in O(V^2 * flow)
 object MaxFlowFordFulkersonSimple {
 
-  def maxFlow(cap: Array[Array[Int]], s: Int, t: Int): Int = {
-    // use streams
-    var flow = 0
-    while (augmentPath(cap, new Array[Boolean](cap.length), s, t)) {
-      flow += 1
-    }
-    flow
-  }
+  def maxFlow(cap: Array[Array[Int]], s: Int, t: Int): Int =
+    Stream.continually(0).takeWhile(_ => augmentPath(cap, new Array[Boolean](cap.length), s, t)).size
 
   def augmentPath(cap: Array[Array[Int]], vis: Array[Boolean], i: Int, t: Int): Boolean = {
     if (i == t) return true
