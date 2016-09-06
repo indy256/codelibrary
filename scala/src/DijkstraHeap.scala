@@ -1,24 +1,28 @@
-// https://en.wikipedia.org/wiki/Dijkstra's_algorithm in O(V^2)
-object Dijkstra {
+import scala.collection.mutable
 
-  case class Edge(t: Int, cost: Int)
+// https://en.wikipedia.org/wiki/Dijkstra's_algorithm in O(E*log(V))
+object DijkstraHeap {
+
+  case class Edge(var t: Int, var cost: Int)
 
   def shortestPaths(graph: Array[Array[Edge]], s: Int): (Array[Int], Array[Int]) = {
     val n = graph.length
     val pred = Array.fill(n)(-1)
     val prio = Array.fill(n)(Int.MaxValue)
     prio(s) = 0
-    val visited = new Array[Boolean](n)
-    for (i <- 0 until n) {
-      val u = prio.zipWithIndex.filter(x => !visited(x._2)).minBy(_._1)._2
-      if (prio(u) != Int.MaxValue) {
-        visited(u) = true
-        for (e <- graph(u)) {
+    val q = new mutable.PriorityQueue[Long]
+    q += s
+    while (!q.isEmpty) {
+      val cur: Long = q.dequeue()
+      val curu = cur.toInt
+      if ((cur >>> 32) == prio(curu)) {
+        for (e <- graph(curu)) {
           val v = e.t
-          val nprio = prio(u) + e.cost
+          val nprio = prio(curu) + e.cost
           if (prio(v) > nprio) {
             prio(v) = nprio
-            pred(v) = u
+            pred(v) = curu
+            q += (nprio.toLong << 32) + v
           }
         }
       }
@@ -28,10 +32,12 @@ object Dijkstra {
 
   // Usage example
   def main(args: Array[String]) {
-    val cost = Array.ofDim[Int](3, 3)
+    val cost = Array.ofDim[Int](4, 4)
     cost(0)(1) = 1
-    cost(0)(2) = 5
-    cost(1)(2) = 2
+    cost(0)(2) = 2
+    cost(0)(3) = 4
+    cost(3)(2) = -2
+    cost(2)(1) = -2
     val graph = (for (i <- cost.indices) yield (for (j <- cost.indices; if cost(i)(j) != 0) yield Edge(j, cost(i)(j))).toArray).toArray
 
     val (dist, pred) = shortestPaths(graph, 0)
@@ -39,7 +45,7 @@ object Dijkstra {
     println(graph.map(_.mkString("(", " ", ")")).mkString(" "))
     println(dist.mkString(" "))
     println(pred.mkString(" "))
-    println(Array(0, 1, 3) sameElements dist)
-    println(Array(-1, 0, 1) sameElements pred)
+    println(Array(0, 0, 2, 4) sameElements dist)
+    println(Array(-1, 2, 0, 0) sameElements pred)
   }
 }

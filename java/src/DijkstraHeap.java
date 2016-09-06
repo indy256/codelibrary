@@ -41,17 +41,17 @@ public class DijkstraHeap {
 	public static void main(String[] args) {
 		int[][] cost = { { 0, 3, 2 }, { 0, 0, -2 }, { 0, 0, 0 } };
 		int n = cost.length;
-		List<Edge>[] edges = Stream.generate(ArrayList::new).limit(n).toArray(List[]::new);
+		List<Edge>[] graph = Stream.generate(ArrayList::new).limit(n).toArray(List[]::new);
 		for (int i = 0; i < n; i++) {
 			for (int j = 0; j < n; j++) {
 				if (cost[i][j] != 0) {
-					edges[i].add(new Edge(j, cost[i][j]));
+					graph[i].add(new Edge(j, cost[i][j]));
 				}
 			}
 		}
 		int[] dist = new int[n];
 		int[] pred = new int[n];
-		shortestPaths(edges, 0, dist, pred);
+		shortestPaths(graph, 0, dist, pred);
 		System.out.println(0 == dist[0]);
 		System.out.println(3 == dist[1]);
 		System.out.println(1 == dist[2]);
