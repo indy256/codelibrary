@@ -12,7 +12,7 @@ object DijkstraHeap {
     prio(s) = 0
     val q = new mutable.PriorityQueue[Long]
     q += s
-    while (!q.isEmpty) {
+    while (q.nonEmpty) {
       val cur: Long = q.dequeue()
       val curu = cur.toInt
       if ((cur >>> 32) == prio(curu)) {
