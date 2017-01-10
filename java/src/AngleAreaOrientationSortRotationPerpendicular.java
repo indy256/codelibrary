@@ -5,11 +5,13 @@ import java.util.Random;
 
 public class AngleAreaOrientationSortRotationPerpendicular {
 
+	// pay attention to case ax==0 && ay==0 or bx==0 && by == 0
 	public static double angleBetween(long ax, long ay, long bx, long by) {
 		double a = Math.atan2(ax * by - ay * bx, ax * bx + ay * by);
 		return a < 0 ? a + 2 * Math.PI : a;
 	}
 
+	// pay attention to case ax==0 && ay==0 or bx==0 && by == 0
 	public static double angleBetween2(long ax, long ay, long bx, long by) {
 		double a = Math.atan2(by, bx) - Math.atan2(ay, ax);
 		return a < 0 ? a + 2 * Math.PI : a;
