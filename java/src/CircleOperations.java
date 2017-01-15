@@ -27,7 +27,7 @@ public class CircleOperations {
 		}
 
 		public boolean containsStrictly(Point p) {
-			return fastHypot(p.x - x, p.y - y) < r + EPS;
+			return fastHypot(p.x - x, p.y - y) < r - EPS;
 		}
 	}
 
