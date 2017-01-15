@@ -26,8 +26,8 @@ public class CircleOperations {
 			this.r = r;
 		}
 
-		public boolean containsStrictly(Point p) {
-			return fastHypot(p.x - x, p.y - y) < r - EPS;
+		public boolean contains(Point p) {
+			return fastHypot(p.x - x, p.y - y) < r + EPS;
 		}
 	}
 
@@ -128,7 +128,7 @@ public class CircleOperations {
 
 	// TODO: check and get rid of 1 sqrt
 	public static Line[] tangents(Point p, Circle c) {
-		if (c.containsStrictly(p)) {
+		if (c.contains(p)) {
 			return new Line[0];
 		}
 		double px = p.x - c.x;
@@ -175,13 +175,13 @@ public class CircleOperations {
 		Collections.shuffle(Arrays.asList(points));
 		Circle circle = getCircumCircle(points[0], points[1]);
 		for (int i = 2; i < points.length; i++) {
-			if (!circle.containsStrictly(points[i])) {
+			if (!circle.contains(points[i])) {
 				circle = getCircumCircle(points[0], points[i]);
 				for (int j = 1; j < i; j++) {
-					if (!circle.containsStrictly(points[j])) {
+					if (!circle.contains(points[j])) {
 						circle = getCircumCircle(points[j], points[i]);
 						for (int k = 0; k < j; k++) {
-							if (!circle.containsStrictly(points[k])) {
+							if (!circle.contains(points[k])) {
 								circle = getCircumCircle(points[i], points[j], points[k]);
 							}
 						}
