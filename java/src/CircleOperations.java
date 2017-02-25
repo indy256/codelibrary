@@ -126,27 +126,6 @@ public class CircleOperations {
 		return area;
 	}
 
-	// TODO: check and get rid of 1 sqrt
-	public static Line[] tangents(Point p, Circle c) {
-		if (c.contains(p)) {
-			return new Line[0];
-		}
-		double px = p.x - c.x;
-		double py = p.y - c.y;
-		double d = Math.sqrt(px * px + py * py);
-		if (d < EPS) {
-			return new Line[0];
-		}
-		px /= d;
-		py /= d;
-		double cos = c.r / d;
-		double sin = Math.sqrt(1 - cos * cos);
-		Point p1 = new Point((px * cos - py * sin) * c.r + c.x, (px * sin + py * cos) * c.r + c.y);
-		Point p2 = new Point((px * cos + py * sin) * c.r + c.x, (-px * sin + py * cos) * c.r + c.y);
-		// TODO: support 1-tangent cases
-		return new Line[]{new Line(p, p1), new Line(p, p2)};
-	}
-
 	public static Line[] tangents(Circle a, Circle b) {
 		List<Line> lines = new ArrayList<>();
 		for (int i = -1; i <= 1; i += 2)

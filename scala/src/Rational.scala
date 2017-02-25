@@ -21,26 +21,26 @@ class Rational(num: BigInt, den: BigInt = 1) extends Ordered[Rational] {
 
   def abs = new Rational(n.abs, d)
 
-  def signum = n.signum
+  def signum: Int = n.signum
 
-  def doubleValue = n.doubleValue / d.doubleValue
+  def doubleValue: Double = n.doubleValue / d.doubleValue
 
-  def longValue = n.longValue / d.longValue
+  def longValue: Long = n.longValue / d.longValue
 
-  override def compare(that: Rational) = (n * that.d).compare(that.n * d)
+  override def compare(that: Rational): Int = (n * that.d).compare(that.n * d)
 
-  def max(that: Rational) = if (this > that) this else that
+  def max(that: Rational): Rational = if (this > that) this else that
 
-  def min(that: Rational) = if (this < that) this else that
+  def min(that: Rational): Rational = if (this < that) this else that
 
-  override def equals(that: Any) = that match {
+  override def equals(that: Any): Boolean = that match {
     case that: Rational => n == that.n && d == that.d
     case _ => false
   }
 
-  override def hashCode = n.hashCode() * 31 + d.hashCode()
+  override def hashCode: Int = n.hashCode() * 31 + d.hashCode()
 
-  override def toString = n + "/" + d
+  override def toString: String = n + "/" + d
 }
 
 object Rational {

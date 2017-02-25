@@ -1,6 +1,6 @@
 object SegmentTreeSimple {
 
-  def get(t: Array[Int], i: Int) = t(i + t.length / 2)
+  def get(t: Array[Int], i: Int): Int = t(i + t.length / 2)
 
   def add(t: Array[Int], i: Int, value: Int) {
     var j = i + t.length / 2
