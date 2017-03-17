@@ -1,5 +1,4 @@
-##### Collection of algorithms and data structures in Java, C++, Python, JavaScript, Scala, Kotlin, Haskell, Clojure, Ruby
-
+##### Collection of algorithms and data structures in Java, C++, Python, Scala, Kotlin, Clojure, Haskell, JavaScript
 ## The following topics are covered:
 
 * **Trees**: segment tree, Fenwick tree, k-d tree, R-tree, metric tree, quadtree, persistent tree, link/cut tree, binary heap, disjoint-sets, treap
@@ -12,5 +11,5 @@
 
 ### Index available at:
 
-- http://code-library.herokuapp.com/ (http://www.codelibrary.ml/ is currently down)
+- http://code-library.herokuapp.com/
 - https://sites.google.com/site/indy256/
