@@ -3,7 +3,7 @@ object DijkstraKT {
 
     data class ShortestPaths(val dist: IntArray, val pred: IntArray)
 
-    fun shortestPaths(graph: List<List<Edge>>, s: Int): ShortestPaths {
+    fun shortestPaths(graph: Array<out List<Edge>>, s: Int): ShortestPaths {
         val n = graph.size
         val dist = IntArray(n, { Integer.MAX_VALUE })
         dist[s] = 0
@@ -35,7 +35,7 @@ object DijkstraKT {
     @JvmStatic fun main(args: Array<String>) {
         val cost = arrayOf(intArrayOf(0, 3, 2), intArrayOf(0, 0, -2), intArrayOf(0, 0, 0))
         val n = cost.size
-        val graph = (1..n).map { mutableListOf<Edge>() }
+        val graph = (1..n).map { mutableListOf<Edge>() }.toTypedArray()
         for (i in 0..n - 1) {
             for (j in 0..n - 1) {
                 if (cost[i][j] != 0) {
