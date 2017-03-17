@@ -1,4 +1,4 @@
-##### Collection of algorithms and data structures in Java, C++, Python, JavaScript, Scala, Haskell, Ruby
+##### Collection of algorithms and data structures in Java, Kotlin, C++, Python, JavaScript, Scala, Haskell, Ruby
 
 ## The following topics are covered:
 
