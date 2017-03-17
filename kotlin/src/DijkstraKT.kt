@@ -1,5 +1,5 @@
 object DijkstraKT {
-    class Edge(val t: Int, val cost: Int)
+    data class Edge(val target: Int, val cost: Int)
 
     data class ShortestPaths(val dist: IntArray, val pred: IntArray)
 
@@ -20,7 +20,7 @@ object DijkstraKT {
             visited[u] = true
 
             for (e in graph[u]) {
-                val v = e.t
+                val v = e.target
                 val nprio = dist[u] + e.cost
                 if (dist[v] > nprio) {
                     dist[v] = nprio
@@ -43,6 +43,7 @@ object DijkstraKT {
                 }
             }
         }
+        println(graph)
         val (dist, pred) = shortestPaths(graph, 0)
         println(0 == dist[0])
         println(3 == dist[1])
