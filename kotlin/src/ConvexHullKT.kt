@@ -8,18 +8,18 @@ object ConvexHullKT {
     fun convexHull(points: Array<Point>): Array<Point> {
         val sortedPoints = points.sortedArrayWith(compareBy({ it.x }, { it.y }))
         val n = sortedPoints.size
-        val hull = arrayOfNulls<Point>(n + 1)
-        var cnt = 0
+        val hull = arrayListOf<Point>()
         for (i in 0..2 * n - 1) {
             val j = if (i < n) i else 2 * n - 1 - i
-            while (cnt >= 2 && isNotRightTurn(hull[cnt - 2]!!, hull[cnt - 1]!!, sortedPoints[j]))
-                --cnt
-            hull[cnt++] = sortedPoints[j]
+            while (hull.size >= 2 && isNotRightTurn(hull.takeLast(2) + sortedPoints[j]))
+                hull.removeAt(hull.size - 1)
+            hull.add(sortedPoints[j])
         }
-        return Arrays.copyOf<Point>(hull, cnt - 1)
+        return hull.toTypedArray()
     }
 
-    fun isNotRightTurn(a: Point, b: Point, c: Point): Boolean {
+    fun isNotRightTurn(p3: List<Point>): Boolean {
+        val (a, b, c) = p3
         val cross = (a.x - b.x).toLong() * (c.y - b.y) - (a.y - b.y).toLong() * (c.x - b.x)
         val dot = (a.x - b.x).toLong() * (c.x - b.x) + (a.y - b.y).toLong() * (c.y - b.y)
         return cross < 0 || cross == 0L && dot <= 0
