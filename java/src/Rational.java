@@ -11,7 +11,7 @@ public class Rational implements Comparable<Rational> {
 
 	public Rational(BigInteger num, BigInteger den) {
 		BigInteger gcd = num.gcd(den);
-		BigInteger g = den.signum() > 0 ? gcd : den.signum() > 0 ? gcd.negate() : BigInteger.ONE;
+		BigInteger g = den.signum() > 0 ? gcd : den.signum() < 0 ? gcd.negate() : BigInteger.ONE;
 		this.num = num.divide(g);
 		this.den = den.divide(g);
 	}
@@ -87,5 +87,7 @@ public class Rational implements Comparable<Rational> {
 		Rational b = new Rational(1, 6);
 		Rational c = new Rational(1, 2);
 		System.out.println(true == c.equals(a.add(b)));
+		Rational d = new Rational(1, -2);
+		System.out.println(d);
 	}
 }
