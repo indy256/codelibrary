@@ -11,9 +11,7 @@ class RationalKT(n: BigInteger, d: BigInteger = BigInteger.ONE) : Comparable<Rat
         den = d.divide(g)
     }
 
-    constructor(num: Long, den: Long) : this(BigInteger.valueOf(num), BigInteger.valueOf(den))
-
-    constructor(num: Long) : this(BigInteger.valueOf(num))
+    constructor(num: Long, den: Long = 1) : this(BigInteger.valueOf(num), BigInteger.valueOf(den))
 
     operator fun plus(r: RationalKT): RationalKT = RationalKT(num.multiply(r.den).add(r.num.multiply(den)), den.multiply(r.den))
 
