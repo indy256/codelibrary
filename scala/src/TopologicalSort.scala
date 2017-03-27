@@ -1,14 +1,16 @@
 import scala.collection.mutable.ArrayBuffer
 
 object TopologicalSort {
-  def dfs(graph: Array[ArrayBuffer[Int]], used: Array[Boolean], order: ArrayBuffer[Int], u: Int) {
-    used(u) = true
-    for (v <- graph(u); if !used(v))
-      dfs(graph, used, order, v)
-    order += u
-  }
 
   def topologicalSort(graph: Array[ArrayBuffer[Int]]): Array[Int] = {
+
+    def dfs(graph: Array[ArrayBuffer[Int]], used: Array[Boolean], order: ArrayBuffer[Int], u: Int) {
+      used(u) = true
+      for (v <- graph(u); if !used(v))
+        dfs(graph, used, order, v)
+      order += u
+    }
+
     val n: Int = graph.length
     val used = new Array[Boolean](n)
     val order = ArrayBuffer[Int]()
