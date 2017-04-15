@@ -1,4 +1,4 @@
-##### Collection of algorithms and data structures in Java, C++, Python, Scala, Kotlin, Clojure, Haskell, JavaScript
+##### Collection of algorithms and data structures in Java, C++, Python, Scala, Kotlin, Haskell, JavaScript, Clojure
 ## The following topics are covered:
 
 * **Trees**: segment tree, Fenwick tree, k-d tree, R-tree, metric tree, quadtree, persistent tree, link/cut tree, binary heap, disjoint-sets, treap
