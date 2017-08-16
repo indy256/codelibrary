@@ -1,6 +1,6 @@
 import java.util.*
 
-class BinaryHeapKT(val heap: IntArray, var size: Int) {
+class BinaryHeap(val heap: IntArray, var size: Int) {
     constructor(n: Int) : this(IntArray(n), 0)
 
     constructor(heap: IntArray) : this(heap, heap.size) {
@@ -59,7 +59,7 @@ class BinaryHeapKT(val heap: IntArray, var size: Int) {
             for (step in 1..1000) {
                 val n = rnd.nextInt(100) + 1
                 val q = PriorityQueue<Int>()
-                val h = BinaryHeapKT(n)
+                val h = BinaryHeap(n)
                 for (op in 0..999) {
                     if (rnd.nextBoolean() && q.size < n) {
                         val v = rnd.nextInt()

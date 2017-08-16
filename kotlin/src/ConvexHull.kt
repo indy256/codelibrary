@@ -1,7 +1,7 @@
 import java.util.*
 import kotlin.comparisons.compareBy
 
-object ConvexHullKT {
+object ConvexHull {
 
     data class Point(val x: Int, val y: Int)
 

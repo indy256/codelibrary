@@ -1,4 +1,4 @@
-object DisjointSetsKT {
+object DisjointSets {
 
     fun root(p: IntArray, x: Int): Int {
         if (x == p[x]) {

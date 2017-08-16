@@ -1,4 +1,4 @@
-object TopologicalSortKT {
+object TopologicalSort {
 
     fun topologicalSort(graph: Array<out List<Int>>): List<Int> {
 

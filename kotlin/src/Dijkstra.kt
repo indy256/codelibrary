@@ -1,4 +1,4 @@
-object DijkstraKT {
+object Dijkstra {
     data class Edge(val target: Int, val cost: Int)
 
     data class ShortestPaths(val dist: IntArray, val pred: IntArray)
