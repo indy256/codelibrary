@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class QueueMin<E extends Comparable<E>> {
+public class QueueMin<E extends Comparable<? super E>> {
 	List<E[]> s1 = new ArrayList<>();
 	List<E[]> s2 = new ArrayList<>();
 

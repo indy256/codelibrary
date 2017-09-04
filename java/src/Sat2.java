@@ -1,5 +1,6 @@
-import java.util.*;
-import java.util.stream.IntStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Stream;
 
 // https://en.wikipedia.org/wiki/2-satisfiability
@@ -67,7 +68,5 @@ public class Sat2 {
 
 		boolean[] solution = solve2Sat(g);
 		System.out.println(Arrays.toString(solution));
-
-		IntStream.range(0, 10).reduce( (x,y)->x*y).getAsInt();
 	}
 }

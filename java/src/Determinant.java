@@ -7,25 +7,26 @@ public class Determinant {
 		final double eps = 1e-10;
 		int n = a.length;
 		double res = 1;
-		boolean[] used = new boolean[n];
 		for (int i = 0; i < n; i++) {
-			int p;
-			for (p = 0; p < n; p++)
-				if (!used[p] && Math.abs(a[p][i]) > eps)
-					break;
-			if (p == n)
+			int p = i;
+			for (int j = i + 1; j < n; j++)
+				if (Math.abs(a[j][i]) > Math.abs(a[p][i]))
+					p = j;
+			if (Math.abs(a[p][i]) < eps)
 				return 0;
-			res *= a[p][i];
-			used[p] = true;
-			double z = 1 / a[p][i];
-			for (int j = 0; j < n; j++)
-				a[p][j] *= z;
+			if (i != p) {
+				res = -res;
+				double[] t = a[i];
+				a[i] = a[p];
+				a[p] = t;
+			}
+			res *= a[i][i];
+			for (int j = i + 1; j < n; j++)
+				a[i][j] /= a[i][i];
 			for (int j = 0; j < n; ++j)
-				if (j != p) {
-					z = a[j][i];
-					for (int k = 0; k < n; ++k)
-						a[j][k] -= z * a[p][k];
-				}
+				if (j != i && Math.abs(a[j][i]) > eps)
+					for (int k = i + 1; k < n; ++k)
+						a[j][k] -= a[i][k] * a[j][i];
 		}
 		return res;
 	}
@@ -158,12 +159,12 @@ public class Determinant {
 
 	// Usage example
 	public static void main(String[] args) {
-		check(new long[][] { { 2, 4, 3, 5, 4 }, { 5, 4, 0, 2, 4 }, { 0, 5, 5, 2, 3 }, { 1, 0, 4, 3, 0 },
-				{ 0, 5, 1, 4, 4 } });
-		check(new long[][] { { 3, 2, 2 }, { 0, 0, 5 }, { 4, 3, 1 } });
-		check(new long[][] { { 2, 2, 2 }, { 1, 2, 0 }, { 2, 2, 0 } });
-		check(new long[][] { { 1, 2 }, { 3, 4 } });
-		check(new long[][] { { 2, 4 }, { 0, 3 } });
+		check(new long[][]{{2, 4, 3, 5, 4}, {5, 4, 0, 2, 4}, {0, 5, 5, 2, 3}, {1, 0, 4, 3, 0},
+				{0, 5, 1, 4, 4}});
+		check(new long[][]{{3, 2, 2}, {0, 0, 5}, {4, 3, 1}});
+		check(new long[][]{{2, 2, 2}, {1, 2, 0}, {2, 2, 0}});
+		check(new long[][]{{1, 2}, {3, 4}});
+		check(new long[][]{{2, 4}, {0, 3}});
 	}
 
 	private static void check(long[][] a1) {
@@ -176,9 +177,12 @@ public class Determinant {
 				a3[i][j] = BigDecimal.valueOf(a1[i][j]);
 			}
 		}
+
 		double res1 = det(a2);
 		BigInteger res2 = detCrout(a3, n);
 		BigInteger res3 = detBigInteger(a1);
 		System.out.println(res1 + " " + res2 + " " + res3);
+
+		System.out.println(Math.abs(det(new double[][]{{0, 1}, {-1, 0}}) - 1) < 1e-10);
 	}
 }
