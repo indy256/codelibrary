@@ -1,3 +1,8 @@
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+
 public class Writer {
 
     private BufferedWriter output;
@@ -18,8 +23,8 @@ public class Writer {
     public void println() {
         try {
             output.append("\n");
-        } catch(IOException io) { i
-            o.printStackTrace(); System.exit(0);
+        } catch(IOException io) { 
+            io.printStackTrace(); System.exit(0);
         }
     }
 
