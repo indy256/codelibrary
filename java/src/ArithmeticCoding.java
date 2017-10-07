@@ -190,6 +190,8 @@ public class ArithmeticCoding {
 		Locale.setDefault(Locale.US);
 		System.out.printf("%d -> %d (%.0f)\n", a.length, encodedBits.length / 8, optimalCompressedLength(a));
 		System.out.println(Arrays.equals(a, codec.decode(encodedBits)));
+		
+		fs.close();
 	}
 
 	static double optimalCompressedLength(int[] a) {
