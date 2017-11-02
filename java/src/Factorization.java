@@ -3,6 +3,7 @@ import java.util.*;
 public class Factorization {
 
 	// returns prime_divisor -> power
+	// O(sqrt(n)) complexity
 	public static Map<Long, Integer> factorize(long n) {
 		Map<Long, Integer> factors = new LinkedHashMap<>();
 		for (long d = 2; n > 1; ) {
@@ -34,6 +35,7 @@ public class Factorization {
 	}
 
 	// returns divisor of n: https://en.wikipedia.org/wiki/Pollard%27s_rho_algorithm#Algorithm
+	// O(n^(1/4)) complexity
 	public static long pollard(long n) {
 		Random rnd = new Random(1);
 		long x = Math.abs(rnd.nextLong()) % n;
