@@ -24,7 +24,7 @@ public class Determinant {
 			for (int j = i + 1; j < n; j++)
 				a[i][j] /= a[i][i];
 			for (int j = 0; j < n; ++j)
-				if (j != i && Math.abs(a[j][i]) > EPS /*optimizes complexity to O(n^2) for sparse matrices*/)
+				if (j != i && Math.abs(a[j][i]) > EPS /*optimizes overall complexity to O(n^2) for sparse matrices*/)
 					for (int k = i + 1; k < n; ++k)
 						a[j][k] -= a[i][k] * a[j][i];
 		}
