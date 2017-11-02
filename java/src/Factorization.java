@@ -2,7 +2,7 @@ import java.util.*;
 
 public class Factorization {
 
-	// prime_divisor -> power
+	// returns prime_divisor -> power
 	public static Map<Long, Integer> factorize(long n) {
 		Map<Long, Integer> factors = new LinkedHashMap<>();
 		for (long d = 2; n > 1; ) {
@@ -30,13 +30,34 @@ public class Factorization {
 				if (d * d != n)
 					divisors.add(n / d);
 			}
-		int[] res = new int[divisors.size()];
-		for (int i = 0; i < res.length; i++)
-			res[i] = divisors.get(i);
-		Arrays.sort(res);
-		return res;
+		return divisors.stream().sorted().mapToInt(v -> v).toArray();
 	}
 
+	// returns divisor of n: https://en.wikipedia.org/wiki/Pollard%27s_rho_algorithm#Algorithm
+	public static long pollard(long n) {
+		Random rnd = new Random(1);
+		long x = Math.abs(rnd.nextLong()) % n;
+		long y = x;
+		while (true) {
+			x = g(x, n);
+			y = g(g(y, n), n);
+			if (x == y)
+				return -1;
+			long d = gcd(Math.abs(x - y), n);
+			if (d != 1)
+				return d;
+		}
+	}
+
+	static long gcd(long a, long b) {
+		return a == 0 ? b : gcd(b % a, a);
+	}
+
+	static long g(long x, long n) {
+		return (41 * x + 1) % n;
+	}
+
+	// returns divisor of n: https://en.wikipedia.org/wiki/Fermat%27s_factorization_method
 	public static long ferma(long n) {
 		long x = (long) Math.sqrt(n);
 		long y = 0;
@@ -54,37 +75,13 @@ public class Factorization {
 		}
 	}
 
-	public static long pollard(long n) {
-		Random rnd = new Random(1);
-		long x = Math.abs(rnd.nextLong()) % n;
-		long y = x;
-		while (true) {
-			x = f(x, n);
-			y = f(f(y, n), n);
-			if (x == y)
-				return -1;
-			long d = gcd(Math.abs(x - y), n);
-			if (d != 1)
-				return d;
-		}
-	}
-
-	static long gcd(long a, long b) {
-		return a == 0 ? b : gcd(b % a, a);
-	}
-
-	static long f(long x, long n) {
-		return (41 * x + 1) % n;
-	}
-
 	// Usage example
 	public static void main(String[] args) {
-		Map<Long, Integer> f = factorize(24);
-		System.out.println(f);
+		System.out.println(factorize(24));
 		System.out.println(Arrays.toString(getAllDivisors(16)));
 
 		long n = 1000_003L * 100_000_037;
-		System.out.println(ferma(n));
 		System.out.println(pollard(n));
+		System.out.println(ferma(n));
 	}
 }
