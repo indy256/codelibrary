@@ -176,7 +176,6 @@ public class Merge {
         	for (int i = 0; i < n; i++) {
         		arr[i] = io.nextInt();
         	}
-        	
         	Merge.sort(arr, io);
         	show(arr, io);
         }
