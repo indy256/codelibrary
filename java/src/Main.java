@@ -1,38 +1,29 @@
 import mooc.EdxIO;
-
 import java.util.*;
 
-public class Main {
-	// Usage example
-	public static void main(String[] args) {
+class Main
+{
+     
+    public static void main(String[] args) 
+    {
         try (EdxIO io = EdxIO.create()) {
         	int n = io.nextInt();
+        	int k1 = io.nextInt();
+        	int k2 = io.nextInt();
         	
-        	for (int i = 0; i < n; i++) {
-        		char[] c = io.next().toCharArray();
-        		Deque<Character> s = new ArrayDeque<Character>(); 
+        	int A = io.nextInt();
+        	int B = io.nextInt();
+        	int C = io.nextInt();
 
-        		boolean matching = true;
-        		
-        		for (int j = 0; j < c.length; j++) {
-        			if (c[j] == '[' || c[j] == '(') {
-        				s.push(c[j]);
-        			} else {
-        				Character ch = s.poll();
-        				if (c[j] == ']' && (ch == null || ch != '[') ||
-        					c[j] == ')' && (ch == null || ch != '(')) {
-        					matching = false;
-        					break;
-        				}
-        			}
-        		}
-
-        		if (!matching || s.size() > 0) {
-					io.println("NO");
-        		} else {
-					io.println("YES");
-        		}
+        	int[] arr = new int[n];
+        	
+        	arr[0] = io.nextInt();
+        	arr[1] = io.nextInt();
+        	
+        	for (int i = 2; i < n; i++) {
+        		arr[i] = A * arr[i-2] + B * arr[i-1] + C;
         	}
+        	
 		}
-	}
-}
+    }
+} 
