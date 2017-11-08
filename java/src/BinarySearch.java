@@ -5,12 +5,13 @@ public class BinarySearch {
 
 	// 000[1]11
 	// warning: overflows in lines 1-4
-	public static int binarySearchFirstTrueSimple(IntPredicate predicate, int fromInclusive, int toInclusive) {
+	// invariant: f[lo] == false, f[hi] == true
+	public static int binarySearchFirstTrueSimple(IntPredicate f, int fromInclusive, int toInclusive) {
 		int lo = fromInclusive - 1;
 		int hi = toInclusive + 1;
 		while (hi - lo > 1) {
 			int mid = (lo + hi) / 2;
-			if (!predicate.test(mid)) {
+			if (!f.test(mid)) {
 				lo = mid;
 			} else {
 				hi = mid;
@@ -21,13 +22,13 @@ public class BinarySearch {
 
 	// 000[1]11
 	// correct binary search
-	public static int binarySearchFirstTrue(IntPredicate predicate, int fromInclusive, int toExclusive) {
+	public static int binarySearchFirstTrue(IntPredicate f, int fromInclusive, int toExclusive) {
 		int lo = fromInclusive;
 		int hi = toExclusive;
 		while (lo < hi) {
 			// int mid = lo + ((hi - lo) >>> 1);
 			int mid = (lo & hi) + ((lo ^ hi) >> 1);
-			if (!predicate.test(mid)) {
+			if (!f.test(mid)) {
 				lo = mid + 1;
 			} else {
 				hi = mid;
@@ -36,10 +37,10 @@ public class BinarySearch {
 		return hi;
 	}
 
-	public static double binarySearch(DoublePredicate predicate, double lo, double hi) {
+	public static double binarySearch(DoublePredicate f, double lo, double hi) {
 		for (int step = 0; step < 1000; step++) {
 			double mid = (lo + hi) / 2;
-			if (!predicate.test(mid)) {
+			if (!f.test(mid)) {
 				lo = mid;
 			} else {
 				hi = mid;
