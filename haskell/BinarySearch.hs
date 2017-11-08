@@ -1,8 +1,8 @@
 binarySearchFirstTrue :: (Int -> Bool) -> Int -> Int -> Int
 binarySearchFirstTrue predicate lo hi
-  | hi - lo <= 1 = hi
-  | predicate mid = binarySearch predicate lo mid
-  | otherwise = binarySearch predicate mid hi
+  | lo > hi = lo
+  | predicate mid = binarySearch predicate lo mid - 1
+  | otherwise = binarySearch predicate mid + 1 hi
   where mid = (lo + hi) `div` 2
 
 -- Usage example
