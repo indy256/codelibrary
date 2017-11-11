@@ -20,8 +20,8 @@ public class ArrayRotate {
 	}
 
 	static void reverse(int[] a, int from, int to) {
-		while (from < --to)
-			swap(a, from++, to);
+		while (from + 1 < to)
+			swap(a, from++, --to);
 	}
 
 	public static void rotate3(int[] a, int first, int middle, int last) {
