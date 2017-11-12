@@ -6,7 +6,7 @@ public class BellmanFord {
 	static final int INF = Integer.MAX_VALUE / 2;
 
 	public static class Edge {
-		int v, cost;
+		final int v, cost;
 
 		public Edge(int v, int cost) {
 			this.v = v;
@@ -19,9 +19,8 @@ public class BellmanFord {
 		Arrays.fill(dist, INF);
 		dist[s] = 0;
 		int n = graph.length;
-		boolean updated = false;
 		for (int step = 0; step < n; step++) {
-			updated = false;
+			boolean updated = false;
 			for (int u = 0; u < n; u++) {
 				if (dist[u] == INF) continue;
 				for (Edge e : graph[u]) {
@@ -33,11 +32,12 @@ public class BellmanFord {
 					}
 				}
 			}
-			if (!updated)
-				break;
+			if (!updated) {
+				return true;
+			}
 		}
-		// if updated is true then a negative cycle exists
-		return updated == false;
+		// a negative cycle exists
+		return false;
 	}
 
 	public static int[] findNegativeCycle(List<Edge>[] graph) {
@@ -52,7 +52,7 @@ public class BellmanFord {
 				if (dist[u] == INF) continue;
 				for (Edge e : graph[u]) {
 					if (dist[e.v] > dist[u] + e.cost) {
-						dist[e.v] = Math.max(dist[u] + e.cost, -INF);
+						dist[e.v] = dist[u] + e.cost;
 						dist[e.v] = Math.max(dist[e.v], -INF);
 						pred[e.v] = u;
 						last = e.v;
