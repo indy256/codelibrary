@@ -19,9 +19,8 @@ public class BellmanFord2 {
 		Arrays.fill(pred, -1);
 		Arrays.fill(dist, INF);
 		dist[s] = 0;
-		boolean updated = false;
 		for (int step = 0; step < n; step++) {
-			updated = false;
+			boolean updated = false;
 			for (Edge e : edges) {
 				if (dist[e.u] == INF) continue;
 				if (dist[e.v] > dist[e.u] + e.cost) {
@@ -32,10 +31,10 @@ public class BellmanFord2 {
 				}
 			}
 			if (!updated)
-				break;
+				return true;
 		}
-		// if updated is true then a negative cycle exists
-		return updated == false;
+		// a negative cycle exists
+		return false;
 	}
 
 	public static int[] findNegativeCycle(int n, List<Edge> edges) {

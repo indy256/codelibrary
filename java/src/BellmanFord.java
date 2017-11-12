@@ -32,9 +32,8 @@ public class BellmanFord {
 					}
 				}
 			}
-			if (!updated) {
+			if (!updated)
 				return true;
-			}
 		}
 		// a negative cycle exists
 		return false;
