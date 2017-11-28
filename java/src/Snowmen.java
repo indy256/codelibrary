@@ -1,67 +1,28 @@
 import mooc.EdxIO;
 import java.util.*;
 
+// ITMOx: I2CPx Snowmen
 public class Snowmen {
-	// Usage example
-	public static void main(String[] args) {
+    public static void main(String[] args) {
         try (EdxIO io = EdxIO.create()) {
-        	int n = io.nextInt();
-        	
-        	List<Snowman> l = new ArrayList<Snowman>();
-        	
-        	Snowman s = new Snowman();
-        	s.parent = -1;
-        	s.top = 0;
-        	
-        	l.add(s);
-        	
-        	for (int i = 0; i < n; i++) {
-        		int sm = io.nextInt();
-        		int delta = io.nextInt();
-        		
-        		s = new Snowman();
-        		s.parent = sm;
-    			Snowman parent = l.get(sm);
-        		int genCount = 0;
-        		    			
-        		if (delta == 0) {
-        			while (parent.top < 0) {
-        				parent = l.get(parent.parent);
-        				genCount++;
-        			}
-        			
-        			for (int j = 0; j < genCount; j++) {
-        				parent = l.get(parent.parent);
-        			}
-        			
-        			s.top = parent.top * -1;
-        		} else {
-        			s.top = delta;
-        		}
-        		
-        		l.add(s);        		
-        	}
-        	
-        	long sum = 0;
-        	
-        	long[] sums = new long[l.size()];
-        	
-        	for (int i = 1; i < l.size(); i++) {
-        		s = l.get(i);
-       			sums[i] = sums[s.parent] + s.top;
-        	}
-        	
-        	for (int i = 1; i < sums.length; i++) {
-        		sum += sums[i];
-        	}
-
-        	io.println(sum);
-		}
-	}
-}
-
-class Snowman {
-	int parent;
-	int top;
-	int topOfRest;
+            int n = io.nextInt();
+            long sum = 0;
+            int[] h = new int[n + 1];
+            int[] p = new int[n + 1];
+            p[0] = -1;
+            for (int i = 1; i <= n; ++i) {
+                int prev = io.nextInt();
+                int chng = io.nextInt();
+                if (chng == 0) {
+                    h[i] = h[p[prev]];
+                    p[i] = p[p[prev]];
+                } else {
+                    h[i] = h[prev] + chng;
+                    p[i] = prev;
+                }
+                sum += h[i];
+            }
+            io.println(sum);
+        }
+    }
 }

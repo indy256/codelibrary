@@ -302,7 +302,7 @@ public class IndexMinPQ<Key extends Comparable<Key>> implements Iterable<Integer
 				case 'D':
 					int idx = io.nextInt();
 					int dec = io.nextInt();
-					pq.decreaseKey(arr[idx], dec);
+					pq.changeKey(arr[idx], dec);
 					break;
 				case 'X':
 					if (pq.isEmpty()) {
