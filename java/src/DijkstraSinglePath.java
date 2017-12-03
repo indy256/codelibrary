@@ -1,9 +1,11 @@
 import java.util.*;
 import java.util.stream.Stream;
 
-public class Dijkstra {
+import mooc.EdxIO;
 
-	public static void shortestPaths(List<Edge>[] graph, int s, int[] prio, int[] pred) {
+public class DijkstraSinglePath {
+
+	public static void shortestPaths(List<Edge>[] graph, int s, int f, int[] prio, int[] pred) {
 		int n = prio.length;
 		Arrays.fill(pred, -1);
 		Arrays.fill(prio, Integer.MAX_VALUE);
@@ -19,6 +21,8 @@ public class Dijkstra {
 				break;
 			visited[u] = true;
 
+			if (u == f) return;
+			
 			for (Edge e : graph[u]) {
 				int v = e.t;
 				int nprio = prio[u] + e.cost;
@@ -41,24 +45,26 @@ public class Dijkstra {
 
 	// Usage example
 	public static void main(String[] args) {
-		int[][] cost = {{0, 3, 2}, {0, 0, -2}, {0, 0, 0}};
-		int n = cost.length;
-		List<Edge>[] graph = Stream.generate(ArrayList::new).limit(n).toArray(List[]::new);
-		for (int i = 0; i < n; i++) {
-			for (int j = 0; j < n; j++) {
-				if (cost[i][j] != 0) {
-					graph[i].add(new Edge(j, cost[i][j]));
+        try (EdxIO io = EdxIO.create()) {
+        	int N = io.nextInt();
+        	int S = io.nextInt() - 1;
+        	int F = io.nextInt() - 1;
+        	
+        	List<Edge>[] graph = Stream.generate(ArrayList::new).limit(N).toArray(List[]::new);
+			for (int i = 0; i < N; i++) {
+				for (int j = 0; j < N; j++) {
+					int weight = io.nextInt();
+					
+					if (weight > -1 && i != j) {
+						graph[i].add(new Edge(j, weight));
+					}
 				}
 			}
-		}
-		int[] dist = new int[n];
-		int[] pred = new int[n];
-		shortestPaths(graph, 0, dist, pred);
-		System.out.println(0 == dist[0]);
-		System.out.println(3 == dist[1]);
-		System.out.println(1 == dist[2]);
-		System.out.println(-1 == pred[0]);
-		System.out.println(0 == pred[1]);
-		System.out.println(1 == pred[2]);
+			int[] dist = new int[N];
+			int[] pred = new int[N];
+			shortestPaths(graph, S, F, dist, pred);
+			
+			io.println(dist[F]);
+        }
 	}
 }

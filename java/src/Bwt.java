@@ -135,6 +135,8 @@ public class Bwt {
 		System.out.println(Arrays.equals(bwt.last, last2));
 		Locale.setDefault(Locale.US);
 		System.out.printf("%d -> %.0f\n", len, optimalCompressedLength(encodedInts));
+		
+		fs.close();
 	}
 
 	static double optimalCompressedLength(int[] a) {

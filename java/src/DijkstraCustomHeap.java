@@ -1,6 +1,8 @@
 import java.util.*;
 import java.util.stream.Stream;
 
+import mooc.EdxIO;
+
 public class DijkstraCustomHeap {
 
 	public static void shortestPaths(List<Edge>[] edges, int s, long[] prio, int[] pred) {
@@ -107,24 +109,34 @@ public class DijkstraCustomHeap {
 
 	// Usage example
 	public static void main(String[] args) {
-		int[][] cost = {{0, 3, 2}, {0, 0, -2}, {0, 0, 0}};
-		int n = cost.length;
-		List<Edge>[] edges = Stream.generate(ArrayList::new).limit(n).toArray(List[]::new);
-		for (int i = 0; i < n; i++) {
-			for (int j = 0; j < n; j++) {
-				if (cost[i][j] != 0) {
-					edges[i].add(new Edge(j, cost[i][j]));
-				}
+        try (EdxIO io = EdxIO.create()) {
+        	int V = io.nextInt();
+        	int E = io.nextInt();
+
+    		List<Edge>[] edges = Stream.generate(ArrayList::new).limit(E*2).toArray(List[]::new);
+
+			for (int i = 0; i < E; i++) {
+				int source = io.nextInt() - 1;
+				int dest = io.nextInt() - 1;
+				int weight = io.nextInt();
+				
+				edges[source].add(new Edge(dest, weight));
+				edges[dest].add(new Edge(source, weight));
 			}
-		}
-		long[] dist = new long[n];
-		int[] pred = new int[n];
-		shortestPaths(edges, 0, dist, pred);
-		System.out.println(0 == dist[0]);
-		System.out.println(3 == dist[1]);
-		System.out.println(1 == dist[2]);
-		System.out.println(-1 == pred[0]);
-		System.out.println(0 == pred[1]);
-		System.out.println(1 == pred[2]);
+			long[] dist = new long[V];
+			int[] pred = new int[V];
+
+			shortestPaths(edges, 0, dist, pred);
+
+			for (int i = 0; i < V; i++) {
+				io.print(dist[i] + " ");
+			}
+//			System.out.println(0 == dist[0]);
+//			System.out.println(3 == dist[1]);
+//			System.out.println(1 == dist[2]);
+//			System.out.println(-1 == pred[0]);
+//			System.out.println(0 == pred[1]);
+//			System.out.println(1 == pred[2]);
+        }
 	}
 }

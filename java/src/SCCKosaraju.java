@@ -1,6 +1,8 @@
 import java.util.*;
 import java.util.stream.Stream;
 
+import mooc.EdxIO;
+
 // https://en.wikipedia.org/wiki/Kosaraju%27s_algorithm
 public class SCCKosaraju {
 
@@ -56,14 +58,36 @@ public class SCCKosaraju {
 
 	// Usage example
 	public static void main(String[] args) {
-		List<Integer>[] g = Stream.generate(ArrayList::new).limit(3).toArray(List[]::new);
-		g[2].add(0);
-		g[2].add(1);
-		g[0].add(1);
-		g[1].add(0);
+    	try (EdxIO io = EdxIO.create()) {
 
-		List<List<Integer>> components = scc(g);
-		System.out.println(components);
-		System.out.println(Arrays.toString(sccGraph(g, components)));
+    		int N = io.nextInt();
+    		int M = io.nextInt();
+
+    		List<Integer>[] g = Stream.generate(ArrayList::new).limit(N).toArray(List[]::new);
+
+    		for (int i = 0; i < M; i++) {
+				g[io.nextInt() - 1].add(io.nextInt() - 1);
+			}
+
+    		List<List<Integer>> components = scc(g);
+    		
+    		io.println(components.size());
+    		
+    		int[] a = new int[N];
+    		
+    		for (int i = 0; i < components.size(); i++) {
+    			List<Integer> l = components.get(i);
+    			
+				for (int j = 0; j < l.size(); j++) {
+					a[l.get(j)] = i+1;
+				}
+			}
+    		
+    		for (int i = 0; i < a.length; i++) {
+				io.print(a[i] + " ");
+			}
+//    		System.out.println(Arrays.toString(sccGraph(g, components)));
+    	}
+
 	}
 }

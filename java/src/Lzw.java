@@ -81,6 +81,8 @@ public class Lzw {
 		System.out.println(Arrays.equals(data, data2));
 		Locale.setDefault(Locale.US);
 		System.out.printf("%d -> %.0f\n", s.length(), optimalCompressedLength(encoded));
+		
+		fs.close();
 	}
 
 	static double optimalCompressedLength(int[] a) {

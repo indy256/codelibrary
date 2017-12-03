@@ -1,6 +1,8 @@
 import java.util.*;
 import java.util.stream.Stream;
 
+import mooc.EdxIO;
+
 public class Biconnectivity {
 
 	List<Integer>[] graph;
@@ -84,20 +86,44 @@ public class Biconnectivity {
 
 	// Usage example
 	public static void main(String[] args) {
-		List<Integer>[] graph = Stream.generate(ArrayList::new).limit(6).toArray(List[]::new);
+    	try (EdxIO io = EdxIO.create()) {
 
-		int[][] esges = {{0, 1}, {1, 2}, {0, 2}, {2, 3}, {1, 4}, {4, 5}, {5, 1}};
-		for (int[] edge : esges) {
-			graph[edge[0]].add(edge[1]);
-			graph[edge[1]].add(edge[0]);
-		}
+    		int N = io.nextInt();
+    		int M = io.nextInt();
 
-		Biconnectivity bc = new Biconnectivity();
-		List<List<Integer>> components = bc.biconnectivity(graph);
+    		List<Integer>[] graph = Stream.generate(ArrayList::new).limit(N).toArray(List[]::new);
 
-		System.out.println("edge-biconnected components:" + components);
-		System.out.println("cut points: " + bc.cutPoints);
-		System.out.println("bridges:" + bc.bridges);
-		System.out.println("condensation tree:" + Arrays.toString(ebcTree(graph, components)));
+    		for (int i = 0; i < M; i++) {
+    			int v = io.nextInt() - 1;
+    			int w = io.nextInt() - 1;
+    			
+				graph[v].add(w);
+				graph[w].add(v);
+			}
+
+    		Biconnectivity bc = new Biconnectivity();
+    		List<List<Integer>> components = bc.biconnectivity(graph);
+
+    		io.println(components.size());
+    		
+    		int[] a = new int[N];
+    		
+    		for (int i = 0; i < components.size(); i++) {
+    			List<Integer> l = components.get(i);
+    			
+				for (int j = 0; j < l.size(); j++) {
+					a[l.get(j)] = i+1;
+				}
+			}
+    		
+    		for (int i = 0; i < a.length; i++) {
+				io.print(a[i] + " ");
+			}
+//    		System.out.println("edge-biconnected components:" + components);
+//    		System.out.println("cut points: " + bc.cutPoints);
+//    		System.out.println("bridges:" + bc.bridges);
+//    		System.out.println("condensation tree:" + Arrays.toString(ebcTree(graph, components)));
+    	}
+
 	}
 }

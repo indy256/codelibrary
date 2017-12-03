@@ -1,5 +1,6 @@
 public class KnightDistance {
 
+	// Better code available in javascript
 	public static int dist(int x1, int y1, int x2, int y2) {
 		int dx = Math.abs(x2 - x1);
 		int dy = Math.abs(y2 - y1);
