@@ -30,7 +30,7 @@ public class SegmentTreeIntervalAddMax {
 		int res = Integer.MIN_VALUE;
 		if (from <= mid)
 			res = Math.max(res, max(from, Math.min(to, mid), 2 * root + 1, left, mid));
-		else if (to > mid)
+		if (to > mid)
 			res = Math.max(res, max(Math.max(from, mid + 1), to, 2 * root + 2, mid + 1, right));
 		return res;
 	}
