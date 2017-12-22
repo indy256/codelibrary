@@ -27,7 +27,7 @@ class BinaryHeap(val heap: IntArray, var size: Int) {
             val parent = (i - 1) / 2
             if (heap[i] >= heap[parent])
                 break
-            swap(i, parent)
+            heap[i] = heap[parent].also { heap[parent] = heap[i] }
             i = parent
         }
     }
@@ -42,35 +42,27 @@ class BinaryHeap(val heap: IntArray, var size: Int) {
                 ++child
             if (heap[i] <= heap[child])
                 break
-            swap(i, child)
+            heap[i] = heap[child].also { heap[child] = heap[i] }
             i = child
         }
     }
+}
 
-    fun swap(i: Int, j: Int) {
-        val t = heap[i]
-        heap[i] = heap[j]
-        heap[j] = t
-    }
-
-    companion object {
-        // random test
-        @JvmStatic fun main(args: Array<String>) {
-            val rnd = Random(1)
-            for (step in 1..1000) {
-                val n = rnd.nextInt(100) + 1
-                val q = PriorityQueue<Int>()
-                val h = BinaryHeap(n)
-                for (op in 0..999) {
-                    if (rnd.nextBoolean() && q.size < n) {
-                        val v = rnd.nextInt()
-                        q.add(v)
-                        h.add(v)
-                    } else if (!q.isEmpty()) {
-                        if (q.remove() != h.removeMin())
-                            throw RuntimeException()
-                    }
-                }
+// random test
+fun main(args: Array<String>) {
+    val rnd = Random(1)
+    for (step in 1..1000) {
+        val n = rnd.nextInt(100) + 1
+        val q = PriorityQueue<Int>()
+        val h = BinaryHeap(n)
+        for (op in 0..999) {
+            if (rnd.nextBoolean() && q.size < n) {
+                val v = rnd.nextInt()
+                q.add(v)
+                h.add(v)
+            } else if (!q.isEmpty()) {
+                if (q.remove() != h.removeMin())
+                    throw RuntimeException()
             }
         }
     }
