@@ -19,7 +19,7 @@ object DisjointSets {
         return false
     }
 
-    fun createSets(size: Int): IntArray = IntArray(size, { i -> i })
+    fun createSets(size: Int): IntArray = IntArray(size, { it })
 
     // Usage example
     @JvmStatic fun main(args: Array<String>) {

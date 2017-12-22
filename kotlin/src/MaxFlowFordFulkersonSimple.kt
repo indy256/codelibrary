@@ -24,7 +24,8 @@ object MaxFlowFordFulkersonSimple {
     }
 
     // Usage example
-    @JvmStatic fun main(args: Array<String>) {
+    @JvmStatic
+    fun main(args: Array<String>) {
         val capacity = arrayOf(
                 intArrayOf(0, 1, 1, 0),
                 intArrayOf(1, 0, 1, 1),

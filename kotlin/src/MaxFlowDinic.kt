@@ -1,5 +1,4 @@
-import java.util.*
-
+// https://en.wikipedia.org/wiki/Dinic%27s_algorithm in O(V^2 * E)
 object MaxFlowDinic {
 
     data class Edge(val t: Int, val rev: Int, val cap: Int, var f: Int = 0)
@@ -10,12 +9,13 @@ object MaxFlowDinic {
     }
 
     fun dinicBfs(graph: Array<out List<Edge>>, src: Int, dest: Int, dist: IntArray): Boolean {
-        Arrays.fill(dist, -1)
+        dist.fill(-1)
         dist[src] = 0
         val Q = IntArray(graph.size)
         var sizeQ = 0
         Q[sizeQ++] = src
-        for (i in 0..sizeQ - 1) {
+        var i = 0
+        while (i < sizeQ) {
             val u = Q[i]
             for (e in graph[u]) {
                 if (dist[e.t] < 0 && e.f < e.cap) {
@@ -23,6 +23,7 @@ object MaxFlowDinic {
                     Q[sizeQ++] = e.t
                 }
             }
+            ++i
         }
         return dist[dest] >= 0
     }
@@ -51,7 +52,7 @@ object MaxFlowDinic {
         while (dinicBfs(graph, src, dest, dist)) {
             val ptr = IntArray(graph.size)
             while (true) {
-                val df = dinicDfs(graph, ptr, dist, dest, src, Integer.MAX_VALUE)
+                val df = dinicDfs(graph, ptr, dist, dest, src, Int.MAX_VALUE)
                 if (df == 0)
                     break
                 flow += df
@@ -61,11 +62,13 @@ object MaxFlowDinic {
     }
 
     // Usage example
-    @JvmStatic fun main(args: Array<String>) {
+    @JvmStatic
+    fun main(args: Array<String>) {
         val graph = (1..3).map { mutableListOf<Edge>() }.toTypedArray()
         addEdge(graph, 0, 1, 3)
         addEdge(graph, 0, 2, 2)
         addEdge(graph, 1, 2, 2)
-        println(4 == maxFlow(graph, 0, 2))
+        val maxFlow = maxFlow(graph, 0, 2)
+        println(4 == maxFlow)
     }
 }
