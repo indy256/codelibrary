@@ -2,7 +2,7 @@ public class SegmentTreeIntervalAddMax {
 
 	int n;
 	int[] tmax;
-	int[] tadd; // tadd[i] affects tmax[i], tadd[2*i+1] and tadd[2*i+2]
+	int[] tadd; // tadd[i] applies to tmax[i], tadd[2*i+1] and tadd[2*i+2]
 
 	void push(int root) {
 		tmax[root] += tadd[root];
@@ -44,8 +44,7 @@ public class SegmentTreeIntervalAddMax {
 			tadd[root] += delta;
 			return;
 		}
-		// push can be skipped for add, but is necessary for other operations such as set
-		push(root);
+		push(root); // this push may be omitted for add, but is necessary for other operations such as set
 		int mid = (left + right) >> 1;
 		if (from <= mid)
 			add(from, Math.min(to, mid), delta, 2 * root + 1, left, mid);
@@ -60,8 +59,8 @@ public class SegmentTreeIntervalAddMax {
 		t.add(0, 9, 1);
 		t.add(2, 4, 2);
 		t.add(3, 5, 3);
-		System.out.println(t.max(0, 9));
-		System.out.println(t.tmax[0] + t.tadd[0]);
-		System.out.println(t.max(0, 0));
+		System.out.println(6 == t.max(0, 9));
+		System.out.println(6 == t.tmax[0] + t.tadd[0]);
+		System.out.println(1 == t.max(0, 0));
 	}
 }
