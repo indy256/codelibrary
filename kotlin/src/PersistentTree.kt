@@ -1,27 +1,15 @@
 // https://en.wikipedia.org/wiki/Persistent_data_structure
 object PersistentTree {
 
-    class Node {
-        val left: Node?
-        val right: Node?
-        val sum: Int
-
-        constructor(value: Int) {
-            this.left = null
-            this.right = null
-            this.sum = value
-        }
-
-        constructor(left: Node?, right: Node?) {
-            this.left = left
-            this.right = right
-            this.sum = (left?.sum ?: 0) + (right?.sum ?: 0)
-        }
-    }
+    data class Node(
+            val left: Node? = null,
+            val right: Node? = null,
+            val sum: Int = (left?.sum ?: 0) + (right?.sum ?: 0)
+    )
 
     fun build(left: Int, right: Int): Node {
         if (left == right)
-            return Node(0)
+            return Node(null, null)
         val mid = left + right shr 1
         return Node(build(left, mid), build(mid + 1, right))
     }
@@ -38,9 +26,9 @@ object PersistentTree {
         return s
     }
 
-    operator fun set(pos: Int, value: Int, root: Node, left: Int, right: Int): Node {
+    fun set(pos: Int, value: Int, root: Node, left: Int, right: Int): Node {
         if (left == right)
-            return Node(value)
+            return Node(null, null, value)
         val mid = left + right shr 1
         return if (pos <= mid)
             Node(set(pos, value, root.left!!, left, mid), root.right)
