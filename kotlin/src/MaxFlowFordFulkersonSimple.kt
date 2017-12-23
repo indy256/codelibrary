@@ -17,15 +17,14 @@ object MaxFlowFordFulkersonSimple {
 
         return generateSequence(0) { it + 1 }.find { !findPath(BooleanArray(cap.size), s) }!!
     }
+}
 
-    // Usage example
-    @JvmStatic
-    fun main(args: Array<String>) {
-        val capacity = arrayOf(
-                intArrayOf(0, 1, 1, 0),
-                intArrayOf(1, 0, 1, 1),
-                intArrayOf(1, 1, 0, 1),
-                intArrayOf(0, 1, 1, 0))
-        println(2 == maxFlow(capacity, 0, 3))
-    }
+// Usage example
+fun main(args: Array<String>) {
+    val capacity = arrayOf(
+            intArrayOf(0, 1, 1, 0),
+            intArrayOf(1, 0, 1, 1),
+            intArrayOf(1, 1, 0, 1),
+            intArrayOf(0, 1, 1, 0))
+    println(2 == MaxFlowFordFulkersonSimple.maxFlow(capacity, 0, 3))
 }
