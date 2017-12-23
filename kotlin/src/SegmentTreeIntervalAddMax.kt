@@ -38,7 +38,7 @@ class SegmentTreeIntervalAddMax(val n: Int) {
     }
 }
 
-// tests
+// Usage example
 fun main(args: Array<String>) {
     val t = SegmentTreeIntervalAddMax(10)
     t.add(0, 9, 1)

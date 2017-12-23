@@ -46,15 +46,16 @@ class Rational(n: BigInteger, d: BigInteger = BigInteger.ONE) : Comparable<Ratio
         val ONE = Rational(1)
         val POSITIVE_INFINITY = Rational(1, 0)
         val NEGATIVE_INFINITY = Rational(-1, 0)
-
-        // Usage example
-        @JvmStatic fun main(args: Array<String>) {
-            val a = Rational(1, 3)
-            val b = Rational(1, 6)
-            val s1 = Rational(1, 2)
-            val s2 = a + b
-            println(true == (s1 == s2))
-            println(a * b / b - a)
-        }
     }
+}
+
+// Usage example
+fun main(args: Array<String>) {
+    val a = Rational(1, 3)
+    val b = Rational(1, 6)
+    val s1 = Rational(1, 2)
+    val s2 = a + b
+    println(true == (s1 == s2))
+    println(a * b / b - a)
+    println(a * Rational.ZERO)
 }

@@ -22,7 +22,8 @@ object DisjointSets {
     fun createSets(size: Int) = IntArray(size, { it })
 
     // Usage example
-    @JvmStatic fun main(args: Array<String>) {
+    @JvmStatic
+    fun main(args: Array<String>) {
         val p = createSets(10)
         println(false == (root(p, 0) == root(p, 9)))
         unite(p, 0, 9)
