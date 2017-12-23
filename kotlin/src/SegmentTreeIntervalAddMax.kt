@@ -21,7 +21,7 @@ class SegmentTreeIntervalAddMax(val n: Int) {
             tadd[root] += delta
             return
         }
-        push(root) // push can be skipped for add, but is necessary for other operations such as set
+        push(root) // this push may be omitted for add, but is necessary for other operations such as set
         val mid = left + right shr 1
         if (from <= mid)
             add(from, minOf(to, mid), delta, 2 * root + 1, left, mid)
@@ -44,7 +44,7 @@ fun main(args: Array<String>) {
     t.add(0, 9, 1)
     t.add(2, 4, 2)
     t.add(3, 5, 3)
-    println(t.max(0, 9))
-    println(t.tmax[0] + t.tadd[0])
-    println(t.max(0, 0))
+    println(6 == t.max(0, 9))
+    println(6 == t.tmax[0] + t.tadd[0])
+    println(1 == t.max(0, 0))
 }
