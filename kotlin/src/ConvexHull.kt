@@ -1,5 +1,6 @@
 data class Point(val x: Int, val y: Int)
 
+// Convex hull in O(n*log(n))
 fun convexHull(points: Array<Point>): Array<Point> {
 
     fun isNotRightTurn(p3: List<Point>): Boolean {
