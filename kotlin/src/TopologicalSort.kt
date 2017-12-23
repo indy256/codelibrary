@@ -1,3 +1,4 @@
+// https://en.wikipedia.org/wiki/Topological_sorting
 fun topologicalSort(graph: Array<out List<Int>>): List<Int> {
     val n = graph.size
     val used = BooleanArray(n)
