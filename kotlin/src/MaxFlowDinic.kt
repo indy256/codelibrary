@@ -16,14 +16,13 @@ object MaxFlowDinic {
         Q[sizeQ++] = src
         var i = 0
         while (i < sizeQ) {
-            val u = Q[i]
+            val u = Q[i++]
             for (e in graph[u]) {
                 if (dist[e.t] < 0 && e.f < e.cap) {
                     dist[e.t] = dist[u] + 1
                     Q[sizeQ++] = e.t
                 }
             }
-            ++i
         }
         return dist[dest] >= 0
     }

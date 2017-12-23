@@ -40,11 +40,11 @@ class SegmentTreeIntervalAddMax(val n: Int) {
 
 // Usage example
 fun main(args: Array<String>) {
-    val t = SegmentTreeIntervalAddMax(10)
-    t.add(0, 9, 1)
-    t.add(2, 4, 2)
-    t.add(3, 5, 3)
-    println(6 == t.max(0, 9))
-    println(6 == t.tmax[0] + t.tadd[0])
-    println(1 == t.max(0, 0))
+    val tree = SegmentTreeIntervalAddMax(10)
+    tree.add(0, 9, 1)
+    tree.add(2, 4, 2)
+    tree.add(3, 5, 3)
+    println(6 == tree.max(0, 9))
+    println(6 == tree.tmax[0] + tree.tadd[0])
+    println(1 == tree.max(0, 0))
 }
