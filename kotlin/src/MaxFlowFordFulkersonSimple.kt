@@ -2,12 +2,12 @@ object MaxFlowFordFulkersonSimple {
 
     fun maxFlow(cap: Array<IntArray>, s: Int, t: Int): Int {
 
-        fun findPath(vis: BooleanArray, i: Int): Boolean {
+        fun findPath(i: Int, vis: BooleanArray = BooleanArray(cap.size)): Boolean {
             if (i == t)
                 return true
             vis[i] = true
             for (j in vis.indices)
-                if (!vis[j] && cap[i][j] > 0 && findPath(vis, j)) {
+                if (!vis[j] && cap[i][j] > 0 && findPath(j, vis)) {
                     --cap[i][j]
                     ++cap[j][i]
                     return true
@@ -15,7 +15,7 @@ object MaxFlowFordFulkersonSimple {
             return false
         }
 
-        return generateSequence(0) { it + 1 }.find { !findPath(BooleanArray(cap.size), s) }!!
+        return generateSequence(0) { it + 1 }.find { !findPath(s) }!!
     }
 }
 
