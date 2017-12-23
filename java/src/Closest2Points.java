@@ -1,4 +1,6 @@
-import java.util.*;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.Random;
 
 public class Closest2Points {
 
@@ -11,8 +13,8 @@ public class Closest2Points {
 		}
 	}
 
-	public static final Comparator<Point> CMP_X = (a, b) -> Long.compare(a.x, b.x) != 0 ? Long.compare(a.x, b.x) : Long.compare(a.y, b.y);
-	public static final Comparator<Point> CMP_Y = (a, b) -> Long.compare(a.y, b.y);
+	public static final Comparator<Point> CMP_X = Comparator.<Point>comparingLong(p -> p.x).thenComparingLong(p -> p.y);
+	public static final Comparator<Point> CMP_Y = Comparator.comparingLong(p -> p.y);
 
 	public static Point[] findClosestPair(Point[] points) {
 		Point[] result = new Point[2];

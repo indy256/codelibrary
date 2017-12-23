@@ -1,9 +1,14 @@
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Random;
 
 public class ConvexHull {
 
 	public static Point[] convexHull(Point[] points) {
-		Arrays.sort(points, (a, b) -> Integer.compare(a.x, b.x) != 0 ? Integer.compare(a.x, b.x) : Integer.compare(a.y, b.y));
+		Arrays.sort(points, Comparator.<Point>comparingInt(p -> p.x).thenComparingInt(p -> p.y));
 		int n = points.length;
 		Point[] hull = new Point[n + 1];
 		int cnt = 0;
@@ -35,7 +40,7 @@ public class ConvexHull {
 		int n = p.length;
 		if (n <= 1)
 			return p;
-		Arrays.sort(p, (a, b) -> Integer.compare(a.x, b.x) != 0 ? Integer.compare(a.x, b.x) : Integer.compare(a.y, b.y));
+		Arrays.sort(p, Comparator.<Point>comparingInt(point -> point.x).thenComparingInt(point -> point.y));
 		Point[] h = new Point[n * 2];
 		int cnt = 0;
 		for (int i = 0; i < n; h[cnt++] = p[i++])

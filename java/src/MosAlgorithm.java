@@ -1,4 +1,5 @@
 import java.util.Arrays;
+import java.util.Comparator;
 
 // https://www.hackerearth.com/notes/mos-algorithm/
 // Solution of http://www.spoj.com/problems/DQUERY/en/
@@ -26,10 +27,7 @@ public class MosAlgorithm {
 	public static int[] processQueries(int[] a, Query[] queries) {
 		for (int i = 0; i < queries.length; i++) queries[i].index = i;
 		int sqrtn = (int) Math.sqrt(a.length);
-		Arrays.sort(queries, (q1, q2) -> {
-			int cmp = Integer.compare(q1.a / sqrtn, q2.a / sqrtn);
-			return cmp != 0 ? cmp : Integer.compare(q1.b, q2.b);
-		});
+		Arrays.sort(queries, Comparator.<Query>comparingInt(q -> q.a / sqrtn).thenComparingInt(q -> q.b));
 		int[] cnt = new int[1000_002];
 		int[] res = new int[queries.length];
 		int L = 1;

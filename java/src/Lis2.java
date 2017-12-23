@@ -1,6 +1,6 @@
 import java.util.*;
 
-// https://en.wikipedia.org/wiki/Longest_increasing_subsequence
+// https://en.wikipedia.org/wiki/Longest_increasing_subsequence in O(n*log(n))
 public class Lis2 {
 
 	public static int[] lis(int[] a) {

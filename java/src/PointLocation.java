@@ -1,4 +1,14 @@
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.NavigableSet;
+import java.util.Random;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 // https://en.wikipedia.org/wiki/Point_location
 public class PointLocation {
@@ -124,13 +134,8 @@ public class PointLocation {
 		}
 	}
 
-	static final Comparator<Event> eventComparator = (a, b) -> {
-		if (a.x != b.x)
-			return a.x < b.x ? -1 : 1;
-		if (a.type != b.type)
-			return a.type < b.type ? -1 : 1;
-		return Integer.compare(a.y, b.y);
-	};
+	static final Comparator<Event> eventComparator =
+			Comparator.<Event>comparingInt(e -> e.x).thenComparingInt(e -> e.type).thenComparingInt(e -> e.y);
 
 	static class Event {
 		final int x, y;

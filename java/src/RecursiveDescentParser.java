@@ -1,8 +1,5 @@
 import java.util.*;
 
-/**
- * @author Andrey Naumenko
- */
 public class RecursiveDescentParser {
 
     enum Lexeme {

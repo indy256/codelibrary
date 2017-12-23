@@ -7,7 +7,7 @@ public class SuffixArray2 {
 	// suffix array in O(n*log^2(n))
 	public static int[] suffixArray(CharSequence s) {
 		int n = s.length();
-		Integer[] sa = IntStream.range(0, n).mapToObj(Integer::valueOf).toArray(Integer[]::new);
+		Integer[] sa = IntStream.range(0, n).boxed().toArray(Integer[]::new);
 		int[] rank = s.chars().toArray();
 
 		for (int len = 1; len < n; len *= 2) {
@@ -15,7 +15,7 @@ public class SuffixArray2 {
 			for (int i = 0; i < n; i++)
 				rank2[i] = ((long) rank[i] << 32) + (i + len < n ? rank[i + len] + 1 : 0);
 
-			Arrays.sort(sa, (a, b) -> Long.compare(rank2[a], rank2[b]));
+			Arrays.sort(sa, Comparator.comparingLong(a -> rank2[a]));
 
 			for (int i = 0; i < n; i++)
 				rank[sa[i]] = i > 0 && rank2[sa[i - 1]] == rank2[sa[i]] ? rank[sa[i - 1]] : i;

@@ -33,7 +33,7 @@ public class Bwt {
 		Integer[] order = new Integer[n];
 		for (int i = 0; i < n; i++)
 			order[i] = i;
-		Arrays.sort(order, (a, b) -> Integer.compare(Byte.toUnsignedInt(S[a]), Byte.toUnsignedInt(S[b])));
+		Arrays.sort(order, Comparator.comparingInt(i -> Byte.toUnsignedInt(S[i])));
 		int[] sa = new int[n];
 		int[] classes = new int[n];
 		for (int i = 0; i < n; i++) {

@@ -1,8 +1,6 @@
 import java.util.*;
 
-/**
- * @author Andrey Naumenko
- */
+// https://en.wikipedia.org/wiki/Contraction_hierarchies
 public class ContractionHierarchies {
 
 	public static class LayerGraph implements Cloneable {

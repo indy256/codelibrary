@@ -10,7 +10,7 @@ public class SuffixArray {
 
 		// stable sort of characters
 		int[] sa = IntStream.range(0, n).mapToObj(i -> n - 1 - i).
-				sorted((a, b) -> Character.compare(S.charAt(a), S.charAt(b))).mapToInt(Integer::intValue).toArray();
+				sorted(Comparator.comparingInt(S::charAt)).mapToInt(Integer::intValue).toArray();
 
 		int[] classes = S.chars().toArray();
 		// sa[i] - suffix on i'th position after sorting by first len characters
@@ -42,8 +42,7 @@ public class SuffixArray {
 	// sort rotations of S in O(n*log(n))
 	public static int[] rotationArray(CharSequence S) {
 		int n = S.length();
-		int[] sa = IntStream.range(0, n).mapToObj(Integer::valueOf).
-				sorted((a, b) -> Character.compare(S.charAt(a), S.charAt(b))).mapToInt(Integer::intValue).toArray();
+		int[] sa = IntStream.range(0, n).boxed().sorted(Comparator.comparingInt(S::charAt)).mapToInt(Integer::intValue).toArray();
 		int[] classes = S.chars().toArray();
 		for (int len = 1; len < n; len *= 2) {
 			int[] c = classes.clone();

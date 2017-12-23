@@ -143,7 +143,7 @@ public class TreapBST {
 	// O(n) treap creation (if not counting keys sorting)
 	// http://wcipeg.com/wiki/Cartesian_tree
 	static Treap createTreap(int[] keys) {
-		Treap[] nodes = Arrays.stream(keys).mapToObj(Treap::new).sorted((a, b) -> Integer.compare(a.key, b.key)).toArray(Treap[]::new);
+		Treap[] nodes = Arrays.stream(keys).mapToObj(Treap::new).sorted(Comparator.comparingInt(t -> t.key)).toArray(Treap[]::new);
 		int n = keys.length;
 		int[] parent = new int[n];
 		Arrays.fill(parent, -1);
