@@ -1,7 +1,7 @@
 import java.util.Random
 
 // https://en.wikipedia.org/wiki/Gauss–Jordan_elimination
-// returns x such that A * x = b
+// returns x such that A * x = b. requires |A| > 0
 fun gauss(A: Array<DoubleArray>, b: DoubleArray): DoubleArray {
     val a = A.mapIndexed { i, Ai -> Ai + b[i] }.toTypedArray()
     val n = a.size
@@ -31,7 +31,7 @@ fun main(args: Array<String>) {
             val b = (0 until n).map { (rnd.nextInt(10) - 5).toDouble() }.toDoubleArray()
             val x = gauss(a, b)
             for (i in a.indices) {
-                val y = a[i].zip(x).map { it -> it.first * it.second }.sum()
+                val y = a[i].zip(x).map { it.first * it.second }.sum()
                 if (Math.abs(b[i] - y) > 1e-9)
                     throw RuntimeException()
             }
