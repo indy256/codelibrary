@@ -9,9 +9,9 @@ object Dijkstra {
         dist[s] = 0
         val pred = IntArray(n, { -1 })
         val visited = BooleanArray(n)
-        for (i in 0..n - 1) {
+        for (i in 0 until n) {
             var u = -1
-            for (j in 0..n - 1) {
+            for (j in 0 until n) {
                 if (!visited[j] && (u == -1 || dist[u] > dist[j]))
                     u = j
             }
@@ -37,8 +37,8 @@ object Dijkstra {
         val cost = arrayOf(intArrayOf(0, 3, 2), intArrayOf(0, 0, -2), intArrayOf(0, 0, 0))
         val n = cost.size
         val graph = (1..n).map { mutableListOf<Edge>() }.toTypedArray()
-        for (i in 0..n - 1) {
-            for (j in 0..n - 1) {
+        for (i in 0 until n) {
+            for (j in 0 until n) {
                 if (cost[i][j] != 0) {
                     graph[i].add(Edge(j, cost[i][j]))
                 }

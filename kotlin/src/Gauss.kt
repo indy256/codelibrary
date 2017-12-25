@@ -30,7 +30,7 @@ fun gauss(A: Array<DoubleArray>, B: DoubleArray): DoubleArray {
 // random test
 fun main(args: Array<String>) {
     val rnd = Random(1)
-    for (step in 0 until 10_000) {
+    for (step in 0..9999) {
         val n = rnd.nextInt(5) + 1
         val a = (0 until n).map { (0 until n).map { (rnd.nextInt(10) - 5).toDouble() }.toDoubleArray() }.toTypedArray()
         if (Math.abs(det(a)) > 1e-6) {
