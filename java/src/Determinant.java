@@ -10,7 +10,7 @@ public class Determinant {
 		for (int i = 0; i < n; i++) {
 			int p = i;
 			for (int j = i + 1; j < n; j++)
-				if (Math.abs(a[j][i]) > Math.abs(a[p][i]))
+				if (Math.abs(a[p][i]) < Math.abs(a[j][i]))
 					p = j;
 			if (Math.abs(a[p][i]) < EPS)
 				return 0;
