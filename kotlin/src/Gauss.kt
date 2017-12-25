@@ -1,30 +1,24 @@
 import java.util.Random
 
 // https://en.wikipedia.org/wiki/Gauss–Jordan_elimination
-// returns X such that A * X = B
-fun gauss(A: Array<DoubleArray>, B: DoubleArray): DoubleArray {
-    val a = A.map { it.copyOf() }.toTypedArray()
-    val b = B.copyOf()
+// returns x such that A * x = b
+fun gauss2(A: Array<DoubleArray>, b: DoubleArray): DoubleArray {
+    val a = A.mapIndexed { i, Ai -> Ai + b[i] }.toTypedArray()
     val n = a.size
-    for (row in 0 until n) {
-        val best = (row until n).maxBy { Math.abs(a[it][row]) }!!
-        a[row] = a[best].also { a[best] = a[row] }
-        b[row] = b[best].also { b[best] = b[row] }
-        for (j in row + 1 until n)
-            a[row][j] /= a[row][row]
-        b[row] /= a[row][row]
-        // a[row][row] = 1;
+    for (i in 0 until n) {
+        val best = (i until n).maxBy { Math.abs(a[it][i]) }!!
+        a[i] = a[best].also { a[best] = a[i] }
+        for (j in i + 1..n)
+            a[i][j] /= a[i][i]
         for (j in 0 until n) {
-            val z = a[j][row]
-            if (j != row && z != 0.0) {
-                // row + 1 instead of row is an optimization
-                for (k in row + 1 until n)
-                    a[j][k] -= a[row][k] * z
-                b[j] -= b[row] * z
+            val z = a[j][i]
+            if (j != i && z != 0.0) {
+                for (k in i + 1..n)
+                    a[j][k] -= a[i][k] * z
             }
         }
     }
-    return b
+    return a.map { it[n] }.toDoubleArray()
 }
 
 // random test
@@ -35,7 +29,7 @@ fun main(args: Array<String>) {
         val a = (0 until n).map { (0 until n).map { (rnd.nextInt(10) - 5).toDouble() }.toDoubleArray() }.toTypedArray()
         if (Math.abs(det(a)) > 1e-6) {
             val b = (0 until n).map { (rnd.nextInt(10) - 5).toDouble() }.toDoubleArray()
-            val x = gauss(a, b)
+            val x = gauss2(a, b)
             for (i in a.indices) {
                 val y = a[i].zip(x).map { it -> it.first * it.second }.sum()
                 if (Math.abs(b[i] - y) > 1e-9)
