@@ -10,7 +10,7 @@ fun factorize(N: Long): Map<Long, Int> {
         ++d
     }
     if (n > 1) factors += n
-    return factors.groupBy { it }.mapValues { it.value.size }
+    return factors.groupingBy { it }.eachCount()
 }
 
 // Usage example
