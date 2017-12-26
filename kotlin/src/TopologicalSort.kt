@@ -7,7 +7,7 @@ fun topologicalSort(graph: Array<out List<Int>>): List<Int> {
     fun dfs(u: Int) {
         used[u] = true
         graph[u].filter { !used[it] }.forEach { dfs(it) }
-        order.add(u)
+        order += u
     }
 
     (0 until n).filter { !used[it] }.forEach { dfs(it) }
