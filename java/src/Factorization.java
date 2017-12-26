@@ -31,7 +31,7 @@ public class Factorization {
 				if (d * d != n)
 					divisors.add(n / d);
 			}
-		return divisors.stream().sorted().mapToInt(v -> v).toArray();
+		return divisors.stream().sorted().mapToInt(Integer::valueOf).toArray();
 	}
 
 	// returns divisor of n or -1 if failed: https://en.wikipedia.org/wiki/Pollard%27s_rho_algorithm#Algorithm
