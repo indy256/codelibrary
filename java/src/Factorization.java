@@ -1,26 +1,29 @@
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.summingInt;
 
 public class Factorization {
 
 	// returns prime_divisor -> power
 	// O(sqrt(n)) complexity
 	public static Map<Long, Integer> factorize(long n) {
-		Map<Long, Integer> factors = new LinkedHashMap<>();
-		for (long d = 2; n > 1; ) {
-			int power = 0;
+		List<Long> factors = new ArrayList<>();
+		for (long d = 2; d * d <= n; d++) {
 			while (n % d == 0) {
-				++power;
+				factors.add(d);
 				n /= d;
 			}
-			if (power > 0) {
-				factors.put(d, power);
-			}
-			++d;
-			if (d * d > n) {
-				d = n;
-			}
 		}
-		return factors;
+		if (n > 1) {
+			factors.add(n);
+		}
+		return factors.stream().collect(Collectors.groupingBy(Function.identity(), summingInt(v -> 1)));
 	}
 
 	public static int[] getAllDivisors(int n) {
