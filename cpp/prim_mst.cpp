@@ -5,7 +5,7 @@ using namespace std;
 typedef pair<int, int> edge;
 
 // https://en.wikipedia.org/wiki/Prim%27s_algorithm in O(E*log(V))
-auto prim(const vector<vector<edge>> &g) {
+auto prim_mst(const vector<vector<edge>> &g) {
     size_t n = g.size();
     vector<int> pred(n, -1);
     vector<int> prio(n, INT_MAX);
@@ -42,6 +42,6 @@ int main() {
     graph[2].emplace_back(0, 5);
     graph[0].emplace_back(2, 5);
 
-    auto[tree_weight, pred] = prim(graph);
+    auto[tree_weight, pred] = prim_mst(graph);
     cout << tree_weight << endl;
 }
