@@ -13,9 +13,8 @@ auto prim(vector<vector<edge>> &g) {
     size_t n = g.size();
     vector<int> pred(n, -1);
     vector<int> prio(n, INT_MAX);
-    prio[0] = 0;
     priority_queue<edge, vector<edge>, greater<edge>> q;
-    q.push({prio[0], 0});
+    q.push({prio[0] = 0, 0});
     long long tree_weight = 0;
 
     while (!q.empty()) {
@@ -38,14 +37,14 @@ auto prim(vector<vector<edge>> &g) {
 }
 
 int main() {
-    vector<vector<edge>> g(3);
-    g[0].push_back({1, 10});
-    g[1].push_back({0, 10});
-    g[1].push_back({2, 10});
-    g[2].push_back({1, 10});
-    g[2].push_back({0, 5});
-    g[0].push_back({2, 5});
+    vector<vector<edge>> graph(3);
+    graph[0].push_back({1, 10});
+    graph[1].push_back({0, 10});
+    graph[1].push_back({2, 10});
+    graph[2].push_back({1, 10});
+    graph[2].push_back({0, 5});
+    graph[0].push_back({2, 5});
 
-    auto[tree_weight, pred] = prim(g);
+    auto[tree_weight, pred] = prim(graph);
     cout << tree_weight << endl;
 }
