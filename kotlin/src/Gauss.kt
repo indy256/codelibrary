@@ -10,12 +10,10 @@ fun gauss(A: Array<DoubleArray>, b: DoubleArray): DoubleArray {
         a[i] = a[best].also { a[best] = a[i] }
         for (j in i + 1..n)
             a[i][j] /= a[i][i]
-        for (j in 0 until n) {
-            if (j != i && a[j][i] != 0.0) {
+        for (j in 0 until n)
+            if (j != i && a[j][i] != 0.0)
                 for (k in i + 1..n)
                     a[j][k] -= a[i][k] * a[j][i]
-            }
-        }
     }
     return a.map { it[n] }.toDoubleArray()
 }
