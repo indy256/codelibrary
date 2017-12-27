@@ -11,10 +11,9 @@ fun gauss(A: Array<DoubleArray>, b: DoubleArray): DoubleArray {
         for (j in i + 1..n)
             a[i][j] /= a[i][i]
         for (j in 0 until n) {
-            val z = a[j][i]
-            if (j != i && z != 0.0) {
+            if (j != i && a[j][i] != 0.0) {
                 for (k in i + 1..n)
-                    a[j][k] -= a[i][k] * z
+                    a[j][k] -= a[i][k] * a[j][i]
             }
         }
     }
