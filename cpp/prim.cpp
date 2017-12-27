@@ -36,6 +36,7 @@ auto prim(const vector<vector<edge>> &g) {
     return make_tuple(tree_weight, pred);
 }
 
+// usage example
 int main() {
     vector<vector<edge>> graph(3);
     graph[0].push_back({1, 10});
