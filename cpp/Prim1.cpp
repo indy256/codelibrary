@@ -8,6 +8,7 @@ using namespace std;
 
 typedef pair<int, int> edge;
 
+// https://en.wikipedia.org/wiki/Prim%27s_algorithm
 auto prim(vector<vector<edge>> &g) {
     size_t n = g.size();
     vector<bool> used(n);
