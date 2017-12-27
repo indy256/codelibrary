@@ -8,7 +8,7 @@ using namespace std;
 
 typedef pair<int, int> edge;
 
-// https://en.wikipedia.org/wiki/Prim%27s_algorithm
+// https://en.wikipedia.org/wiki/Prim%27s_algorithm in O(E*log(V))
 auto prim(vector<vector<edge>> &g) {
     size_t n = g.size();
     vector<int> pred(n, -1);
