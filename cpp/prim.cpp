@@ -1,8 +1,4 @@
-#include <vector>
-#include <queue>
-#include <climits>
-#include <iostream>
-#include <tuple>
+#include <bits/stdc++.h>
 
 using namespace std;
 
