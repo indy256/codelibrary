@@ -11,7 +11,6 @@ typedef pair<int, int> edge;
 // https://en.wikipedia.org/wiki/Prim%27s_algorithm
 auto prim(vector<vector<edge>> &g) {
     size_t n = g.size();
-    vector<bool> used(n);
     vector<int> pred(n, -1);
     vector<int> prio(n, INT_MAX);
     prio[0] = 0;
@@ -23,13 +22,12 @@ auto prim(vector<vector<edge>> &g) {
         auto[w, u] = q.top();
         q.pop();
 
-        if (used[u])
+        if (prio[u] != w)
             continue;
-        used[u] = true;
         tree_weight += w;
 
         for (auto[v, weight] : g[u]) {
-            if (!used[v] && prio[v] > weight) {
+            if (prio[v] > weight) {
                 prio[v] = weight;
                 pred[v] = u;
                 q.push({weight, v});
