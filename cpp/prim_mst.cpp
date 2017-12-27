@@ -3,13 +3,14 @@
 using namespace std;
 
 typedef pair<int, int> edge;
+typedef pair<int, int> item;
 
 // https://en.wikipedia.org/wiki/Prim%27s_algorithm in O(E*log(V))
 auto prim_mst(const vector<vector<edge>> &g) {
     size_t n = g.size();
     vector<int> pred(n, -1);
     vector<int> prio(n, INT_MAX);
-    priority_queue<edge, vector<edge>, greater<>> q;
+    priority_queue<item, vector<item>, greater<>> q;
     q.emplace(prio[0] = 0, 0);
     long long tree_weight = 0;
 
