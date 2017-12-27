@@ -47,6 +47,6 @@ int main() {
     g[2].push_back({0, 5});
     g[0].push_back({2, 5});
 
-    auto[len, pred] = prim(g);
-    cout << len << endl;
+    auto[tree_weight, pred] = prim(g);
+    cout << tree_weight << endl;
 }
