@@ -1,6 +1,4 @@
-#include <algorithm>
-#include <iostream>
-#include <vector>
+#include <bits/stdc++.h>
 
 using namespace std;
 
@@ -31,7 +29,7 @@ vector<point> convexHull(vector<point> points) {
 	return h;
 }
 
-// Usage example
+// usage example
 int main() {
 	vector<point> hull1 = convexHull((vector<point>) {point(0, 0), point(3, 0), point(0, 3), point(1, 1)});
 	cout << (3 == hull1.size()) << endl;
