@@ -26,9 +26,9 @@ public class CentroidDecomposition {
 	static void decompose(List<Integer>[] tree, int[] size, boolean[] deleted, int u, int total) {
 		calcSizes(tree, size, deleted, u, -1);
 		int centroid = findTreeCentroid(tree, size, deleted, u, -1, total);
-		calcSizes(tree, size, deleted, centroid, -1);
 		deleted[centroid] = true;
 
+		// process centroid vertex here
 		System.out.println(centroid);
 
 		for (int v : tree[centroid]) {
