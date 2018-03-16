@@ -15,9 +15,8 @@ public class FenwickTreeExtended {
 	}
 
 	public static int[] createFromArray(int[] a) {
-		int[] t = new int[a.length];
+		int[] t = a.clone();
 		for (int i = 0; i < a.length; i++) {
-			t[i] += a[i];
 			int j = i | (i + 1);
 			if (j < a.length)
 				t[j] += t[i];
