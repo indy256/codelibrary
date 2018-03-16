@@ -70,7 +70,7 @@ public class FenwickTreeExtended {
 	}
 	///////////////////////////////////////////////////////
 
-	// Returns min(p | sum[0,p]>=sum)
+	// Returns min(p | sum[0,p] >= sum)
 	public static int lower_bound(int[] t, int sum) {
 		int pos = 0;
 		for (int blockSize = Integer.highestOneBit(t.length); blockSize != 0; blockSize >>= 1) {
