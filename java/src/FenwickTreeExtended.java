@@ -32,11 +32,9 @@ public class FenwickTreeExtended {
 
 	public static int get(int[] t, int i) {
 		int res = t[i];
-		if (i > 0) {
-			int lca = (i & (i + 1)) - 1;
-			for (--i; i != lca; i = (i & (i + 1)) - 1)
-				res -= t[i];
-		}
+		int lca = (i & (i + 1)) - 1;
+		for (--i; i != lca; i = (i & (i + 1)) - 1)
+			res -= t[i];
 		return res;
 	}
 
@@ -72,7 +70,7 @@ public class FenwickTreeExtended {
 	}
 	///////////////////////////////////////////////////////
 
-	// Returns min(p|sum[0,p]>=sum)
+	// Returns min(p | sum[0,p]>=sum)
 	public static int lower_bound(int[] t, int sum) {
 		--sum;
 		int pos = -1;
