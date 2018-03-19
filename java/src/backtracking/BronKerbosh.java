@@ -1,3 +1,5 @@
+package backtracking;
+
 import java.util.Random;
 
 // https://en.wikipedia.org/wiki/Bron–Kerbosch_algorithm
