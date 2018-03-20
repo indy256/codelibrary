@@ -1,4 +1,4 @@
-package structures;
+package graphs.spanningtree;
 
 import java.util.*;
 
