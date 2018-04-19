@@ -74,9 +74,8 @@ public class AhoCorasick {
         ahoCorasick.addString("abc");
 
         String s = "tabcbc";
-        int node = 0;
         List<Integer> endPositions = new ArrayList<>();
-        for (int i = 0; i < s.length(); i++) {
+        for (int i = 0, node = 0; i < s.length(); i++) {
             node = ahoCorasick.transition(node, s.charAt(i));
             if (ahoCorasick.nodes[node].terminal)
                 endPositions.add(i);
