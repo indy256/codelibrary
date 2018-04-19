@@ -71,12 +71,12 @@ public class AhoCorasick {
 
 		String s = "tabcbc";
 		int node = 0;
-		List<Integer> positions = new ArrayList<>();
+		List<Integer> occurrences = new ArrayList<>();
 		for (int i = 0; i < s.length(); i++) {
 			node = ahoCorasick.transition(node, s.charAt(i));
 			if (ahoCorasick.nodes[node].leaf)
-				positions.add(i);
+				occurrences.add(i);
 		}
-		System.out.println(positions);
+		System.out.println(occurrences);
 	}
 }
