@@ -18,15 +18,15 @@ public class Kmp {
 		return p;
 	}
 
-	public static int kmpMatcher(String s, String pattern) {
-		int m = pattern.length();
+	public static int findSubstring(String haystack, String needle) {
+		int m = needle.length();
 		if (m == 0)
 			return 0;
-		int[] p = prefixFunction(pattern);
-		for (int i = 0, k = 0; i < s.length(); i++) {
-			while (k > 0 && pattern.charAt(k) != s.charAt(i))
+		int[] p = prefixFunction(needle);
+		for (int i = 0, k = 0; i < haystack.length(); i++) {
+			while (k > 0 && needle.charAt(k) != haystack.charAt(i))
 				k = p[k - 1];
-			if (pattern.charAt(k) == s.charAt(i))
+			if (needle.charAt(k) == haystack.charAt(i))
 				++k;
 			if (k == m)
 				return i + 1 - m;
@@ -40,7 +40,7 @@ public class Kmp {
 		for (int step = 0; step < 10_000; step++) {
 			String s = getRandomString(rnd, 100);
 			String pattern = getRandomString(rnd, 5);
-			int pos1 = kmpMatcher(s, pattern);
+			int pos1 = findSubstring(s, pattern);
 			int pos2 = s.indexOf(pattern);
 			if (pos1 != pos2)
 				throw new RuntimeException();
