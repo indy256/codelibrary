@@ -7,80 +7,80 @@ import java.util.List;
 // https://en.wikipedia.org/wiki/Aho–Corasick_algorithm
 public class AhoCorasick {
 
-	static final int ALPHABET_SIZE = 26;
+    static final int ALPHABET_SIZE = 26;
 
-	Node[] nodes;
-	int nodeCount;
+    Node[] nodes;
+    int nodeCount;
 
-	public static class Node {
-		int parent;
-		char charFromParent;
-		int suffLink = -1;
-		int[] children = new int[ALPHABET_SIZE];
-		int[] transitions = new int[ALPHABET_SIZE];
-		boolean terminal;
+    public static class Node {
+        int parent;
+        char charFromParent;
+        int suffLink = -1;
+        int[] children = new int[ALPHABET_SIZE];
+        int[] transitions = new int[ALPHABET_SIZE];
+        boolean terminal;
 
-		{
-			Arrays.fill(children, -1);
-			Arrays.fill(transitions, -1);
-		}
-	}
+        {
+            Arrays.fill(children, -1);
+            Arrays.fill(transitions, -1);
+        }
+    }
 
-	public AhoCorasick(int maxNodes) {
-		nodes = new Node[maxNodes];
-		// dummy root node
-		nodes[0] = new Node();
-		nodes[0].suffLink = 0;
-		nodes[0].parent = -1;
-		nodeCount = 1;
-	}
+    public AhoCorasick(int maxNodes) {
+        nodes = new Node[maxNodes];
+        // dummy root node
+        nodes[0] = new Node();
+        nodes[0].suffLink = 0;
+        nodes[0].parent = -1;
+        nodeCount = 1;
+    }
 
-	public void addString(String s) {
-		int cur = 0;
-		for (char ch : s.toCharArray()) {
-			int c = ch - 'a';
-			if (nodes[cur].children[c] == -1) {
-				nodes[nodeCount] = new Node();
-				nodes[nodeCount].parent = cur;
-				nodes[nodeCount].charFromParent = ch;
-				nodes[cur].children[c] = nodeCount++;
-			}
-			cur = nodes[cur].children[c];
-		}
-		nodes[cur].terminal = true;
-	}
+    public void addString(String s) {
+        int cur = 0;
+        for (char ch : s.toCharArray()) {
+            int c = ch - 'a';
+            if (nodes[cur].children[c] == -1) {
+                nodes[nodeCount] = new Node();
+                nodes[nodeCount].parent = cur;
+                nodes[nodeCount].charFromParent = ch;
+                nodes[cur].children[c] = nodeCount++;
+            }
+            cur = nodes[cur].children[c];
+        }
+        nodes[cur].terminal = true;
+    }
 
-	public int suffLink(int nodeIndex) {
-		Node node = nodes[nodeIndex];
-		if (node.suffLink == -1)
-			node.suffLink = node.parent != 0 ?
-					transition(suffLink(node.parent), node.charFromParent) : 0;
-		return node.suffLink;
-	}
+    public int suffLink(int nodeIndex) {
+        Node node = nodes[nodeIndex];
+        if (node.suffLink == -1)
+            node.suffLink = node.parent != 0 ?
+                    transition(suffLink(node.parent), node.charFromParent) : 0;
+        return node.suffLink;
+    }
 
-	public int transition(int nodeIndex, char ch) {
-		int c = ch - 'a';
-		Node node = nodes[nodeIndex];
-		if (node.transitions[c] == -1)
-			node.transitions[c] = node.children[c] != -1 ?
+    public int transition(int nodeIndex, char ch) {
+        int c = ch - 'a';
+        Node node = nodes[nodeIndex];
+        if (node.transitions[c] == -1)
+            node.transitions[c] = node.children[c] != -1 ?
                     node.children[c] : (nodeIndex == 0 ? 0 : transition(suffLink(nodeIndex), ch));
-		return node.transitions[c];
-	}
+        return node.transitions[c];
+    }
 
-	// Usage example
-	public static void main(String[] args) {
-		AhoCorasick ahoCorasick = new AhoCorasick(1000);
-		ahoCorasick.addString("bc");
-		ahoCorasick.addString("abc");
+    // Usage example
+    public static void main(String[] args) {
+        AhoCorasick ahoCorasick = new AhoCorasick(1000);
+        ahoCorasick.addString("bc");
+        ahoCorasick.addString("abc");
 
-		String s = "tabcbc";
-		int node = 0;
-		List<Integer> endPositions = new ArrayList<>();
-		for (int i = 0; i < s.length(); i++) {
-			node = ahoCorasick.transition(node, s.charAt(i));
-			if (ahoCorasick.nodes[node].terminal)
-				endPositions.add(i);
-		}
-		System.out.println(endPositions.equals(Arrays.asList(3, 5)));
-	}
+        String s = "tabcbc";
+        int node = 0;
+        List<Integer> endPositions = new ArrayList<>();
+        for (int i = 0; i < s.length(); i++) {
+            node = ahoCorasick.transition(node, s.charAt(i));
+            if (ahoCorasick.nodes[node].terminal)
+                endPositions.add(i);
+        }
+        System.out.println(endPositions.equals(Arrays.asList(3, 5)));
+    }
 }
