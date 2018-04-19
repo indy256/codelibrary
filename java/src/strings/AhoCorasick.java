@@ -1,6 +1,8 @@
 package strings;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 // https://en.wikipedia.org/wiki/Aho–Corasick_algorithm
 public class AhoCorasick {
@@ -16,7 +18,7 @@ public class AhoCorasick {
 		int suffLink = -1;
 		int[] children = new int[ALPHABET_SIZE];
 		int[] transitions = new int[ALPHABET_SIZE];
-		boolean leaf;
+		boolean terminal;
 
 		{
 			Arrays.fill(children, -1);
@@ -26,7 +28,7 @@ public class AhoCorasick {
 
 	public AhoCorasick(int maxNodes) {
 		nodes = new Node[maxNodes];
-		// create root
+		// dummy root node
 		nodes[0] = new Node();
 		nodes[0].suffLink = 0;
 		nodes[0].parent = -1;
@@ -45,7 +47,7 @@ public class AhoCorasick {
 			}
 			cur = nodes[cur].children[c];
 		}
-		nodes[cur].leaf = true;
+		nodes[cur].terminal = true;
 	}
 
 	public int suffLink(int nodeIndex) {
@@ -59,7 +61,8 @@ public class AhoCorasick {
 		int c = ch - 'a';
 		Node node = nodes[nodeIndex];
 		if (node.transitions[c] == -1)
-			node.transitions[c] = node.children[c] != -1 ? node.children[c] : (nodeIndex == 0 ? 0 : transition(suffLink(nodeIndex), ch));
+			node.transitions[c] = node.children[c] != -1 ?
+                    node.children[c] : (nodeIndex == 0 ? 0 : transition(suffLink(nodeIndex), ch));
 		return node.transitions[c];
 	}
 
@@ -71,12 +74,12 @@ public class AhoCorasick {
 
 		String s = "tabcbc";
 		int node = 0;
-		List<Integer> occurrences = new ArrayList<>();
+		List<Integer> endPositions = new ArrayList<>();
 		for (int i = 0; i < s.length(); i++) {
 			node = ahoCorasick.transition(node, s.charAt(i));
-			if (ahoCorasick.nodes[node].leaf)
-				occurrences.add(i);
+			if (ahoCorasick.nodes[node].terminal)
+				endPositions.add(i);
 		}
-		System.out.println(occurrences);
+		System.out.println(endPositions.equals(Arrays.asList(3, 5)));
 	}
 }
