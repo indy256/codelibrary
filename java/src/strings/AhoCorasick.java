@@ -53,7 +53,8 @@ public class AhoCorasick {
 	public int suffLink(int nodeIndex) {
 		Node node = nodes[nodeIndex];
 		if (node.suffLink == -1)
-			node.suffLink = node.parent == 0 ? 0 : transition(suffLink(node.parent), node.charFromParent);
+			node.suffLink = node.parent != 0 ?
+					transition(suffLink(node.parent), node.charFromParent) : 0;
 		return node.suffLink;
 	}
 
