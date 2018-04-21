@@ -117,7 +117,7 @@ public class RecursiveDescentParser {
         }
 
         void error(String message) {
-			throw new RuntimeException("Parser error: " + message);
+            throw new RuntimeException("Parser error: " + message);
         }
 
         Node term() {
