@@ -12,14 +12,14 @@ public class AhoCorasick {
     int[][] transitions = new int[MAX_STATES][ALPHABET_SIZE];
     int[] sufflink = new int[MAX_STATES];
     int[] escape = new int[MAX_STATES];
-    int node = 1;
+    int states = 1;
 
     public int addString(String s) {
         int v = 0;
         for (char c : s.toCharArray()) {
             c -= 'a';
             if (transitions[v][c] == 0) {
-                transitions[v][c] = node++;
+                transitions[v][c] = states++;
             }
             v = transitions[v][c];
         }
