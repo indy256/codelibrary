@@ -36,7 +36,7 @@ public class AhoCorasickSimple {
     public static void main(String[] args) {
         AhoCorasickSimple automaton = new AhoCorasickSimple();
         int[][] transitions = automaton.buildAutomata(new String[]{"abc", "bc"});
-        String s = "tabcbc";
+        String s = "zabcbc";
         int state = 0;
         for (int i = 0; i < s.length(); i++) {
             System.out.println(s.substring(0, i) + " " + automaton.prefixes[state]);

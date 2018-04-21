@@ -1,85 +1,68 @@
 package strings;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 // https://en.wikipedia.org/wiki/Aho–Corasick_algorithm
 public class AhoCorasick {
 
-    static final int ALPHABET_SIZE = 26;
+    final int ALPHABET_SIZE = 26;
+    final int MAX_STATES = 200_000;
 
-    Node[] nodes;
-    int nodeCount;
+    int[][] transitions = new int[MAX_STATES][ALPHABET_SIZE];
+    int[] sufflink = new int[MAX_STATES];
+    int[] escape = new int[MAX_STATES];
+    int node = 1;
 
-    public static class Node {
-        int parent;
-        char charFromParent;
-        int suffLink = -1;
-        int[] children = new int[ALPHABET_SIZE];
-        int[] transitions = new int[ALPHABET_SIZE];
-        boolean terminal;
-
-        {
-            Arrays.fill(children, -1);
-            Arrays.fill(transitions, -1);
-        }
-    }
-
-    public AhoCorasick(int maxNodes) {
-        nodes = new Node[maxNodes];
-        // dummy root node
-        nodes[0] = new Node();
-        nodes[0].suffLink = 0;
-        nodes[0].parent = -1;
-        nodeCount = 1;
-    }
-
-    public void addString(String s) {
-        int cur = 0;
-        for (char ch : s.toCharArray()) {
-            int c = ch - 'a';
-            if (nodes[cur].children[c] == -1) {
-                nodes[nodeCount] = new Node();
-                nodes[nodeCount].parent = cur;
-                nodes[nodeCount].charFromParent = ch;
-                nodes[cur].children[c] = nodeCount++;
+    public int addString(String s) {
+        int v = 0;
+        for (char c : s.toCharArray()) {
+            c -= 'a';
+            if (transitions[v][c] == 0) {
+                transitions[v][c] = node++;
             }
-            cur = nodes[cur].children[c];
+            v = transitions[v][c];
         }
-        nodes[cur].terminal = true;
+        escape[v] = v;
+        return v;
     }
 
-    public int suffLink(int nodeIndex) {
-        Node node = nodes[nodeIndex];
-        if (node.suffLink == -1)
-            node.suffLink = node.parent != 0 ?
-                    transition(suffLink(node.parent), node.charFromParent) : 0;
-        return node.suffLink;
-    }
-
-    public int transition(int nodeIndex, char ch) {
-        int c = ch - 'a';
-        Node node = nodes[nodeIndex];
-        if (node.transitions[c] == -1)
-            node.transitions[c] = node.children[c] != -1 ?
-                    node.children[c] : (nodeIndex == 0 ? 0 : transition(suffLink(nodeIndex), ch));
-        return node.transitions[c];
+    public void buildLinks() {
+        int[] q = new int[MAX_STATES];
+        for (int s = 0, t = 1; s < t; ) {
+            int v = q[s++];
+            int u = sufflink[v];
+            if (escape[v] == 0) {
+                escape[v] = escape[u];
+            }
+            for (int c = 0; c < ALPHABET_SIZE; c++) {
+                if (transitions[v][c] != 0) {
+                    q[t++] = transitions[v][c];
+                    sufflink[transitions[v][c]] = v != 0 ? transitions[u][c] : 0;
+                } else {
+                    transitions[v][c] = transitions[u][c];
+                }
+            }
+        }
     }
 
     // Usage example
     public static void main(String[] args) {
-        AhoCorasick ahoCorasick = new AhoCorasick(1000);
+        AhoCorasick ahoCorasick = new AhoCorasick();
         ahoCorasick.addString("bc");
         ahoCorasick.addString("abc");
+        ahoCorasick.buildLinks();
+        int[][] t = ahoCorasick.transitions;
+        int[] e = ahoCorasick.escape;
 
-        String s = "tabcbc";
-        List<Integer> endPositions = new ArrayList<>();
-        for (int i = 0, node = 0; i < s.length(); i++) {
-            node = ahoCorasick.transition(node, s.charAt(i));
-            if (ahoCorasick.nodes[node].terminal)
-                endPositions.add(i);
+        String s = "zabcbc";
+        int state = 0;
+        List<Integer> positions = new ArrayList<>();
+        for (int i = 0; i < s.length(); i++) {
+            state = t[state][s.charAt(i) - 'a'];
+            if (state != 0 && e[state] == state)
+                positions.add(i);
         }
-        System.out.println(endPositions.equals(Arrays.asList(3, 5)));
+        System.out.println(positions);
     }
 }
