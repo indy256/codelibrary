@@ -1,4 +1,4 @@
-##### Collection of algorithms and data structures in Java, C++, Kotlin (see also [codelibrary-sandbox](https://github.com/indy256/codelibrary-sandbox))
+##### Collection of algorithms and data structures in Java, C++, Kotlin (for unfinished codes see [codelibrary-sandbox](https://github.com/indy256/codelibrary-sandbox))
 ## The following topics are covered:
 
 * **Trees**: segment tree, Fenwick tree, k-d tree, R-tree, metric tree, quadtree, persistent tree, link/cut tree, binary heap, disjoint-sets, treap
