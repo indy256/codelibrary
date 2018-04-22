@@ -1,7 +1,6 @@
 package structures;
 
-import java.util.Arrays;
-import java.util.Comparator;
+import java.util.*;
 
 // https://www.hackerearth.com/notes/mos-algorithm/
 // Solution of http://www.spoj.com/problems/DQUERY/en/

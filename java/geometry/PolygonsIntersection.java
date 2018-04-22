@@ -1,9 +1,9 @@
 package geometry;
 
-import java.awt.Polygon;
-import java.awt.geom.Area;
-import java.awt.geom.PathIterator;
+import java.awt.*;
+import java.awt.geom.*;
 import java.util.*;
+import java.util.List;
 
 public class PolygonsIntersection {
 

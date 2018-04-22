@@ -1,6 +1,6 @@
 package graphs.flows;
 
-import java.util.*;
+import java.util.Arrays;
 
 public class MinCostFlowSimple {
 

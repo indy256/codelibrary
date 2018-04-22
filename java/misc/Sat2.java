@@ -1,8 +1,6 @@
 package misc;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Stream;
 
 // https://en.wikipedia.org/wiki/2-satisfiability

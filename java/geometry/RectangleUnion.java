@@ -1,8 +1,9 @@
 package geometry;
 
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.geom.*;
 import java.util.*;
+import java.util.List;
 
 public class RectangleUnion {
 

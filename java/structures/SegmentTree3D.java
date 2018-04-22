@@ -1,6 +1,6 @@
 package structures;
 
-import java.util.*;
+import java.util.Random;
 
 public class SegmentTree3D {
     public static int max(int[][][] t, int x1, int y1, int z1, int x2, int y2, int z2) {

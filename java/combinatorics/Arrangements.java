@@ -1,6 +1,6 @@
 package combinatorics;
 
-import java.util.*;
+import java.util.Arrays;
 
 // https://en.wikipedia.org/wiki/Partial_permutation
 public class Arrangements {

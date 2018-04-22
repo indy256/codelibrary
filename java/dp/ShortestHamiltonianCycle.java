@@ -1,6 +1,6 @@
 package dp;
 
-import java.util.*;
+import java.util.Arrays;
 
 public class ShortestHamiltonianCycle {
 

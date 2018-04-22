@@ -1,6 +1,6 @@
 package structures;
 
-import java.util.*;
+import java.util.Random;
 
 public class MergeableHeap {
     static Random random = new Random();

@@ -1,6 +1,6 @@
 package numbertheory;
 
-import java.util.*;
+import java.util.Arrays;
 
 public class PrimesAndDivisors {
 

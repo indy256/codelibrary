@@ -1,7 +1,6 @@
 package linearalgebra;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
+import java.math.*;
 
 public class Determinant1 {
 

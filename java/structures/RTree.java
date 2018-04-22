@@ -1,7 +1,6 @@
 package structures;
 
-import java.util.Arrays;
-import java.util.Random;
+import java.util.*;
 
 // https://en.wikipedia.org/wiki/R-tree
 public class RTree {

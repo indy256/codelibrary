@@ -1,6 +1,6 @@
 package dp;
 
-import java.util.*;
+import java.util.Arrays;
 
 // https://en.wikipedia.org/wiki/Longest_increasing_subsequence in O(n^2)
 public class Lis {

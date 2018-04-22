@@ -1,8 +1,7 @@
 package misc;
 
 import java.util.Random;
-import java.util.function.DoubleUnaryOperator;
-import java.util.function.IntUnaryOperator;
+import java.util.function.*;
 
 // https://en.wikipedia.org/wiki/Ternary_search
 public class TernarySearch {

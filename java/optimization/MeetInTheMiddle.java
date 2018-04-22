@@ -1,6 +1,6 @@
 package optimization;
 
-import java.util.*;
+import java.util.Arrays;
 
 public class MeetInTheMiddle {
 

@@ -1,9 +1,7 @@
 package geometry;
 
-import java.awt.geom.Line2D;
-import java.awt.geom.Point2D;
-import java.util.Arrays;
-import java.util.Random;
+import java.awt.geom.*;
+import java.util.*;
 
 public class AngleAreaOrientationSortRotationPerpendicular {
 

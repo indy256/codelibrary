@@ -2,7 +2,7 @@ package optimization;
 
 import numbertheory.Rational;
 
-import java.util.*;
+import java.util.Arrays;
 
 public class Simplex {
 
