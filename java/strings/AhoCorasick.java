@@ -57,12 +57,12 @@ public class AhoCorasick {
 
         String s = "zabcbc";
         int state = 0;
-        List<Integer> positions = new ArrayList<>();
+        List<Integer> occurences = new ArrayList<>();
         for (int i = 0; i < s.length(); i++) {
             state = t[state][s.charAt(i) - 'a'];
             if (state != 0 && e[state] == state)
-                positions.add(i);
+                occurences.add(i);
         }
-        System.out.println(positions);
+        System.out.println(occurences);
     }
 }
