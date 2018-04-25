@@ -5,6 +5,7 @@ import java.util.*;
 public class MonotonicApproximation {
 
     // finds array b that minimizes sum |a[i]-b[i]|
+    // see http://codeforces.com/blog/entry/47821
     public static long monotonicApproximation(int[] a) {
         int n = a.length;
         int[] t = new int[n];
