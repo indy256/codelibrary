@@ -2,7 +2,7 @@ package geometry;
 
 public class PointClassification {
 
-    public static enum Position {
+    public enum Position {
         LEFT, RIGHT, BEHIND, BEYOND, ORIGIN, DESTINATION, BETWEEN
     }
 

@@ -100,54 +100,12 @@ public class LineGeometry {
         return Math.sqrt(x * x + y * y);
     }
 
-    public static double sqr(double x) {
-        return x * x;
-    }
-
     public static double angleBetween(Point a, Point b) {
         return Math.atan2(a.cross(b), a.dot(b));
     }
 
     public static double angle(Line line) {
         return Math.atan2(-line.a, line.b);
-    }
-
-    public static double signedArea(Point[] points) {
-        int n = points.length;
-        double area = 0;
-        for (int i = 0, j = n - 1; i < n; j = i++) {
-            area += (points[i].x - points[j].x) * (points[i].y + points[j].y);
-            // area += points[i].x * points[j].y - points[j].x * points[i].y;
-        }
-        return area / 2;
-    }
-
-    public enum Position {
-        LEFT, RIGHT, BEHIND, BEYOND, ORIGIN, DESTINATION, BETWEEN
-    }
-
-    // Classifies position of point p against vector a
-    public static Position classify(Point p, Point a) {
-        int s = sign(a.cross(p));
-        if (s > 0) {
-            return Position.LEFT;
-        }
-        if (s < 0) {
-            return Position.RIGHT;
-        }
-        if (sign(p.x) == 0 && sign(p.y) == 0) {
-            return Position.ORIGIN;
-        }
-        if (sign(p.x - a.x) == 0 && sign(p.y - a.y) == 0) {
-            return Position.DESTINATION;
-        }
-        if (a.x * p.x < 0 || a.y * p.y < 0) {
-            return Position.BEYOND;
-        }
-        if (a.x * a.x + a.y * a.y < p.x * p.x + p.y * p.y) {
-            return Position.BEHIND;
-        }
-        return Position.BETWEEN;
     }
 
     // Usage example
