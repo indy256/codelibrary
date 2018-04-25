@@ -124,7 +124,7 @@ public class LineGeometry {
         return area / 2;
     }
 
-    public static enum Position {
+    public enum Position {
         LEFT, RIGHT, BEHIND, BEYOND, ORIGIN, DESTINATION, BETWEEN
     }
 
