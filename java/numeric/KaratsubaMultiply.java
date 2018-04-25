@@ -1,4 +1,4 @@
-package misc;
+package numeric;
 
 import java.util.Arrays;
 
