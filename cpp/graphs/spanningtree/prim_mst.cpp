@@ -6,7 +6,7 @@ typedef pair<int, int> edge;
 typedef pair<int, int> item;
 
 // https://en.wikipedia.org/wiki/Prim%27s_algorithm in O(E*log(V))
-auto prim_mst(const vector<vector<edge>> &g) {
+tuple<long long, vector<int>> prim_mst(const vector<vector<edge>> &g) {
     size_t n = g.size();
     vector<int> pred(n, -1);
     vector<int> prio(n, INT_MAX);
@@ -30,7 +30,7 @@ auto prim_mst(const vector<vector<edge>> &g) {
             }
         }
     }
-    return make_tuple(tree_weight, pred);
+    return {tree_weight, pred};
 }
 
 // usage example
@@ -45,4 +45,5 @@ int main() {
 
     auto[tree_weight, pred] = prim_mst(graph);
     cout << tree_weight << endl;
+    copy(pred.begin(), pred.end(), ostream_iterator<int>(cout, " "));
 }
