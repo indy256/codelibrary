@@ -13,7 +13,7 @@ public class ConvexCut {
         }
     }
 
-    // cuts right part of poly (returns left part)
+    // cuts right part of convex polygon (returns left part)
     public static Point[] convexCut(Point[] poly, Point p1, Point p2) {
         int n = poly.length;
         List<Point> res = new ArrayList<>();
@@ -52,6 +52,5 @@ public class ConvexCut {
     }
 
     public static void main(String[] args) {
-
     }
 }

@@ -1,7 +1,5 @@
 package geometry;
 
-import java.util.*;
-
 public class LineGeometry {
 
     static final double EPS = 1e-10;
@@ -150,21 +148,6 @@ public class LineGeometry {
             return Position.BEHIND;
         }
         return Position.BETWEEN;
-    }
-
-    // cuts right part of convex polygon (returns left part)
-    public static Point[] convexCut(Point[] poly, Point p1, Point p2) {
-        int n = poly.length;
-        List<Point> res = new ArrayList<>();
-        for (int i = 0, j = n - 1; i < n; j = i++) {
-            int d1 = orientation(p1, p2, poly[j]);
-            int d2 = orientation(p1, p2, poly[i]);
-            if (d1 >= 0)
-                res.add(poly[j]);
-            if (d1 * d2 < 0)
-                res.add(new Line(p1, p2).intersect(new Line(poly[j], poly[i])));
-        }
-        return res.toArray(new Point[res.size()]);
     }
 
     // Usage example
