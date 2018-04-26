@@ -4,10 +4,10 @@
 const int BUF_SIZE = 65536;
 char input[BUF_SIZE];
 
-struct Scanner {
+struct scanner {
     char* curPos;
 
-    Scanner() {
+    scanner() {
         fread(input, 1, sizeof(input), stdin);
         curPos = input;
     }
@@ -45,7 +45,7 @@ struct Scanner {
 };
 
 int main() {
-    Scanner sc;
+    scanner sc;
     int a = sc.nextInt();
     char b = sc.nextChar();
 
