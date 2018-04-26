@@ -24,16 +24,18 @@ public class SegmentTreeIntervalAddMax {
     }
 
     int max(int from, int to, int root, int left, int right) {
-        if (from == left && to == right) {
+        if (from > right || left > to)
+            return Integer.MIN_VALUE;
+        if (from <= left && right <= to) {
             return tmax[root] + tadd[root];
         }
         push(root);
         int mid = (left + right) >> 1;
         int res = Integer.MIN_VALUE;
         if (from <= mid)
-            res = Math.max(res, max(from, Math.min(to, mid), 2 * root + 1, left, mid));
+            res = Math.max(res, max(from, to, 2 * root + 1, left, mid));
         if (to > mid)
-            res = Math.max(res, max(Math.max(from, mid + 1), to, 2 * root + 2, mid + 1, right));
+            res = Math.max(res, max(from, to, 2 * root + 2, mid + 1, right));
         return res;
     }
 
@@ -42,16 +44,18 @@ public class SegmentTreeIntervalAddMax {
     }
 
     void add(int from, int to, int delta, int root, int left, int right) {
-        if (from == left && to == right) {
+        if (from > right || left > to)
+            return;
+        if (from <= left && right <= to) {
             tadd[root] += delta;
             return;
         }
         push(root); // this push may be omitted for add, but is necessary for other operations such as set
         int mid = (left + right) >> 1;
         if (from <= mid)
-            add(from, Math.min(to, mid), delta, 2 * root + 1, left, mid);
+            add(from, to, delta, 2 * root + 1, left, mid);
         if (to > mid)
-            add(Math.max(from, mid + 1), to, delta, 2 * root + 2, mid + 1, right);
+            add(from, to, delta, 2 * root + 2, mid + 1, right);
         tmax[root] = Math.max(tmax[2 * root + 1] + tadd[2 * root + 1], tmax[2 * root + 2] + tadd[2 * root + 2]);
     }
 
