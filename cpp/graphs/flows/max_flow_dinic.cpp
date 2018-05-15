@@ -2,6 +2,8 @@
 
 using namespace std;
 
+// https://en.wikipedia.org/wiki/Dinic%27s_algorithm in O(V^2 * E)
+
 const int maxnodes = 5000;
 
 int nodes = maxnodes, src, dest;
