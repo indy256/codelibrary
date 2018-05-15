@@ -4,5 +4,5 @@ project(codelibrary)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
 
-set(SOURCE_FILES graphs/spanningtree/prim_heap.cpp.cpp)
+set(SOURCE_FILES graphs/spanningtree/prim_heap.cpp)
 add_executable(codelibrary ${SOURCE_FILES})
