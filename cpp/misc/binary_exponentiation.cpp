@@ -14,6 +14,7 @@ int pow(int x, int n, int MOD) {
     return res;
 }
 
+// usage example
 int main() {
     const int MOD = 1000000007;
     int x = pow(2, 10, MOD);
