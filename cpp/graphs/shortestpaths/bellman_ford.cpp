@@ -1,41 +1,37 @@
-#include <vector>
-#include <climits>
-#include <iostream>
+#include <bits/stdc++.h>
+
 using namespace std;
 
-typedef pair<int, int> pii;
-typedef vector<vector<pii> > Graph;
+typedef pair<int, int> edge;
 
 const int INF = INT_MAX / 3;
 
-bool bellmanFord(Graph &g, int s, vector<int> &prio, vector<int> &pred) {
-    int n = g.size();
-    pred.assign(n, -1);
-    prio.assign(n, INF);
+tuple<bool, vector<int>, vector<int>> bellman_ford(const vector<vector<edge>> &g, int s) {
+    size_t n = g.size();
+    vector<int> prio(n, INF);
     prio[s] = 0;
-    bool wasChanged = true;
+    vector<int> pred(n, -1);
+    bool was_changed = true;
     for (int k = 0; k < n; k++) {
-        wasChanged = false;
+        was_changed = false;
         for (int u = 0; u < n; u++) {
-            for (int i = 0; i < (int) g[u].size(); i++) {
-                int v = g[u][i].first;
-                int cost = g[u][i].second;
+            for (auto[v, cost] : g[u]) {
                 if (prio[v] > prio[u] + cost) {
                     prio[v] = prio[u] + cost;
                     pred[v] = u;
-                    wasChanged = true;
+                    was_changed = true;
                 }
             }
         }
-        if (!wasChanged)
+        if (!was_changed)
             break;
     }
-    // wasChanged is true iff graph has a negative cycle
-    return wasChanged;
+    // was_changed is true iff graph has a negative cycle
+    return {was_changed, prio, pred};
 }
 
-vector<int> findNegativeCycle(Graph &g) {
-    int n = g.size();
+vector<int> find_negative_cycle(const vector<vector<edge>> &g) {
+    size_t n = g.size();
     vector<int> pred(n, -1);
     vector<int> prio(n, INF);
     prio[0] = 0;
@@ -43,9 +39,7 @@ vector<int> findNegativeCycle(Graph &g) {
     for (int k = 0; k < n; k++) {
         last = -1;
         for (int u = 0; u < n; u++) {
-            for (int i = 0; i < (int) g[u].size(); i++) {
-                int v = g[u][i].first;
-                int cost = g[u][i].second;
+            for (auto[v, cost] : g[u]) {
                 if (prio[v] > prio[u] + cost) {
                     prio[v] = prio[u] + cost;
                     pred[v] = u;
@@ -54,7 +48,7 @@ vector<int> findNegativeCycle(Graph &g) {
             }
         }
         if (last == -1)
-            return vector<int>();
+            return {};
     }
 
     vector<int> path(n);
@@ -69,14 +63,14 @@ vector<int> findNegativeCycle(Graph &g) {
 }
 
 int main() {
-    Graph g(4);
-    g[0].push_back(make_pair(1, 1));
-    g[1].push_back(make_pair(0, 1));
-    g[1].push_back(make_pair(2, 1));
-    g[2].push_back(make_pair(3, -10));
-    g[3].push_back(make_pair(1, 1));
+    vector<vector<edge>> g(4);
+    g[0].emplace_back(1, 1);
+    g[1].emplace_back(0, 1);
+    g[1].emplace_back(2, 1);
+    g[2].emplace_back(3, -10);
+    g[3].emplace_back(1, 1);
 
-    vector<int> cycle = findNegativeCycle(g);
-    for (int i = 0; i < (int) cycle.size(); i++)
-        cout << cycle[i] << " ";
+    vector<int> cycle = find_negative_cycle(g);
+    for (int u : cycle)
+        cout << u << " ";
 }
