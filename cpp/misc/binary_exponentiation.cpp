@@ -2,6 +2,7 @@
 
 using namespace std;
 
+// https://en.wikipedia.org/wiki/Exponentiation_by_squaring
 int pow(int x, int n, int MOD) {
     long long y = x;
     int res = 1;
