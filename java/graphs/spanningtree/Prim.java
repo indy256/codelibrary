@@ -2,7 +2,7 @@ package graphs.spanningtree;
 
 import java.util.Arrays;
 
-// https://en.wikipedia.org/wiki/Prim%27s_algorithm
+// https://en.wikipedia.org/wiki/Prim%27s_algorithm in O(V^2)
 public class Prim {
 
     public static long mstPrim(int[][] d) {
