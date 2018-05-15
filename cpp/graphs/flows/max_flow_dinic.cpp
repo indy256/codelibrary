@@ -20,8 +20,8 @@ vector<Edge> g[maxnodes];
 void add_edge(int s, int t, int cap) {
     Edge a = {t, g[t].size(), 0, cap};
     Edge b = {s, g[s].size(), 0, cap};
-    g[s].push_back(a);
-    g[t].push_back(b);
+    g[s].emplace_back(a);
+    g[t].emplace_back(b);
 }
 
 bool dinic_bfs() {
@@ -74,13 +74,11 @@ int max_flow(int _src, int _dest) {
 }
 
 int main() {
-    int n = 3;
-    nodes = n;
-
     int capacity[][3] = {{0, 3, 2},
                          {0, 0, 2},
                          {0, 0, 0}};
-
+    int n = 3;
+    nodes = n;
     for (int i = 0; i < n; i++)
         for (int j = 0; j < n; j++)
             if (capacity[i][j] != 0)

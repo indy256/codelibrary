@@ -137,11 +137,11 @@ int main() {
     for (int u = 0; u < n; u++) {
         for (int i = 0; i < t1[u].size(); i++) {
             int v = t1[u][i];
-            tree[u].push_back(v);
+            tree[u].emplace_back(v);
         }
         for (int i = 0; i < t2[u].size(); i++) {
             int v = t2[u][i];
-            tree[u + n].push_back(v + n);
+            tree[u + n].emplace_back(v + n);
         }
     }
 
