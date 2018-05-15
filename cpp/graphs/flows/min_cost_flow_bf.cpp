@@ -17,8 +17,8 @@ vector<edge> graph[maxnodes];
 void add_edge(int s, int t, int cap, int cost) {
     edge a = {t, 0, cap, cost, (int) graph[t].size()};
     edge b = {s, 0, 0, -cost, (int) graph[s].size()};
-    graph[s].push_back(a);
-    graph[t].push_back(b);
+    graph[s].emplace_back(a);
+    graph[t].emplace_back(b);
 }
 
 void bellman_ford(int s) {
@@ -73,10 +73,9 @@ int main() {
     int capacity[][3] = {{0, 3, 2},
                          {0, 0, 2},
                          {0, 0, 0}};
-    int n = 3;
-    nodes = n;
-    for (int i = 0; i < n; i++)
-        for (int j = 0; j < n; j++)
+    nodes = 3;
+    for (int i = 0; i < nodes; i++)
+        for (int j = 0; j < nodes; j++)
             if (capacity[i][j] != 0)
                 add_edge(i, j, capacity[i][j], 1);
 
