@@ -1,26 +1,27 @@
-#include <algorithm>
-#include <iostream>
+#include <bits/stdc++.h>
 
 using namespace std;
 
-const int MAXN1 = 50000;
-const int MAXN2 = 50000;
-const int MAXM = 150000;
+// https://en.wikipedia.org/wiki/Hopcroft–Karp_algorithm in (E * sqrt(V))
 
-int n1, n2, edges, last[MAXN1], prev[MAXM], head[MAXM];
-int matching[MAXN2], dist[MAXN1], Q[MAXN1];
-bool used[MAXN1], vis[MAXN1];
+const int MAXV1 = 50000;
+const int MAXV2 = 50000;
+const int MAXE = 150000;
 
-void init(int _n1, int _n2) {
+int n1, n2, edges, last[MAXV1], previous[MAXE], head[MAXE];
+int matching[MAXV2], dist[MAXV1], Q[MAXV1];
+bool used[MAXV1], vis[MAXV1];
+
+void reset_graph(int _n1, int _n2) {
     n1 = _n1;
     n2 = _n2;
     edges = 0;
     fill(last, last + n1, -1);
 }
 
-void addEdge(int u, int v) {
+void add_edge(int u, int v) {
     head[edges] = v;
-    prev[edges] = last[u];
+    previous[edges] = last[u];
     last[u] = edges++;
 }
 
@@ -35,7 +36,7 @@ void bfs() {
     }
     for (int i = 0; i < sizeQ; i++) {
         int u1 = Q[i];
-        for (int e = last[u1]; e >= 0; e = prev[e]) {
+        for (int e = last[u1]; e >= 0; e = previous[e]) {
             int u2 = matching[head[e]];
             if (u2 >= 0 && dist[u2] < 0) {
                 dist[u2] = dist[u1] + 1;
@@ -47,7 +48,7 @@ void bfs() {
 
 bool dfs(int u1) {
     vis[u1] = true;
-    for (int e = last[u1]; e >= 0; e = prev[e]) {
+    for (int e = last[u1]; e >= 0; e = previous[e]) {
         int v = head[e];
         int u2 = matching[v];
         if (u2 < 0 || !vis[u2] && dist[u2] == dist[u1] + 1 && dfs(u2)) {
@@ -59,7 +60,7 @@ bool dfs(int u1) {
     return false;
 }
 
-int maxMatching() {
+int max_matching() {
     fill(used, used + n1, false);
     fill(matching, matching + n2, -1);
     for (int res = 0;;) {
@@ -76,11 +77,11 @@ int maxMatching() {
 }
 
 int main() {
-    init(2, 2);
+    reset_graph(2, 2);
 
-    addEdge(0, 0);
-    addEdge(0, 1);
-    addEdge(1, 1);
+    add_edge(0, 0);
+    add_edge(0, 1);
+    add_edge(1, 1);
 
-    cout << (2 == maxMatching()) << endl;
+    cout << (2 == max_matching()) << endl;
 }
