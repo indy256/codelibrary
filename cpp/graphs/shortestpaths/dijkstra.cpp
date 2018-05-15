@@ -1,73 +1,76 @@
-#include <vector>
-#include <queue>
-#include <set>
-#include <climits>
-#include <iostream>
+#include <bits/stdc++.h>
+
 using namespace std;
 
-typedef pair<int, int> pii;
-typedef vector<vector<pii> > Graph;
+typedef pair<int, int> edge;
+typedef pair<int, int> item;
 
-void dijkstra(Graph &g, int s, vector<int> &prio, vector<int> &pred) {
-    int n = g.size();
-    prio.assign(n, INT_MAX);
-    prio[s] = 0;
-    pred.assign(n, -1);
-    priority_queue<pii, vector<pii> , greater<pii> > q;
-    q.push(make_pair(prio[s], s));
+// https://en.wikipedia.org/wiki/Prim%27s_algorithm in O(E*log(V)) time and O(E) memory
+tuple<vector<int>, vector<int>> dijkstra_heap(const vector<vector<edge>> &g, int s) {
+    size_t n = g.size();
+    vector<int> prio(n, INT_MAX);
+    vector<int> pred(n, -1);
+    priority_queue<item, vector<item>, greater<>> q;
+    q.emplace(prio[s] = 0, s);
 
     while (!q.empty()) {
-        int d = q.top().first;
-        int u = q.top().second;
+        auto[d, u] = q.top();
         q.pop();
+
         if (d != prio[u])
             continue;
-        for (int i = 0; i < (int) g[u].size(); i++) {
-            int v = g[u][i].first;
-            int nprio = prio[u] + g[u][i].second;
+
+        for (auto[v, len] : g[u]) {
+            int nprio = prio[u] + len;
             if (prio[v] > nprio) {
                 prio[v] = nprio;
                 pred[v] = u;
-                q.push(make_pair(nprio, v));
+                q.emplace(nprio, v);
             }
         }
     }
+
+    return {prio, pred};
 }
 
-void dijkstra2(Graph &g, int s, vector<int> &prio, vector<int> &pred) {
-    int n = g.size();
-    prio.assign(n, INT_MAX);
-    prio[s] = 0;
-    pred.assign(n, -1);
-    set<pii> q;
-    q.insert(make_pair(prio[s], s));
+// https://en.wikipedia.org/wiki/Prim%27s_algorithm in O(E*log(V)) time and O(V) memory
+tuple<vector<int>, vector<int>> dijkstra_set(const vector<vector<edge>> &g, int s) {
+    size_t n = g.size();
+    vector<int> prio(n, INT_MAX);
+    vector<int> pred(n, -1);
+    set<item> q;
+    q.emplace(prio[s] = 0, s);
 
     while (!q.empty()) {
         int u = q.begin()->second;
         q.erase(q.begin());
-        for (int i = 0; i < (int) g[u].size(); ++i) {
-            int v = g[u][i].first;
-            int nprio = prio[u] + g[u][i].second;
+
+        for (auto[v, len] : g[u]) {
+            int nprio = prio[u] + len;
             if (prio[v] > nprio) {
                 q.erase(make_pair(prio[v], v));
                 prio[v] = nprio;
                 pred[v] = u;
-                q.insert(make_pair(prio[v], v));
+                q.emplace(make_pair(prio[v], v));
             }
         }
     }
+
+    return {prio, pred};
 }
 
 int main() {
-    Graph g(3);
-    g[0].push_back(make_pair(1, 10));
-    g[1].push_back(make_pair(2, -5));
-    g[0].push_back(make_pair(2, 8));
+    vector<vector<edge>> g(3);
+    g[0].emplace_back(1, 10);
+    g[1].emplace_back(2, -5);
+    g[0].emplace_back(2, 8);
 
-    vector<int> prio;
-    vector<int> pred;
-    dijkstra(g, 0, prio, pred);
+    auto[prio1, pred1] = dijkstra_heap(g, 0);
+    auto[prio2, pred2] = dijkstra_set(g, 0);
 
-    for (int i = 0; i < prio.size(); i++)
-        cout << prio[i] << endl;
+    copy(prio1.begin(), prio1.end(), ostream_iterator<int>(cout, " "));
+    cout << endl;
+
+    copy(prio2.begin(), prio2.end(), ostream_iterator<int>(cout, " "));
+    cout << endl;
 }
