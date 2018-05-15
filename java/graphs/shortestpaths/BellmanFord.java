@@ -1,4 +1,4 @@
-package graphs;
+package graphs.shortestpaths;
 
 import java.util.*;
 import java.util.stream.Stream;
