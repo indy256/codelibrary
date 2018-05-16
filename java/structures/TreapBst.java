@@ -3,7 +3,7 @@ package structures;
 import java.util.*;
 
 // https://en.wikipedia.org/wiki/Treap
-public class TreapBST {
+public class TreapBst {
     static Random random = new Random();
 
     static class Treap {

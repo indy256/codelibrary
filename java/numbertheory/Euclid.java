@@ -65,7 +65,7 @@ public class Euclid {
     }
 
     // precondition: p is prime
-    public static int[] generateInverse(int p) {
+    public static int[] generateInverses(int p) {
         int[] res = new int[p];
         res[1] = 1;
         for (int i = 2; i < p; ++i)
@@ -132,6 +132,6 @@ public class Euclid {
         System.out.println(res[1] + " * (" + a + ") " + " + " + res[2] + " * (" + b + ") = gcd(" + a + "," + b + ") = "
                 + res[0]);
 
-        System.out.println(Arrays.toString(generateInverse(7)));
+        System.out.println(Arrays.toString(generateInverses(7)));
     }
 }

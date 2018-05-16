@@ -4,7 +4,7 @@ import java.util.*;
 import java.util.stream.Stream;
 
 // https://en.wikipedia.org/wiki/Kosaraju%27s_algorithm
-public class SCCKosaraju {
+public class SccKosaraju {
 
     public static List<List<Integer>> scc(List<Integer>[] graph) {
         int n = graph.length;
