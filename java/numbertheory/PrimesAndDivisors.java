@@ -53,7 +53,7 @@ public class PrimesAndDivisors {
         for (int i = 2; i * i <= n; ++i)
             if (divisors[i] == 1)
                 for (int j = i; j * i <= n; j++)
-                    divisors[j * i] = divisors[j] + 1;
+                    divisors[i * j] = divisors[j] + 1;
         return divisors;
     }
 
