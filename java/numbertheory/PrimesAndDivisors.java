@@ -4,23 +4,26 @@ import java.util.Arrays;
 
 public class PrimesAndDivisors {
 
+    // Generates prime numbers up to n in O(n*log(log(n))) time
     public static int[] generatePrimes(int n) {
-        boolean[] sieve = new boolean[n + 1];
-        Arrays.fill(sieve, 2, n + 1, true);
+        boolean[] prime = new boolean[n + 1];
+        Arrays.fill(prime, 2, n + 1, true);
+
         for (int i = 2; i * i <= n; i++)
-            if (sieve[i])
+            if (prime[i])
                 for (int j = i * i; j <= n; j += i)
-                    sieve[j] = false;
+                    prime[j] = false;
+
         int[] primes = new int[n + 1];
         int cnt = 0;
-        for (int i = 0; i < sieve.length; i++)
-            if (sieve[i])
+        for (int i = 0; i < prime.length; i++)
+            if (prime[i])
                 primes[cnt++] = i;
-
         return Arrays.copyOf(primes, cnt);
     }
 
-    public static int[] generatePrimesLinear(int n) {
+    // Generates prime numbers up to n in O(n) time
+    public static int[] generatePrimesLinearTime(int n) {
         int[] lp = new int[n + 1];
         int[] primes = new int[n + 1];
         int cnt = 0;
@@ -65,6 +68,7 @@ public class PrimesAndDivisors {
         return divisor;
     }
 
+    // Euler's totient function
     public static int phi(int n) {
         int res = n;
         for (int i = 2; i * i <= n; i++)
@@ -78,6 +82,7 @@ public class PrimesAndDivisors {
         return res;
     }
 
+    // Euler's totient function
     public static int[] generatePhi(int n) {
         int[] res = new int[n + 1];
         for (int i = 1; i <= n; i++)
@@ -93,7 +98,7 @@ public class PrimesAndDivisors {
         int n = 31;
 
         int[] primes1 = generatePrimes(n);
-        int[] primes2 = generatePrimesLinear(n);
+        int[] primes2 = generatePrimesLinearTime(n);
 
         System.out.println(Arrays.toString(primes1));
         System.out.println(Arrays.toString(primes2));
