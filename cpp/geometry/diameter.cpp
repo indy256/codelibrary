@@ -1,7 +1,5 @@
-#include <algorithm>
-#include <vector>
-#include <cmath>
-#include <iostream>
+#include <bits/stdc++.h>
+
 using namespace std;
 
 typedef pair<double, double> point;
@@ -56,12 +54,11 @@ double diameter(const vector<point> &p) {
     return res;
 }
 
+// usage example
 int main() {
-    vector<point> points(4);
-    points[0] = point(0, 0);
-    points[1] = point(3, 0);
-    points[2] = point(0, 3);
-    points[3] = point(1, 1);
-    double d = diameter(points);
+    double d = diameter({{0, 0},
+                         {3, 0},
+                         {0, 3},
+                         {1, 1}});
     cout << d << endl;
 }
