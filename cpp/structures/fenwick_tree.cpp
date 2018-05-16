@@ -18,18 +18,17 @@ int sum(int t[], int i) {
     return res;
 }
 
-// Returns min(p | sum[0..p]>=sum)
+// Returns min(p | sum[0..p] >= sum)
 int lower_bound(int t[], int sum) {
-    --sum;
-    int pos = -1;
+    int pos = 0;
     for (int blockSize = 1 << (31 - __builtin_clz(maxn)); blockSize != 0; blockSize >>= 1) {
-        int nextPos = pos + blockSize;
-        if (nextPos < maxn && sum >= t[nextPos]) {
-            sum -= t[nextPos];
-            pos = nextPos;
+        int p = pos + blockSize - 1;
+        if (p < maxn && t[p] < sum) {
+            sum -= t[p];
+            pos += blockSize;
         }
     }
-    return pos + 1;
+    return pos;
 }
 
 
