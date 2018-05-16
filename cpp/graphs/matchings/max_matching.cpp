@@ -12,9 +12,9 @@ int n1, n2, edges, last[MAXV1], previous[MAXE], head[MAXE];
 int matching[MAXV2], dist[MAXV1], Q[MAXV1];
 bool used[MAXV1], vis[MAXV1];
 
-void reset_graph(int _n1, int _n2) {
-    n1 = _n1;
-    n2 = _n2;
+void reset_graph(int n1, int n2) {
+    ::n1 = n1;
+    ::n2 = n2;
     edges = 0;
     fill(last, last + n1, -1);
 }
