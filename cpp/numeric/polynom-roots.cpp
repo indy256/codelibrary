@@ -1,7 +1,5 @@
-#include <vector>
-#include <iostream>
-#include <iomanip>
-#include <complex>
+#include <bits/stdc++.h>
+
 using namespace std;
 
 typedef complex<double> cdouble;
@@ -69,12 +67,8 @@ vector<cdouble> find_all_roots(const poly &p) {
 } 
 
 int main( int argc, char* argv[] ) {
-	poly p;
-	// x^3 - 8x^2 - 13x + 140 = (x+4)(x-5)(x-7)
-	p.push_back(140);
-	p.push_back(-13);
-	p.push_back(-8);
-	p.push_back(1);
+    // x^3 - 8x^2 - 13x + 140 = (x+4)(x-5)(x-7)
+	poly p = {140, -13, -8, 1};
 
 	vector<cdouble> roots = find_all_roots(p);
 

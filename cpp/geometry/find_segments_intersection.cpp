@@ -1,6 +1,5 @@
-#include <algorithm>
-#include <vector>
-#include <set>
+#include <bits/stdc++.h>
+
 using namespace std;
 
 typedef pair<int, int> pii;
@@ -14,12 +13,14 @@ int cross(pii a, pii b, pii c) {
 }
 
 class segment {
-    public:
+public:
     pii a, b;
     int id;
+
     segment(pii a, pii b, int id) :
-        a(a), b(b), id(id) {
+            a(a), b(b), id(id) {
     }
+
     bool operator<(const segment &o) const {
         if (a.first < o.a.first) {
             int s = cross(a, b, o.a);
@@ -33,22 +34,26 @@ class segment {
 };
 
 class event {
-    public:
+public:
     pii p;
     int id;
     int type;
+
     event(pii p, int id, int type) :
-        p(p), id(id), type(type) {
+            p(p), id(id), type(type) {
     }
+
     bool operator<(const event &o) const {
-        return p.first < o.p.first || p.first == o.p.first && (type > o.type || type == o.type && p.second < o.p.second);
+        return p.first < o.p.first ||
+               p.first == o.p.first && (type > o.type || type == o.type && p.second < o.p.second);
     }
 };
 
 bool intersect(segment s1, segment s2) {
     int x1 = s1.a.first, y1 = s1.a.second, x2 = s1.b.first, y2 = s1.b.second;
     int x3 = s2.a.first, y3 = s2.a.second, x4 = s2.b.first, y4 = s2.b.second;
-    if (max(x1, x2) < min(x3, x4) || max(x3, x4) < min(x1, x2) || max(y1, y2) < min(y3, y4) || max(y3, y4) < min(y1, y2)) {
+    if (max(x1, x2) < min(x3, x4) || max(x3, x4) < min(x1, x2) || max(y1, y2) < min(y3, y4) ||
+        max(y3, y4) < min(y1, y2)) {
         return false;
     }
     int z1 = (x3 - x1) * (y2 - y1) - (y3 - y1) * (x2 - x1);
@@ -99,5 +104,6 @@ pii findIntersection(vector<segment> s) {
     return make_pair(-1, -1);
 }
 
+// usage example
 int main() {
 }
