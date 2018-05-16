@@ -2,15 +2,14 @@
 
 using namespace std;
 
-static std::default_random_engine rnd;
+random_device rd;
+default_random_engine rnd(rd());
 
 struct item {
     int key, prio;
     item *l, *r;
 
     item(int key) : key(key), prio(rnd()), l(nullptr), r(nullptr) {}
-
-    item(const item&) = delete;
 };
 
 typedef item *pitem;
@@ -59,12 +58,17 @@ void print(pitem t) {
 
 // usage example
 int main() {
+    pitem t1 = nullptr;
+    item a1[] = {1, 2};
+    for (item &x: a1)
+        insert(t1, &x);
+
+    pitem t2 = nullptr;
+    item a2[] = {7, 4, 5};
+    for (item &x: a2)
+        insert(t2, &x);
+
     pitem t = nullptr;
-
-    item a[] = {7, 2, 3};
-
-    for (item &x: a)
-        insert(t, &x);
-
+    merge(t, t1, t2);
     print(t);
 }
