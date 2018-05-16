@@ -8,6 +8,7 @@ long long cross(const point &a, const point &b, const point &c) {
     return (b.first - a.first) * (c.second - a.second) - (b.second - a.second) * (c.first - a.first);
 }
 
+// https://en.wikipedia.org/wiki/Convex_hull in O(n*log(n))
 vector<point> convex_hull(vector<point> points) {
     if (points.size() <= 1)
         return points;
