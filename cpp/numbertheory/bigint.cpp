@@ -13,30 +13,30 @@ struct bigint {
     bigint() : sign(1) {
     }
 
-    bigint(const bigint &v) {
-        *this = v;
-    }
-
-    bigint& operator=(const bigint &v) {
-        z = v.z;
-        sign = v.sign;
-        return *this;
-    }
-
-    bigint(bigint &&v) noexcept {
-        *this = v;
-    }
-
-    void operator=(bigint &&v) noexcept {
-        z = move(v.z);
-        sign = v.sign;
-    }
+//    bigint(const bigint &v) {
+//        *this = v;
+//    }
+//
+//    bigint& operator=(const bigint &v) {
+//        z = v.z;
+//        sign = v.sign;
+//        return *this;
+//    }
+//
+//    bigint(bigint &&v) noexcept {
+//        *this = v;
+//    }
+//
+//    void operator=(bigint &&v) noexcept {
+//        z = move(v.z);
+//        sign = v.sign;
+//    }
 
     bigint(long long v) {
         *this = v;
     }
 
-    bigint& operator=(long long v) {
+    bigint &operator=(long long v) {
         sign = v < 0 ? -1 : 1;
         v *= sign;
         z.clear();
@@ -49,29 +49,37 @@ struct bigint {
         read(s);
     }
 
-    bigint operator+(const bigint &v) const {
-        if (sign == v.sign) {
-            bigint res = v;
-
-            for (int i = 0, carry = 0; i < max(z.size(), v.z.size()) || carry; ++i) {
-                if (i == res.z.size())
-                    res.z.emplace_back(0);
-                res.z[i] += carry + (i < z.size() ? z[i] : 0);
-                carry = res.z[i] >= base;
+    bigint &operator+=(const bigint &other) {
+        if (sign == other.sign) {
+            for (int i = 0, carry = 0; i < other.z.size() || carry; ++i) {
+                if (i == z.size())
+                    z.emplace_back(0);
+                z[i] += carry + (i < other.z.size() ? other.z[i] : 0);
+                carry = z[i] >= base;
                 if (carry)
-                    res.z[i] -= base;
+                    z[i] -= base;
             }
-            return res;
+        } else {
+            *this -= -other;
         }
-        return *this - (-v);
+        return *this;
+    }
+
+    bigint operator+(const bigint &other) const {
+        bigint res = *this;
+        return res += other;
+    }
+
+    bigint &operator-=(const bigint &v) {
+        *this = *this - v;
     }
 
     bigint operator-(const bigint &v) const {
         if (sign == v.sign) {
             if (abs() >= v.abs()) {
                 bigint res = *this;
-                for (int i = 0, carry = 0; i < (int) v.z.size() || carry; ++i) {
-                    res.z[i] -= carry + (i < (int) v.z.size() ? v.z[i] : 0);
+                for (int i = 0, carry = 0; i < v.z.size() || carry; ++i) {
+                    res.z[i] -= carry + (i < v.z.size() ? v.z[i] : 0);
                     carry = res.z[i] < 0;
                     if (carry)
                         res.z[i] += base;
@@ -205,14 +213,6 @@ struct bigint {
         for (int i = z.size() - 1; i >= 0; --i)
             m = (z[i] + m * (long long) base) % v;
         return m * sign;
-    }
-
-    void operator+=(const bigint &v) {
-        *this = *this + v;
-    }
-
-    void operator-=(const bigint &v) {
-        *this = *this - v;
     }
 
     void operator*=(const bigint &v) {
@@ -459,4 +459,10 @@ int main() {
     bigint x = 5;
     x = 6;
     cout << x << endl;
+
+//    bigint large("1000000000000000000000000000000000000000000000000000000000000000000000000000");
+//    for (int i = 0; i < 10000000; ++i) {
+//        large += i;
+//    }
+//    cout << large << endl;
 }
