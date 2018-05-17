@@ -1,55 +1,62 @@
-#include <vector>
-#include <cstdlib>
-#include <iostream>
-#include <iomanip>
-#include <string>
-#include <ctime>
-#include <cstdio>
-#include <cmath>
+#include <bits/stdc++.h>
+
 using namespace std;
 
 // base and base_digits must be consistent
-const int base = 1000000000;
-const int base_digits = 9;
+constexpr int base = 1000000000;
+constexpr int base_digits = 9;
 
 struct bigint {
     vector<int> z;
     int sign;
 
-    bigint() :
-        sign(1) {
+    bigint() : sign(1) {
+    }
+
+    bigint(const bigint &v) {
+        *this = v;
+    }
+
+    bigint& operator=(const bigint &v) {
+        z = v.z;
+        sign = v.sign;
+        return *this;
+    }
+
+    bigint(bigint &&v) noexcept {
+        *this = v;
+    }
+
+    void operator=(bigint &&v) noexcept {
+        z = move(v.z);
+        sign = v.sign;
     }
 
     bigint(long long v) {
         *this = v;
     }
 
-    bigint(const string &s) {
-        read(s);
-    }
-
-    void operator=(const bigint &v) {
-        sign = v.sign;
-        z = v.z;
-    }
-
-    void operator=(long long v) {
-        sign = 1;
-        if (v < 0)
-            sign = -1, v = -v;
+    bigint& operator=(long long v) {
+        sign = v < 0 ? -1 : 1;
+        v *= sign;
         z.clear();
         for (; v > 0; v = v / base)
-            z.push_back(v % base);
+            z.emplace_back(v % base);
+        return *this;
+    }
+
+    bigint(const string &s) {
+        read(s);
     }
 
     bigint operator+(const bigint &v) const {
         if (sign == v.sign) {
             bigint res = v;
 
-            for (int i = 0, carry = 0; i < (int) max(z.size(), v.z.size()) || carry; ++i) {
-                if (i == (int) res.z.size())
-                    res.z.push_back(0);
-                res.z[i] += carry + (i < (int) z.size() ? z[i] : 0);
+            for (int i = 0, carry = 0; i < max(z.size(), v.z.size()) || carry; ++i) {
+                if (i == res.z.size())
+                    res.z.emplace_back(0);
+                res.z[i] += carry + (i < z.size() ? z[i] : 0);
                 carry = res.z[i] >= base;
                 if (carry)
                     res.z[i] -= base;
@@ -129,22 +136,23 @@ struct bigint {
             a.z.push_back(0);
 
         int n = a.z.size();
-        
+
         int firstDigit = (int) sqrt((double) a.z[n - 1] * base + a.z[n - 2]);
         int norm = base / (firstDigit + 1);
         a *= norm;
         a *= norm;
-		while (a.z.empty() || a.z.size() % 2 == 1)
-			a.z.push_back(0);
-        
+        while (a.z.empty() || a.z.size() % 2 == 1)
+            a.z.push_back(0);
+
         bigint r = (long long) a.z[n - 1] * base + a.z[n - 2];
         firstDigit = (int) sqrt((double) a.z[n - 1] * base + a.z[n - 2]);
         int q = firstDigit;
-		bigint res;
- 
-        for(int j = n / 2 - 1; j >= 0; j--) {
-            for(; ; --q) {
-                bigint r1 = (r - (res * 2 * base + q) * q) * base * base + (j > 0 ? (long long) a.z[2 * j - 1] * base + a.z[2 * j - 2] : 0);
+        bigint res;
+
+        for (int j = n / 2 - 1; j >= 0; j--) {
+            for (;; --q) {
+                bigint r1 = (r - (res * 2 * base + q) * q) * base * base +
+                            (j > 0 ? (long long) a.z[2 * j - 1] * base + a.z[2 * j - 2] : 0);
                 if (r1 >= 0) {
                     r = r1;
                     break;
@@ -154,13 +162,13 @@ struct bigint {
             res += q;
 
             if (j > 0) {
-				int d1 = res.z.size() + 2 < r.z.size() ? r.z[res.z.size() + 2] : 0;
-				int d2 = res.z.size() + 1 < r.z.size() ? r.z[res.z.size() + 1] : 0;
+                int d1 = res.z.size() + 2 < r.z.size() ? r.z[res.z.size() + 2] : 0;
+                int d2 = res.z.size() + 1 < r.z.size() ? r.z[res.z.size() + 1] : 0;
                 int d3 = res.z.size() < r.z.size() ? r.z[res.z.size()] : 0;
                 q = ((long long) d1 * base * base + (long long) d2 * base + d3) / (firstDigit * 2);
-            }           
+            }
         }
-        
+
         res.trim();
         return res / norm;
     }
@@ -202,12 +210,15 @@ struct bigint {
     void operator+=(const bigint &v) {
         *this = *this + v;
     }
+
     void operator-=(const bigint &v) {
         *this = *this - v;
     }
+
     void operator*=(const bigint &v) {
         *this = *this * v;
     }
+
     void operator/=(const bigint &v) {
         *this = *this / v;
     }
@@ -226,15 +237,19 @@ struct bigint {
     bool operator>(const bigint &v) const {
         return v < *this;
     }
+
     bool operator<=(const bigint &v) const {
         return !(v < *this);
     }
+
     bool operator>=(const bigint &v) const {
         return !(*this < v);
     }
+
     bool operator==(const bigint &v) const {
         return !(*this < v) && !(v < *this);
     }
+
     bool operator!=(const bigint &v) const {
         return *this < v || v < *this;
     }
@@ -272,6 +287,7 @@ struct bigint {
     friend bigint gcd(const bigint &a, const bigint &b) {
         return b.isZero() ? a : gcd(b, a % b);
     }
+
     friend bigint lcm(const bigint &a, const bigint &b) {
         return a / gcd(a, b) * b;
     }
@@ -294,14 +310,14 @@ struct bigint {
         trim();
     }
 
-    friend istream& operator>>(istream &stream, bigint &v) {
+    friend istream &operator>>(istream &stream, bigint &v) {
         string s;
         stream >> s;
         v.read(s);
         return stream;
     }
 
-    friend ostream& operator<<(ostream &stream, const bigint &v) {
+    friend ostream &operator<<(ostream &stream, const bigint &v) {
         if (v.sign == -1)
             stream << '-';
         stream << (v.z.empty() ? 0 : v.z.back());
@@ -400,42 +416,42 @@ struct bigint {
 };
 
 bigint random_bigint(int n) {
-	string s;
-	for (int i = 0; i < n; i++) {
-		s += rand() % 10 + '0';
-	}
-	return bigint(s);
+    string s;
+    for (int i = 0; i < n; i++) {
+        s += rand() % 10 + '0';
+    }
+    return bigint(s);
 }
 
 // random tests
 int main() {
-	for(int i = 0; i < 1000; i++) {
-		cout << i << endl;
-		int n = rand() % 100 + 1;
-		bigint a = random_bigint(n);
-		bigint res = sqrt(a);
-		bigint xx = res * res;
-		bigint yy = (res + 1) * (res + 1);
- 
-		if (xx > a || yy <= a) {
-			cout << a << " " << res << endl;
-			break;
-		}
+    for (int i = 0; i < 1000; i++) {
+        cout << i << endl;
+        int n = rand() % 100 + 1;
+        bigint a = random_bigint(n);
+        bigint res = sqrt(a);
+        bigint xx = res * res;
+        bigint yy = (res + 1) * (res + 1);
 
-		int m = rand() % n + 1;
-		bigint b = random_bigint(m) + 1;
-		res = a / b;
-		xx = res * b;
-		yy = b * (res + 1);
+        if (xx > a || yy <= a) {
+            cout << a << " " << res << endl;
+            break;
+        }
 
-		if (xx > a || yy <= a) {
-			cout << a << " " << b << " " << res << endl;
-			break;
-		}
-	}
+        int m = rand() % n + 1;
+        bigint b = random_bigint(m) + 1;
+        res = a / b;
+        xx = res * b;
+        yy = b * (res + 1);
+
+        if (xx > a || yy <= a) {
+            cout << a << " " << b << " " << res << endl;
+            break;
+        }
+    }
 
     bigint a = random_bigint(10000);
-	bigint b = random_bigint(2000);
+    bigint b = random_bigint(2000);
     clock_t start = clock();
     bigint c = a / b;
     fprintf(stdout, "time=%.3lfsec\n", 0.001 * (clock() - start));
