@@ -3,6 +3,7 @@
 using namespace std;
 
 // Suffix array and lcp in O(n)
+// Taken from "Two Efficient Algorithms for Linear Suffix Array Construction.pdf"
 
 unsigned char mask[] = { 0x80, 0x40, 0x20, 0x10, 0x08, 0x04, 0x02, 0x01 };
 #define tget(i) ( (t[(i)/8]&mask[(i)%8]) ? 1 : 0 )
