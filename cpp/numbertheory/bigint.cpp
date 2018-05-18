@@ -102,7 +102,6 @@ struct bigint {
             long long cur = z[i] * (long long) v + carry;
             carry = static_cast<int>(cur / base);
             z[i] = static_cast<int>(cur % base);
-            //asm("divl %%ecx" e: "=a"(carry), "=d"(z[i]) : "A"(cur), "c"(base));
         }
         trim();
         return *this;
