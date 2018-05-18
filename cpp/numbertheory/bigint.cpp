@@ -46,7 +46,7 @@ struct bigint {
         v *= sign;
         z.clear();
         for (; v > 0; v = v / base)
-            z.emplace_back(v % base);
+            z.push_back(v % base);
         return *this;
     }
 
@@ -58,7 +58,7 @@ struct bigint {
         if (sign == other.sign) {
             for (int i = 0, carry = 0; i < other.z.size() || carry; ++i) {
                 if (i == z.size())
-                    z.emplace_back(0);
+                    z.push_back(0);
                 z[i] += carry + (i < other.z.size() ? other.z[i] : 0);
                 carry = z[i] >= base;
                 if (carry)
@@ -94,7 +94,9 @@ struct bigint {
         return *this;
     }
 
-    friend bigint operator-(bigint a, const bigint &b) {
+    friend bigint
+
+    operator-(bigint a, const bigint &b) {
         return a -= b;
     }
 
@@ -103,18 +105,17 @@ struct bigint {
             sign = -sign, v = -v;
         for (int i = 0, carry = 0; i < z.size() || carry; ++i) {
             if (i == z.size())
-                z.emplace_back(0);
-            long long cur = z[i] * (long long) v + carry;
-            carry = static_cast<int>(cur / base);
-            z[i] = static_cast<int>(cur % base);
+                z.push_back(0);
+            long long cur = (long long) z[i] * v + carry;
+            carry = (int) (cur / base);
+            z[i] = (int) (cur % base);
         }
         trim();
         return *this;
     }
 
     bigint operator*(int v) const {
-        bigint res = *this;
-        return res *= v;
+        return bigint(*this) *= v;
     }
 
     friend pair<bigint, bigint> divmod(const bigint &a1, const bigint &b1) {
@@ -124,12 +125,12 @@ struct bigint {
         bigint q, r;
         q.z.resize(a.z.size());
 
-        for (int i = a.z.size() - 1; i >= 0; i--) {
+        for (int i = (int) a.z.size() - 1; i >= 0; i--) {
             r *= base;
             r += a.z[i];
             int s1 = b.z.size() < r.z.size() ? r.z[b.z.size()] : 0;
             int s2 = b.z.size() - 1 < r.z.size() ? r.z[b.z.size() - 1] : 0;
-            int d = ((long long) s1 * base + s2) / b.z.back();
+            int d = (int) (((long long) s1 * base + s2) / b.z.back());
             r -= b * d;
             while (r < 0)
                 r += b, --d;
@@ -140,7 +141,7 @@ struct bigint {
         r.sign = a1.sign;
         q.trim();
         r.trim();
-        return make_pair(q, r / norm);
+        return {q, r / norm};
     }
 
     friend bigint sqrt(const bigint &a1) {
@@ -148,9 +149,9 @@ struct bigint {
         while (a.z.empty() || a.z.size() % 2 == 1)
             a.z.push_back(0);
 
-        int n = a.z.size();
+        int n = (int) a.z.size();
 
-        int firstDigit = (int) sqrt((double) a.z[n - 1] * base + a.z[n - 2]);
+        int firstDigit = (int) ::sqrt((double) a.z[n - 1] * base + a.z[n - 2]);
         int norm = base / (firstDigit + 1);
         a *= norm;
         a *= norm;
@@ -158,7 +159,7 @@ struct bigint {
             a.z.push_back(0);
 
         bigint r = (long long) a.z[n - 1] * base + a.z[n - 2];
-        firstDigit = (int) sqrt((double) a.z[n - 1] * base + a.z[n - 2]);
+        firstDigit = (int) ::sqrt((double) a.z[n - 1] * base + a.z[n - 2]);
         int q = firstDigit;
         bigint res;
 
@@ -178,7 +179,7 @@ struct bigint {
                 int d1 = res.z.size() + 2 < r.z.size() ? r.z[res.z.size() + 2] : 0;
                 int d2 = res.z.size() + 1 < r.z.size() ? r.z[res.z.size() + 1] : 0;
                 int d3 = res.z.size() < r.z.size() ? r.z[res.z.size()] : 0;
-                q = ((long long) d1 * base * base + (long long) d2 * base + d3) / (firstDigit * 2);
+                q = (int) (((long long) d1 * base * base + (long long) d2 * base + d3) / (firstDigit * 2));
             }
         }
 
@@ -194,7 +195,7 @@ struct bigint {
         return divmod(*this, v).second;
     }
 
-    void operator/=(int v) {
+    bigint &operator/=(int v) {
         if (v < 0)
             sign = -sign, v = -v;
         for (int i = (int) z.size() - 1, rem = 0; i >= 0; --i) {
@@ -203,29 +204,30 @@ struct bigint {
             rem = (int) (cur % v);
         }
         trim();
+        return *this;
     }
 
     bigint operator/(int v) const {
-        bigint res = *this;
-        res /= v;
-        return res;
+        return bigint(*this) /= v;
     }
 
     int operator%(int v) const {
         if (v < 0)
             v = -v;
         int m = 0;
-        for (int i = z.size() - 1; i >= 0; --i)
-            m = (z[i] + m * (long long) base) % v;
+        for (int i = (int) z.size() - 1; i >= 0; --i)
+            m = (int) ((z[i] + m * (long long) base) % v);
         return m * sign;
     }
 
-    void operator*=(const bigint &v) {
+    bigint &operator*=(const bigint &v) {
         *this = *this * v;
+        return *this;
     }
 
-    void operator/=(const bigint &v) {
+    bigint &operator/=(const bigint &v) {
         *this = *this / v;
+        return *this;
     }
 
     bool operator<(const bigint &v) const {
@@ -233,7 +235,7 @@ struct bigint {
             return sign < v.sign;
         if (z.size() != v.z.size())
             return z.size() * sign < v.z.size() * v.sign;
-        for (int i = z.size() - 1; i >= 0; i--)
+        for (int i = (int) z.size() - 1; i >= 0; i--)
             if (z[i] != v.z[i])
                 return z[i] * sign < v.z[i] * sign;
         return false;
@@ -267,7 +269,7 @@ struct bigint {
     }
 
     bool isZero() const {
-        return z.empty() || (z.size() == 1 && !z[0]);
+        return z.empty();
     }
 
     friend bigint operator-(bigint v) {
@@ -282,7 +284,7 @@ struct bigint {
 
     long long longValue() const {
         long long res = 0;
-        for (int i = z.size() - 1; i >= 0; i--)
+        for (int i = (int) z.size() - 1; i >= 0; i--)
             res = res * base + z[i];
         return res * sign;
     }
@@ -304,7 +306,7 @@ struct bigint {
                 sign = -sign;
             ++pos;
         }
-        for (int i = s.size() - 1; i >= pos; i -= base_digits) {
+        for (int i = (int) s.size() - 1; i >= pos; i -= base_digits) {
             int x = 0;
             for (int j = max(pos, i - base_digits + 1); j <= i; j++)
                 x = x * 10 + s[j] - '0';
@@ -337,8 +339,8 @@ struct bigint {
         vector<int> res;
         long long cur = 0;
         int cur_digits = 0;
-        for (int i = 0; i < (int) a.size(); i++) {
-            cur += a[i] * p[cur_digits];
+        for (int v : a) {
+            cur += v * p[cur_digits];
             cur_digits += old_digits;
             while (cur_digits >= new_digits) {
                 res.push_back(int(cur % p[new_digits]));
@@ -355,7 +357,7 @@ struct bigint {
     typedef vector<long long> vll;
 
     static vll karatsubaMultiply(const vll &a, const vll &b) {
-        int n = a.size();
+        int n = (int) a.size();
         vll res(n + n);
         if (n <= 32) {
             for (int i = 0; i < n; i++)
@@ -416,6 +418,7 @@ struct bigint {
         res.trim();
         return res;
     }
+
 };
 
 bigint random_bigint(int n) {
