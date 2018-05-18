@@ -46,7 +46,7 @@ struct bigint {
         v *= sign;
         z.clear();
         for (; v > 0; v = v / base)
-            z.push_back(v % base);
+            z.push_back((int) (v % base));
         return *this;
     }
 
