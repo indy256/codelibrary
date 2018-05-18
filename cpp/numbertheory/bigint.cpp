@@ -69,26 +69,28 @@ struct bigint {
         return a += b;
     }
 
-    bigint &operator-=(const bigint &v) {
-        *this = *this - v;
+    bigint &operator-=(const bigint &other) {
+        if (sign == other.sign) {
+            if (abs() >= other.abs()) {
+                for (int i = 0, carry = 0; i < other.z.size() || carry; ++i) {
+                    z[i] -= carry + (i < other.z.size() ? other.z[i] : 0);
+                    carry = z[i] < 0;
+                    if (carry)
+                        z[i] += base;
+                }
+                trim();
+            } else {
+                *this = other - *this;
+                this->sign = -this->sign;
+            }
+        } else {
+            *this += -other;
+        }
+        return *this;
     }
 
-    bigint operator-(const bigint &v) const {
-        if (sign == v.sign) {
-            if (abs() >= v.abs()) {
-                bigint res = *this;
-                for (int i = 0, carry = 0; i < v.z.size() || carry; ++i) {
-                    res.z[i] -= carry + (i < v.z.size() ? v.z[i] : 0);
-                    carry = res.z[i] < 0;
-                    if (carry)
-                        res.z[i] += base;
-                }
-                res.trim();
-                return res;
-            }
-            return -(v - *this);
-        }
-        return *this + -v;
+    friend bigint operator-(bigint a, const bigint &b) {
+        return a -= b;
     }
 
     bigint &operator*=(int v) {
@@ -100,7 +102,7 @@ struct bigint {
             long long cur = z[i] * (long long) v + carry;
             carry = static_cast<int>(cur / base);
             z[i] = static_cast<int>(cur % base);
-            //asm("divl %%ecx" : "=a"(carry), "=d"(a[i]) : "A"(cur), "c"(base));
+            //asm("divl %%ecx" e: "=a"(carry), "=d"(z[i]) : "A"(cur), "c"(base));
         }
         trim();
         return *this;
@@ -450,15 +452,9 @@ int main() {
     bigint b = random_bigint(2000);
     clock_t start = clock();
     bigint c = a / b;
-    fprintf(stdout, "time=%.3lfsec\n", 0.001 * (clock() - start));
+    fprintf(stdout, "time=%.3lfsec\n", (clock() - start) * 1. / CLOCKS_PER_SEC);
 
     bigint x = 5;
     x = 6;
     cout << x << endl;
-
-//    bigint large("1000000000000000000000000000000000000000000000000000000000000000000000000000");
-//    for (int i = 0; i < 10000000; ++i) {
-//        large += i;
-//    }
-//    cout << large << endl;
 }
