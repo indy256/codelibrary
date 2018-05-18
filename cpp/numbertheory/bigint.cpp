@@ -65,9 +65,8 @@ struct bigint {
         return *this;
     }
 
-    bigint operator+(const bigint &other) const {
-        bigint res = *this;
-        return res += other;
+    friend bigint operator+(bigint a, const bigint &b) {
+        return a += b;
     }
 
     bigint &operator-=(const bigint &v) {
@@ -89,27 +88,27 @@ struct bigint {
             }
             return -(v - *this);
         }
-        return *this + (-v);
+        return *this + -v;
     }
 
-    void operator*=(int v) {
+    bigint &operator*=(int v) {
         if (v < 0)
             sign = -sign, v = -v;
-        for (int i = 0, carry = 0; i < (int) z.size() || carry; ++i) {
-            if (i == (int) z.size())
-                z.push_back(0);
+        for (int i = 0, carry = 0; i < z.size() || carry; ++i) {
+            if (i == z.size())
+                z.emplace_back(0);
             long long cur = z[i] * (long long) v + carry;
-            carry = (int) (cur / base);
-            z[i] = (int) (cur % base);
+            carry = static_cast<int>(cur / base);
+            z[i] = static_cast<int>(cur % base);
             //asm("divl %%ecx" : "=a"(carry), "=d"(a[i]) : "A"(cur), "c"(base));
         }
         trim();
+        return *this;
     }
 
     bigint operator*(int v) const {
         bigint res = *this;
-        res *= v;
-        return res;
+        return res *= v;
     }
 
     friend pair<bigint, bigint> divmod(const bigint &a1, const bigint &b1) {
@@ -265,16 +264,13 @@ struct bigint {
         return z.empty() || (z.size() == 1 && !z[0]);
     }
 
-    bigint operator-() const {
-        bigint res = *this;
-        res.sign = -sign;
-        return res;
+    friend bigint operator-(bigint v) {
+        v.sign = -v.sign;
+        return v;
     }
 
     bigint abs() const {
-        bigint res = *this;
-        res.sign *= res.sign;
-        return res;
+        return sign == 1 ? *this : -*this;
     }
 
     long long longValue() const {
