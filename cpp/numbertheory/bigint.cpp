@@ -7,7 +7,12 @@ constexpr int base = 1000000000;
 constexpr int base_digits = 9;
 
 struct bigint {
+    // value digits
+    // value == 0 is represented by empty z
     vector<int> z;
+
+    // sign == 1 <==> value >= 0
+    // sign == -1 <==> value < 0
     int sign;
 
     bigint() : sign(1) {
@@ -59,7 +64,7 @@ struct bigint {
                 if (carry)
                     z[i] -= base;
             }
-        } else {
+        } else if (other != 0 /* prevent infinite loop */) {
             *this -= -other;
         }
         return *this;
@@ -71,7 +76,7 @@ struct bigint {
 
     bigint &operator-=(const bigint &other) {
         if (sign == other.sign) {
-            if (abs() >= other.abs()) {
+            if (sign == 1 && *this >= other || sign == -1 && *this <= other) {
                 for (int i = 0, carry = 0; i < other.z.size() || carry; ++i) {
                     z[i] -= carry + (i < other.z.size() ? other.z[i] : 0);
                     carry = z[i] < 0;
@@ -266,7 +271,8 @@ struct bigint {
     }
 
     friend bigint operator-(bigint v) {
-        v.sign = -v.sign;
+        if (!v.z.empty())
+            v.sign = -v.sign;
         return v;
     }
 
