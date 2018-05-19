@@ -31,12 +31,9 @@ public class SegmentTreeIntervalAddMax {
         }
         push(root);
         int mid = (left + right) >> 1;
-        int res = Integer.MIN_VALUE;
-        if (from <= mid)
-            res = Math.max(res, max(from, to, 2 * root + 1, left, mid));
-        if (to > mid)
-            res = Math.max(res, max(from, to, 2 * root + 2, mid + 1, right));
-        return res;
+        return Math.max(
+                max(from, to, 2 * root + 1, left, mid),
+                max(from, to, 2 * root + 2, mid + 1, right));
     }
 
     public void add(int from, int to, int delta) {
@@ -52,10 +49,8 @@ public class SegmentTreeIntervalAddMax {
         }
         push(root); // this push may be omitted for add, but is necessary for other operations such as set
         int mid = (left + right) >> 1;
-        if (from <= mid)
-            add(from, to, delta, 2 * root + 1, left, mid);
-        if (to > mid)
-            add(from, to, delta, 2 * root + 2, mid + 1, right);
+        add(from, to, delta, 2 * root + 1, left, mid);
+        add(from, to, delta, 2 * root + 2, mid + 1, right);
         tmax[root] = Math.max(tmax[2 * root + 1] + tadd[2 * root + 1], tmax[2 * root + 2] + tadd[2 * root + 2]);
     }
 
