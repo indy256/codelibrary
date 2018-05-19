@@ -20,12 +20,9 @@ int max(int from, int to, int root = 0, int left = 0, int right = maxn - 1) {
         return tmax[root] + tadd[root];
     }
     push(root);
-    int mid = (left + right) >> 1;
-    int res = INT_MIN;
-    if (from <= mid)
-        res = std::max(res, max(from, to, 2 * root + 1, left, mid));
-    if (to > mid)
-        res = std::max(res, max(from, to, 2 * root + 2, mid + 1, right));
+    int mid = (left + right) / 2;
+    int res = std::max(max(from, to, 2 * root + 1, left, mid),
+                       max(from, to, 2 * root + 2, mid + 1, right));
     return res;
 }
 
@@ -37,11 +34,9 @@ void add(int from, int to, int delta, int root = 0, int left = 0, int right = ma
         return;
     }
     push(root); // this push may be omitted for add, but is necessary for other operations such as set
-    int mid = (left + right) >> 1;
-    if (from <= mid)
-        add(from, to, delta, 2 * root + 1, left, mid);
-    if (to > mid)
-        add(from, to, delta, 2 * root + 2, mid + 1, right);
+    int mid = (left + right) / 2;
+    add(from, to, delta, 2 * root + 1, left, mid);
+    add(from, to, delta, 2 * root + 2, mid + 1, right);
     tmax[root] = std::max(tmax[2 * root + 1] + tadd[2 * root + 1], tmax[2 * root + 2] + tadd[2 * root + 2]);
 }
 
