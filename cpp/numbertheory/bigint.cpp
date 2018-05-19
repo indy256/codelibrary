@@ -7,9 +7,8 @@ constexpr int base = 1000000000;
 constexpr int base_digits = 9;
 
 struct bigint {
-    // value digits
     // value == 0 is represented by empty z
-    vector<int> z;
+    vector<int> z; // digits
 
     // sign == 1 <==> value >= 0
     // sign == -1 <==> value < 0
