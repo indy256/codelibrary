@@ -31,9 +31,10 @@ public class SegmentTreeIntervalAddMax {
         }
         push(root);
         int mid = (left + right) >> 1;
-        return Math.max(
+        int res = Math.max(
                 max(from, to, 2 * root + 1, left, mid),
                 max(from, to, 2 * root + 2, mid + 1, right));
+        return res;
     }
 
     public void add(int from, int to, int delta) {
