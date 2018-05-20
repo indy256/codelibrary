@@ -8,7 +8,7 @@ public class PersistentTree {
         int sum;
 
         Node(int value) {
-            this.sum = value;
+            sum = value;
         }
 
         Node(Node left, Node right) {
@@ -28,18 +28,13 @@ public class PersistentTree {
         return new Node(build(left, mid), build(mid + 1, right));
     }
 
-    public static int sum(int a, int b, Node root, int left, int right) {
-        if (a == left && b == right)
+    public static int sum(int from, int to, Node root, int left, int right) {
+        if (from > right || left > to)
+            return 0;
+        if (from <= left && right <= to)
             return root.sum;
         int mid = (left + right) >> 1;
-        if (a <= mid && b > mid)
-            return sum(a, Math.min(b, mid), root.left, left, mid) + sum(Math.max(a, mid + 1), b, root.right, mid + 1, right);
-        else if (a <= mid)
-            return sum(a, Math.min(b, mid), root.left, left, mid);
-        else if (b > mid)
-            return sum(Math.max(a, mid + 1), b, root.right, mid + 1, right);
-        else
-            throw new RuntimeException();
+        return sum(from, to, root.left, left, mid) + sum(from, to, root.right, mid + 1, right);
     }
 
     public static Node set(int pos, int value, Node root, int left, int right) {
