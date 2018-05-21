@@ -17,25 +17,6 @@ struct bigint {
     bigint() : sign(1) {
     }
 
-//    bigint(const bigint &v) {
-//        *this = v;
-//    }
-//
-//    bigint& operator=(const bigint &v) {
-//        z = v.z;
-//        sign = v.sign;
-//        return *this;
-//    }
-//
-//    bigint(bigint &&v) noexcept {
-//        *this = v;
-//    }
-//
-//    void operator=(bigint &&v) noexcept {
-//        z = move(v.z);
-//        sign = v.sign;
-//    }
-
     bigint(long long v) {
         *this = v;
     }
@@ -148,7 +129,7 @@ struct bigint {
         while (a.z.empty() || a.z.size() % 2 == 1)
             a.z.push_back(0);
 
-        int n = (int) a.z.size();
+        int n = a.z.size();
 
         int firstDigit = (int) ::sqrt((double) a.z[n - 1] * base + a.z[n - 2]);
         int norm = base / (firstDigit + 1);
@@ -300,7 +281,7 @@ struct bigint {
         sign = 1;
         z.clear();
         int pos = 0;
-        while (pos < (int) s.size() && (s[pos] == '-' || s[pos] == '+')) {
+        while (pos < s.size() && (s[pos] == '-' || s[pos] == '+')) {
             if (s[pos] == '-')
                 sign = -sign;
             ++pos;
@@ -333,7 +314,7 @@ struct bigint {
     static vector<int> convert_base(const vector<int> &a, int old_digits, int new_digits) {
         vector<long long> p(max(old_digits, new_digits) + 1);
         p[0] = 1;
-        for (int i = 1; i < (int) p.size(); i++)
+        for (int i = 1; i < p.size(); i++)
             p[i] = p[i - 1] * 10;
         vector<int> res;
         long long cur = 0;
@@ -356,7 +337,7 @@ struct bigint {
     typedef vector<long long> vll;
 
     static vll karatsubaMultiply(const vll &a, const vll &b) {
-        int n = (int) a.size();
+        int n = a.size();
         vll res(n + n);
         if (n <= 32) {
             for (int i = 0; i < n; i++)
@@ -380,16 +361,16 @@ struct bigint {
             b2[i] += b1[i];
 
         vll r = karatsubaMultiply(a2, b2);
-        for (int i = 0; i < (int) a1b1.size(); i++)
+        for (int i = 0; i < a1b1.size(); i++)
             r[i] -= a1b1[i];
-        for (int i = 0; i < (int) a2b2.size(); i++)
+        for (int i = 0; i < a2b2.size(); i++)
             r[i] -= a2b2[i];
 
-        for (int i = 0; i < (int) r.size(); i++)
+        for (int i = 0; i < r.size(); i++)
             res[i + k] += r[i];
-        for (int i = 0; i < (int) a1b1.size(); i++)
+        for (int i = 0; i < a1b1.size(); i++)
             res[i] += a1b1[i];
-        for (int i = 0; i < (int) a2b2.size(); i++)
+        for (int i = 0; i < a2b2.size(); i++)
             res[i + n] += a2b2[i];
         return res;
     }
@@ -408,7 +389,7 @@ struct bigint {
         vll c = karatsubaMultiply(a, b);
         bigint res;
         res.sign = sign * v.sign;
-        for (int i = 0, carry = 0; i < (int) c.size(); i++) {
+        for (int i = 0, carry = 0; i < c.size(); i++) {
             long long cur = c[i] + carry;
             res.z.push_back((int) (cur % 1000000));
             carry = (int) (cur / 1000000);
@@ -431,7 +412,6 @@ bigint random_bigint(int n) {
 // random tests
 int main() {
     for (int i = 0; i < 1000; i++) {
-        cout << i << endl;
         int n = rand() % 100 + 1;
         bigint a = random_bigint(n);
         bigint res = sqrt(a);
@@ -439,6 +419,7 @@ int main() {
         bigint yy = (res + 1) * (res + 1);
 
         if (xx > a || yy <= a) {
+            cout << i << endl;
             cout << a << " " << res << endl;
             break;
         }
@@ -450,6 +431,7 @@ int main() {
         yy = b * (res + 1);
 
         if (xx > a || yy <= a) {
+            cout << i << endl;
             cout << a << " " << b << " " << res << endl;
             break;
         }
@@ -459,9 +441,5 @@ int main() {
     bigint b = random_bigint(2000);
     clock_t start = clock();
     bigint c = a / b;
-    fprintf(stdout, "time=%.3lfsec\n", (clock() - start) * 1. / CLOCKS_PER_SEC);
-
-    bigint x = 5;
-    x = 6;
-    cout << x << endl;
+    printf("time=%.3lfsec\n", (clock() - start) * 1. / CLOCKS_PER_SEC);
 }
