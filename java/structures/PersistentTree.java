@@ -41,10 +41,9 @@ public class PersistentTree {
         if (left == right)
             return new Node(value);
         int mid = (left + right) >> 1;
-        if (pos <= mid)
-            return new Node(set(pos, value, root.left, left, mid), root.right);
-        else
-            return new Node(root.left, set(pos, value, root.right, mid + 1, right));
+        return pos <= mid ?
+                new Node(set(pos, value, root.left, left, mid), root.right) :
+                new Node(root.left, set(pos, value, root.right, mid + 1, right));
     }
 
     // Usage example
