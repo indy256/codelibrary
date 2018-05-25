@@ -6,7 +6,7 @@ using namespace std;
 
 // d1[i] - how many palindromes of odd length with center at i
 vector<int> odd_palindromes(const string &s) {
-    int n = s.size();
+    size_t n = s.size();
     vector<int> d1(n);
     int l = 0, r = -1;
     for (int i = 0; i < n; ++i) {
@@ -21,7 +21,7 @@ vector<int> odd_palindromes(const string &s) {
 
 // d2[i] - how many palindromes of even length with center at i
 vector<int> even_palindromes(const string &s) {
-    int n = s.size();
+    size_t n = s.size();
     vector<int> d2(n);
     int l = 0, r = -1;
     for (int i = 0; i < n; ++i) {
