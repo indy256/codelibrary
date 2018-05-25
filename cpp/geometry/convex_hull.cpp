@@ -2,6 +2,8 @@
 
 using namespace std;
 
+// Convex hull construction in O(n*log(n)): https://e-maxx-eng.appspot.com/geometry/grahams-scan-convex-hull.html
+
 typedef pair<long long, long long> point;
 
 long long cross(const point &a, const point &b, const point &c) {

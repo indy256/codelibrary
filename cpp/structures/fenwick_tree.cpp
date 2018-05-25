@@ -2,6 +2,8 @@
 
 using namespace std;
 
+// https://e-maxx-eng.appspot.com/data_structures/fenwick.html
+
 const int maxn = 200000;
 int t[maxn];
 

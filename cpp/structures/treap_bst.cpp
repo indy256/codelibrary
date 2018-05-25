@@ -2,6 +2,8 @@
 
 using namespace std;
 
+// https://e-maxx-eng.appspot.com/data_structures/treap.html
+
 random_device rd;
 default_random_engine rnd(rd());
 

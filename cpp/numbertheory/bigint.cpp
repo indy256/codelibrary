@@ -411,6 +411,10 @@ bigint random_bigint(int n) {
 
 // random tests
 int main() {
+    bigint x = bigint("120");
+    bigint y = bigint("5");
+    cout << x / y << endl;
+
     for (int i = 0; i < 1000; i++) {
         int n = rand() % 100 + 1;
         bigint a = random_bigint(n);

@@ -2,6 +2,8 @@
 
 using namespace std;
 
+// https://e-maxx-eng.appspot.com/data_structures/segment_tree.html
+
 const int maxn = 200000;
 int tmax[4 * maxn];
 int tadd[4 * maxn]; // tadd[i] applies to tmax[i], tadd[2*i+1] and tadd[2*i+2]

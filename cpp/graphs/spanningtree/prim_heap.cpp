@@ -5,7 +5,7 @@ using namespace std;
 typedef pair<int, int> edge;
 typedef pair<int, int> item;
 
-// https://en.wikipedia.org/wiki/Prim%27s_algorithm in O(E*log(V))
+// Prim's algorithm in O(E*log(V)) time: https://e-maxx-eng.appspot.com/graph/mst_prim.html
 tuple<long long, vector<int>> prim_mst(const vector<vector<edge>> &g) {
     size_t n = g.size();
     vector<int> pred(n, -1);

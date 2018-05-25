@@ -5,7 +5,9 @@ using namespace std;
 typedef pair<int, int> edge;
 typedef pair<int, int> item;
 
-// https://en.wikipedia.org/wiki/Prim%27s_algorithm in O(E*log(V)) time and O(E) memory
+// https://e-maxx-eng.appspot.com/graph/dijkstra_sparse.html
+
+// O(E*log(V)) time and O(E) memory
 tuple<vector<int>, vector<int>> dijkstra_heap(const vector<vector<edge>> &g, int s) {
     size_t n = g.size();
     vector<int> prio(n, INT_MAX);
@@ -33,7 +35,7 @@ tuple<vector<int>, vector<int>> dijkstra_heap(const vector<vector<edge>> &g, int
     return {prio, pred};
 }
 
-// https://en.wikipedia.org/wiki/Prim%27s_algorithm in O(E*log(V)) time and O(V) memory
+// O(E*log(V)) time and O(V) memory
 tuple<vector<int>, vector<int>> dijkstra_set(const vector<vector<edge>> &g, int s) {
     size_t n = g.size();
     vector<int> prio(n, INT_MAX);
