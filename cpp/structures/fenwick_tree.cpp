@@ -4,45 +4,51 @@ using namespace std;
 
 // https://e-maxx-eng.appspot.com/data_structures/fenwick.html
 
-const int maxn = 200000;
-int t[maxn];
+template<class T>
+struct fenwick {
+    vector<T> tree;
 
-void add(int t[], int i, int value) {
-    for (; i < maxn; i |= i + 1)
-        t[i] += value;
-}
+    fenwick(int n) : tree(n) {}
 
-// sum[0..i]
-int sum(int t[], int i) {
-    int res = 0;
-    for (; i >= 0; i = (i & (i + 1)) - 1)
-        res += t[i];
-    return res;
-}
-
-// Returns min(p | sum[0..p] >= sum)
-int lower_bound(int t[], int sum) {
-    int pos = 0;
-    for (int blockSize = 1 << (31 - __builtin_clz(maxn)); blockSize != 0; blockSize >>= 1) {
-        int p = pos + blockSize - 1;
-        if (p < maxn && t[p] < sum) {
-            sum -= t[p];
-            pos += blockSize;
-        }
+    void add(int i, T value) {
+        for (; i < tree.size(); i |= i + 1)
+            tree[i] += value;
     }
-    return pos;
-}
+
+    // sum[0..i]
+    int sum(int i) {
+        T res{};
+        for (; i >= 0; i = (i & (i + 1)) - 1)
+            res += tree[i];
+        return res;
+    }
+
+    // returns min(p | sum[0..p] >= sum)
+    int lower_bound(T sum) {
+        int pos = 0;
+        for (int blockSize = 1 << (31 - __builtin_clz(tree.size())); blockSize != 0; blockSize >>= 1) {
+            int p = pos + blockSize - 1;
+            if (p < tree.size() && tree[p] < sum) {
+                sum -= tree[p];
+                pos += blockSize;
+            }
+        }
+        return pos;
+    }
+};
 
 
 // usage example
 int main() {
-    add(t, 0, 4);
-    add(t, 1, 5);
-    add(t, 2, 5);
-    add(t, 2, 5);
+    fenwick<int> f(3);
+    f.add(0, 4);
+    f.add(1, 5);
+    f.add(2, 5);
+    f.add(2, 5);
 
-    cout << (4 == sum(t, 0)) << endl;
-    cout << (19 == sum(t, 2)) << endl;
-    cout << (2 == lower_bound(t, 19)) << endl;
-    cout << (maxn == lower_bound(t, 20)) << endl;
+    cout << boolalpha;
+    cout << (4 == f.sum(0)) << endl;
+    cout << (19 == f.sum(2)) << endl;
+    cout << (2 == f.lower_bound(19)) << endl;
+    cout << (3 == f.lower_bound(20)) << endl;
 }
