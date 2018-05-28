@@ -6,30 +6,30 @@ using namespace std;
 
 template<class T>
 struct fenwick {
-    vector<T> tree;
+    vector<T> t;
 
-    fenwick(int n) : tree(n) {}
+    fenwick(int n) : t(n) {}
 
     void add(int i, T value) {
-        for (; i < tree.size(); i |= i + 1)
-            tree[i] += value;
+        for (; i < t.size(); i |= i + 1)
+            t[i] += value;
     }
 
     // sum[0..i]
     int sum(int i) {
         T res{};
         for (; i >= 0; i = (i & (i + 1)) - 1)
-            res += tree[i];
+            res += t[i];
         return res;
     }
 
     // returns min(p | sum[0..p] >= sum)
     int lower_bound(T sum) {
         int pos = 0;
-        for (int blockSize = 1 << (31 - __builtin_clz(tree.size())); blockSize != 0; blockSize >>= 1) {
+        for (int blockSize = 1 << (31 - __builtin_clz(t.size())); blockSize != 0; blockSize >>= 1) {
             int p = pos + blockSize - 1;
-            if (p < tree.size() && tree[p] < sum) {
-                sum -= tree[p];
+            if (p < t.size() && t[p] < sum) {
+                sum -= t[p];
                 pos += blockSize;
             }
         }
