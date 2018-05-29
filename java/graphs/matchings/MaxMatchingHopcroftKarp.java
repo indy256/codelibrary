@@ -3,7 +3,8 @@ package graphs.matchings;
 import java.util.*;
 import java.util.stream.Stream;
 
-// https://en.wikipedia.org/wiki/Hopcroft–Karp_algorithm in (E * sqrt(V))
+// https://en.wikipedia.org/wiki/Hopcroft–Karp_algorithm
+// O(E * sqrt(V)) time complexity
 public class MaxMatchingHopcroftKarp {
 
     public static int maxMatching(List<Integer>[] graph, int n2) {
