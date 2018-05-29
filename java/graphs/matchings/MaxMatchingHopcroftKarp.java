@@ -29,7 +29,7 @@ public class MaxMatchingHopcroftKarp {
     static void bfs(List<Integer>[] graph, boolean[] used, int[] matching, int[] dist) {
         Arrays.fill(dist, -1);
         int n1 = graph.length;
-        int[] Q = new int[graph.length];
+        int[] Q = new int[n1];
         int sizeQ = 0;
         for (int u = 0; u < n1; ++u) {
             if (!used[u]) {
