@@ -4,7 +4,7 @@ import java.util.*;
 import java.util.stream.Stream;
 
 // https://en.wikipedia.org/wiki/Hopcroft–Karp_algorithm
-// O(E * sqrt(V)) time complexity
+// time complexity: O(E * sqrt(V))
 public class MaxMatchingHopcroftKarp {
 
     public static int maxMatching(List<Integer>[] graph, int n2) {
