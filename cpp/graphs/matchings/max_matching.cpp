@@ -7,10 +7,14 @@ using namespace std;
 
 class MaxMatching {
 public:
-    static tuple<int, vector<int>> max_matching(const vector<vector<int>> &graph, int n2) {
+    static tuple<int, vector<int>> max_matching(const vector<vector<int>> &graph) {
+        int n2 = 0;
+        for (auto &u1 : graph)
+            for (int u2 : u1)
+                n2 = max(n2, u2 + 1);
+        vector<int> mapping(n2, -1);
         size_t n1 = graph.size();
         vector<int> dist(n1);
-        vector<int> mapping(n1, -1);
         vector<bool> used(n1);
         for (int res = 0;;) {
             bfs(graph, used, mapping, dist);
@@ -26,7 +30,7 @@ public:
     }
 
 private:
-    static void bfs(const vector<vector<int>> &graph, vector<bool> &used, vector<int> &matching, vector<int> &dist) {
+    static void bfs(const vector<vector<int>> &graph, vector<bool> &used, vector<int> &mapping, vector<int> &dist) {
         fill(dist.begin(), dist.end(), -1);
         size_t n1 = graph.size();
         vector<int> Q(n1);
@@ -40,7 +44,7 @@ private:
         for (int i = 0; i < sizeQ; i++) {
             int u1 = Q[i];
             for (int v : graph[u1]) {
-                int u2 = matching[v];
+                int u2 = mapping[v];
                 if (u2 >= 0 && dist[u2] < 0) {
                     dist[u2] = dist[u1] + 1;
                     Q[sizeQ++] = u2;
@@ -71,7 +75,7 @@ int main() {
     g[1].push_back(1);
     g[2].push_back(1);
 
-    auto[max_matching_cardinality, mapping] = MaxMatching::max_matching(g, 2);
+    auto[max_matching_cardinality, mapping] = MaxMatching::max_matching(g);
 
     cout << (2 == max_matching_cardinality) << endl;
 
