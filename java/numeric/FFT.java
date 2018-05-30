@@ -5,7 +5,7 @@ import java.util.Random;
 
 public class FFT {
 
-    // a.length == b.length and is a power of 2
+    // precondition: a.length is a power of 2 and a.length == b.length
     public static void fft(double[] a, double[] b, boolean inverse) {
         int n = a.length;
         int shift = 32 - Integer.numberOfTrailingZeros(n);
