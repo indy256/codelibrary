@@ -6,7 +6,7 @@ import java.util.Random;
 public class FFT {
 
     // a.length == b.length == 2^x
-    public static void fft(double[] a, double[] b, boolean invert) {
+    public static void fft(double[] a, double[] b, boolean inverse) {
         int n = a.length;
         int shift = 32 - Integer.numberOfTrailingZeros(n);
         for (int i = 1; i < n; i++) {
@@ -22,7 +22,7 @@ public class FFT {
         }
         for (int len = 2; len <= n; len <<= 1) {
             int halfLen = len >> 1;
-            double angle = 2 * Math.PI / len * (invert ? -1 : 1);
+            double angle = 2 * Math.PI / len * (inverse ? -1 : 1);
             double wLenA = Math.cos(angle);
             double wLenB = Math.sin(angle);
             for (int i = 0; i < n; i += len) {
@@ -43,7 +43,7 @@ public class FFT {
                 }
             }
         }
-        if (invert) {
+        if (inverse) {
             for (int i = 0; i < n; i++) {
                 a[i] /= n;
                 b[i] /= n;
