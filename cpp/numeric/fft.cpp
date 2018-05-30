@@ -20,7 +20,7 @@ void fft(vector<cpx> &a, bool inverse) {
     }
     for (int len = 2; len <= n; len *= 2) {
         double angle = 2 * M_PI / len * (inverse ? -1 : 1);
-        cpx wLen(cos(angle), sin(angle));
+        cpx wlen(cos(angle), sin(angle));
         for (int i = 0; i < n; i += len) {
             cpx w(1);
             for (int j = 0; j < len / 2; j++) {
@@ -28,7 +28,7 @@ void fft(vector<cpx> &a, bool inverse) {
                 cpx v = a[i + j + len / 2] * w;
                 a[i + j] = u + v;
                 a[i + j + len / 2] = u - v;
-                w *= wLen;
+                w *= wlen;
             }
         }
     }
