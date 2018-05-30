@@ -30,9 +30,9 @@ public class IFFT {
                 a[j] = temp;
             }
         }
-        for (int len = 2; len <= n; len <<= 1) {
+        for (int len = 2; len <= n; len *= 2) {
             int wlen = invert ? root_inv : root;
-            for (int i = len; i < root_pw; i <<= 1)
+            for (int i = len; i < root_pw; i *= 2)
                 wlen = (int) ((long) wlen * wlen % mod);
             for (int i = 0; i < n; i += len) {
                 int w = 1;
@@ -75,7 +75,7 @@ public class IFFT {
             aReal[i] = (int) (((long) aReal[i] * bReal[i]) % mod);
         }
         fft(aReal, true, mod, root);
-        long carry = 0;
+        int carry = 0;
         for (int i = 0; i < resultSize; i++) {
             aReal[i] += carry;
             carry = aReal[i] / 10;
