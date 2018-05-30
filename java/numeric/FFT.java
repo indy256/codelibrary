@@ -5,7 +5,7 @@ import java.util.Random;
 
 public class FFT {
 
-    // a.length == b.length == 2^x
+    // a.length == b.length and is a power of 2
     public static void fft(double[] a, double[] b, boolean inverse) {
         int n = a.length;
         int shift = 32 - Integer.numberOfTrailingZeros(n);
@@ -51,7 +51,7 @@ public class FFT {
         }
     }
 
-    public static long[] multiply(long[] a, long[] b) {
+    public static int[] multiply(int[] a, int[] b) {
         int resultSize = Integer.highestOneBit(Math.max(a.length, b.length) - 1) << 2;
         resultSize = Math.max(resultSize, 2);
         double[] aReal = new double[resultSize];
@@ -70,10 +70,10 @@ public class FFT {
             aReal[i] = real;
         }
         fft(aReal, aImaginary, true);
-        long[] result = new long[resultSize];
+        int[] result = new int[resultSize];
         long carry = 0;
         for (int i = 0; i < resultSize; i++) {
-            result[i] = Math.round(aReal[i]) + carry;
+            result[i] = (int) (Math.round(aReal[i]) + carry);
             carry = result[i] / 10;
             result[i] %= 10;
         }
@@ -86,7 +86,7 @@ public class FFT {
         for (int step = 0; step < 1000; step++) {
             int n1 = rnd.nextInt(10) + 1;
             String s1 = "";
-            long[] a = new long[n1];
+            int[] a = new int[n1];
             for (int i = 0; i < n1; i++) {
                 int x = rnd.nextInt(10);
                 s1 = x + s1;
@@ -94,13 +94,14 @@ public class FFT {
             }
             int n2 = rnd.nextInt(10) + 1;
             String s2 = "";
-            long[] b = new long[n2];
+            int[] b = new int[n2];
             for (int i = 0; i < n2; i++) {
                 int x = rnd.nextInt(10);
                 s2 = x + s2;
                 b[i] = x;
             }
-            long[] res = multiply(a, b);
+
+            int[] res = multiply(a, b);
             String s = "";
             for (long v : res) {
                 s = v + s;
