@@ -5,7 +5,7 @@ import java.util.Random;
 public class Partition {
 
     // like http://www.cplusplus.com/reference/algorithm/partition/
-    // but additionally places separator in the end of the first group
+    // but additionally places separator at the end of the first group
     public static int partition(int[] a, int fromInclusive, int toExclusive, int separatorIndex) {
         int i = fromInclusive;
         int j = toExclusive - 1;
