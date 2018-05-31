@@ -13,14 +13,14 @@ public class HeavyLight {
         return 0;
     }
 
-    final List<Integer>[] tree;
-    final boolean valuesOnVertices; // true - values on vertices, false - values on edges
-    final SegmentTree segmentTree;
-    final int[] parent;
-    final int[] heavy;
-    final int[] depth;
-    final int[] pathRoot;
-    final int[] pos;
+    List<Integer>[] tree;
+    boolean valuesOnVertices; // true - values on vertices, false - values on edges
+    SegmentTree segmentTree;
+    int[] parent;
+    int[] heavy;
+    int[] depth;
+    int[] pathRoot;
+    int[] pos;
 
     public HeavyLight(List<Integer>[] tree, boolean valuesOnVertices) {
         this.tree = tree;
