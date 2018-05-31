@@ -52,16 +52,16 @@ public class HeavyLight {
         int size = 1;
         int maxSubtree = 0;
         for (int v : tree[u]) {
-            if (v != parent[u]) {
-                parent[v] = u;
-                depth[v] = depth[u] + 1;
-                int subtree = dfs(v);
-                if (maxSubtree < subtree) {
-                    maxSubtree = subtree;
-                    heavy[u] = v;
-                }
-                size += subtree;
+            if (v == parent[u])
+                continue;
+            parent[v] = u;
+            depth[v] = depth[u] + 1;
+            int subtree = dfs(v);
+            if (maxSubtree < subtree) {
+                maxSubtree = subtree;
+                heavy[u] = v;
             }
+            size += subtree;
         }
         return size;
     }
