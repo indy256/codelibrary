@@ -3,7 +3,7 @@ package misc;
 import java.util.*;
 import java.util.function.IntFunction;
 
-public class CycleDetection {
+public class FunctionCycleDetection {
 
     public static int[] floyd(IntFunction<Integer> f, int x0) {
         int tortoise = f.apply(x0);
