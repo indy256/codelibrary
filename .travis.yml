@@ -7,10 +7,10 @@ matrix:
 
   - language: cpp
     before_script: cd cpp
-    script: find . -type f -iname *.cpp -execdir g++-7 -std=c++17 {} \;
+    script: find . -type f -iname *.cpp -execdir g++-8 -std=c++17 {} \;
     addons:
       apt:
         sources:
         - ubuntu-toolchain-r-test
         packages:
-        - g++-7
+        - g++-8
