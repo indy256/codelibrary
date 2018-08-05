@@ -1,10 +1,6 @@
 matrix:
   include:
 
-  - language: java
-    jdk: oraclejdk8
-    before_script: cd java
-
   - os: linux
     addons:
       apt:
@@ -12,6 +8,11 @@ matrix:
         - ubuntu-toolchain-r-test
         packages:
         - g++-7
-    language: cpp
+
+  - language: java
+    jdk: oraclejdk8
+    before_script: cd java
+
+  - language: cpp
     before_script: cd cpp
     script: find . -type f -iname *.cpp -execdir g++ -std=c++17 {} \;
