@@ -6,3 +6,4 @@ matrix:
 
   - language: cpp
     before_script: cd cpp
+    script: find . -type f -iname *.cpp -execdir g++ {} \;
