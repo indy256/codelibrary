@@ -1,5 +1,4 @@
 [![Build Status](https://travis-ci.org/indy256/codelibrary.svg?branch=master)](https://travis-ci.org/indy256/codelibrary)
-[![Coverage Status](https://coveralls.io/repos/github/indy256/codelibrary/badge.svg?branch=master)](https://coveralls.io/github/indy256/codelibrary?branch=master)
 
 ##### Collection of algorithms and data structures in Java and C++ (additionally see [codelibrary-sandbox](https://github.com/indy256/codelibrary-sandbox))
 ## The following topics are covered:
