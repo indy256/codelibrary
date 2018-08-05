@@ -14,4 +14,4 @@ matrix:
 
   - language: cpp
     before_script: cd cpp
-    script: find . -type f -iname *.cpp -execdir g++ -std=c++17 {} \;
+    script: find . -type f -iname *.cpp -execdir g++-7 -std=c++17 {} \;
