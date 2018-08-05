@@ -5,4 +5,4 @@ matrix:
     before_script: cd java
 
   - language: cpp
-    before_script: cd ../cpp
+    before_script: cd cpp
