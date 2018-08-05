@@ -7,7 +7,7 @@ matrix:
 
   - language: cpp
     before_script: cd cpp
-    script: find . -type f -iname *.cpp -execdir g++-8 -std=c++17 {} \;
+    script: find . -type f -iname *.cpp -execdir g++-8 -std=c++2a {} \;
     addons:
       apt:
         sources:
