@@ -1,4 +1,4 @@
-[![GitHub stars](https://img.shields.io/github/stars/indy256/codelibrary.svg?style=flat&label=Stars)](https://github.com/indy256/codelibrary/)
+[![GitHub stars](https://img.shields.io/github/stars/indy256/codelibrary.svg?style=flat&label=star)](https://github.com/indy256/codelibrary/)
 [![Build Status](https://travis-ci.org/indy256/codelibrary.svg?branch=master)](https://travis-ci.org/indy256/codelibrary)
 [![License](https://img.shields.io/badge/license-UNLICENSE-green.svg)](https://github.com/indy256/codelibrary/blob/master/UNLICENSE)
 
