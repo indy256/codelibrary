@@ -6,7 +6,6 @@
 ## The following topics are covered:
 
 ### Data structures
-
 + [x] [Segment tree](java/structures/SegmentTreeIntervalAddMax.java)
 + [x] [Fenwick tree](java/structures/FenwickTree.java)
 + [x] [Persistent tree](java/structures/PersistentTree.java)
