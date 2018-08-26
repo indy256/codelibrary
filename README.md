@@ -8,16 +8,16 @@
 ## Data structures
 
 + [x] [Segment tree](java/structures/SegmentTreeIntervalAddMax.java)
-+ [x] Fenwick tree
-+ [x] Persistent tree
-+ [x] Link/cut tree
-+ [x] Binary heap
-+ [x] Disjoint sets
-+ [x] Treap
-+ [x] k-d tree
-+ [x] R-tree
-+ [x] Metric tree
-+ [x] Quadtree
++ [x] [Fenwick tree](java/structures/FenwickTree.java)
++ [x] [Persistent tree](java/structures/PersistentTree.java)
++ [x] [Link/cut tree](java/structures/LinkCutTree.java)
++ [x] [Binary heap](java/structures/BinaryHeap.java)
++ [x] [Disjoint sets](java/structures/DisjointSets.java)
++ [x] [Treap](java/structures/TreapImplicitKey.java)
++ [x] [k-d tree](java/structures/KdTreePointQuery.java)
++ [x] [R-tree](java/structures/RTree.java)
++ [x] [Metric tree](java/structures/MetricTree.java)
++ [x] [Quadtree](java/structures/QuadTree.java)
 
 * **Graph algorithms**: shortest paths, maximum flow, maximum matching, spanning tree, connectivity, biconnectivity, LCA
 * **String algorithms**: suffix tree, suffix automata, suffix array, trie, Aho-Corasick algorithm, Knuth-Morris-Pratt algorithm, Z-function, hashing, parsing
