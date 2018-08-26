@@ -1,40 +1,39 @@
 package dp;
 
-import java.util.Arrays;
-
-// https://en.wikipedia.org/wiki/Longest_increasing_subsequence in O(n^2)
+// https://en.wikipedia.org/wiki/Longest_increasing_subsequence in O(n*log(n))
 public class Lis {
 
-    public static int[] getLis(int[] x) {
-        int n = x.length;
-        int[] len = new int[n];
-        Arrays.fill(len, 1);
-        int[] pred = new int[n];
-        Arrays.fill(pred, -1);
-        int bi = 0;
-        for (int i = 1; i < n; i++) {
-            for (int j = 0; j < i; j++) {
-                if (x[j] < x[i] && len[i] < len[j] + 1) {
-                    len[i] = len[j] + 1;
-                    pred[i] = j;
-                }
-            }
-            if (len[bi] < len[i]) {
-                bi = i;
-            }
+    public static int[] lis(int[] a) {
+        int n = a.length;
+        int[] tail = new int[n];
+        int[] prev = new int[n];
+
+        int len = 0;
+        for (int i = 0; i < n; i++) {
+            int pos = lower_bound(a, tail, len, a[i]);
+            len = Math.max(len, pos + 1);
+            prev[i] = pos > 0 ? tail[pos - 1] : -1;
+            tail[pos] = i;
         }
-        int cnt = len[bi];
-        int[] res = new int[cnt];
-        for (int i = bi; i != -1; i = pred[i]) {
-            res[--cnt] = x[i];
+
+        int[] res = new int[len];
+        for (int i = tail[len - 1]; i >= 0; i = prev[i]) {
+            res[--len] = a[i];
         }
         return res;
     }
 
-    // Usage example
-    public static void main(String[] args) {
-        int[] a = {1, 5, 4, 2, 3, 7, 6};
-        int[] lis = getLis(a);
-        System.out.println(Arrays.toString(lis));
+    static int lower_bound(int[] a, int[] tail, int len, int key) {
+        int lo = -1;
+        int hi = len;
+        while (hi - lo > 1) {
+            int mid = (lo + hi) >>> 1;
+            if (a[tail[mid]] < key) {
+                lo = mid;
+            } else {
+                hi = mid;
+            }
+        }
+        return hi;
     }
 }
