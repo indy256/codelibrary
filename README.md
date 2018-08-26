@@ -5,9 +5,9 @@
 ##### Collection of algorithms and data structures in Java and C++ (for different languages see [codelibrary-sandbox](https://github.com/indy256/codelibrary-sandbox))
 ## The following topics are covered:
 
-## Data Structures
+## Data structures
 
-+ [x] Segment tree
++ [x] [Segment tree](java/structures/SegmentTreeIntervalAddMax.java)
 + [x] Fenwick tree
 + [x] Persistent tree
 + [x] Link/cut tree
@@ -18,10 +18,6 @@
 + [x] R-tree
 + [x] Metric tree
 + [x] Quadtree
-+ [x] Segment tree
-+ [x] Segment tree
-+ [x] Segment tree
-+ [x] Segment tree
 
 * **Graph algorithms**: shortest paths, maximum flow, maximum matching, spanning tree, connectivity, biconnectivity, LCA
 * **String algorithms**: suffix tree, suffix automata, suffix array, trie, Aho-Corasick algorithm, Knuth-Morris-Pratt algorithm, Z-function, hashing, parsing
