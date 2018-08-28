@@ -25,6 +25,7 @@
 + [x] [Connectivity](java/graphs/dfs)
 + [x] [Biconnectivity](java/graphs/dfs)
 + [x] [LCA](java/graphs/lca)
++ [ ] Planarity testing
 
 * **String algorithms**: suffix tree, suffix automata, suffix array, trie, Aho-Corasick algorithm, Knuth-Morris-Pratt algorithm, Z-function, hashing, parsing
 * **Sorting algorithms**: quick-, merge-, heap-, bubble-, selection-, insertion-, counting-, radix-sorting; Kth order statistic
