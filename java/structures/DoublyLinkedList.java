@@ -6,14 +6,14 @@ public class DoublyLinkedList {
     int[] prev;
 
     public DoublyLinkedList(int maxSize) {
-        // 0 - dummy element
+        // 0 - dummy element (head)
         next = new int[maxSize + 1];
         prev = new int[maxSize + 1];
     }
 
-    public void insert(int x, int pos) {
-        prev[x] = pos;
-        next[x] = next[pos];
+    public void insert(int x, int insertAfter) {
+        prev[x] = insertAfter;
+        next[x] = next[insertAfter];
         prev[next[x]] = x;
         next[prev[x]] = x;
     }
@@ -28,7 +28,7 @@ public class DoublyLinkedList {
         int n = 10;
         DoublyLinkedList list = new DoublyLinkedList(n);
         for (int i = 1; i <= n; i++) {
-            list.insert(i, 0);
+            list.insert(i, i - 1);
         }
         list.remove(1);
         list.remove(10);
