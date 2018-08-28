@@ -19,6 +19,5 @@ public class KnightDistance {
     }
 
     public static void main(String[] args) {
-
     }
 }

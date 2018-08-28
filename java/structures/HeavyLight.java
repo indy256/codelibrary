@@ -3,19 +3,18 @@ package structures;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiConsumer;
-import java.util.stream.Stream;
 
 // Heavy-light decomposition with path queries. Query complexity is O(log^2(n)).
 // Based on the code from http://codeforces.com/blog/entry/22072
 public class HeavyLight {
 
-    int getNeutralValue() {
+    public int getNeutralValue() {
         return 0;
     }
 
     List<Integer>[] tree;
     boolean valuesOnVertices; // true - values on vertices, false - values on edges
-    SegmentTree segmentTree;
+    public SegmentTree segmentTree;
     int[] parent;
     int[] heavy;
     int[] depth;
@@ -89,7 +88,7 @@ public class HeavyLight {
         op.accept(Math.min(pos[u], pos[v]) + (valuesOnVertices ? 0 : 1), Math.max(pos[u], pos[v]));
     }
 
-    static class SegmentTree {
+    public static class SegmentTree {
         // Modify the following 5 methods to implement your custom operations on the tree.
         // This example implements Add/Sum operations. Operations like Add/Max, Set/Max can also be implemented.
         int modifyOperation(int x, int y) {
@@ -97,7 +96,7 @@ public class HeavyLight {
         }
 
         // query (or combine) operation
-        int queryOperation(int leftValue, int rightValue) {
+        public int queryOperation(int leftValue, int rightValue) {
             return leftValue + rightValue;
         }
 
@@ -114,7 +113,7 @@ public class HeavyLight {
             return 0;
         }
 
-        int getInitValue() {
+        public int getInitValue() {
             return 0;
         }
 
@@ -122,7 +121,7 @@ public class HeavyLight {
         int[] value;
         int[] delta; // delta[i] affects value[i], delta[2*i+1] and delta[2*i+2]
 
-        int joinValueWithDelta(int value, int delta) {
+        public int joinValueWithDelta(int value, int delta) {
             if (delta == getNeutralDelta()) return value;
             return modifyOperation(value, delta);
         }
@@ -205,97 +204,5 @@ public class HeavyLight {
                 value[i >> 1] = queryOperation(joinNodeValueWithDelta(i, len), joinNodeValueWithDelta(i ^ 1, len));
             }
         }
-    }
-
-    // Random test
-    public static void main(String[] args) {
-        Random rnd = new Random(1);
-        for (int step = 0; step < 1000; step++) {
-            int n = rnd.nextInt(50) + 1;
-            List<Integer>[] tree = getRandomTree(n, rnd);
-            HeavyLight hl = new HeavyLight(tree, true);
-            int[] x = new int[n];
-            Arrays.fill(x, hl.segmentTree.getInitValue());
-            for (int i = 0; i < 1000; i++) {
-                int a = rnd.nextInt(n);
-                int b = rnd.nextInt(n);
-                List<Integer> path = new ArrayList<>();
-                getPathFromAtoB(tree, a, b, -1, path);
-                if (rnd.nextBoolean()) {
-                    int delta = rnd.nextInt(50) - 100;
-                    hl.modify(a, b, delta);
-                    for (int u : path)
-                        x[u] = hl.segmentTree.joinValueWithDelta(x[u], delta);
-                } else {
-                    int res1 = hl.query(a, b);
-                    int res2 = hl.getNeutralValue();
-                    for (int u : path)
-                        res2 = hl.segmentTree.queryOperation(res2, x[u]);
-                    if (res1 != res2)
-                        throw new RuntimeException();
-                }
-            }
-        }
-
-        for (int step = 0; step < 1000; step++) {
-            int n = rnd.nextInt(50) + 1;
-            List<Integer>[] tree = getRandomTree(n, rnd);
-            HeavyLight hl = new HeavyLight(tree, false);
-            Map<Long, Integer> x = new HashMap<>();
-            for (int u = 0; u < tree.length; u++)
-                for (int v : tree[u])
-                    x.put(edge(u, v), hl.segmentTree.getInitValue());
-            for (int i = 0; i < 1000; i++) {
-                int a = rnd.nextInt(n);
-                int b = rnd.nextInt(n);
-                List<Integer> path = new ArrayList<>();
-                getPathFromAtoB(tree, a, b, -1, path);
-                if (rnd.nextBoolean()) {
-                    int delta = rnd.nextInt(50) - 100;
-                    hl.modify(a, b, delta);
-                    for (int j = 0; j + 1 < path.size(); j++) {
-                        long key = edge(path.get(j), path.get(j + 1));
-                        x.put(key, hl.segmentTree.joinValueWithDelta(x.get(key), delta));
-                    }
-                } else {
-                    int res1 = hl.query(a, b);
-                    int res2 = hl.getNeutralValue();
-                    for (int j = 0; j + 1 < path.size(); j++) {
-                        long key = edge(path.get(j), path.get(j + 1));
-                        res2 = hl.segmentTree.queryOperation(res2, x.get(key));
-                    }
-                    if (res1 != res2)
-                        throw new RuntimeException();
-                }
-            }
-        }
-        System.out.println("Test passed");
-    }
-
-    static long edge(int u, int v) {
-        return ((long) Math.min(u, v) << 16) + Math.max(u, v);
-    }
-
-    static boolean getPathFromAtoB(List<Integer>[] tree, int a, int b, int p, List<Integer> path) {
-        path.add(a);
-        if (a == b)
-            return true;
-        for (int u : tree[a])
-            if (u != p && getPathFromAtoB(tree, u, b, a, path))
-                return true;
-        path.remove(path.size() - 1);
-        return false;
-    }
-
-    static List<Integer>[] getRandomTree(int n, Random rnd) {
-        List<Integer>[] t = Stream.generate(ArrayList::new).limit(n).toArray(List[]::new);
-        int[] p = new int[n];
-        for (int i = 0, j; i < n; j = rnd.nextInt(i + 1), p[i] = p[j], p[j] = i, i++) ; // random permutation
-        for (int i = 1; i < n; i++) {
-            int parent = p[rnd.nextInt(i)];
-            t[parent].add(p[i]);
-            t[p[i]].add(parent);
-        }
-        return t;
     }
 }
