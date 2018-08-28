@@ -15,7 +15,7 @@ public class SegmentsUnion {
         double union = 0;
         int balance = 0;
         for (int i = 0; i < points.length; i++) {
-            if (balance > 0 && i > 0)
+            if (balance > 0)
                 union += points[i].x - points[i - 1].x;
             if (points[i].type == 0)
                 ++balance;
