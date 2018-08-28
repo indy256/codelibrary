@@ -16,6 +16,7 @@ public class Closest2Points {
     public static final Comparator<Point> CMP_X = Comparator.<Point>comparingLong(p -> p.x).thenComparingLong(p -> p.y);
     public static final Comparator<Point> CMP_Y = Comparator.comparingLong(p -> p.y);
 
+    // Find closest pair in O(n*log^2(n))
     public static Point[] findClosestPair(Point[] points) {
         Point[] result = new Point[2];
         Arrays.sort(points, CMP_X);
