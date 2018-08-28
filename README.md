@@ -17,7 +17,15 @@
 + [x] [Metric tree](java/structures/MetricTree.java)
 + [x] [Quadtree](java/structures/QuadTree.java)
 
-* **Graph algorithms**: shortest paths, maximum flow, maximum matching, spanning tree, connectivity, biconnectivity, LCA
+#### Graph algorithms
++ [x] [Shortest paths](java/graphs/shortestpaths)
++ [x] [Maximum flow](java/graphs/flows)
++ [x] [Maximum matching](java/graphs/matchings)
++ [x] [Spanning tree](java/graphs/spanningtree)
++ [x] [Connectivity](java/graphs/dfs)
++ [x] [Biconnectivity](java/graphs/dfs)
++ [x] [LCA](java/graphs/lca)
+
 * **String algorithms**: suffix tree, suffix automata, suffix array, trie, Aho-Corasick algorithm, Knuth-Morris-Pratt algorithm, Z-function, hashing, parsing
 * **Sorting algorithms**: quick-, merge-, heap-, bubble-, selection-, insertion-, counting-, radix-sorting; Kth order statistic
 * **Geometry algorithms**: segments/lines/circles intersection, point in polygon query, convex hull, closest/furthest pair of points
