@@ -2,9 +2,9 @@
 [![Build Status](https://travis-ci.org/indy256/codelibrary.svg?branch=master)](https://travis-ci.org/indy256/codelibrary)
 [![License](https://img.shields.io/badge/license-UNLICENSE-green.svg)](https://github.com/indy256/codelibrary/blob/master/UNLICENSE)
 
-#### Collection of algorithms and data structures in Java and C++ (for different languages see [codelibrary-sandbox](https://github.com/indy256/codelibrary-sandbox))
+### Collection of algorithms and data structures in Java and C++ (for different languages see [codelibrary-sandbox](https://github.com/indy256/codelibrary-sandbox))
 
-### Data structures
+#### Data structures
 + [x] [Segment tree](java/structures/SegmentTreeIntervalAddMax.java)
 + [x] [Fenwick tree](java/structures/FenwickTree.java)
 + [x] [Persistent tree](java/structures/PersistentTree.java)
