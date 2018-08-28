@@ -2,7 +2,7 @@
 [![Build Status](https://travis-ci.org/indy256/codelibrary.svg?branch=master)](https://travis-ci.org/indy256/codelibrary)
 [![License](https://img.shields.io/badge/license-UNLICENSE-green.svg)](https://github.com/indy256/codelibrary/blob/master/UNLICENSE)
 
-##### Collection of algorithms and data structures in Java and C++ (for different languages see [codelibrary-sandbox](https://github.com/indy256/codelibrary-sandbox))
+#### Collection of algorithms and data structures in Java and C++ (for different languages see [codelibrary-sandbox](https://github.com/indy256/codelibrary-sandbox))
 ## The following topics are covered:
 
 ### Data structures
