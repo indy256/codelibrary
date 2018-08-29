@@ -48,18 +48,19 @@ public class AhoCorasick {
     // Usage example
     public static void main(String[] args) {
         AhoCorasick ahoCorasick = new AhoCorasick();
-        ahoCorasick.addString("bc");
-        ahoCorasick.addString("abc");
+        ahoCorasick.addString("a");
+        ahoCorasick.addString("aa");
+        ahoCorasick.addString("abaaa");
         ahoCorasick.buildLinks();
         int[][] t = ahoCorasick.transitions;
         int[] e = ahoCorasick.escape;
 
-        String s = "zabcbc";
+        String s = "abaa";
         int state = 0;
         List<Integer> occurences = new ArrayList<>();
         for (int i = 0; i < s.length(); i++) {
             state = t[state][s.charAt(i) - 'a'];
-            if (state != 0 && e[state] == state)
+            if (e[state] != 0)
                 occurences.add(i);
         }
         System.out.println(occurences);
