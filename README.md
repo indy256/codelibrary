@@ -28,7 +28,7 @@
 + [ ] Planarity testing ([contribute a link or implementation](https://github.com/indy256/codelibrary/issues/28))
 
 #### String algorithms
-+ [x] [Knuth-Morris-Pratt algorithm](java/strings/KMP.java)
++ [x] [Knuth-Morris-Pratt algorithm](java/strings/Kmp.java)
 + [x] [Aho-Corasick algorithm](java/strings/AhoCorasick.java)
 + [x] [Suffix array](java/strings/SuffixArray.java)
 + [x] [suffix automata](java/strings/SuffixAutomaton.java)
