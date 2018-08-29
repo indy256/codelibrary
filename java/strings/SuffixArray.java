@@ -6,7 +6,7 @@ import java.util.stream.IntStream;
 // https://en.wikipedia.org/wiki/Suffix_array
 public class SuffixArray {
 
-    // sort suffixes of S in O(n*log(n))
+    // build suffix array in O(n*log(n))
     public static int[] suffixArray(CharSequence S) {
         int n = S.length();
 
@@ -42,7 +42,7 @@ public class SuffixArray {
         return sa;
     }
 
-    // sort rotations of S in O(n*log(n))
+    // build rotation array in O(n*log(n))
     public static int[] rotationArray(CharSequence S) {
         int n = S.length();
         int[] sa = IntStream.range(0, n).boxed().sorted(Comparator.comparingInt(S::charAt)).mapToInt(Integer::intValue).toArray();
