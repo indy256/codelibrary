@@ -26,6 +26,10 @@
 + [x] [Biconnectivity](java/graphs/dfs)
 + [x] [LCA](java/graphs/lca)
 + [ ] Planarity testing ([contribute a link or implementation](https://github.com/indy256/codelibrary/issues/28))
++ [ ] Dynamic graph connectivity ([contribute a link or implementation](https://github.com/indy256/codelibrary/issues/29))
++ [ ] Chu–Liu/Edmonds' algorithm ([contribute a link or implementation](https://github.com/indy256/codelibrary/issues/30))
++ [ ] Minimum augmentation to strong connectivity ([contribute a link or implementation](https://github.com/indy256/codelibrary/issues/32))
++ [ ] Minimum augmentation to biconnectivity ([contribute a link or implementation](https://github.com/indy256/codelibrary/issues/33))
 
 #### String algorithms
 + [x] [Knuth-Morris-Pratt algorithm](java/strings/Kmp.java)
@@ -37,6 +41,7 @@
 + [x] [Z-function](java/strings/ZFunction.java)
 + [x] [Hashing](java/strings/Hashing.java)
 + [x] [Parsing](java/parsing)
++ [ ] Sorting strings in linear time ([contribute a link or implementation](https://github.com/indy256/codelibrary/issues/31))
 
 * **Sorting algorithms**: quick-, merge-, heap-, bubble-, selection-, insertion-, counting-, radix-sorting; Kth order statistic
 * **Geometry algorithms**: segments/lines/circles intersection, point in polygon query, convex hull, closest/furthest pair of points
