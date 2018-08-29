@@ -43,7 +43,10 @@
 + [x] [Parsing](java/parsing)
 + [ ] Sorting strings in linear time ([contribute a link or implementation](https://github.com/indy256/codelibrary/issues/31))
 
-* **Sorting algorithms**: quick-, merge-, heap-, bubble-, selection-, insertion-, counting-, radix-sorting; Kth order statistic
+#### Sorting algorithms
++ [x] [Sorting algorithms](java/sort/Sort.java)
++ [x] [N-th element](java/sort/NthElement.java)
+
 * **Geometry algorithms**: segments/lines/circles intersection, point in polygon query, convex hull, closest/furthest pair of points
 * **Combinatorics**: permutations, combinations, arrangements, partitions
 * Other: big numbers multiplication via fast Fourier transform, simplex algorithm
