@@ -52,17 +52,17 @@ public class AhoCorasick {
         ahoCorasick.addString("aa");
         ahoCorasick.addString("abaaa");
         ahoCorasick.buildLinks();
+
         int[][] t = ahoCorasick.transitions;
         int[] e = ahoCorasick.escape;
 
         String s = "abaa";
+
         int state = 0;
-        List<Integer> occurences = new ArrayList<>();
         for (int i = 0; i < s.length(); i++) {
             state = t[state][s.charAt(i) - 'a'];
             if (e[state] != 0)
-                occurences.add(i);
+                System.out.println(i);
         }
-        System.out.println(occurences);
     }
 }
