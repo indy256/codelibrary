@@ -47,6 +47,14 @@
 + [x] [Sorting algorithms](java/sort/Sort.java)
 + [x] [N-th element](java/sort/NthElement.java)
 
-* **Geometry algorithms**: segments/lines/circles intersection, point in polygon query, convex hull, closest/furthest pair of points
+#### Geometry algorithms
++ [x] [Segments intesection](java/geometry/SegmentsIntersection.java)
++ [x] [Line operations](java/geometry/LineGeometry.java)
++ [x] [Circle operations](java/geometry/CircleOperations.java)
++ [x] [Convex hull](java/geometry/ConvexHull.java)
++ [x] [Point in polygon query](java/geometry/PointInPolygon.java)
++ [x] [Closest pair of points](java/geometry/Closest2Points.java)
++ [x] [Furthest pair of points](cpp/geometry/diameter.cpp)
+
 * **Combinatorics**: permutations, combinations, arrangements, partitions
 * Other: big numbers multiplication via fast Fourier transform, simplex algorithm
