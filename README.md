@@ -27,7 +27,17 @@
 + [x] [LCA](java/graphs/lca)
 + [ ] Planarity testing ([contribute a link or implementation](https://github.com/indy256/codelibrary/issues/28))
 
-* **String algorithms**: suffix tree, suffix automata, suffix array, trie, Aho-Corasick algorithm, Knuth-Morris-Pratt algorithm, Z-function, hashing, parsing
+#### String algorithms
++ [x] [Knuth-Morris-Pratt algorithm](java/strings/KMP.java)
++ [x] [Aho-Corasick algorithm](java/strings/AhoCorasick.java)
++ [x] [Suffix array](java/strings/SuffixArray.java)
++ [x] [suffix automata](java/strings/SuffixAutomaton.java)
++ [x] [Suffix tree](java/strings/SuffixTree.java)
++ [x] [Trie](java/strings/Trie.java)
++ [x] [Z-function](java/strings/ZFunction.java)
++ [x] [Hashing](java/strings/Hashing.java)
++ [x] [Parsing](java/parsing)
+
 * **Sorting algorithms**: quick-, merge-, heap-, bubble-, selection-, insertion-, counting-, radix-sorting; Kth order statistic
 * **Geometry algorithms**: segments/lines/circles intersection, point in polygon query, convex hull, closest/furthest pair of points
 * **Combinatorics**: permutations, combinations, arrangements, partitions
