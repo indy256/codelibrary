@@ -73,4 +73,20 @@ public class Lca {
             throw new RuntimeException();
         }
     }
+
+    // Usage example
+    public static void main(String[] args) {
+        List<Integer>[] tree = new List[5];
+        for (int i = 0; i < tree.length; i++) {
+            tree[i] = new ArrayList<>();
+        }
+        tree[0].add(1);
+        tree[0].add(2);
+        tree[1].add(3);
+        tree[1].add(4);
+        Lca lca = new Lca(tree, 0);
+        System.out.println(0 == lca.lca(1, 2));
+        System.out.println(1 == lca.lca(3, 4));
+        System.out.println(0 == lca.lca(4, 2));
+    }
 }
