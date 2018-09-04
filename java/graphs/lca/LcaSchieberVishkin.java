@@ -1,6 +1,7 @@
 package graphs.lca;
 
 import java.util.*;
+import java.util.stream.Stream;
 
 // Answering LCA queries in O(1) with O(n) preprocessing
 public class LcaSchieberVishkin {
@@ -57,5 +58,18 @@ public class LcaSchieberVishkin {
         int ex = enterIntoStrip(x, hz);
         int ey = enterIntoStrip(y, hz);
         return preOrder[ex] < preOrder[ey] ? ex : ey;
+    }
+
+    // Usage example
+    public static void main(String[] args) {
+        List<Integer>[] tree = Stream.generate(ArrayList::new).limit(5).toArray(List[]::new);
+        tree[0].add(1);
+        tree[0].add(2);
+        tree[1].add(3);
+        tree[1].add(4);
+        LcaSchieberVishkin lca = new LcaSchieberVishkin(tree, 0);
+        System.out.println(0 == lca.lca(1, 2));
+        System.out.println(1 == lca.lca(3, 4));
+        System.out.println(0 == lca.lca(4, 2));
     }
 }

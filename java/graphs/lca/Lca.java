@@ -1,6 +1,7 @@
 package graphs.lca;
 
 import java.util.*;
+import java.util.stream.Stream;
 
 // Answering LCA queries in O(log(n)) with O(n) preprocessing
 public class Lca {
@@ -76,10 +77,7 @@ public class Lca {
 
     // Usage example
     public static void main(String[] args) {
-        List<Integer>[] tree = new List[5];
-        for (int i = 0; i < tree.length; i++) {
-            tree[i] = new ArrayList<>();
-        }
+        List<Integer>[] tree = Stream.generate(ArrayList::new).limit(5).toArray(List[]::new);
         tree[0].add(1);
         tree[0].add(2);
         tree[1].add(3);
