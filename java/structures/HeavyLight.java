@@ -3,6 +3,7 @@ package structures;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiConsumer;
+import java.util.stream.Stream;
 
 // Heavy-light decomposition with path queries. Query complexity is O(log^2(n)).
 // Based on the code from http://codeforces.com/blog/entry/22072
@@ -204,5 +205,24 @@ public class HeavyLight {
                 value[i >> 1] = queryOperation(joinNodeValueWithDelta(i, len), joinNodeValueWithDelta(i ^ 1, len));
             }
         }
+    }
+
+    // Usage example
+    public static void main(String[] args) {
+        List<Integer>[] tree = Stream.generate(ArrayList::new).limit(5).toArray(List[]::new);
+        tree[0].add(1);
+        tree[0].add(2);
+        tree[1].add(3);
+        tree[1].add(4);
+
+        HeavyLight hlV = new HeavyLight(tree, true);
+        hlV.modify(3, 2, 1);
+        hlV.modify(1, 0, -1);
+        System.out.println(1 == hlV.query(4, 2));
+
+        HeavyLight hlE = new HeavyLight(tree, false);
+        hlE.modify(3, 2, 1);
+        hlE.modify(1, 0, -1);
+        System.out.println(1 == hlE.query(4, 2));
     }
 }
