@@ -1,5 +1,7 @@
 package strings;
 
+import java.util.Arrays;
+
 public class ZFunction {
 
     // z[i] = lcp(s[0..], s[i..])
@@ -16,5 +18,11 @@ public class ZFunction {
             }
         }
         return z;
+    }
+
+    // Usage example
+    public static void main(String[] args) {
+        int[] z = zFunction("abcababc");
+        System.out.println(Arrays.toString(z));
     }
 }
