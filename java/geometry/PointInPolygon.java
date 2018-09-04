@@ -18,4 +18,13 @@ public class PointInPolygon {
         }
         return cnt % 2 == 0 ? -1 /* exterior */ : 1 /* interior */;
     }
+
+    // Usage example
+    public static void main(String[] args) {
+        int[] x = {0, 0, 2, 2};
+        int[] y = {0, 2, 2, 0};
+        System.out.println(1 == pointInPolygon(1, 1, x, y));
+        System.out.println(0 == pointInPolygon(0, 0, x, y));
+        System.out.println(-1 == pointInPolygon(0, 3, x, y));
+    }
 }
