@@ -1,7 +1,8 @@
 package graphs.matchings;
 
 import java.util.*;
-import java.util.stream.*;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 // https://en.wikipedia.org/wiki/Blossom_algorithm in O(V^3)
 public class MaxMatchingEdmonds {
@@ -87,5 +88,15 @@ public class MaxMatchingEdmonds {
             if (used[b]) return b;
             b = p[match[b]];
         }
+    }
+
+    // Usage example
+    public static void main(String[] args) {
+        List<Integer>[] graph = Stream.generate(ArrayList::new).limit(4).toArray(List[]::new);
+        graph[0].add(1);
+        graph[1].add(2);
+        graph[2].add(3);
+        graph[3].add(0);
+        System.out.println(2 == maxMatching(graph));
     }
 }

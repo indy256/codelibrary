@@ -1,6 +1,6 @@
 package graphs.matchings;
 
-import java.util.*;
+import java.util.Arrays;
 
 // https://en.wikipedia.org/wiki/Matching_(graph_theory)#In_unweighted_bipartite_graphs in O(V^3)
 public class MaxMatching2 {
@@ -27,5 +27,10 @@ public class MaxMatching2 {
             }
         }
         return false;
+    }
+
+    // Usage example
+    public static void main(String[] args) {
+        System.out.println(2 == maxMatching(new boolean[][]{{true, true}, {false, true}}));
     }
 }
