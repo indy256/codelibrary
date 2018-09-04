@@ -66,4 +66,42 @@ public class SuffixTree {
         }
         return root;
     }
+
+    // Usage example
+    public static void main(String[] args) {
+        String s1 = "aabcc";
+        String s2 = "abc";
+        // build generalized suffix tree
+        String s = s1 + '\1' + s2 + '\2';
+        Node tree = buildSuffixTree(s);
+        int lcs = SuffixTree.lcs(tree, s1.length(), s1.length() + s2.length() + 1);
+        System.out.println(3 == lcs);
+    }
+
+    public static int lcsLength;
+    public static int lcsBeginIndex;
+
+    // traverse suffix tree to find longest common substring
+    public static int lcs(SuffixTree.Node node, int i1, int i2) {
+        if (node.begin <= i1 && i1 < node.end) {
+            return 1;
+        }
+        if (node.begin <= i2 && i2 < node.end) {
+            return 2;
+        }
+        int mask = 0;
+        for (char f = 0; f < SuffixTree.ALPHABET.length(); f++) {
+            if (node.children[f] != null) {
+                mask |= lcs(node.children[f], i1, i2);
+            }
+        }
+        if (mask == 3) {
+            int curLength = node.depth + node.end - node.begin;
+            if (lcsLength < curLength) {
+                lcsLength = curLength;
+                lcsBeginIndex = node.begin;
+            }
+        }
+        return mask;
+    }
 }

@@ -17,46 +17,19 @@ public class SuffixTreeTest {
             // build generalized suffix tree
             String s = s1 + '\1' + s2 + '\2';
             SuffixTree.Node tree = SuffixTree.buildSuffixTree(s);
-            lcsLength = 0;
-            lcsBeginIndex = 0;
+            SuffixTree.lcsLength = 0;
+            SuffixTree.lcsBeginIndex = 0;
             // find longest common substring
-            lcs(tree, s1.length(), s1.length() + s2.length() + 1);
+            SuffixTree.lcs(tree, s1.length(), s1.length() + s2.length() + 1);
             int res2 = slowLcs(s1, s2);
-            if (lcsLength != res2) {
-                System.err.println(s.substring(lcsBeginIndex - 1, lcsBeginIndex + lcsLength - 1));
+            if (SuffixTree.lcsLength != res2) {
+                System.err.println(s.substring(SuffixTree.lcsBeginIndex - 1, SuffixTree.lcsBeginIndex + SuffixTree.lcsLength - 1));
                 System.err.println(s1);
                 System.err.println(s2);
-                System.err.println(lcsLength + " " + res2);
+                System.err.println(SuffixTree.lcsLength + " " + res2);
                 throw new RuntimeException();
             }
         }
-    }
-
-    static int lcsLength;
-    static int lcsBeginIndex;
-
-    // traverse suffix tree to find longest common substring
-    public static int lcs(SuffixTree.Node node, int i1, int i2) {
-        if (node.begin <= i1 && i1 < node.end) {
-            return 1;
-        }
-        if (node.begin <= i2 && i2 < node.end) {
-            return 2;
-        }
-        int mask = 0;
-        for (char f = 0; f < SuffixTree.ALPHABET.length(); f++) {
-            if (node.children[f] != null) {
-                mask |= lcs(node.children[f], i1, i2);
-            }
-        }
-        if (mask == 3) {
-            int curLength = node.depth + node.end - node.begin;
-            if (lcsLength < curLength) {
-                lcsLength = curLength;
-                lcsBeginIndex = node.begin;
-            }
-        }
-        return mask;
     }
 
     static int slowLcs(String a, String b) {
