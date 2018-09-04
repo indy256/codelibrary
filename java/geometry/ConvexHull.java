@@ -31,5 +31,17 @@ public class ConvexHull {
             this.x = x;
             this.y = y;
         }
+
+        @Override
+        public String toString() {
+            return "Point{" + "x=" + x + ", y=" + y + '}';
+        }
+    }
+
+    // Usage example
+    public static void main(String[] args) {
+        Point[] points = {new Point(0, 0), new Point(0, 1), new Point(1, 0), new Point(0, 0)};
+        Point[] convexHull = convexHull(points);
+        System.out.println(Arrays.toString(convexHull));
     }
 }
