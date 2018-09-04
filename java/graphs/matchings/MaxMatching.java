@@ -29,4 +29,15 @@ public class MaxMatching {
         }
         return false;
     }
+
+    // random tests
+    public static void main(String[] args) {
+        int n1 = 2;
+        int n2 = 2;
+        List<Integer>[] g = Stream.generate(ArrayList::new).limit(n1).toArray(List[]::new);
+        g[0].add(0);
+        g[0].add(1);
+        g[1].add(1);
+        System.out.println(2 == maxMatching(g, n2));
+    }
 }
