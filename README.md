@@ -56,5 +56,8 @@
 + [x] [Closest pair of points](java/geometry/Closest2Points.java)
 + [x] [Furthest pair of points](cpp/geometry/diameter.cpp)
 
+#### Numerical algorithms
++ [x] [Long arithmetics](cpp/numeric/bigint.cpp)
+
 * **Combinatorics**: permutations, combinations, arrangements, partitions
 * Other: big numbers multiplication via fast Fourier transform, simplex algorithm
