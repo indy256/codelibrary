@@ -56,8 +56,17 @@
 + [x] [Closest pair of points](java/geometry/Closest2Points.java)
 + [x] [Furthest pair of points](cpp/geometry/diameter.cpp)
 
+#### Optimization
++ [x] [Simplex algorithm](java/optimization/Simplex.java)
+
 #### Numerical algorithms
 + [x] [Long arithmetics](cpp/numeric/bigint.cpp)
++ [x] [Fast Fourier transform](java/numeric/FFT.java)
++ [x] [Laguerre's root-finding algorithm](cpp/numeric/polynom-roots.cpp)
 
-* **Combinatorics**: permutations, combinations, arrangements, partitions
-* Other: simplex algorithm
+#### Combinatorics
++ [x] [Permutations](java/combinatorics/Permutations.java)
++ [x] [Combinations](java/combinatorics/Combinations.java)
++ [x] [Arrangements](java/combinatorics/Arrangements.java)
++ [x] [Partitions](java/combinatorics/Partitions.java)
++ [x] [Binomial coefficients](java/combinatorics/BinomialCoefficients.java)
