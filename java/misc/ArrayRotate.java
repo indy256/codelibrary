@@ -29,21 +29,21 @@ public class ArrayRotate {
     public static void rotate3(int[] a, int first, int middle, int last) {
         int n = last - first;
         int jump = middle - first;
-        int gcd = gcd(jump, n);
-        int cycle = n / gcd;
-        for (int i = 0; i < gcd; i++) {
-            for (int j = 0, cur = i; j < cycle - 1; j++) {
+        for (int i = 0, count = 0; count < n; i++) {
+            int cur = i;
+            int tmp = a[cur];
+            while (true) {
+                ++count;
                 int next = cur + jump;
                 if (next >= n)
                     next -= n;
-                swap(a, cur, next);
+                if (next == i)
+                    break;
+                a[cur] = a[next];
                 cur = next;
             }
+            a[cur] = tmp;
         }
-    }
-
-    static int gcd(int a, int b) {
-        return a == 0 ? b : gcd(b % a, a);
     }
 
     static void swap(int[] a, int i, int j) {
