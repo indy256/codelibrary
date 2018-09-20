@@ -60,4 +60,4 @@
 + [x] [Long arithmetics](cpp/numeric/bigint.cpp)
 
 * **Combinatorics**: permutations, combinations, arrangements, partitions
-* Other: big numbers multiplication via fast Fourier transform, simplex algorithm
+* Other: simplex algorithm
