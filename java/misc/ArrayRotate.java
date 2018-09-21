@@ -35,7 +35,7 @@ public class ArrayRotate {
     public static void rotate3(int[] a, int first, int middle, int last) {
         int n = last - first;
         int jump = middle - first;
-        for (int i = 0, count = 0; count < n; i++) {
+        for (int i = first, count = 0; count < n; i++) {
             int cur = i;
             int tmp = a[cur];
             while (true) {
