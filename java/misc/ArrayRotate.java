@@ -26,6 +26,12 @@ public class ArrayRotate {
             swap(a, from++, --to);
     }
 
+    static void swap(int[] a, int i, int j) {
+        int t = a[j];
+        a[j] = a[i];
+        a[i] = t;
+    }
+
     public static void rotate3(int[] a, int first, int middle, int last) {
         int n = last - first;
         int jump = middle - first;
@@ -44,12 +50,6 @@ public class ArrayRotate {
             }
             a[cur] = tmp;
         }
-    }
-
-    static void swap(int[] a, int i, int j) {
-        int t = a[j];
-        a[j] = a[i];
-        a[i] = t;
     }
 
     // random test
