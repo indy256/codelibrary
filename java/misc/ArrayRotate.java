@@ -1,6 +1,7 @@
 package misc;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Random;
 
 public class ArrayRotate {
 
@@ -41,7 +42,7 @@ public class ArrayRotate {
             while (true) {
                 ++count;
                 int next = cur + jump;
-                if (next >= n)
+                if (next >= last)
                     next -= n;
                 if (next == i)
                     break;
