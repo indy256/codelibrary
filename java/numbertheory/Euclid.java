@@ -5,20 +5,20 @@ import java.util.*;
 
 public class Euclid {
 
-    public static long gcd(long a, long b) {
+    public static int gcd(int a, int b) {
         return b == 0 ? Math.abs(a) : gcd(b, a % b);
     }
 
-    public static long gcd2(long a, long b) {
+    public static int gcd2(int a, int b) {
         while (b != 0) {
-            long t = b;
+            int t = b;
             b = a % b;
             a = t;
         }
         return Math.abs(a);
     }
 
-    public static long lcm(long a, long b) {
+    public static long lcm(int a, int b) {
         return Math.abs(a / gcd(a, b) * b);
     }
 
