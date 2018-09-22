@@ -18,7 +18,7 @@ public class Euclid {
         return Math.abs(a);
     }
 
-    public static long lcm(int a, int b) {
+    public static int lcm(int a, int b) {
         return Math.abs(a / gcd(a, b) * b);
     }
 
