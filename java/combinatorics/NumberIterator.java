@@ -1,6 +1,8 @@
 package combinatorics;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.function.BiFunction;
 import java.util.stream.IntStream;
 
@@ -29,10 +31,10 @@ public class NumberIterator {
         // count numbers consisting only of 2 and 5 digits
         long num_2_5 = count(222, 10,
                 (prefix, remainingDigits) -> {
-                    if (prefix.length == 1 && prefix[0] == 0) return (1L << (remainingDigits + 1)) - 2;
+                    if (Arrays.equals(prefix, new int[]{0})) return (1L << (remainingDigits + 1)) - 2;
                     boolean all_2_5 = Arrays.stream(prefix).allMatch(v -> v == 2 || v == 5);
                     return all_2_5 ? 1L << remainingDigits : 0;
                 });
-        System.out.println(num_2_5);
+        System.out.println(7 == num_2_5);
     }
 }
