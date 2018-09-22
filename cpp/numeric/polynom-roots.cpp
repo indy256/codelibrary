@@ -2,6 +2,8 @@
 
 using namespace std;
 
+// https://en.wikipedia.org/wiki/Laguerre%27s_method
+
 typedef complex<double> cdouble;
 typedef vector<cdouble> poly;
 
