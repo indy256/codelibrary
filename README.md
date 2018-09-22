@@ -78,3 +78,8 @@
 + [x] [Arrangements](java/combinatorics/Arrangements.java)
 + [x] [Partitions](java/combinatorics/Partitions.java)
 + [x] [Binomial coefficients](java/combinatorics/BinomialCoefficients.java)
+
+#### Linear algebra
++ [x] [Gaussian elimination](java/linearalgebra/Gauss.java)
++ [x] [Determinant calculation](java/linearalgebra/Determinant.java)
++ [x] [Matrix operations](java/linearalgebra/Matrix.java)
