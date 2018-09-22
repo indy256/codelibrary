@@ -1,6 +1,7 @@
 package numbertheory;
 
 import java.util.Arrays;
+import java.util.stream.IntStream;
 
 public class PrimesAndDivisors {
 
@@ -57,21 +58,20 @@ public class PrimesAndDivisors {
         return divisors;
     }
 
-    // Generates minimum divisors up to n in O(n*log(log(n))) time
-    public static int[] generateMinDivisors(int n) {
-        int[] divisor = new int[n + 1];
-        for (int i = 1; i <= n; i++)
-            divisor[i] = i;
+    // Generates divisors up to n in O(n*log(log(n))) time
+    public static int[] generateDivisors(int n) {
+        int[] divisors = IntStream.range(0, n + 1).toArray();
         for (int i = 2; i * i <= n; i++)
-            if (divisor[i] == i)
+            if (divisors[i] == i)
                 for (int j = i * i; j <= n; j += i)
-                    divisor[j] = i;
-        return divisor;
+                    divisors[j] = i;
+        return divisors;
     }
 
     // Generates minimum divisors up to n in O(n) time
-    public static int[] generateMinDivisorsLinearTime(int n) {
+    public static int[] generateMinDivisors(int n) {
         int[] lp = new int[n + 1];
+        lp[1] = 1;
         int[] primes = new int[n + 1];
         int cnt = 0;
         for (int i = 2; i <= n; ++i) {
@@ -101,9 +101,7 @@ public class PrimesAndDivisors {
 
     // Euler's totient function
     public static int[] generatePhi(int n) {
-        int[] res = new int[n + 1];
-        for (int i = 1; i <= n; i++)
-            res[i] = i;
+        int[] res = IntStream.range(0, n + 1).toArray();
         for (int i = 1; i <= n; i++)
             for (int j = i + i; j <= n; j += i)
                 res[j] -= res[i];
@@ -122,13 +120,14 @@ public class PrimesAndDivisors {
         System.out.println(Arrays.equals(primes1, primes2));
 
         System.out.println(Arrays.toString(numberOfPrimeDivisors(n)));
+        System.out.println(Arrays.toString(generateDivisors(n)));
         System.out.println(Arrays.toString(generateMinDivisors(n)));
-        System.out.println(Arrays.toString(generateMinDivisorsLinearTime(n)));
 
         n = 1000;
         int[] phi = generatePhi(n);
+        long[] PHI = MultiplicativeFunction.PHI.generateValues(n);
         for (int i = 0; i <= n; i++) {
-            if (phi[i] != phi(i)) {
+            if (phi[i] != phi(i) || phi[i] != PHI[i]) {
                 System.err.println(i);
             }
         }
