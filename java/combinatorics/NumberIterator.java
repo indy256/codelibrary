@@ -26,7 +26,7 @@ public class NumberIterator {
 
     // Usage example
     public static void main(String[] args) {
-        // count numbers consisting only of 2 and 5 digits
+        // count numbers consisting only of digits 2 and 5
         long num_2_5 = count(222, 10,
                 (prefix, remainingDigits) -> {
                     if (Arrays.equals(prefix, new int[]{0})) return (1L << (remainingDigits + 1)) - 2;
