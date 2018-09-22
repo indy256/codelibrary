@@ -8,13 +8,13 @@ public interface MultiplicativeFunction {
 
     long apply(long prime, int exponent, long power);
 
-    MultiplicativeFunction DIVISOR_COUNT = (p, exp, power) -> exp + 1;
-
-    MultiplicativeFunction DIVISOR_SUM = (p, exp, power) -> (power * p - 1) / (p - 1);
-
     MultiplicativeFunction PHI = (p, exp, power) -> power - power / p;
 
     MultiplicativeFunction MOBIUS = (p, exp, power) -> exp == 1 ? -1 : 0;
+
+    MultiplicativeFunction DIVISOR_COUNT = (p, exp, power) -> exp + 1;
+
+    MultiplicativeFunction DIVISOR_SUM = (p, exp, power) -> (power * p - 1) / (p - 1);
 
     default long get(long x) {
         long res = 1;
