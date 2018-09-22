@@ -1,5 +1,7 @@
 package linearalgebra;
 
+import java.util.Arrays;
+
 public class Matrix {
     public static int[][] matrixAdd(int[][] a, int[][] b) {
         int n = a.length;
@@ -38,15 +40,15 @@ public class Matrix {
         }
     }
 
-    public static int[][] matrixPowSum(int[][] a, int p) {
+    public static int[][] matrixSumPow(int[][] a, int p) {
         int n = a.length;
         if (p == 0) {
             return new int[n][n];
         }
         if (p % 2 == 0) {
-            return matrixMul(matrixPowSum(a, p / 2), matrixAdd(matrixUnit(n), matrixPow(a, p / 2)));
+            return matrixMul(matrixSumPow(a, p / 2), matrixAdd(matrixUnit(n), matrixPow(a, p / 2)));
         } else {
-            return matrixAdd(a, matrixMul(matrixPowSum(a, p - 1), a));
+            return matrixAdd(a, matrixMul(matrixSumPow(a, p - 1), a));
         }
     }
 
@@ -63,5 +65,9 @@ public class Matrix {
         int[][] a = {{1, 2}, {3, 4}};
         int[][] b = matrixUnit(2);
         int[][] c = matrixMul(a, b);
+
+        int[][] x = {{2, 0}, {0, 2}};
+        int[][] y = matrixSumPow(x, 3);
+        System.out.println(Arrays.deepToString(y));
     }
 }
