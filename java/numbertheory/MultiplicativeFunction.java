@@ -12,7 +12,7 @@ public interface MultiplicativeFunction {
 
     MultiplicativeFunction DIVISOR_SUM = (p, exp, power) -> (power * p - 1) / (p - 1);
 
-    MultiplicativeFunction PHI = (p, exp, power) -> power / p * (p - 1);
+    MultiplicativeFunction PHI = (p, exp, power) -> power - power / p;
 
     MultiplicativeFunction MOBIUS = (p, exp, power) -> exp == 1 ? -1 : 0;
 
