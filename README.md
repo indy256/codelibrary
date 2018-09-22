@@ -62,7 +62,15 @@
 #### Numerical algorithms
 + [x] [Long arithmetics](cpp/numeric/bigint.cpp)
 + [x] [Fast Fourier transform](java/numeric/FFT.java)
++ [x] [Karatsuba multiplication](java/numeric/KaratsubaMultiply.java)
 + [x] [Laguerre's root-finding algorithm](cpp/numeric/polynom-roots.cpp)
+
+#### Number theory
++ [x] [Primes and divisors](java/numbertheory/PrimesAndDivisors.java)
++ [x] [Factorization](java/numbertheory/Factorization.java)
++ [x] [Euclidean algorithm](java/numbertheory/Euclid.java)
++ [x] [Multiplicative function](java/numbertheory/MultiplicativeFunction.java)
++ [x] [Rational numbers](java/numbertheory/Rational.java)
 
 #### Combinatorics
 + [x] [Permutations](java/combinatorics/Permutations.java)
