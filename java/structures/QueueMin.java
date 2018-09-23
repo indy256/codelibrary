@@ -2,6 +2,7 @@ package structures;
 
 import java.util.*;
 
+// https://cp-algorithms.com/data_structures/stack_queue_modification.html
 public class QueueMin<E extends Comparable<? super E>> {
     List<E[]> s1 = new ArrayList<>();
     List<E[]> s2 = new ArrayList<>();
