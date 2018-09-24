@@ -63,6 +63,7 @@
 + [x] [Long arithmetics](cpp/numeric/bigint.cpp)
 + [x] [Fast Fourier transform](java/numeric/FFT.java)
 + [x] [Karatsuba multiplication](java/numeric/KaratsubaMultiply.java)
++ [x] [Newton interpolation](java/numeric/NewtonInterpolation.java)
 + [x] [Laguerre's root-finding algorithm](cpp/numeric/polynom-roots.cpp)
 
 #### Number theory
