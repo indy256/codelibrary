@@ -34,6 +34,7 @@
 + [x] [Shortest paths](java/graphs/shortestpaths)
 + [x] [Maximum flow](java/graphs/flows)
 + [x] [Maximum matching](java/graphs/matchings)
++ [ ] Maximum weighted matching in general graph ([contribute a link or implementation](https://github.com/indy256/codelibrary/issues/38))
 + [x] [Spanning tree](java/graphs/spanningtree)
 + [x] [Connectivity](java/graphs/dfs)
 + [x] [Biconnectivity](java/graphs/dfs)
