@@ -69,6 +69,7 @@
 + [x] [Point in polygon query](java/geometry/PointInPolygon.java)
 + [x] [Closest pair of points](java/geometry/Closest2Points.java)
 + [x] [Furthest pair of points](cpp/geometry/diameter.cpp)
++ [ ] Implement quaternion ([contribute a link or implementation](https://github.com/indy256/codelibrary/issues/35))
 
 #### Optimization
 + [x] [Simplex algorithm](java/optimization/Simplex.java)
@@ -86,7 +87,6 @@
 + [x] [Euclidean algorithm](java/numbertheory/Euclid.java)
 + [x] [Multiplicative function](java/numbertheory/MultiplicativeFunction.java)
 + [x] [Rational numbers](java/numbertheory/Rational.java)
-+ [ ] Implement quaternion ([contribute a link or implementation](https://github.com/indy256/codelibrary/issues/35))
 
 #### Combinatorics
 + [x] [Permutations](java/combinatorics/Permutations.java)
