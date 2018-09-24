@@ -5,6 +5,7 @@ import java.util.Arrays;
 
 public class NewtonInterpolation {
 
+    // https://en.wikipedia.org/wiki/Divided_differences#Example
     public static int[] getDividedDifferences(int[] x, int[] y, int mod) {
         BigInteger MOD = BigInteger.valueOf(mod);
         int n = x.length;
@@ -26,6 +27,7 @@ public class NewtonInterpolation {
         return res;
     }
 
+    // https://en.wikipedia.org/wiki/Newton_polynomial#Definition
     public static int interpolate(int[] X, int[] dd, int mod, int x) {
         int res = 0;
         int m = 1;
