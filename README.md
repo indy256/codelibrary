@@ -54,6 +54,7 @@
 + [x] [Z-function](java/strings/ZFunction.java)
 + [x] [Hashing](java/strings/Hashing.java)
 + [x] [Parsing](java/parsing)
++ [ ] Implement palindrome tree ([contribute a link or implementation](https://github.com/indy256/codelibrary/issues/34))
 + [ ] Sorting strings in linear time ([contribute a link or implementation](https://github.com/indy256/codelibrary/issues/31))
 
 #### Sorting algorithms
