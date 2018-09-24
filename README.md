@@ -87,6 +87,7 @@
 + [x] [Euclidean algorithm](java/numbertheory/Euclid.java)
 + [x] [Multiplicative function](java/numbertheory/MultiplicativeFunction.java)
 + [x] [Rational numbers](java/numbertheory/Rational.java)
++ [ ] Implement polynom class ([contribute a link or implementation](https://github.com/indy256/codelibrary/issues/36))
 
 #### Combinatorics
 + [x] [Permutations](java/combinatorics/Permutations.java)
