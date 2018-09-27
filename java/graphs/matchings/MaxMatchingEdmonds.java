@@ -30,7 +30,7 @@ public class MaxMatchingEdmonds {
     static int findPath(List<Integer>[] graph, int[] match, int[] p, int root) {
         Arrays.fill(p, -1);
         int n = graph.length;
-        int[] base = IntStream.range(0, n).toArray();
+        int[] bases = IntStream.range(0, n).toArray();
 
         boolean[] used = new boolean[n];
         int[] q = new int[n];
@@ -40,15 +40,15 @@ public class MaxMatchingEdmonds {
         for (int qh = 0; qh < qt; qh++) {
             int u = q[qh];
             for (int v : graph[u]) {
-                if (base[u] == base[v] || match[u] == v) continue;
+                if (bases[u] == bases[v] || match[u] == v) continue;
                 if (v == root || match[v] != -1 && p[match[v]] != -1) {
-                    int curbase = lca(match, base, p, u, v);
+                    int base = lca(match, bases, p, u, v);
                     boolean[] blossom = new boolean[n];
-                    markPath(match, base, blossom, p, u, curbase, v);
-                    markPath(match, base, blossom, p, v, curbase, u);
+                    markPath(match, bases, blossom, p, u, base, v);
+                    markPath(match, bases, blossom, p, v, base, u);
                     for (int i = 0; i < n; ++i)
-                        if (blossom[base[i]]) {
-                            base[i] = curbase;
+                        if (blossom[bases[i]]) {
+                            bases[i] = base;
                             if (!used[i]) {
                                 used[i] = true;
                                 q[qt++] = i;
@@ -67,9 +67,9 @@ public class MaxMatchingEdmonds {
         return -1;
     }
 
-    static void markPath(int[] match, int[] base, boolean[] blossom, int[] p, int u, int curbase, int child) {
-        for (; base[u] != curbase; u = p[match[u]]) {
-            blossom[base[u]] = blossom[base[match[u]]] = true;
+    static void markPath(int[] match, int[] bases, boolean[] blossom, int[] p, int u, int base, int child) {
+        for (; bases[u] != base; u = p[match[u]]) {
+            blossom[bases[u]] = blossom[bases[match[u]]] = true;
             p[u] = child;
             child = match[u];
         }
@@ -94,9 +94,13 @@ public class MaxMatchingEdmonds {
     public static void main(String[] args) {
         List<Integer>[] graph = Stream.generate(ArrayList::new).limit(4).toArray(List[]::new);
         graph[0].add(1);
+        graph[1].add(0);
+        graph[2].add(1);
         graph[1].add(2);
-        graph[2].add(3);
+        graph[2].add(0);
+        graph[0].add(2);
         graph[3].add(0);
+        graph[0].add(3);
         System.out.println(2 == maxMatching(graph));
     }
 }
