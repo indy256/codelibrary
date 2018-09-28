@@ -1,6 +1,6 @@
 package graphs.matchings;
 
-import java.util.*;
+import java.util.Arrays;
 
 // https://en.wikipedia.org/wiki/Hungarian_algorithm in O(n^2 * m)
 public class Hungarian {
@@ -54,5 +54,16 @@ public class Hungarian {
         for (int i = 1; i < m; ++i)
             matching[p[i]] = i;
         return -v[0];
+    }
+
+    // Usage example
+    public static void main(String[] args) {
+        // row1 and col1 should contain 0
+        int[][] a = {
+                {0, 0, 0},
+                {0, 1, 2},
+                {0, 1, 2}};
+        int res = minWeightPerfectMatching(a);
+        System.out.println(3 == res);
     }
 }
