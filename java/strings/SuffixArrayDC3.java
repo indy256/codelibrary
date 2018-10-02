@@ -13,29 +13,25 @@ public class SuffixArrayDC3 {
     }
 
     // stably sort a[0..n-1] to b[0..n-1] with keys in 0..K from r
-    static void radixPass(int[] a, int[] b, int[] r, int n, int K) {
-        // count occurrences
-        int[] c = new int[K + 1]; // counter array
-        for (int i = 0; i <= K; i++) c[i] = 0; // reset counters
-        for (int i = 0; i < n; i++) c[r[a[i]]]++; // count occurrences
-        for (int i = 0, sum = 0; i <= K; i++) // exclusive prefix sums
-        {
-            int t = c[i];
-            c[i] = sum;
-            sum += t;
-        }
-        for (int i = 0; i < n; i++) b[c[r[a[i]]]++] = a[i]; // sort
+    static void radixPass(int[] a, int[] b, int[] r, int offset, int n, int K) {
+        int[] cnt = new int[K + 1];
+        for (int i = 0; i < n; i++)
+            ++cnt[r[a[i] + offset]];
+        for (int i = 1; i < cnt.length; i++)
+            cnt[i] += cnt[i - 1];
+        for (int i = n - 1; i >= 0; i--)
+            b[--cnt[r[a[i] + offset]]] = a[i];
     }
 
     // find the suffix array SA of T[0..n-1] in {1..K}^n
     // require T[n]=T[n+1]=T[n+2]=0, n>=2
     private static void suffixArray(int[] T, int[] SA, int n, int K) {
-        int n0 = (n + 2) / 3, n1 = (n + 1) / 3, n2 = n / 3, n02 = n0 + n2;
+        int n0 = (n + 2) / 3;
+        int n1 = (n + 1) / 3;
+        int n2 = n / 3;
+        int n02 = n0 + n2;
         int[] R = new int[n02 + 3];
-        R[n02] = R[n02 + 1] = R[n02 + 2] = 0;
         int[] SA12 = new int[n02 + 3];
-        SA12[n02] = SA12[n02 + 1] = SA12[n02 + 2] = 0;
-        int[] R0 = new int[n0];
         int[] SA0 = new int[n0];
 
         //******* Step 0: Construct sample ********
@@ -45,26 +41,28 @@ public class SuffixArrayDC3 {
 
         //******* Step 1: Sort sample suffixes ********
         // lsb radix sort the mod 1 and mod 2 triples
-        radixPass(R, SA12, Arrays.copyOfRange(T, 2, T.length), n02, K);
-        radixPass(SA12, R, Arrays.copyOfRange(T, 1, T.length), n02, K);
-        radixPass(R, SA12, T, n02, K);
+        radixPass(R, SA12, T, 2, n02, K);
+        radixPass(SA12, R, T, 1, n02, K);
+        radixPass(R, SA12, T, 0, n02, K);
 
         // find lexicographic names of triples and
         // write them to correct places in R
-        int name = 0, c0 = -1, c1 = -1, c2 = -1;
+        int name = 0;
+        int c0 = -1;
+        int c1 = -1;
+        int c2 = -1;
         for (int i = 0; i < n02; i++) {
             if (T[SA12[i]] != c0 || T[SA12[i] + 1] != c1 || T[SA12[i] + 2] != c2) {
-                name++;
+                ++name;
                 c0 = T[SA12[i]];
                 c1 = T[SA12[i] + 1];
                 c2 = T[SA12[i] + 2];
             }
             if (SA12[i] % 3 == 1) {
-                R[SA12[i] / 3] = name;
-            } // write to R1
-            else {
-                R[SA12[i] / 3 + n0] = name;
-            } // write to R2
+                R[SA12[i] / 3] = name; // write to R1
+            } else {
+                R[SA12[i] / 3 + n0] = name; // write to R2
+            }
         }
 
         // recurse if names are not yet unique
@@ -76,8 +74,9 @@ public class SuffixArrayDC3 {
             for (int i = 0; i < n02; i++) SA12[R[i] - 1] = i;
         //******* Step 2: Sort nonsample suffixes ********
         // stably sort the mod 0 suffixes from SA12 by their first character
+        int[] R0 = new int[n0];
         for (int i = 0, j = 0; i < n02; i++) if (SA12[i] < n0) R0[j++] = 3 * SA12[i];
-        radixPass(R0, SA0, T, n0, K);
+        radixPass(R0, SA0, T, 0, n0, K);
 
         //******* Step 3: Merge ********
         // merge sorted SA0 suffixes and sorted SA12 suffixes
@@ -93,7 +92,7 @@ public class SuffixArrayDC3 {
                     for (k++; p < n0; p++, k++) SA[k] = SA0[p];
             } else { // suffix from SA0 is smaller
                 SA[k] = j;
-                p++;
+                ++p;
                 if (p == n0) // done --- only SA12 suffixes left
                     for (k++; t < n02; t++, k++) SA[k] = SA12[t] < n0 ? SA12[t] * 3 + 1 : (SA12[t] - n0) * 3 + 2;
             }
@@ -108,7 +107,7 @@ public class SuffixArrayDC3 {
         for (int i = 0; i < n; i++)
             T[i] = s.charAt(i);
         int[] sa = new int[n];
-        suffixArray(T, sa, n, 256);
+        suffixArray(T, sa, n, 255);
         return sa;
     }
 
@@ -133,6 +132,14 @@ public class SuffixArrayDC3 {
 
     // Usage example
     public static void main(String[] args) {
+        Random rnd1 = new Random(1);
+        int n2 = 5_000_000;
+        StringBuilder ss = rnd1.ints(n2, 0, 26).collect(StringBuilder::new, (sb, i) -> sb.append((char) ('a' + i)), StringBuilder::append);
+        long time = System.currentTimeMillis();
+        int[] sa2 = suffixArray(ss);
+        System.out.println(System.currentTimeMillis() - time);
+
+
         String s1 = "abcab";
         int[] sa1 = suffixArray(s1);
 
