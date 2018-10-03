@@ -1,6 +1,7 @@
 package strings;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Random;
 
 // DC3 linear time suffix array construction algorithm ("Linear Work Suffix Array Construction")
 public class SuffixArrayDC3 {
@@ -13,7 +14,7 @@ public class SuffixArrayDC3 {
     }
 
     // stably sort a[0..n-1] to b[0..n-1] with keys in 0..K from r
-    static void countingSort(int[] a, int[] b, int[] r, int offset, int n, int K) {
+    static void radixPass(int[] a, int[] b, int[] r, int offset, int n, int K) {
         int[] cnt = new int[K + 1];
         for (int i = 0; i < n; i++)
             ++cnt[r[a[i] + offset]];
@@ -40,43 +41,40 @@ public class SuffixArrayDC3 {
         //******* Step 1: Sort sample suffixes ********
         // lsb radix sort the mod 1 and mod 2 triples
         int[] SA12 = new int[n02 + 3];
-        countingSort(R, SA12, T, 2, n02, K);
-        countingSort(SA12, R, T, 1, n02, K);
-        countingSort(R, SA12, T, 0, n02, K);
+        radixPass(R, SA12, T, 2, n02, K);
+        radixPass(SA12, R, T, 1, n02, K);
+        radixPass(R, SA12, T, 0, n02, K);
 
         // find lexicographic names of triples and
         // write them to correct places in R
         int name = 0;
-        int c0 = -1;
-        int c1 = -1;
-        int c2 = -1;
         for (int i = 0; i < n02; i++) {
-            if (T[SA12[i]] != c0 || T[SA12[i] + 1] != c1 || T[SA12[i] + 2] != c2) {
+            if (i == 0 || T[SA12[i]] != T[SA12[i - 1]] || T[SA12[i] + 1] != T[SA12[i - 1] + 1]
+                    || T[SA12[i] + 2] != T[SA12[i - 1] + 2]) {
                 ++name;
-                c0 = T[SA12[i]];
-                c1 = T[SA12[i] + 1];
-                c2 = T[SA12[i] + 2];
             }
-            if (SA12[i] % 3 == 1) {
-                R[SA12[i] / 3] = name; // write to R1
-            } else {
-                R[SA12[i] / 3 + n0] = name; // write to R2
-            }
+            R[SA12[i] / 3 + (SA12[i] % 3 == 1 ? 0 : n0)] = name;
         }
 
-        // recurse if names are not yet unique
         if (name < n02) {
+            // recurse if names are not yet unique
             suffixArray(R, SA12, n02, name);
             // store unique names in R using the suffix array
-            for (int i = 0; i < n02; i++) R[SA12[i]] = i + 1;
-        } else // generate the suffix array of R directly
-            for (int i = 0; i < n02; i++) SA12[R[i] - 1] = i;
+            for (int i = 0; i < n02; i++)
+                R[SA12[i]] = i + 1;
+        } else {
+            // generate the suffix array of R directly
+            for (int i = 0; i < n02; i++)
+                SA12[R[i] - 1] = i;
+        }
+
         //******* Step 2: Sort nonsample suffixes ********
         // stably sort the mod 0 suffixes from SA12 by their first character
         int[] R0 = new int[n0];
-        for (int i = 0, j = 0; i < n02; i++) if (SA12[i] < n0) R0[j++] = 3 * SA12[i];
+        for (int i = 0, j = 0; i < n02; i++)
+            if (SA12[i] < n0) R0[j++] = 3 * SA12[i];
         int[] SA0 = new int[n0];
-        countingSort(R0, SA0, T, 0, n0, K);
+        radixPass(R0, SA0, T, 0, n0, K);
 
         //******* Step 3: Merge ********
         // merge sorted SA0 suffixes and sorted SA12 suffixes
@@ -87,14 +85,14 @@ public class SuffixArrayDC3 {
                     leq(T[i], R[SA12[t] + n0], T[j], R[j / 3]) :
                     leq(T[i], T[i + 1], R[SA12[t] - n0 + 1], T[j], T[j + 1], R[j / 3 + n0])) { // suffix from SA12 is smaller
                 SA[k] = i;
-                t++;
-                if (t == n02) // done --- only SA0 suffixes left
-                    for (k++; p < n0; p++, k++) SA[k] = SA0[p];
+                if (++t == n02) // done --- only SA0 suffixes left
+                    for (k++; p < n0; p++, k++)
+                        SA[k] = SA0[p];
             } else { // suffix from SA0 is smaller
                 SA[k] = j;
-                ++p;
-                if (p == n0) // done --- only SA12 suffixes left
-                    for (k++; t < n02; t++, k++) SA[k] = SA12[t] < n0 ? SA12[t] * 3 + 1 : (SA12[t] - n0) * 3 + 2;
+                if (++p == n0) // done --- only SA12 suffixes left
+                    for (k++; t < n02; t++, k++)
+                        SA[k] = SA12[t] < n0 ? SA12[t] * 3 + 1 : (SA12[t] - n0) * 3 + 2;
             }
         }
     }
