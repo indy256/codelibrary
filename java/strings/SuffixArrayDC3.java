@@ -2,6 +2,7 @@ package strings;
 
 import java.util.Arrays;
 import java.util.Random;
+import java.util.stream.IntStream;
 
 // DC3 linear time suffix array construction algorithm ("Linear Work Suffix Array Construction")
 public class SuffixArrayDC3 {
@@ -100,11 +101,9 @@ public class SuffixArrayDC3 {
         int n = s.length();
         if (n <= 1)
             return new int[n];
-        int[] T = new int[n + 3];
-        for (int i = 0; i < n; i++)
-            T[i] = s.charAt(i);
+        int[] S = IntStream.range(0, n + 3).map(i -> i < n ? s.charAt(i) : 0).toArray();
         int[] sa = new int[n];
-        suffixArray(T, sa, n, 255);
+        suffixArray(S, sa, n, 255);
         return sa;
     }
 
