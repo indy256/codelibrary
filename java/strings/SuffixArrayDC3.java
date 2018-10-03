@@ -30,16 +30,16 @@ public class SuffixArrayDC3 {
         int n1 = (n + 1) / 3;
         int n2 = n / 3;
         int n02 = n0 + n2;
-        int[] R = new int[n02 + 3];
-        int[] SA12 = new int[n02 + 3];
 
         //******* Step 0: Construct sample ********
         // generate positions of mod 1 and mod 2 suffixes
         // the "+(n0-n1)" adds a dummy mod 1 suffix if n%3 == 1
+        int[] R = new int[n02 + 3];
         for (int i = 0, j = 0; i < n + (n0 - n1); i++) if (i % 3 != 0) R[j++] = i;
 
         //******* Step 1: Sort sample suffixes ********
         // lsb radix sort the mod 1 and mod 2 triples
+        int[] SA12 = new int[n02 + 3];
         countingSort(R, SA12, T, 2, n02, K);
         countingSort(SA12, R, T, 1, n02, K);
         countingSort(R, SA12, T, 0, n02, K);
