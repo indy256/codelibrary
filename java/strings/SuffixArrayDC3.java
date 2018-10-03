@@ -32,7 +32,6 @@ public class SuffixArrayDC3 {
         int n02 = n0 + n2;
         int[] R = new int[n02 + 3];
         int[] SA12 = new int[n02 + 3];
-        int[] SA0 = new int[n0];
 
         //******* Step 0: Construct sample ********
         // generate positions of mod 1 and mod 2 suffixes
@@ -76,6 +75,7 @@ public class SuffixArrayDC3 {
         // stably sort the mod 0 suffixes from SA12 by their first character
         int[] R0 = new int[n0];
         for (int i = 0, j = 0; i < n02; i++) if (SA12[i] < n0) R0[j++] = 3 * SA12[i];
+        int[] SA0 = new int[n0];
         countingSort(R0, SA0, T, 0, n0, K);
 
         //******* Step 3: Merge ********
