@@ -13,7 +13,7 @@ public class SuffixArrayDC3 {
     }
 
     // stably sort a[0..n-1] to b[0..n-1] with keys in 0..K from r
-    static void radixSort(int[] a, int[] b, int[] r, int offset, int n, int K) {
+    static void countingSort(int[] a, int[] b, int[] r, int offset, int n, int K) {
         int[] cnt = new int[K + 1];
         for (int i = 0; i < n; i++)
             ++cnt[r[a[i] + offset]];
@@ -41,9 +41,9 @@ public class SuffixArrayDC3 {
 
         //******* Step 1: Sort sample suffixes ********
         // lsb radix sort the mod 1 and mod 2 triples
-        radixSort(R, SA12, T, 2, n02, K);
-        radixSort(SA12, R, T, 1, n02, K);
-        radixSort(R, SA12, T, 0, n02, K);
+        countingSort(R, SA12, T, 2, n02, K);
+        countingSort(SA12, R, T, 1, n02, K);
+        countingSort(R, SA12, T, 0, n02, K);
 
         // find lexicographic names of triples and
         // write them to correct places in R
@@ -76,7 +76,7 @@ public class SuffixArrayDC3 {
         // stably sort the mod 0 suffixes from SA12 by their first character
         int[] R0 = new int[n0];
         for (int i = 0, j = 0; i < n02; i++) if (SA12[i] < n0) R0[j++] = 3 * SA12[i];
-        radixSort(R0, SA0, T, 0, n0, K);
+        countingSort(R0, SA0, T, 0, n0, K);
 
         //******* Step 3: Merge ********
         // merge sorted SA0 suffixes and sorted SA12 suffixes
