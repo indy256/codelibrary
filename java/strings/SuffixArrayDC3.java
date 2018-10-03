@@ -2,7 +2,7 @@ package strings;
 
 import java.util.*;
 
-// Suffix array DC3 O(n) algorithm from "Linear Work Suffix Array Construction"
+// DC3 linear time suffix array construction algorithm ("Linear Work Suffix Array Construction")
 public class SuffixArrayDC3 {
     static boolean leq(int a1, int a2, int b1, int b2) {
         return a1 < b1 || a1 == b1 && a2 <= b2;
