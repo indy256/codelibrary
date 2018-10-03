@@ -49,8 +49,7 @@ public class SuffixArrayDC3 {
         // write them to correct places in R
         int name = 0;
         for (int i = 0; i < n02; i++) {
-            if (i == 0 || T[SA12[i]] != T[SA12[i - 1]] || T[SA12[i] + 1] != T[SA12[i - 1] + 1]
-                    || T[SA12[i] + 2] != T[SA12[i - 1] + 2]) {
+            if (i == 0 || T[SA12[i]] != T[SA12[i - 1]] || T[SA12[i] + 1] != T[SA12[i - 1] + 1] || T[SA12[i] + 2] != T[SA12[i - 1] + 2]) {
                 ++name;
             }
             R[SA12[i] / 3 + (SA12[i] % 3 == 1 ? 0 : n0)] = name;
