@@ -9,7 +9,6 @@ public class Partition {
     public static int partition(int[] a, int fromInclusive, int toExclusive, int separatorIndex) {
         int i = fromInclusive;
         int j = toExclusive - 1;
-        if (i >= j) return j;
         int separator = a[separatorIndex];
         swap(a, i++, separatorIndex);
         while (i <= j) {
