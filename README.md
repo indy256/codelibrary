@@ -48,7 +48,8 @@
 #### String algorithms
 + [x] [Knuth-Morris-Pratt algorithm](java/strings/Kmp.java)
 + [x] [Aho-Corasick algorithm](java/strings/AhoCorasick.java)
-+ [x] [Suffix array](java/strings/SuffixArray.java)
++ [x] [Suffix array. Radix sort algorithm in O(n*log(n))](java/strings/SuffixArray.java)
++ [x] [Suffix array. Algorithm DC3 in O(n)](java/strings/SuffixArrayDC3.java)
 + [x] [suffix automata](java/strings/SuffixAutomaton.java)
 + [x] [Suffix tree](java/strings/SuffixTree.java)
 + [x] [Trie](java/strings/Trie.java)
