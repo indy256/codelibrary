@@ -10,7 +10,9 @@ public class SuffixArray {
     public static int[] suffixArray(CharSequence S) {
         int n = S.length();
 
-        // stable sort of characters
+        // Stable sort of characters.
+        // Same characters are sorted by their position in descending order.
+        // E.g. last character which represents suffix of length 1 should be ordered first among same characters.
         int[] sa = IntStream.range(0, n).mapToObj(i -> n - 1 - i).
                 sorted(Comparator.comparingInt(S::charAt)).mapToInt(Integer::intValue).toArray();
 
@@ -19,10 +21,11 @@ public class SuffixArray {
         // classes[i] - equivalence class of the i'th suffix after sorting by first len characters
 
         for (int len = 1; len < n; len *= 2) {
+            // Calculate classes for suffixes of length len * 2
             int[] c = classes.clone();
             for (int i = 0; i < n; i++) {
-                // condition sa[i - 1] + len < n emulates 0-symbol at the end of the string
-                // a separate class is created for each suffix followed by emulates 0-symbol
+                // Condition sa[i - 1] + len < n emulates 0-symbol at the end of the string.
+                // A separate class is created for each suffix followed by emulated 0-symbol.
                 classes[sa[i]] = i > 0 && c[sa[i - 1]] == c[sa[i]] && sa[i - 1] + len < n
                         && c[sa[i - 1] + len / 2] == c[sa[i] + len / 2] ? classes[sa[i - 1]] : i;
             }
@@ -42,7 +45,7 @@ public class SuffixArray {
         return sa;
     }
 
-    // build rotation array in O(n*log(n))
+    // sort rotations of a string in O(n*log(n))
     public static int[] rotationArray(CharSequence S) {
         int n = S.length();
         int[] sa = IntStream.range(0, n).boxed().sorted(Comparator.comparingInt(S::charAt)).mapToInt(Integer::intValue).toArray();
