@@ -5,16 +5,16 @@ import java.util.*;
 public class Closest2Points {
 
     public static class Point {
-        long x, y;
+        int x, y;
 
-        public Point(long x, long y) {
+        public Point(int x, int y) {
             this.x = x;
             this.y = y;
         }
     }
 
-    public static final Comparator<Point> CMP_X = Comparator.<Point>comparingLong(p -> p.x).thenComparingLong(p -> p.y);
-    public static final Comparator<Point> CMP_Y = Comparator.comparingLong(p -> p.y);
+    public static final Comparator<Point> CMP_X = Comparator.<Point>comparingInt(p -> p.x).thenComparingInt(p -> p.y);
+    public static final Comparator<Point> CMP_Y = Comparator.comparingInt(p -> p.y);
 
     // Find closest pair in O(n*log^2(n))
     public static Point[] findClosestPair(Point[] points) {
@@ -28,7 +28,7 @@ public class Closest2Points {
         if (l == r)
             return Long.MAX_VALUE;
         int mid = (l + r) >> 1;
-        long midx = points[mid].x;
+        int midx = points[mid].x;
         long d1 = rec(points, l, mid, result, mindist);
         mindist = Math.min(mindist, d1);
         long d2 = rec(points, mid + 1, r, result, mindist);
@@ -37,13 +37,13 @@ public class Closest2Points {
         int[] t = new int[r - l + 1];
         int size = 0;
         for (int i = l; i <= r; i++)
-            if (Math.abs(points[i].x - midx) < mindist)
+            if ((long) (points[i].x - midx) * (points[i].x - midx) < mindist)
                 t[size++] = i;
         for (int i = 0; i < size; i++) {
             for (int j = i + 1; j < size; j++) {
                 Point a = points[t[i]];
                 Point b = points[t[j]];
-                if (b.y - a.y >= mindist)
+                if ((long) (b.y - a.y) * (b.y - a.y) >= mindist)
                     break;
                 long dist = dist(a, b);
                 if (mindist > dist) {
