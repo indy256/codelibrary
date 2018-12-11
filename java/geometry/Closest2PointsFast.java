@@ -1,11 +1,14 @@
 package geometry;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.Random;
 
-public class Closest2Points {
+public class Closest2PointsFast {
 
     public static class Point {
         final int x, y;
+        boolean left;
 
         public Point(int x, int y) {
             this.x = x;
@@ -16,22 +19,36 @@ public class Closest2Points {
     public static final Comparator<Point> CMP_X = Comparator.<Point>comparingInt(p -> p.x).thenComparingInt(p -> p.y);
     public static final Comparator<Point> CMP_Y = Comparator.comparingInt(p -> p.y);
 
-    // Find closest pair in O(n*log^2(n))
+    // Find closest pair in O(n*log(n))
     public static Point[] findClosestPair(Point[] points) {
         Point[] result = new Point[2];
         Arrays.sort(points, CMP_X);
-        rec(points, 0, points.length - 1, result, Long.MAX_VALUE);
+        Point[] py = points.clone();
+        Arrays.sort(py, CMP_Y);
+        rec(points, py, 0, points.length - 1, result, Long.MAX_VALUE);
         return result;
     }
 
-    static long rec(Point[] points, int l, int r, Point[] result, long mindist2) {
+    static long rec(Point[] points, Point[] sortedY, int l, int r, Point[] result, long mindist2) {
         if (l == r)
             return Long.MAX_VALUE;
         int mid = (l + r) >> 1;
         int midx = points[mid].x;
-        long d1 = rec(points, l, mid, result, mindist2);
+        for (int i = l; i <= r; i++) {
+            points[i].left = i <= mid;
+        }
+        Point[] sortedY1 = new Point[mid - l + 1];
+        Point[] sortedY2 = new Point[r - mid];
+        for (int i = 0, c1 = 0, c2 = 0; i < sortedY.length; i++) {
+            if (sortedY[i].left) {
+                sortedY1[c1++] = sortedY[i];
+            } else {
+                sortedY2[c2++] = sortedY[i];
+            }
+        }
+        long d1 = rec(points, sortedY1, l, mid, result, mindist2);
         mindist2 = Math.min(mindist2, d1);
-        long d2 = rec(points, mid + 1, r, result, mindist2);
+        long d2 = rec(points, sortedY2, mid + 1, r, result, mindist2);
         mindist2 = Math.min(mindist2, d2);
         Arrays.sort(points, l, r + 1, CMP_Y);
         int[] t = new int[r - l + 1];
