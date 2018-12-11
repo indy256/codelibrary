@@ -13,13 +13,10 @@ public class Closest2Points {
         }
     }
 
-    public static final Comparator<Point> CMP_X = Comparator.comparingInt(p -> p.x);
-    public static final Comparator<Point> CMP_Y = Comparator.comparingInt(p -> p.y);
-
     // Find closest pair in O(n*log^2(n))
     public static Point[] findClosestPair(Point[] points) {
         Point[] result = new Point[2];
-        Arrays.sort(points, CMP_X);
+        Arrays.sort(points, Comparator.comparingInt(p -> p.x));
         rec(points, 0, points.length - 1, result, Long.MAX_VALUE);
         return result;
     }
@@ -33,7 +30,7 @@ public class Closest2Points {
         mindist2 = Math.min(mindist2, d1);
         long d2 = rec(points, mid + 1, r, result, mindist2);
         mindist2 = Math.min(mindist2, d2);
-        Arrays.sort(points, l, r + 1, CMP_Y);
+        Arrays.sort(points, l, r + 1, Comparator.comparingInt(p -> p.y));
         int[] t = new int[r - l + 1];
         int size = 0;
         for (int i = l; i <= r; i++)

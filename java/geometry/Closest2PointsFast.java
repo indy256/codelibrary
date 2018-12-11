@@ -14,15 +14,12 @@ public class Closest2PointsFast {
         }
     }
 
-    public static final Comparator<Point> CMP_X = Comparator.comparingInt(p -> p.x);
-    public static final Comparator<Point> CMP_Y = Comparator.comparingInt(p -> p.y);
-
     // Find closest pair in O(n*log(n))
     public static Point[] findClosestPair(Point[] points) {
         Point[] sortedX = points;
-        Arrays.sort(sortedX, CMP_X);
+        Arrays.sort(sortedX, Comparator.comparingInt(p -> p.x));
         Point[] sortedY = points.clone();
-        Arrays.sort(sortedY, CMP_Y);
+        Arrays.sort(sortedY, Comparator.comparingInt(p -> p.y));
         Point[] result = new Point[2];
         rec(sortedX, sortedY, 0, points.length - 1, result, Long.MAX_VALUE);
         return result;
