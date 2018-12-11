@@ -24,39 +24,39 @@ public class Closest2Points {
         return result;
     }
 
-    static long rec(Point[] points, int l, int r, Point[] result, long mindist) {
+    static long rec(Point[] points, int l, int r, Point[] result, long mindist2) {
         if (l == r)
             return Long.MAX_VALUE;
         int mid = (l + r) >> 1;
         int midx = points[mid].x;
-        long d1 = rec(points, l, mid, result, mindist);
-        mindist = Math.min(mindist, d1);
-        long d2 = rec(points, mid + 1, r, result, mindist);
-        mindist = Math.min(mindist, d2);
+        long d1 = rec(points, l, mid, result, mindist2);
+        mindist2 = Math.min(mindist2, d1);
+        long d2 = rec(points, mid + 1, r, result, mindist2);
+        mindist2 = Math.min(mindist2, d2);
         Arrays.sort(points, l, r + 1, CMP_Y);
         int[] t = new int[r - l + 1];
         int size = 0;
         for (int i = l; i <= r; i++)
-            if ((long) (points[i].x - midx) * (points[i].x - midx) < mindist)
+            if ((long) (points[i].x - midx) * (points[i].x - midx) < mindist2)
                 t[size++] = i;
         for (int i = 0; i < size; i++) {
             for (int j = i + 1; j < size; j++) {
                 Point a = points[t[i]];
                 Point b = points[t[j]];
-                if ((long) (b.y - a.y) * (b.y - a.y) >= mindist)
+                if ((long) (b.y - a.y) * (b.y - a.y) >= mindist2)
                     break;
-                long dist = dist(a, b);
-                if (mindist > dist) {
-                    mindist = dist;
+                long dist2 = dist2(a, b);
+                if (mindist2 > dist2) {
+                    mindist2 = dist2;
                     result[0] = a;
                     result[1] = b;
                 }
             }
         }
-        return mindist;
+        return mindist2;
     }
 
-    static long dist(Point a, Point b) {
+    static long dist2(Point a, Point b) {
         long dx = a.x - b.x;
         long dy = a.y - b.y;
         return dx * dx + dy * dy;
@@ -72,7 +72,7 @@ public class Closest2Points {
                 points[i] = new Point(rnd.nextInt(1000) - 500, rnd.nextInt(1000) - 500);
             }
             Point[] p = findClosestPair(points);
-            long res1 = dist(p[0], p[1]);
+            long res1 = dist2(p[0], p[1]);
             long res2 = slowClosestPair(points);
             if (res1 != res2)
                 throw new RuntimeException(res1 + " " + res2);
@@ -83,7 +83,7 @@ public class Closest2Points {
         long res = Long.MAX_VALUE;
         for (int i = 0; i < points.length; i++)
             for (int j = i + 1; j < points.length; j++)
-                res = Math.min(res, dist(points[i], points[j]));
+                res = Math.min(res, dist2(points[i], points[j]));
         return res;
     }
 }
