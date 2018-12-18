@@ -90,7 +90,7 @@ public class SuffixAutomaton {
             }
             q.addAll(automaton[curNode].invSuffLinks);
         }
-        return occurrences.stream().mapToInt(Integer::intValue).sorted().toArray();
+        return occurrences.stream().sorted().mapToInt(Integer::intValue).toArray();
     }
 
     public static String lcs(String a, String b) {
