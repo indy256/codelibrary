@@ -5,6 +5,7 @@ import java.util.stream.Stream;
 
 public class DijkstraCustomHeap {
 
+    // https://en.wikipedia.org/wiki/Dijkstra's_algorithm in O(E*log(V)) time and O(V) memory
     public static void shortestPaths(List<Edge>[] edges, int s, long[] prio, int[] pred) {
         Arrays.fill(pred, -1);
         Arrays.fill(prio, Long.MAX_VALUE);
