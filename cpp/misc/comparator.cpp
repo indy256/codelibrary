@@ -12,12 +12,17 @@ int main() {
 
     auto cmp = [](auto &a, auto &b) { return a.x < b.x || a.x == b.x && a.y < b.y; };
 
+    sort(a, a + 2, cmp);
+
     set<item, decltype(cmp)> s(a, a + 2, cmp);
     for (const item &it : s) {
         cout << it.x << " " << it.y << endl;
     }
 
-    sort(a, a + 2, cmp);
-
-    cout << a[0].x << " " << a[0].y << endl;
+    priority_queue<item, vector<item>, decltype(cmp)> q(a, a + 2, cmp);
+    while(!q.empty()) {
+        auto item = q.top();
+        q.pop();
+        cout << item.x << " " << item.y << endl;
+    }
 }
