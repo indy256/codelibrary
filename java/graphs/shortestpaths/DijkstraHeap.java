@@ -3,9 +3,9 @@ package graphs.shortestpaths;
 import java.util.*;
 import java.util.stream.Stream;
 
-// https://en.wikipedia.org/wiki/Dijkstra's_algorithm in O(E*log(V))
 public class DijkstraHeap {
 
+    // https://en.wikipedia.org/wiki/Dijkstra's_algorithm in O(E*log(V)) time and O(E) memory
     public static void shortestPaths(List<Edge>[] edges, int s, int[] prio, int[] pred) {
         Arrays.fill(pred, -1);
         Arrays.fill(prio, Integer.MAX_VALUE);

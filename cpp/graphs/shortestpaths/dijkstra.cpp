@@ -53,7 +53,7 @@ tuple<vector<int>, vector<int>> dijkstra_set(const vector<vector<edge>> &g, int 
                 q.erase(make_pair(prio[v], v));
                 prio[v] = nprio;
                 pred[v] = u;
-                q.emplace(make_pair(prio[v], v));
+                q.emplace(prio[v], v);
             }
         }
     }

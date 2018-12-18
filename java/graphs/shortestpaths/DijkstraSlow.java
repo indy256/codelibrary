@@ -3,9 +3,9 @@ package graphs.shortestpaths;
 import java.util.*;
 import java.util.stream.Stream;
 
-// https://en.wikipedia.org/wiki/Dijkstra's_algorithm in O(V^2)
-public class Dijkstra {
+public class DijkstraSlow {
 
+    // https://en.wikipedia.org/wiki/Dijkstra's_algorithm in O(V^2)
     public static void shortestPaths(List<Edge>[] graph, int s, int[] prio, int[] pred) {
         int n = graph.length;
         Arrays.fill(pred, -1);
