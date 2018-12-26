@@ -36,8 +36,9 @@ public class SegmentsUnion {
 
         @Override
         public int compareTo(Point o) {
-            double eps = 1e-7;
-            return Math.abs(x - o.x) > eps ? Double.compare(x, o.x) : Integer.compare(type, o.type);
+            int cmp = Double.compare(x, o.x);
+            if (cmp != 0) return cmp;
+            return Integer.compare(type, o.type);
         }
     }
 
