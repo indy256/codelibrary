@@ -2,8 +2,7 @@
 
 using namespace std;
 
-random_device rd;
-default_random_engine rnd(rd());
+mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
 
 struct item;
 
@@ -13,14 +12,14 @@ struct item {
     int key, prio;
     pitem l, r;
 
-    item(int key) : key(key), prio(rnd()), l(nullptr), r(nullptr) {}
+    item(int key) : key(key), prio(rng()), l(nullptr), r(nullptr) {}
 
 //    ~item() {
 //        cout << "item " << key << " disposed" << endl;
 //    }
 };
 
-void split(const pitem & t, int key, pitem &l, pitem &r) {
+void split(const pitem &t, int key, pitem &l, pitem &r) {
     if (!t)
         l = r = nullptr;
     else if (key < t->key)
@@ -67,12 +66,12 @@ int main() {
     pitem t1 = nullptr;
     int a1[] = {1, 2};
     for (int &x: a1)
-        insert(t1, pitem(new item(x)));
+        insert(t1, make_shared<item>(x));
 
     pitem t2 = nullptr;
     int a2[] = {7, 4, 5};
     for (int &x: a2)
-        insert(t2, pitem(new item(x)));
+        insert(t2, make_shared<item>(x));
 
     pitem t = nullptr;
     merge(t, t1, t2);

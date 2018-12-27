@@ -54,11 +54,15 @@ cdouble find_one_root(const poly &p0, cdouble x) {
 	return x;
 }
 
+mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
+uniform_real_distribution<double> uniform(0, 1);
+
 vector<cdouble> find_all_roots(const poly &p) {
 	vector<cdouble> res;
 	poly q = p;
+
 	while (q.size() > 2) {
-		cdouble z(rand() / double(RAND_MAX), rand() / double(RAND_MAX));
+		cdouble z(uniform(rng), uniform(rng));
 		z = find_one_root(q, z);
 		z = find_one_root(p, z);
 		q = horner(q, z).first;

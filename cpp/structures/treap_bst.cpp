@@ -4,19 +4,19 @@ using namespace std;
 
 // https://e-maxx-eng.appspot.com/data_structures/treap.html
 
-random_device rd;
-default_random_engine rnd(rd());
+mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
 
 struct item {
     int key, prio;
     item *l, *r;
 
-    item(int key) : key(key), prio(rnd()), l(nullptr), r(nullptr) {}
+    item(int key) : key(key), prio(rng()), l(nullptr), r(nullptr) {}
 };
 
 typedef item *pitem;
 
 void split(pitem t, int key, pitem &l, pitem &r) {
+    uniform_int_distribution<int>(1, 2)(rng);
     if (!t)
         l = r = nullptr;
     else if (key < t->key)
