@@ -3,9 +3,10 @@ package graphs.shortestpaths;
 import java.util.*;
 import java.util.stream.Stream;
 
+// https://en.wikipedia.org/wiki/Dijkstra's_algorithm
 public class DijkstraSegmentTree {
 
-    // https://en.wikipedia.org/wiki/Dijkstra's_algorithm in O(E*log(V)) time and O(V) memory
+    // calculate shortest paths in O(E*log(V)) time and O(V) memory
     public static void shortestPaths(List<Edge>[] edges, int s, long[] prio, int[] pred) {
         Arrays.fill(pred, -1);
         Arrays.fill(prio, Long.MAX_VALUE);
