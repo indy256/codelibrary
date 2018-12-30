@@ -57,7 +57,7 @@ public class RectangleUnion {
         long area = 0;
         int lastX = (int) (events[0] >>> 32);
         for (long event : events) {
-            int i = (int) (event & 0xFFFF_FFFFL);
+            int i = (int) event;
             boolean in = i >= 0;
             if (!in)
                 i = ~i;
