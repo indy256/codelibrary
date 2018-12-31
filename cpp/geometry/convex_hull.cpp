@@ -4,32 +4,28 @@ using namespace std;
 
 // Convex hull construction in O(n*log(n)): https://e-maxx-eng.appspot.com/geometry/grahams-scan-convex-hull.html
 
-typedef pair<long long, long long> point;
+struct point {
+    int x, y;
+};
 
-long long cross(const point &a, const point &b, const point &c) {
-    return (b.first - a.first) * (c.second - a.second) - (b.second - a.second) * (c.first - a.first);
+bool isNotRightTurn(const point &a, const point &b, const point &c) {
+    long long cross = (long long) (a.x - b.x) * (c.y - b.y) - (long long) (a.y - b.y) * (c.x - b.x);
+    long long dot = (long long) (a.x - b.x) * (c.x - b.x) + (long long) (a.y - b.y) * (c.y - b.y);
+    return cross < 0 || (cross == 0 && dot <= 0);
 }
 
-// https://en.wikipedia.org/wiki/Convex_hull in O(n*log(n))
 vector<point> convex_hull(vector<point> points) {
-    if (points.size() <= 1)
-        return points;
-    sort(points.begin(), points.end());
-    vector<point> h;
-    for (auto &p: points) {
-        while (h.size() >= 2 && cross(h.end()[-2], h.back(), p) >= 0)
-            h.pop_back();
-        h.emplace_back(p);
+    sort(points.begin(), points.end(), [](auto a, auto b) { return a.x < b.x || a.x == b.x && a.y < b.y; });
+    int n = points.size();
+    vector<point> hull;
+    for (int i = 0; i < 2 * n - 1; i++) {
+        int j = i < n ? i : 2 * n - 2 - i;
+        while (hull.size() >= 2 && isNotRightTurn(hull.end()[-2], hull.end()[-1], points[j]))
+            hull.pop_back();
+        hull.push_back(points[j]);
     }
-    reverse(points.begin(), points.end());
-    int upper = h.size();
-    for (auto &p: points) {
-        while (h.size() > upper && cross(h.end()[-2], h.back(), p) >= 0)
-            h.pop_back();
-        h.emplace_back(p);
-    }
-    h.resize(h.size() - 1 - (h[0] == h[1]));
-    return h;
+    hull.pop_back();
+    return hull;
 }
 
 // usage example
