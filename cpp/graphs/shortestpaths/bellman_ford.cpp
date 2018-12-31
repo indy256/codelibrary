@@ -2,7 +2,7 @@
 
 using namespace std;
 
-// https://e-maxx-eng.appspot.com/graph/bellman_ford.html
+// https://cp-algorithms.com/graph/bellman_ford.html
 
 typedef pair<int, int> edge;
 

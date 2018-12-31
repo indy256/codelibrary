@@ -2,7 +2,7 @@
 
 using namespace std;
 
-// Manacher's algorithm: https://e-maxx-eng.appspot.com/string/manacher.html
+// Manacher's algorithm: https://cp-algorithms.com/string/manacher.html
 
 // d1[i] - how many palindromes of odd length with center at i
 vector<int> odd_palindromes(const string &s) {

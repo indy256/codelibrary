@@ -2,7 +2,7 @@
 
 using namespace std;
 
-// https://e-maxx-eng.appspot.com/data_structures/segment_tree.html
+// https://cp-algorithms.com/data_structures/segment_tree.html
 
 const int maxn = 200000;
 int tmax[4 * maxn];

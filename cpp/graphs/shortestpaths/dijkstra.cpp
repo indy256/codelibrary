@@ -5,7 +5,7 @@ using namespace std;
 typedef pair<int, int> edge;
 typedef pair<int, int> item;
 
-// https://e-maxx-eng.appspot.com/graph/dijkstra_sparse.html
+// https://cp-algorithms.com/graph/dijkstra_sparse.html
 
 // O(E*log(V)) time and O(E) memory
 tuple<vector<int>, vector<int>> dijkstra_heap(const vector<vector<edge>> &g, int s) {

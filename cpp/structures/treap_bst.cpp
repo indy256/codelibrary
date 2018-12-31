@@ -2,7 +2,7 @@
 
 using namespace std;
 
-// https://e-maxx-eng.appspot.com/data_structures/treap.html
+// https://cp-algorithms.com/data_structures/treap.html
 
 mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
 

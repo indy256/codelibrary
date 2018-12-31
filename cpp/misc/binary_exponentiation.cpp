@@ -3,7 +3,7 @@
 using namespace std;
 
 // https://en.wikipedia.org/wiki/Exponentiation_by_squaring
-// https://e-maxx-eng.appspot.com/algebra/binary-exp.html
+// https://cp-algorithms.com/algebra/binary-exp.html
 int pow(int x, int n, int MOD) {
     long long y = x;
     int res = 1;

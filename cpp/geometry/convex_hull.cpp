@@ -2,7 +2,7 @@
 
 using namespace std;
 
-// Convex hull construction in O(n*log(n)): https://e-maxx-eng.appspot.com/geometry/grahams-scan-convex-hull.html
+// Convex hull construction in O(n*log(n)): https://cp-algorithms.com/geometry/grahams-scan-convex-hull.html
 
 struct point {
     int x, y;

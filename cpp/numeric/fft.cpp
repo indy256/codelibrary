@@ -3,7 +3,7 @@
 using namespace std;
 
 // Fast Fourier transform
-// https://e-maxx-eng.appspot.com/algebra/fft.html
+// https://cp-algorithms.com/algebra/fft.html
 
 typedef complex<double> cpx;
 

@@ -2,7 +2,7 @@
 
 using namespace std;
 
-// https://e-maxx-eng.appspot.com/algebra/sieve-of-eratosthenes.html
+// https://cp-algorithms.com/algebra/sieve-of-eratosthenes.html
 
 vector<int> get_primes(int n) {
     if (n <= 1)

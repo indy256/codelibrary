@@ -2,7 +2,7 @@
 
 using namespace std;
 
-// https://e-maxx-eng.appspot.com/data_structures/fenwick.html
+// https://cp-algorithms.com/data_structures/fenwick.html
 
 template<class T>
 struct fenwick {
