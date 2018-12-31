@@ -23,9 +23,7 @@ int max(int from, int to, int root = 0, int left = 0, int right = maxn - 1) {
     }
     push(root);
     int mid = (left + right) / 2;
-    int res = std::max(max(from, to, 2 * root + 1, left, mid),
-                       max(from, to, 2 * root + 2, mid + 1, right));
-    return res;
+    return std::max(max(from, to, 2 * root + 1, left, mid), max(from, to, 2 * root + 2, mid + 1, right));
 }
 
 void add(int from, int to, int delta, int root = 0, int left = 0, int right = maxn - 1) {
