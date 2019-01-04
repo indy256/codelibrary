@@ -48,20 +48,20 @@ public class Euclid {
         return new long[]{r[0], r[2], r[1] - a / b * r[2]};
     }
 
-    public static int mod(long a, int m) {
-        int A = (int) (a % m);
-        return A >= 0 ? A : A + m;
+    public static int mod(int a, int m) {
+        a %= m;
+        return a >= 0 ? a : a + m;
     }
 
     // precondition: m > 0 && gcd(a, m) = 1
     public static int modInverse(int a, int m) {
         a = mod(a, m);
-        return a == 0 ? 0 : mod((1 - (long) modInverse(m % a, a) * m) / a, m);
+        return a == 0 ? 0 : mod((int) ((1 - (long) modInverse(m, a) * m) / a), m);
     }
 
     // precondition: m > 0 && gcd(a, m) = 1
     public static int modInverse2(int a, int m) {
-        return mod(euclid(a, m)[1], m);
+        return mod((int) euclid(a, m)[1], m);
     }
 
     // precondition: p is prime
@@ -78,7 +78,7 @@ public class Euclid {
         int[] x = a.clone();
         for (int i = 0; i < x.length; ++i)
             for (int j = 0; j < i; ++j)
-                x[i] = mod(BigInteger.valueOf(p[j]).modInverse(BigInteger.valueOf(p[i])).longValue() * (x[i] - x[j]), p[i]);
+                x[i] = mod(BigInteger.valueOf(p[j]).modInverse(BigInteger.valueOf(p[i])).intValue() * (x[i] - x[j]), p[i]);
         BigInteger res = BigInteger.valueOf(x[0]);
         BigInteger m = BigInteger.ONE;
         for (int i = 1; i < x.length; i++) {
