@@ -4,13 +4,13 @@ using namespace std;
 
 // https://en.wikipedia.org/wiki/Exponentiation_by_squaring
 // https://cp-algorithms.com/algebra/binary-exp.html
-int pow(int x, int n, int MOD) {
-    long long y = x;
+int pow(int x, int n, int m) {
+    int y = x;
     int res = 1;
     for (; n > 0; n >>= 1) {
         if (n & 1)
-            res = res * y % MOD;
-        y = y * y % MOD;
+            res = (long long) res * y % m;
+        y = (long long) y * y % m;
     }
     return res;
 }

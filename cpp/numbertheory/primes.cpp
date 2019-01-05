@@ -18,7 +18,7 @@ vector<int> get_primes(int n) {
     vector<int> primes;
     for (int i = 0; i < prime.size(); ++i)
         if (prime[i])
-            primes.emplace_back(i);
+            primes.push_back(i);
 
     return primes;
 }
@@ -27,7 +27,7 @@ bool is_prime(long long n) {
     if (n <= 1)
         return false;
 
-    for (long long i = 2; i * i <= n; i++)
+    for (int i = 2; (long long) i * i <= n; i++)
         if (n % i == 0)
             return false;
 
