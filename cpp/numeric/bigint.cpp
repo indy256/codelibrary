@@ -74,9 +74,7 @@ struct bigint {
         return *this;
     }
 
-    friend bigint
-
-    operator-(bigint a, const bigint &b) {
+    friend bigint operator-(bigint a, const bigint &b) {
         return a -= b;
     }
 
