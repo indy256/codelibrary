@@ -39,8 +39,20 @@ public class ExpressionParserRecursiveDescent {
         next();
     }
 
-    // number ::= number | '(' expression ')'
-    double number() {
+    // Original grammar:
+    // Е -> Е + Т | Е-Т | Т
+    // Т -> T*F | T/F | F
+    // F -> number | (Е)
+    //
+    // Left recursion eliminated:
+    // Е -> ТЕ'
+    // Е'-> +ТЕ' | -ТЕ' | е
+    // Т -> FT'
+    // T'-> *FT' | /FT' | е
+    // F -> number | (Е)
+
+    // factor ::= number | '(' expression ')'
+    double factor() {
         if (token == 'n') {
             double v = tokval;
             skip('n');
@@ -52,17 +64,9 @@ public class ExpressionParserRecursiveDescent {
         return v;
     }
 
-    // factor ::= number | number '^' factor
-    double factor() {
-        double v = number();
-        if (token == '^') {
-            skip('^');
-            v = Math.pow(v, factor());
-        }
-        return v;
-    }
-
     // term ::= factor | term '*' factor | term '/' factor
+    // Т -> FT'
+    // T'-> *FT' | /FT' | е
     double term() {
         double v = factor();
         while (true) {
@@ -78,9 +82,11 @@ public class ExpressionParserRecursiveDescent {
     }
 
     // expression ::= term | expression '+' term | expression '-' term
+    // Е -> ТЕ'
+    // Е'-> +ТЕ' | -ТЕ' | е
     double expression() {
         double v = term();
-        for (; ; ) {
+        while (true) {
             if (token == '+') {
                 skip('+');
                 v += term();
