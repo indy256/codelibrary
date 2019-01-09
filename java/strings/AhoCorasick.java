@@ -1,7 +1,5 @@
 package strings;
 
-import java.util.*;
-
 // https://en.wikipedia.org/wiki/Aho–Corasick_algorithm
 public class AhoCorasick {
 

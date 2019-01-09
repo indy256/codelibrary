@@ -6,8 +6,9 @@ import java.util.stream.Stream;
 // https://en.wikipedia.org/wiki/Matching_(graph_theory)#In_unweighted_bipartite_graphs in O(V * E)
 public class MaxMatching {
 
-    public static int maxMatching(List<Integer>[] graph, int n2) {
+    public static int maxMatching(List<Integer>[] graph) {
         int n1 = graph.length;
+        int n2 = Arrays.stream(graph).flatMap(Collection::stream).mapToInt(Integer::intValue).max().orElse(-1) + 1;
         int[] matching = new int[n2];
         Arrays.fill(matching, -1);
         int matches = 0;
@@ -32,12 +33,10 @@ public class MaxMatching {
 
     // Usage example
     public static void main(String[] args) {
-        int n1 = 2;
-        int n2 = 2;
-        List<Integer>[] g = Stream.generate(ArrayList::new).limit(n1).toArray(List[]::new);
+        List<Integer>[] g = Stream.generate(ArrayList::new).limit(2).toArray(List[]::new);
         g[0].add(0);
         g[0].add(1);
         g[1].add(1);
-        System.out.println(2 == maxMatching(g, n2));
+        System.out.println(2 == maxMatching(g));
     }
 }

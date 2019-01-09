@@ -17,7 +17,7 @@ public class MaxMatchingTest {
             for (int i = 0; i < n1; i++)
                 for (int j = 0; j < n2; j++)
                     g[i].add(j);
-            int res1 = MaxMatching.maxMatching(g, n2);
+            int res1 = MaxMatching.maxMatching(g);
             int res2 = slowMinVertexCover(g, n2);
             if (res1 != res2)
                 throw new RuntimeException();

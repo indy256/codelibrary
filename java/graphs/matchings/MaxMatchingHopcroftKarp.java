@@ -7,8 +7,9 @@ import java.util.stream.Stream;
 // time complexity: O(E * sqrt(V))
 public class MaxMatchingHopcroftKarp {
 
-    public static int maxMatching(List<Integer>[] graph, int n2) {
+    public static int maxMatching(List<Integer>[] graph) {
         int n1 = graph.length;
+        int n2 = Arrays.stream(graph).flatMap(Collection::stream).mapToInt(Integer::intValue).max().orElse(-1) + 1;
         int[] dist = new int[n1];
         int[] matching = new int[n2];
         Arrays.fill(matching, -1);
@@ -64,10 +65,10 @@ public class MaxMatchingHopcroftKarp {
 
     // Usage example
     public static void main(String[] args) {
-        List<Integer>[] graph = Stream.generate(ArrayList::new).limit(3).toArray(List[]::new);
+        List<Integer>[] graph = Stream.generate(ArrayList::new).limit(2).toArray(List[]::new);
         graph[0].add(0);
         graph[0].add(1);
         graph[1].add(1);
-        System.out.println(2 == maxMatching(graph, 2));
+        System.out.println(2 == maxMatching(graph));
     }
 }
