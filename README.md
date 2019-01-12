@@ -64,7 +64,7 @@
 + [x] [N-th element](java/sort/NthElement.java)
 
 #### Geometry algorithms
-+ [x] [Segments intesection](java/geometry/SegmentsIntersection.java)
++ [x] [Segments intersection](java/geometry/SegmentsIntersection.java)
 + [x] [Line operations](java/geometry/LineGeometry.java)
 + [x] [Circle operations](java/geometry/CircleOperations.java)
 + [x] [Convex hull](java/geometry/ConvexHull.java)
