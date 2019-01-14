@@ -19,7 +19,7 @@ int dfs(vector<vector<int>> &graph, int u, vector<int> &color, vector<int> &next
     return -1;
 }
 
-optional<vector<int>> find_cycle(vector<vector<int>> &graph) {
+vector<int> find_cycle(vector<vector<int>> &graph) {
     int n = graph.size();
     vector<int> color(n);
     vector<int> next(n);
@@ -41,17 +41,17 @@ optional<vector<int>> find_cycle(vector<vector<int>> &graph) {
 
 // usage example
 int main() {
-    vector<vector<int>> graph1{{1},
-                               {2},
-                               {0}};
-    auto cycle1 = find_cycle(graph1);
-    cout << cycle1.has_value() << endl;
-    copy(cycle1->begin(), cycle1->end(), ostream_iterator<int>(cout, " "));
+    vector<vector<int>> graph{{1},
+                              {2},
+                              {0}};
+    auto cycle = find_cycle(graph);
+    cout << cycle.size() << endl;
+    copy(cycle.begin(), cycle.end(), ostream_iterator<int>(cout, " "));
     cout << endl;
 
-    vector<vector<int>> graph2{{1},
-                               {2},
-                               {}};
-    auto cycle2 = find_cycle(graph2);
-    cout << cycle2.has_value() << endl;
+    graph = {{1},
+             {2},
+             {}};
+    cycle = find_cycle(graph);
+    cout << cycle.size() << endl;
 }
