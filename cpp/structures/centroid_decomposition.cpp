@@ -22,12 +22,12 @@ int find_tree_centroid(vector<vector<int>> &tree, vector<int> &size, vector<bool
     return u;
 }
 
-void dfs(vector<vector<int>> &tree, vector<bool> &deleted, int u, int p) {
-    for (int v: tree[u]) {
-        if (v == p || deleted[v])continue;
-        dfs(tree, deleted, v, u);
-    }
-}
+// void dfs(vector<vector<int>> &tree, vector<bool> &deleted, int u, int p) {
+//     for (int v: tree[u]) {
+//         if (v == p || deleted[v])continue;
+//         dfs(tree, deleted, v, u);
+//     }
+// }
 
 void decompose(vector<vector<int>> &tree, vector<int> &size, vector<bool> &deleted, int u, int total) {
     calc_sizes(tree, size, deleted, u, -1);
