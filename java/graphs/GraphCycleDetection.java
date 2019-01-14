@@ -12,6 +12,7 @@ public class GraphCycleDetection {
         int[] color = new int[n];
         int[] next = new int[n];
         for (int u = 0; u < n; u++) {
+            if (color[u] != 0) continue;
             int cycleStart = dfs(graph, u, color, next);
             if (cycleStart != -1) {
                 List<Integer> cycle = new ArrayList<>();
