@@ -2,7 +2,7 @@
 
 using namespace std;
 
-int dfs(vector<vector<int>> &graph, int u, vector<int> &color, vector<int> &next) {
+int dfs(const vector<vector<int>> &graph, int u, vector<int> &color, vector<int> &next) {
     color[u] = 1;
     for (int v : graph[u]) {
         next[u] = v;
@@ -19,7 +19,7 @@ int dfs(vector<vector<int>> &graph, int u, vector<int> &color, vector<int> &next
     return -1;
 }
 
-vector<int> find_cycle(vector<vector<int>> &graph) {
+vector<int> find_cycle(const vector<vector<int>> &graph) {
     int n = graph.size();
     vector<int> color(n);
     vector<int> next(n);

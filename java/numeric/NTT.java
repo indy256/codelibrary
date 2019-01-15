@@ -3,7 +3,7 @@ package numeric;
 import java.math.BigInteger;
 import java.util.Random;
 
-public class IFFT {
+public class NTT {
 
     static int pow(int x, int n, int mod) {
         int res = 1;

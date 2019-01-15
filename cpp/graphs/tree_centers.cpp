@@ -3,7 +3,7 @@
 using namespace std;
 
 // returns vertex that has all its subtrees sizes <= n/2
-int find_tree_centroid(vector<vector<int>> &tree, int u, int p) {
+int find_tree_centroid(const vector<vector<int>> &tree, int u, int p) {
     int n = tree.size();
     int cnt = 1;
     bool goodCenter = true;

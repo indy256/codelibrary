@@ -2,7 +2,7 @@
 
 using namespace std;
 
-void calc_sizes(vector<vector<int>> &tree, vector<int> &size, vector<bool> &deleted, int u, int p) {
+void calc_sizes(const vector<vector<int>> &tree, vector<int> &size, vector<bool> &deleted, int u, int p) {
     size[u] = 1;
     for (int v : tree[u]) {
         if (v == p || deleted[v]) continue;
@@ -11,7 +11,7 @@ void calc_sizes(vector<vector<int>> &tree, vector<int> &size, vector<bool> &dele
     }
 }
 
-int find_tree_centroid(vector<vector<int>> &tree, vector<int> &size, vector<bool> &deleted, int u, int p,
+int find_tree_centroid(const vector<vector<int>> &tree, vector<int> &size, vector<bool> &deleted, int u, int p,
                        int vertices) {
     for (int v : tree[u]) {
         if (v == p || deleted[v]) continue;
@@ -22,14 +22,14 @@ int find_tree_centroid(vector<vector<int>> &tree, vector<int> &size, vector<bool
     return u;
 }
 
-// void dfs(vector<vector<int>> &tree, vector<bool> &deleted, int u, int p) {
+// void dfs(const vector<vector<int>> &tree, vector<bool> &deleted, int u, int p) {
 //     for (int v: tree[u]) {
 //         if (v == p || deleted[v])continue;
 //         dfs(tree, deleted, v, u);
 //     }
 // }
 
-void decompose(vector<vector<int>> &tree, vector<int> &size, vector<bool> &deleted, int u, int total) {
+void decompose(const vector<vector<int>> &tree, vector<int> &size, vector<bool> &deleted, int u, int total) {
     calc_sizes(tree, size, deleted, u, -1);
     int centroid = find_tree_centroid(tree, size, deleted, u, -1, total);
     deleted[centroid] = true;
