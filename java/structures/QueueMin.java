@@ -3,37 +3,29 @@ package structures;
 import java.util.*;
 
 // https://cp-algorithms.com/data_structures/stack_queue_modification.html
-public class QueueMin<E extends Comparable<? super E>> {
-    List<E[]> s1 = new ArrayList<>();
-    List<E[]> s2 = new ArrayList<>();
+public class QueueMin {
+    List<int[]> s1 = new ArrayList<>();
+    List<int[]> s2 = new ArrayList<>();
 
-    E min(E a, E b) {
-        return a.compareTo(b) < 0 ? a : b;
-    }
-
-    public E min() {
+    public int min() {
         if (s1.isEmpty())
             return s2.get(s2.size() - 1)[1];
         if (s2.isEmpty())
             return s1.get(s1.size() - 1)[1];
-        return min(s1.get(s1.size() - 1)[1], s2.get(s2.size() - 1)[1]);
+        return Math.min(s1.get(s1.size() - 1)[1], s2.get(s2.size() - 1)[1]);
     }
 
-    public void addLast(E x) {
-        E minima = x;
-        if (!s1.isEmpty()) {
-            minima = min(minima, s1.get(s1.size() - 1)[1]);
-        }
-        s1.add((E[]) new Comparable[]{x, minima});
+    public void addLast(int x) {
+        int minima = s1.isEmpty() ? x : Math.min(x, s1.get(s1.size() - 1)[1]);
+        s1.add(new int[]{x, minima});
     }
 
-    public E removeFirst() {
+    public int removeFirst() {
         if (s2.isEmpty()) {
-            E minima = null;
             while (!s1.isEmpty()) {
-                E x = s1.remove(s1.size() - 1)[0];
-                minima = minima == null ? x : min(minima, x);
-                s2.add((E[]) new Comparable[]{x, minima});
+                int x = s1.remove(s1.size() - 1)[0];
+                int min = s2.isEmpty() ? x : Math.min(x, s2.get(s2.size() - 1)[1]);
+                s2.add(new int[]{x, min});
             }
         }
         return s2.remove(s2.size() - 1)[0];
@@ -41,7 +33,7 @@ public class QueueMin<E extends Comparable<? super E>> {
 
     // Usage example
     public static void main(String[] args) {
-        QueueMin<Integer> q = new QueueMin<>();
+        QueueMin q = new QueueMin();
         q.addLast(2);
         q.addLast(3);
         System.out.println(2 == q.min());
