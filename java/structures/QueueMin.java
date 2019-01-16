@@ -8,11 +8,9 @@ public class QueueMin {
     List<int[]> s2 = new ArrayList<>();
 
     public int min() {
-        if (s1.isEmpty())
-            return s2.get(s2.size() - 1)[1];
-        if (s2.isEmpty())
-            return s1.get(s1.size() - 1)[1];
-        return Math.min(s1.get(s1.size() - 1)[1], s2.get(s2.size() - 1)[1]);
+        return Math.min(
+                s1.isEmpty() ? Integer.MAX_VALUE : s1.get(s1.size() - 1)[1],
+                s2.isEmpty() ? Integer.MAX_VALUE : s2.get(s2.size() - 1)[1]);
     }
 
     public void addLast(int x) {

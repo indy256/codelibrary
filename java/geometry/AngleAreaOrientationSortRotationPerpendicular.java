@@ -21,8 +21,7 @@ public class AngleAreaOrientationSortRotationPerpendicular {
         int n = x.length;
         long area = 0;
         for (int i = 0, j = n - 1; i < n; j = i++) {
-            area += (long) (x[i] - x[j]) * (y[i] + y[j]);
-//			area += (long) x[i] * y[j] - (long) x[j] * y[i];
+            area += (long) (x[i] - x[j]) * (y[i] + y[j]); // area += (long) x[i] * y[j] - (long) x[j] * y[i];
         }
         return area;
     }
@@ -115,5 +114,7 @@ public class AngleAreaOrientationSortRotationPerpendicular {
         Point[] points = new Point[]{new Point(1, 1), new Point(1, -1), new Point(0, 0)};
         Arrays.sort(points);
         System.out.println(Arrays.toString(points));
+
+        System.out.println(Math.atan2(1, 1));
     }
 }
