@@ -2,7 +2,7 @@
 [![Build Status](https://travis-ci.org/indy256/codelibrary.svg?branch=master)](https://travis-ci.org/indy256/codelibrary)
 [![License](https://img.shields.io/badge/license-UNLICENSE-green.svg)](https://github.com/indy256/codelibrary/blob/master/UNLICENSE)
 
-#### Collection of algorithms and data structures in C++ and Java
+### Collection of algorithms and data structures in C++ and Java
 
 #### Data structures
 + [x] Segment tree [**c++**](cpp/structures/segment_tree_interval_add_max.cpp) [**java**](java/structures/SegmentTreeIntervalAddMax.java)
