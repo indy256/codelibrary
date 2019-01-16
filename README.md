@@ -99,6 +99,6 @@
 + [x] Binomial coefficients [**java**](java/combinatorics/BinomialCoefficients.java)
 
 #### Linear algebra
-+ [x] [Gaussian elimination](java/linearalgebra/Gauss.java)
++ [x] Gaussian elimination [**c++**](cpp/linearalgebra/gauss.cpp) [**java**](java/linearalgebra/Gauss.java)
 + [x] Determinant calculation [**java**](java/linearalgebra/Determinant.java)
-+ [x] [Matrix operations](java/linearalgebra/Matrix.java)
++ [x] Matrix operations [**c++**](cpp/linearalgebra/matrix.cpp) [**java**](java/linearalgebra/Matrix.java)
