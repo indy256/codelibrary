@@ -11,7 +11,7 @@
 + [x] [Fenwick tree](java/structures/FenwickTree.java)
 + [x] [Fenwick tree with extended operations](java/structures/FenwickTreeExtended.java)
 + [x] [Persistent tree](java/structures/PersistentTree.java)
-+ [x] [Centroid decomposition](java/structures/CentroidDecomposition.java)
++ [x] [Centroid decomposition [**c++**](cpp/structures/centroid_decomposition.cpp) [**java**](java/structures/CentroidDecomposition.java)
 + [x] [Heavy/light decomposition](java/structures/HeavyLight.java)
 + [x] [Link/cut tree](java/structures/LinkCutTree.java)
 + [x] [Link/cut tree for connectivity query](java/structures/LinkCutTreeConnectivity.java)
