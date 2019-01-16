@@ -5,7 +5,7 @@
 #### Collection of algorithms and data structures in Java and C++ (for different languages see [codelibrary-sandbox](https://github.com/indy256/codelibrary-sandbox))
 
 #### Data structures
-+ [x] Segment tree [cpp](cpp/structures/segment_tree_interval_add_max.cpp) [java](java/structures/SegmentTreeIntervalAddMax.java)
++ [x] Segment tree [**c++**](cpp/structures/segment_tree_interval_add_max.cpp) [**java**](java/structures/SegmentTreeIntervalAddMax.java)
 + [x] [Segment tree for sum with lowerBound operation](java/structures/SegmentTreeSumLowerBound.java)
 + [x] [Segment tree without recursion](java/structures/SegmentTreeSimple.java)
 + [x] [Fenwick tree](java/structures/FenwickTree.java)
