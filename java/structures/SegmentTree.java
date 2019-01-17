@@ -6,7 +6,7 @@ public class SegmentTree {
 
     // Modify the following 5 methods to implement your custom operations on the tree.
     // This example implements Add/Max operations. Operations like Add/Sum, Set/Max can also be implemented.
-    int modifyOperation(int x, int y) {
+    int updateOperation(int x, int y) {
         return x + y;
     }
 
@@ -39,13 +39,13 @@ public class SegmentTree {
 
     int joinValueWithDelta(int value, int delta) {
         if (delta == getNeutralDelta()) return value;
-        return modifyOperation(value, delta);
+        return updateOperation(value, delta);
     }
 
     int joinDeltas(int delta1, int delta2) {
         if (delta1 == getNeutralDelta()) return delta2;
         if (delta2 == getNeutralDelta()) return delta1;
-        return modifyOperation(delta1, delta2);
+        return updateOperation(delta1, delta2);
     }
 
     void pushDelta(int root, int left, int right) {

@@ -6,7 +6,7 @@ public class SegmentTreeFast {
 
     // Modify the following 5 methods to implement your custom operations on the tree.
     // This example implements Add/Sum operations. Operations like Add/Max, Set/Max can also be implemented.
-    int modifyOperation(int x, int y) {
+    int updateOperation(int x, int y) {
         return x + y;
     }
 
@@ -38,13 +38,13 @@ public class SegmentTreeFast {
 
     int joinValueWithDelta(int value, int delta) {
         if (delta == getNeutralDelta()) return value;
-        return modifyOperation(value, delta);
+        return updateOperation(value, delta);
     }
 
     int joinDeltas(int delta1, int delta2) {
         if (delta1 == getNeutralDelta()) return delta2;
         if (delta2 == getNeutralDelta()) return delta1;
-        return modifyOperation(delta1, delta2);
+        return updateOperation(delta1, delta2);
     }
 
     void pushDelta(int i) {
