@@ -25,12 +25,20 @@ public class CentroidDecomposition {
         return u;
     }
 
+    static void dfs(List<Integer>[] tree, boolean[] deleted, int u, int p) {
+        for (int v : tree[u]) {
+            if (v == p || deleted[v]) continue;
+            dfs(tree, deleted, v, u);
+        }
+    }
+
     static void decompose(List<Integer>[] tree, int[] size, boolean[] deleted, int u, int total) {
         calcSizes(tree, size, deleted, u, -1);
         int centroid = findTreeCentroid(tree, size, deleted, u, -1, total);
         deleted[centroid] = true;
 
         // process centroid vertex here
+        // dfs(tree, deleted, centroid, -1);
         System.out.println(centroid);
 
         for (int v : tree[centroid]) {
