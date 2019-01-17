@@ -35,12 +35,8 @@ void decompose(const vector<vector<int>> &tree, vector<int> &size, vector<bool> 
     deleted[centroid] = true;
 
     // process centroid vertex here
-    // cout << centroid << endl;
-
-    // for (int v: tree[centroid]) {
-    //    if (deleted[v])continue;
-    //    dfs(tree, deleted, v, centroid);
-    // }
+    // dfs(tree, deleted, centroid, -1);
+    cout << centroid << endl;
 
     for (int v : tree[centroid]) {
         if (deleted[v]) continue;
