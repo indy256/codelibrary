@@ -5,7 +5,8 @@ using namespace std;
 // Fast Fourier transform
 // https://cp-algorithms.com/algebra/fft.html
 
-typedef complex<double> cpx;
+using cpx = complex<double>;
+const double PI = acos(-1.0);
 
 // precondition: a.size() is a power of 2
 void fft(vector<cpx> &a, bool inverse) {
@@ -21,7 +22,7 @@ void fft(vector<cpx> &a, bool inverse) {
     fft(a0, inverse);
     fft(a1, inverse);
 
-    double ang = 2 * M_PI / n * (inverse ? -1 : 1);
+    double ang = 2 * PI / n * (inverse ? -1 : 1);
     cpx w(1);
     cpx wn(cos(ang), sin(ang));
     for (int i = 0; i < n / 2; ++i) {
