@@ -191,7 +191,7 @@ public class FFT {
             }
 
             int[] res1 = multiplyFast(a, b);
-            int[] res2 = multiplyFast(a, b);
+            int[] res2 = multiply(a, b);
             String s = "";
             for (int v : res1) {
                 s = v + s;
@@ -200,5 +200,7 @@ public class FFT {
             if (!Arrays.equals(res1, res2) || !mul.equals(new BigInteger(s)))
                 throw new RuntimeException();
         }
+
+        System.out.println(Arrays.toString(multiplyMod(new int[]{1, 2}, new int[]{2, 15}, 991992993)));
     }
 }
