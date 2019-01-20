@@ -4,7 +4,7 @@ import java.util.*;
 
 public class MonotonicApproximation {
 
-    // finds non-strictly increasing array b that minimizes sum |a[i]-b[i]|
+    // returns minimum sum |a[i]-b[i]| where b is non-strictly increasing array
     // see http://codeforces.com/blog/entry/47821
     public static long monotonicApproximation(int[] a) {
         int n = a.length;
