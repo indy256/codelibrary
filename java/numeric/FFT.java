@@ -4,6 +4,8 @@ import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Random;
 
+// Fast Fourier transform
+// https://cp-algorithms.com/algebra/fft.html
 // https://github.com/indy256/olymp-docs/blob/master/adamant/fft_eng.pdf
 
 public class FFT {
@@ -28,8 +30,9 @@ public class FFT {
             double[] cs = new double[halfLen];
             double[] sn = new double[halfLen];
             for (int i = 0; i < halfLen; i++) {
-                cs[i] = Math.cos(2 * Math.PI * i / len * (inverse ? -1 : 1));
-                sn[i] = Math.sin(2 * Math.PI * i / len * (inverse ? -1 : 1));
+                double angle = 2 * Math.PI * i / len * (inverse ? -1 : 1);
+                cs[i] = Math.cos(angle);
+                sn[i] = Math.sin(angle);
             }
             for (int i = 0; i < n; i += len) {
                 for (int j = 0; j < halfLen; j++) {
@@ -56,21 +59,21 @@ public class FFT {
         int need = a.length + b.length;
         int n = Integer.highestOneBit(need - 1) << 1;
         double[] aReal = new double[n];
-        double[] aImaginary = new double[n];
+        double[] aImag = new double[n];
         double[] bReal = new double[n];
-        double[] bImaginary = new double[n];
+        double[] bImag = new double[n];
         for (int i = 0; i < a.length; i++)
             aReal[i] = a[i];
         for (int i = 0; i < b.length; i++)
             bReal[i] = b[i];
-        fft(aReal, aImaginary, false);
-        fft(bReal, bImaginary, false);
+        fft(aReal, aImag, false);
+        fft(bReal, bImag, false);
         for (int i = 0; i < n; i++) {
-            double real = aReal[i] * bReal[i] - aImaginary[i] * bImaginary[i];
-            aImaginary[i] = aImaginary[i] * bReal[i] + bImaginary[i] * aReal[i];
+            double real = aReal[i] * bReal[i] - aImag[i] * bImag[i];
+            aImag[i] = aImag[i] * bReal[i] + bImag[i] * aReal[i];
             aReal[i] = real;
         }
-        fft(aReal, aImaginary, true);
+        fft(aReal, aImag, true);
         int[] result = new int[need];
         for (int i = 0, carry = 0; i < need; i++) {
             result[i] = (int) (aReal[i] + 0.5) + carry;
@@ -84,25 +87,25 @@ public class FFT {
         int need = a.length + b.length;
         int n = Integer.highestOneBit(need - 1) << 1;
         double[] pReal = new double[n];
-        double[] pImaginary = new double[n];
+        double[] pImag = new double[n];
         // p(x) = a(x) + i*b(x)
         for (int i = 0; i < a.length; i++)
             pReal[i] = a[i];
         for (int i = 0; i < b.length; i++)
-            pImaginary[i] = b[i];
-        fft(pReal, pImaginary, false);
+            pImag[i] = b[i];
+        fft(pReal, pImag, false);
         double[] abReal = new double[n];
-        double[] abImaginary = new double[n];
+        double[] abImag = new double[n];
         // a[w[k]] = (p[w[k]] + conj(p[w[n-k]])) / 2
         // b[w[k]] = (p[w[k]] - conj(p[w[n-k]])) / (2*i)
-        // ab[w[k]] = p[w[k]]*p[w[k]] - conj(p[w[n-k]]*p[w[n-k]])
+        // ab[w[k]] = (p[w[k]]*p[w[k]] - conj(p[w[n-k]]*p[w[n-k]])) / (4*i)
         for (int i = 0; i < n; i++) {
             int j = (n - i) & (n - 1);
-            abReal[i] = (pReal[i] * pImaginary[i] + pReal[j] * pImaginary[j]) / 2;
-            abImaginary[i] = ((pReal[j] * pReal[j] - pImaginary[j] * pImaginary[j]) -
-                    (pReal[i] * pReal[i] - pImaginary[i] * pImaginary[i])) / 4;
+            abReal[i] = (pReal[i] * pImag[i] + pReal[j] * pImag[j]) / 2;
+            abImag[i] = ((pReal[j] * pReal[j] - pImag[j] * pImag[j]) -
+                    (pReal[i] * pReal[i] - pImag[i] * pImag[i])) / 4;
         }
-        fft(abReal, abImaginary, true);
+        fft(abReal, abImag, true);
         int[] result = new int[need];
         for (int i = 0, carry = 0; i < need; i++) {
             result[i] = (int) (abReal[i] + 0.5) + carry;
@@ -117,55 +120,55 @@ public class FFT {
         int n = Math.max(2, Integer.highestOneBit(need - 1) << 1);
 
         double[] aReal = new double[n];
-        double[] aImaginary = new double[n];
+        double[] aImag = new double[n];
         for (int i = 0; i < a.length; i++) {
             int x = (a[i] % mod + mod) % mod;
             aReal[i] = x & ((1 << 15) - 1);
-            aImaginary[i] = x >> 15;
+            aImag[i] = x >> 15;
         }
-        fft(aReal, aImaginary, false);
+        fft(aReal, aImag, false);
 
         double[] bReal = new double[n];
-        double[] bImaginary = new double[n];
+        double[] bImag = new double[n];
         for (int i = 0; i < b.length; i++) {
             int x = (b[i] % mod + mod) % mod;
             bReal[i] = x & ((1 << 15) - 1);
-            bImaginary[i] = x >> 15;
+            bImag[i] = x >> 15;
         }
-        fft(bReal, bImaginary, false);
+        fft(bReal, bImag, false);
 
         double[] faReal = new double[n];
-        double[] faImaginary = new double[n];
+        double[] faImag = new double[n];
         double[] fbReal = new double[n];
-        double[] fbImaginary = new double[n];
+        double[] fbImag = new double[n];
 
         for (int i = 0; i < n; i++) {
             int j = (n - i) & (n - 1);
 
             double a1r = (aReal[i] + aReal[j]) / 2;
-            double a1i = (aImaginary[i] - aImaginary[j]) / 2;
-            double a2r = (aImaginary[i] + aImaginary[j]) / 2;
+            double a1i = (aImag[i] - aImag[j]) / 2;
+            double a2r = (aImag[i] + aImag[j]) / 2;
             double a2i = (aReal[j] - aReal[i]) / 2;
 
             double b1r = (bReal[i] + bReal[j]) / 2;
-            double b1i = (bImaginary[i] - bImaginary[j]) / 2;
-            double b2r = (bImaginary[i] + bImaginary[j]) / 2;
+            double b1i = (bImag[i] - bImag[j]) / 2;
+            double b2r = (bImag[i] + bImag[j]) / 2;
             double b2i = (bReal[j] - bReal[i]) / 2;
 
             faReal[i] = a1r * b1r - a1i * b1i - a2r * b2i - a2i * b2r;
-            faImaginary[i] = a1r * b1i + a1i * b1r + a2r * b2r - a2i * b2i;
+            faImag[i] = a1r * b1i + a1i * b1r + a2r * b2r - a2i * b2i;
 
             fbReal[i] = a1r * b2r - a1i * b2i + a2r * b1r - a2i * b1i;
-            fbImaginary[i] = a1r * b2i + a1i * b2r + a2r * b1i + a2i * b1r;
+            fbImag[i] = a1r * b2i + a1i * b2r + a2r * b1i + a2i * b1r;
         }
 
-        fft(faReal, faImaginary, true);
-        fft(fbReal, fbImaginary, true);
+        fft(faReal, faImag, true);
+        fft(fbReal, fbImag, true);
         int[] res = new int[need];
         for (int i = 0; i < need; i++) {
             long aa = (long) (faReal[i] + 0.5);
             long bb = (long) (fbReal[i] + 0.5);
-            long cc = (long) (faImaginary[i] + 0.5);
+            long cc = (long) (faImag[i] + 0.5);
             res[i] = (int) ((aa + ((bb % mod) << 15) + ((cc % mod) << 30)) % mod);
         }
         return res;
