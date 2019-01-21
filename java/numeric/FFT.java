@@ -1,8 +1,7 @@
 package numeric;
 
 import java.math.BigInteger;
-import java.util.Arrays;
-import java.util.Random;
+import java.util.*;
 
 // Fast Fourier transform
 // https://cp-algorithms.com/algebra/fft.html
@@ -58,34 +57,6 @@ public class FFT {
     public static int[] multiply(int[] a, int[] b) {
         int need = a.length + b.length;
         int n = Integer.highestOneBit(need - 1) << 1;
-        double[] aReal = new double[n];
-        double[] aImag = new double[n];
-        double[] bReal = new double[n];
-        double[] bImag = new double[n];
-        for (int i = 0; i < a.length; i++)
-            aReal[i] = a[i];
-        for (int i = 0; i < b.length; i++)
-            bReal[i] = b[i];
-        fft(aReal, aImag, false);
-        fft(bReal, bImag, false);
-        for (int i = 0; i < n; i++) {
-            double real = aReal[i] * bReal[i] - aImag[i] * bImag[i];
-            aImag[i] = aImag[i] * bReal[i] + bImag[i] * aReal[i];
-            aReal[i] = real;
-        }
-        fft(aReal, aImag, true);
-        int[] result = new int[need];
-        for (int i = 0, carry = 0; i < need; i++) {
-            result[i] = (int) (aReal[i] + 0.5) + carry;
-            carry = result[i] / 10;
-            result[i] %= 10;
-        }
-        return result;
-    }
-
-    public static int[] multiplyFast(int[] a, int[] b) {
-        int need = a.length + b.length;
-        int n = Integer.highestOneBit(need - 1) << 1;
         double[] pReal = new double[n];
         double[] pImag = new double[n];
         // p(x) = a(x) + i*b(x)
@@ -109,6 +80,34 @@ public class FFT {
         int[] result = new int[need];
         for (int i = 0, carry = 0; i < need; i++) {
             result[i] = (int) (abReal[i] + 0.5) + carry;
+            carry = result[i] / 10;
+            result[i] %= 10;
+        }
+        return result;
+    }
+
+    public static int[] multiplySlow(int[] a, int[] b) {
+        int need = a.length + b.length;
+        int n = Integer.highestOneBit(need - 1) << 1;
+        double[] aReal = new double[n];
+        double[] aImag = new double[n];
+        double[] bReal = new double[n];
+        double[] bImag = new double[n];
+        for (int i = 0; i < a.length; i++)
+            aReal[i] = a[i];
+        for (int i = 0; i < b.length; i++)
+            bReal[i] = b[i];
+        fft(aReal, aImag, false);
+        fft(bReal, bImag, false);
+        for (int i = 0; i < n; i++) {
+            double real = aReal[i] * bReal[i] - aImag[i] * bImag[i];
+            aImag[i] = aImag[i] * bReal[i] + bImag[i] * aReal[i];
+            aReal[i] = real;
+        }
+        fft(aReal, aImag, true);
+        int[] result = new int[need];
+        for (int i = 0, carry = 0; i < need; i++) {
+            result[i] = (int) (aReal[i] + 0.5) + carry;
             carry = result[i] / 10;
             result[i] %= 10;
         }
@@ -195,8 +194,8 @@ public class FFT {
                 b[i] = x;
             }
 
-            int[] res1 = multiplyFast(a, b);
-            int[] res2 = multiply(a, b);
+            int[] res1 = multiply(a, b);
+            int[] res2 = multiplySlow(a, b);
             String s = "";
             for (int v : res1) {
                 s = v + s;
