@@ -4,6 +4,8 @@ import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Random;
 
+// https://github.com/indy256/olymp-docs/blob/master/adamant/fft_eng.pdf
+
 public class FFT {
 
     // precondition: a.length is a power of 2 and a.length == b.length
