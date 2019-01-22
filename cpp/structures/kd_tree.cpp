@@ -2,7 +2,7 @@
 
 using namespace std;
 
-typedef pair<int, int> pii;
+using pii = pair<int, int>;
 
 const int maxn = 100000;
 int tx[maxn];
@@ -15,10 +15,10 @@ void build_tree(int left, int right, pii *points) {
     int mid = (left + right) >> 1;
 
     //sort(points + left, points + right + 1, divX ? cmpX : cmpY);
-    int minx = INT_MAX;
-    int maxx = INT_MIN;
-    int miny = INT_MAX;
-    int maxy = INT_MIN;
+    int minx = numeric_limits<int>::max();
+    int maxx = numeric_limits<int>::min();
+    int miny = numeric_limits<int>::max();
+    int maxy = numeric_limits<int>::min();
     for (int i = left; i < right; i++) {
         minx = min(minx, points[i].first);
         maxx = max(maxx, points[i].first);

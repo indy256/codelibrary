@@ -87,7 +87,7 @@ int remove_min() {
 
 void dijkstra(int s) {
     fill(pred, pred + maxnodes, -1);
-    fill(prio, prio + maxnodes, INT_MAX);
+    fill(prio, prio + maxnodes, numeric_limits<int>::max());
     prio[s] = 0;
     hsize = 0;
     add(s, prio[s]);
@@ -98,7 +98,7 @@ void dijkstra(int s) {
             int v = head[e];
             int nprio = prio[u] + len[e];
             if (prio[v] > nprio) {
-                if (prio[v] == INT_MAX)
+                if (prio[v] == numeric_limits<int>::max())
                     add(v, nprio);
                 else
                     increase_priority(v, nprio);

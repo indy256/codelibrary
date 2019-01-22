@@ -66,7 +66,7 @@ int max_flow(int _src, int _dest) {
     int result = 0;
     while (dinic_bfs()) {
         fill(work, work + nodes, 0);
-        while (int delta = dinic_dfs(src, INT_MAX))
+        while (int delta = dinic_dfs(src, numeric_limits<int>::max()))
             result += delta;
     }
     return result;

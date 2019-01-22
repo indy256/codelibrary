@@ -9,7 +9,7 @@ using item = pair<int, int>; // (cost, v)
 tuple<long long, vector<int>> prim_mst(const vector<vector<edge>> &g) {
     size_t n = g.size();
     vector<int> pred(n, -1);
-    vector<int> prio(n, INT_MAX);
+    vector<int> prio(n, numeric_limits<int>::max());
     priority_queue<item, vector<item>, greater<>> q;
     q.emplace(prio[0] = 0, 0);
     long long tree_cost = 0;

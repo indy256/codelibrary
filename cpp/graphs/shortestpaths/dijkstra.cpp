@@ -10,7 +10,7 @@ typedef pair<int, int> item;
 // O(E*log(V)) time and O(E) memory
 tuple<vector<int>, vector<int>> dijkstra_heap(const vector<vector<edge>> &g, int s) {
     size_t n = g.size();
-    vector<int> prio(n, INT_MAX);
+    vector<int> prio(n, numeric_limits<int>::max());
     vector<int> pred(n, -1);
     priority_queue<item, vector<item>, greater<>> q;
     q.emplace(prio[s] = 0, s);
@@ -38,7 +38,7 @@ tuple<vector<int>, vector<int>> dijkstra_heap(const vector<vector<edge>> &g, int
 // O(E*log(V)) time and O(V) memory
 tuple<vector<int>, vector<int>> dijkstra_set(const vector<vector<edge>> &g, int s) {
     size_t n = g.size();
-    vector<int> prio(n, INT_MAX);
+    vector<int> prio(n, numeric_limits<int>::max());
     vector<int> pred(n, -1);
     set<item> q;
     q.emplace(prio[s] = 0, s);

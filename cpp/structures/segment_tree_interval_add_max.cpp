@@ -17,7 +17,7 @@ void push(int root) {
 
 int max(int from, int to, int root = 0, int left = 0, int right = maxn - 1) {
     if (from > right || left > to)
-        return INT_MIN;
+        return numeric_limits<int>::min();
     if (from <= left && right <= to) {
         return tmax[root] + tadd[root];
     }

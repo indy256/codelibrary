@@ -8,7 +8,7 @@ stack<pair<int, int>> s1;
 stack<pair<int, int>> s2;
 
 int min() {
-    return min(s1.empty() ? INT_MAX : s1.top().second, s2.empty() ? INT_MAX : s2.top().second);
+    return min(s1.empty() ? numeric_limits<int>::max() : s1.top().second, s2.empty() ? numeric_limits<int>::max() : s2.top().second);
 }
 
 void add_last(int x) {

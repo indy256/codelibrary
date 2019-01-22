@@ -22,7 +22,7 @@ void add_edge(int s, int t, int cap, int cost) {
 }
 
 void bellman_ford(int s) {
-    fill(prio, prio + nodes, INT_MAX);
+    fill(prio, prio + nodes, numeric_limits<int>::max());
     prio[s] = 0;
     int qt = 0;
     q[qt++] = s;
@@ -52,9 +52,9 @@ tuple<int, int> min_cost_flow(int s, int t, int maxf) {
     int flow = 0;
     int flow_cost = 0;
     while (flow < maxf) {
-        curflow[s] = INT_MAX;
+        curflow[s] = numeric_limits<int>::max();
         bellman_ford(s);
-        if (prio[t] == INT_MAX)
+        if (prio[t] == numeric_limits<int>::max())
             break;
         int df = min(curflow[t], maxf - flow);
         flow += df;
@@ -81,7 +81,7 @@ int main() {
 
     int s = 0;
     int t = 2;
-    auto[flow, flow_cost] = min_cost_flow(s, t, INT_MAX);
+    auto[flow, flow_cost] = min_cost_flow(s, t, numeric_limits<int>::max());
 
     cout << (4 == flow) << endl;
     cout << (6 == flow_cost) << endl;

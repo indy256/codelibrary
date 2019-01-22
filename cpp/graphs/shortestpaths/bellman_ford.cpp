@@ -6,7 +6,7 @@ using namespace std;
 
 typedef pair<int, int> edge;
 
-const int INF = INT_MAX / 3;
+const int INF = numeric_limits<int>::max() / 3;
 
 tuple<bool, vector<int>, vector<int>> bellman_ford(const vector<vector<edge>> &g, int s) {
     size_t n = g.size();
