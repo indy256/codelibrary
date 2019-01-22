@@ -10,8 +10,7 @@ int nodes = maxnodes, src, dest;
 int dist[maxnodes], q[maxnodes], work[maxnodes];
 
 struct Edge {
-    int to, rev;
-    int f, cap;
+    int to, rev, f, cap;
 };
 
 vector<Edge> g[maxnodes];

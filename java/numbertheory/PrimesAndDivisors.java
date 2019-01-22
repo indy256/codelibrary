@@ -58,7 +58,7 @@ public class PrimesAndDivisors {
         return divisors;
     }
 
-    // Generates minimum divisors up to n in O(n) time
+    // Generates minimum prime divisor of all numbers up to n in O(n) time
     public static int[] generateMinDivisors(int n) {
         int[] lp = new int[n + 1];
         lp[1] = 1;
@@ -73,6 +73,16 @@ public class PrimesAndDivisors {
                 lp[i * primes[j]] = primes[j];
         }
         return lp;
+    }
+
+    // Generates prime divisor of all numbers up to n
+    public static int[] generateDivisors(int n) {
+        int[] divisors = IntStream.range(0, n + 1).toArray();
+        for (int i = 2; i * i <= n; i++)
+            if (divisors[i] == i)
+                for (int j = i * i; j <= n; j += i)
+                    divisors[j] = i;
+        return divisors;
     }
 
     // Euler's totient function
@@ -111,6 +121,7 @@ public class PrimesAndDivisors {
 
         System.out.println(Arrays.toString(numberOfPrimeDivisors(n)));
         System.out.println(Arrays.toString(generateMinDivisors(n)));
+        System.out.println(Arrays.toString(generateDivisors(n)));
 
         n = 1000;
         int[] phi = generatePhi(n);

@@ -4,31 +4,22 @@ import java.util.*;
 
 public class MonotonicApproximation {
 
-    // finds array b that minimizes sum |a[i]-b[i]|
+    // returns minimum sum |a[i]-b[i]| where b is non-strictly increasing array
     // see http://codeforces.com/blog/entry/47821
     public static long monotonicApproximation(int[] a) {
         int n = a.length;
-        int[] t = new int[n];
-        SortedMap<Integer, Integer> m = new TreeMap<>();
-        for (int i = 0; i < n; i++) {
-            Integer v = m.get(a[i]);
-            if (v == null) v = 0;
-            m.put(a[i], v + 2);
-            int last = m.lastKey();
-            t[i] = last;
-            int count = m.get(last);
-            if (count > 1)
-                m.put(last, count - 1);
-            else
-                m.remove(last);
-        }
-        int[] b = new int[n];
-        b[n - 1] = t[n - 1];
-        for (int i = n - 2; i >= 0; i--)
-            b[i] = Math.min(t[i], b[i + 1]);
         long res = 0;
-        for (int i = 0; i < n; i++)
-            res += Math.abs(a[i] - b[i]);
+        PriorityQueue<Integer> q = new PriorityQueue<>(Comparator.reverseOrder());
+        q.add(a[0]);
+        for (int i = 1; i < n; i++) {
+            int x = a[i];
+            q.add(x);
+            if (q.peek() > x) {
+                res += q.peek() - x;
+                q.remove();
+                q.add(x);
+            }
+        }
         return res;
     }
 

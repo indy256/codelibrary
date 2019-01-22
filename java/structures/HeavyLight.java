@@ -92,7 +92,7 @@ public class HeavyLight {
     public static class SegmentTree {
         // Modify the following 5 methods to implement your custom operations on the tree.
         // This example implements Add/Sum operations. Operations like Add/Max, Set/Max can also be implemented.
-        int modifyOperation(int x, int y) {
+        int updateOperation(int x, int y) {
             return x + y;
         }
 
@@ -124,13 +124,13 @@ public class HeavyLight {
 
         public int joinValueWithDelta(int value, int delta) {
             if (delta == getNeutralDelta()) return value;
-            return modifyOperation(value, delta);
+            return updateOperation(value, delta);
         }
 
         int joinDeltas(int delta1, int delta2) {
             if (delta1 == getNeutralDelta()) return delta2;
             if (delta2 == getNeutralDelta()) return delta1;
-            return modifyOperation(delta1, delta2);
+            return updateOperation(delta1, delta2);
         }
 
         void pushDelta(int i) {
@@ -211,9 +211,16 @@ public class HeavyLight {
     public static void main(String[] args) {
         List<Integer>[] tree = Stream.generate(ArrayList::new).limit(5).toArray(List[]::new);
         tree[0].add(1);
+        tree[1].add(0);
+
         tree[0].add(2);
+        tree[2].add(0);
+
         tree[1].add(3);
+        tree[3].add(1);
+
         tree[1].add(4);
+        tree[4].add(1);
 
         HeavyLight hlV = new HeavyLight(tree, true);
         hlV.modify(3, 2, 1);

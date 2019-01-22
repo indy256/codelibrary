@@ -9,7 +9,7 @@ int tx[maxn];
 int ty[maxn];
 bool divX[maxn];
 
-void buildTree(int left, int right, pii points[]) {
+void build_tree(int left, int right, pii *points) {
     if (left >= right)
         return;
     int mid = (left + right) >> 1;
@@ -35,23 +35,23 @@ void buildTree(int left, int right, pii points[]) {
 
     if (left + 1 == right)
         return;
-    buildTree(left, mid, points);
-    buildTree(mid + 1, right, points);
+    build_tree(left, mid, points);
+    build_tree(mid + 1, right, points);
 }
 
-long long closestDist;
-int closestNode;
+long long closest_dist;
+int closest_node;
 
-void findNearestNeighbour(int left, int right, int x, int y) {
+void find_nearest_neighbour(int left, int right, int x, int y) {
     if (left >= right)
         return;
     int mid = (left + right) >> 1;
     int dx = x - tx[mid];
     int dy = y - ty[mid];
     long long d = dx * (long long) dx + dy * (long long) dy;
-    if (closestDist > d && d) {
-        closestDist = d;
-        closestNode = mid;
+    if (closest_dist > d && d) {
+        closest_dist = d;
+        closest_node = mid;
     }
     if (left + 1 == right)
         return;
@@ -65,15 +65,15 @@ void findNearestNeighbour(int left, int right, int x, int y) {
     if (delta > 0)
         swap(l1, l2), swap(r1, r2);
 
-    findNearestNeighbour(l1, r1, x, y);
-    if (delta2 < closestDist)
-        findNearestNeighbour(l2, r2, x, y);
+    find_nearest_neighbour(l1, r1, x, y);
+    if (delta2 < closest_dist)
+        find_nearest_neighbour(l2, r2, x, y);
 }
 
-int findNearestNeighbour(int n, int x, int y) {
-    closestDist = LLONG_MAX;
-    findNearestNeighbour(0, n, x, y);
-    return closestNode;
+int find_nearest_neighbour(int n, int x, int y) {
+    closest_dist = LLONG_MAX;
+    find_nearest_neighbour(0, n, x, y);
+    return closest_node;
 }
 
 // usage example
@@ -86,8 +86,8 @@ int main() {
     p.resize(unique(p.begin(), p.end()) - p.begin());
 
     int n = p.size();
-    buildTree(0, n - 1, &p[0]);
-    int res = findNearestNeighbour(n, 0, 0);
+    build_tree(0, n - 1, &p[0]);
+    int res = find_nearest_neighbour(n, 0, 0);
 
     cout << p[res].first << " " << p[res].second << endl;
 

@@ -44,7 +44,7 @@ public class ExpressionParserRecursiveDescent {
     // Т -> T*F | T/F | F
     // F -> number | (Е)
     //
-    // Left recursion eliminated:
+    // After left recursion elimination:
     // Е -> ТЕ'
     // Е'-> +ТЕ' | -ТЕ' | е
     // Т -> FT'

@@ -30,9 +30,9 @@ vector<double> gauss(vector<vector<double>> a, vector<double> b) {
 
 // usage example
 int main() {
-    vector<vector<double>> a = {{4,  2, -1},
-                                {2,  4, 3},
-                                {-1, 3, 5}};
+    vector<vector<double>> a{{4,  2, -1},
+                             {2,  4, 3},
+                             {-1, 3, 5}};
     vector<double> b = {1, 0, 0};
     vector<double> x = gauss(a, b);
     for (int i = 0; i < a.size(); i++) {

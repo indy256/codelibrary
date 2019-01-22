@@ -27,13 +27,12 @@ vector<int> get_primes(int n) {
 vector<int> generate_primes_linear_time(int n) {
     vector<int> lp(n + 1);
     vector<int> primes;
-    int cnt = 0;
     for (int i = 2; i <= n; ++i) {
         if (lp[i] == 0) {
             lp[i] = i;
             primes.push_back(i);
         }
-        for (int j = 0; j < cnt && primes[j] <= lp[i] && i * primes[j] <= n; ++j)
+        for (int j = 0; j < primes.size() && primes[j] <= lp[i] && i * primes[j] <= n; ++j)
             lp[i * primes[j]] = primes[j];
     }
     return primes;
@@ -49,28 +48,44 @@ vector<int> number_of_prime_divisors(int n) {
     return divisors;
 }
 
-// Generates minimum divisors up to n in O(n) time
+// Generates minimum prime divisor of all numbers up to n in O(n) time
 vector<int> generate_min_divisors(int n) {
     vector<int> lp(n + 1);
     lp[1] = 1;
     vector<int> primes;
-    int cnt = 0;
     for (int i = 2; i <= n; ++i) {
         if (lp[i] == 0) {
             lp[i] = i;
             primes.push_back(i);
         }
-        for (int j = 0; j < cnt && primes[j] <= lp[i] && i * primes[j] <= n; ++j)
+        for (int j = 0; j < primes.size() && primes[j] <= lp[i] && i * primes[j] <= n; ++j)
             lp[i * primes[j]] = primes[j];
     }
     return lp;
 }
 
-// usage example
-int main() {
-    int n = 31;
-    for (int prime : get_primes(n))
-        cout << prime << " ";
+// Generates prime divisor of all numbers up to n
+vector<int> generate_divisors(int n) {
+    vector<int> divisors(n + 1);
+    iota(divisors.begin(), divisors.end(), 0);
+    for (int i = 2; i * i <= n; i++)
+        if (divisors[i] == i)
+            for (int j = i * i; j <= n; j += i)
+                divisors[j] = i;
+    return divisors;
+}
 
+// usage example
+void print(const vector<int> &a) {
+    copy(a.begin(), a.end(), ostream_iterator<int>(cout, " "));
     cout << endl;
+}
+
+int main() {
+    int n = 32;
+
+    print(get_primes(n));
+    print(generate_primes_linear_time(n));
+    print(generate_min_divisors(n));
+    print(generate_divisors(n));
 }
