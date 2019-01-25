@@ -64,7 +64,7 @@ struct LiChaoTree {
     Node *root;
 
     LiChaoTree(ftype minx, ftype maxx) : minx(minx), maxx(maxx) {
-        root = new Node({0, std::numeric_limits<ftype>::max() / 2});
+        root = new Node({0, numeric_limits<ftype>::max() / 2});
     }
 
     void add_line(Line line) {
