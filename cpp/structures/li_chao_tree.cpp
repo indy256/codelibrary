@@ -4,52 +4,82 @@ using namespace std;
 
 // https://cp-algorithms.com/geometry/convex_hull_trick.html
 
-using ftype = int;
-using point = complex<ftype>;
+using ftype = long long;
 
-ftype dot(point a, point b) {
-    return (conj(a) * b).real();
-}
+struct Line {
+    ftype k, d;
 
-ftype f(point a, ftype x) {
-    return dot(a, {x, 1});
-}
-
-const int maxn = 2e5;
-
-point lines[4 * maxn];
-
-void add_line(point line, int node = 1, int l = 0, int r = maxn) {
-    int m = (l + r) / 2;
-    bool left = f(line, l) < f(lines[node], l);
-    bool mid = f(line, m) < f(lines[node], m);
-    if (mid) {
-        swap(lines[node], line);
+    ftype eval(ftype x) {
+        return k * x + d;
     }
-    if (r - l == 1) {
-        return;
-    } else if (left != mid) {
-        add_line(line, 2 * node, l, m);
-    } else {
-        add_line(line, 2 * node + 1, m, r);
-    }
-}
+};
 
-int get_min(int x, int node = 1, int l = 0, int r = maxn) {
-    int m = (l + r) / 2;
-    if (r - l == 1) {
-        return f(lines[node], x);
-    } else if (x < m) {
-        return min(f(lines[node], x), get_min(x, 2 * node, l, m));
-    } else {
-        return min(f(lines[node], x), get_min(x, 2 * node + 1, m, r));
+struct Node {
+    Line line;
+    Node *left = nullptr;
+    Node *right = nullptr;
+
+    Node(Line line) : line(line) {}
+
+    void add_line(Line nline, ftype l, ftype r) {
+        ftype m = (l + r) / 2;
+        bool left_smaller = nline.eval(l) < line.eval(l);
+        bool mid_smaller = nline.eval(m) < line.eval(m);
+        if (mid_smaller) {
+            swap(line, nline);
+        }
+        if (r - l == 1) {
+            return;
+        }
+        if (left_smaller != mid_smaller) {
+            if (left == nullptr)
+                left = new Node(nline);
+            else
+                left->add_line(nline, l, m);
+        } else {
+            if (right == nullptr)
+                right = new Node(nline);
+            else
+                right->add_line(nline, m, r);
+        }
     }
-}
+
+    ftype get_min(ftype x, ftype l, ftype r) {
+        if (r - l > 1) {
+            ftype m = (l + r) / 2;
+            if (x < m && left != nullptr) {
+                return min(line.eval(x), left->get_min(x, l, m));
+            }
+            if (x >= m && right != nullptr) {
+                return min(line.eval(x), right->get_min(x, m, r));
+            }
+        }
+        return line.eval(x);
+    }
+};
+
+struct LiChaoTree {
+    ftype minx;
+    ftype maxx;
+    Node *root;
+
+    LiChaoTree(ftype minx, ftype maxx) : minx(minx), maxx(maxx) {
+        root = new Node({0, std::numeric_limits<ftype>::max() / 2});
+    }
+
+    void add_line(Line line) {
+        root->add_line(line, minx, maxx + 1);
+    }
+
+    ftype get_min(ftype x) {
+        return root->get_min(x, minx, maxx + 1);
+    }
+};
 
 // usage example
 int main() {
-    fill(lines, lines + 4 * maxn, point(0, numeric_limits<int>::max()));
-    add_line({1, 3});
-    add_line({2, 1});
-    cout << get_min(1) << endl;
+    LiChaoTree t = LiChaoTree(1, 1e9);
+    t.add_line({1, 3});
+    t.add_line({2, 1});
+    cout << t.get_min(1) << endl;
 }
