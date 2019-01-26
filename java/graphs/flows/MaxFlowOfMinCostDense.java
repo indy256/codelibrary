@@ -3,7 +3,7 @@ package graphs.flows;
 import java.util.*;
 import java.util.stream.Stream;
 
-public class MinCostFlowBF {
+public class MaxFlowOfMinCostDense {
 
     static class Edge {
         int to, f, cap, cost, rev;
@@ -21,11 +21,10 @@ public class MinCostFlowBF {
         graph[t].add(new Edge(s, 0, -cost, graph[s].size() - 1));
     }
 
-    static void bellmanFord(List<Edge>[] graph, int s, int[] dist, int[] prevnode, int[] prevedge, int[] curflow) {
+    static void bellmanFord(List<Edge>[] graph, int s, int[] dist) {
         int n = graph.length;
-        Arrays.fill(dist, 0, n, Integer.MAX_VALUE);
+        Arrays.fill(dist, Integer.MAX_VALUE);
         dist[s] = 0;
-        curflow[s] = Integer.MAX_VALUE;
         boolean[] inqueue = new boolean[n];
         int[] q = new int[n];
         int qt = 0;
@@ -35,15 +34,12 @@ public class MinCostFlowBF {
             inqueue[u] = false;
             for (int i = 0; i < graph[u].size(); i++) {
                 Edge e = graph[u].get(i);
-                if (e.f >= e.cap)
+                if (e.cap <= e.f)
                     continue;
                 int v = e.to;
                 int ndist = dist[u] + e.cost;
                 if (dist[v] > ndist) {
                     dist[v] = ndist;
-                    prevnode[v] = u;
-                    prevedge[v] = i;
-                    curflow[v] = Math.min(curflow[u], e.cap - e.f);
                     if (!inqueue[v]) {
                         inqueue[v] = true;
                         q[qt++ % n] = v;
@@ -55,17 +51,48 @@ public class MinCostFlowBF {
 
     public static int[] minCostFlow(List<Edge>[] graph, int s, int t, int maxf) {
         int n = graph.length;
-        int[] dist = new int[n];
+        int[] prio = new int[n];
         int[] curflow = new int[n];
         int[] prevedge = new int[n];
         int[] prevnode = new int[n];
+        int[] pot = new int[n];
 
+        // bellmanFord invocation can be skipped if edges costs are non-negative
+        bellmanFord(graph, s, pot);
         int flow = 0;
         int flowCost = 0;
         while (flow < maxf) {
-            bellmanFord(graph, s, dist, prevnode, prevedge, curflow);
-            if (dist[t] == Integer.MAX_VALUE)
+            Arrays.fill(prio, Integer.MAX_VALUE);
+            prio[s] = 0;
+            boolean[] finished = new boolean[n];
+            curflow[s] = Integer.MAX_VALUE;
+            for (int i = 0; i < n && !finished[t]; i++) {
+                int u = -1;
+                for (int j = 0; j < n; j++)
+                    if (!finished[j] && (u == -1 || prio[u] > prio[j]))
+                        u = j;
+                if (prio[u] == Integer.MAX_VALUE)
+                    break;
+                finished[u] = true;
+                for (int k = 0; k < graph[u].size(); k++) {
+                    Edge e = graph[u].get(k);
+                    if (e.f >= e.cap)
+                        continue;
+                    int v = e.to;
+                    int nprio = prio[u] + e.cost + pot[u] - pot[v];
+                    if (prio[v] > nprio) {
+                        prio[v] = nprio;
+                        prevnode[v] = u;
+                        prevedge[v] = k;
+                        curflow[v] = Math.min(curflow[u], e.cap - e.f);
+                    }
+                }
+            }
+            if (prio[t] == Integer.MAX_VALUE)
                 break;
+            for (int i = 0; i < n; i++)
+                if (finished[i])
+                    pot[i] += prio[i] - prio[t];
             int df = Math.min(curflow[t], maxf - flow);
             flow += df;
             for (int v = t; v != s; v = prevnode[v]) {

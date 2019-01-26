@@ -4,12 +4,12 @@ using namespace std;
 
 // https://cp-algorithms.com/geometry/convex_hull_trick.html
 
-using ftype = long long;
+using T = long long;
 
 struct Line {
-    ftype k, d;
+    T k, d;
 
-    ftype eval(ftype x) {
+    T eval(T x) {
         return k * x + d;
     }
 };
@@ -21,8 +21,8 @@ struct Node {
 
     Node(Line line) : line(line) {}
 
-    void add_line(Line nline, ftype l, ftype r) {
-        ftype m = (l + r) / 2;
+    void add_line(Line nline, T l, T r) {
+        T m = (l + r) / 2;
         bool left_smaller = nline.eval(l) < line.eval(l);
         bool mid_smaller = nline.eval(m) < line.eval(m);
         if (mid_smaller) {
@@ -44,9 +44,9 @@ struct Node {
         }
     }
 
-    ftype get_min(ftype x, ftype l, ftype r) {
+    T get_min(T x, T l, T r) {
         if (r - l > 1) {
-            ftype m = (l + r) / 2;
+            T m = (l + r) / 2;
             if (x < m && left != nullptr) {
                 return min(line.eval(x), left->get_min(x, l, m));
             }
@@ -59,19 +59,19 @@ struct Node {
 };
 
 struct LiChaoTree {
-    ftype minx;
-    ftype maxx;
+    T minx;
+    T maxx;
     Node *root;
 
-    LiChaoTree(ftype minx, ftype maxx) : minx(minx), maxx(maxx) {
-        root = new Node({0, numeric_limits<ftype>::max() / 2});
+    LiChaoTree(T minx, T maxx) : minx(minx), maxx(maxx) {
+        root = new Node({0, numeric_limits<T>::max() / 2});
     }
 
     void add_line(Line line) {
         root->add_line(line, minx, maxx + 1);
     }
 
-    ftype get_min(ftype x) {
+    T get_min(T x) {
         return root->get_min(x, minx, maxx + 1);
     }
 };

@@ -3,7 +3,7 @@ package graphs.flows;
 import java.util.*;
 import java.util.stream.Stream;
 
-public class MinCostFlowDense {
+public class MaxFlowOfMinCost {
 
     static class Edge {
         int to, f, cap, cost, rev;
@@ -57,33 +57,34 @@ public class MinCostFlowDense {
         int[] prevnode = new int[n];
         int[] pot = new int[n];
 
-        // bellmanFord invocation can be skipped if edges costs are non-negative
-        bellmanFord(graph, s, pot);
+        bellmanFord(graph, s, pot); // bellmanFord invocation can be skipped if edges costs are non-negative
         int flow = 0;
         int flowCost = 0;
         while (flow < maxf) {
+            PriorityQueue<Long> q = new PriorityQueue<>();
+            q.add((long) s);
             Arrays.fill(prio, Integer.MAX_VALUE);
             prio[s] = 0;
             boolean[] finished = new boolean[n];
             curflow[s] = Integer.MAX_VALUE;
-            for (int i = 0; i < n && !finished[t]; i++) {
-                int u = -1;
-                for (int j = 0; j < n; j++)
-                    if (!finished[j] && (u == -1 || prio[u] > prio[j]))
-                        u = j;
-                if (prio[u] == Integer.MAX_VALUE)
-                    break;
+            while (!finished[t] && !q.isEmpty()) {
+                long cur = q.remove();
+                int u = (int) (cur & 0xFFFF_FFFFL);
+                int priou = (int) (cur >>> 32);
+                if (priou != prio[u])
+                    continue;
                 finished[u] = true;
-                for (int k = 0; k < graph[u].size(); k++) {
-                    Edge e = graph[u].get(k);
+                for (int i = 0; i < graph[u].size(); i++) {
+                    Edge e = graph[u].get(i);
                     if (e.f >= e.cap)
                         continue;
                     int v = e.to;
                     int nprio = prio[u] + e.cost + pot[u] - pot[v];
                     if (prio[v] > nprio) {
                         prio[v] = nprio;
+                        q.add(((long) nprio << 32) + v);
                         prevnode[v] = u;
-                        prevedge[v] = k;
+                        prevedge[v] = i;
                         curflow[v] = Math.min(curflow[u], e.cap - e.f);
                     }
                 }
