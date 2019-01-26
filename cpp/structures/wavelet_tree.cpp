@@ -4,7 +4,8 @@ using namespace std;
 
 struct wavelet_tree {
     int lo, hi;
-    wavelet_tree *l, *r;
+    wavelet_tree *l = nullptr;
+    wavelet_tree *r = nullptr;
     vector<int> b;
 
     static wavelet_tree create(int *from, int *to) {
