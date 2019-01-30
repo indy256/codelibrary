@@ -5,38 +5,54 @@ import java.util.stream.Stream;
 
 public class Biconnectivity {
 
+    static class Edge {
+        int u, v;
+
+        public Edge(int u, int v) {
+            this.u = u;
+            this.v = v;
+        }
+
+        @Override
+        public String toString() {
+            return "(" + u + "," + v + ')';
+        }
+    }
+
     List<Integer>[] graph;
     boolean[] visited;
     Stack<Integer> stack;
+    Stack<Edge> stackEdges;
     int time;
     int[] tin;
-    int[] lowlink;
+    int[] up;
     List<List<Integer>> edgeBiconnectedComponents;
+    List<List<Edge>> vertexBiconnectedComponents;
     List<Integer> cutPoints;
     List<String> bridges;
 
-    public List<List<Integer>> biconnectivity(List<Integer>[] graph) {
+    public void biconnectivity(List<Integer>[] graph) {
         int n = graph.length;
         this.graph = graph;
         visited = new boolean[n];
         stack = new Stack<>();
+        stackEdges = new Stack<>();
         time = 0;
         tin = new int[n];
-        lowlink = new int[n];
+        up = new int[n];
         edgeBiconnectedComponents = new ArrayList<>();
+        vertexBiconnectedComponents = new ArrayList<>();
         cutPoints = new ArrayList<>();
         bridges = new ArrayList<>();
 
         for (int u = 0; u < n; u++)
             if (!visited[u])
                 dfs(u, -1);
-
-        return edgeBiconnectedComponents;
     }
 
     void dfs(int u, int p) {
         visited[u] = true;
-        lowlink[u] = tin[u] = time++;
+        up[u] = tin[u] = time++;
         stack.add(u);
         int children = 0;
         boolean cutPoint = false;
@@ -44,12 +60,26 @@ public class Biconnectivity {
             if (v == p)
                 continue;
             if (visited[v]) {
-                lowlink[u] = Math.min(lowlink[u], tin[v]); // or lowlink[u] = Math.min(lowlink[u], lowlink[v]);
+                if (tin[u] > tin[v]) {
+                    stackEdges.add(new Edge(u, v));
+                }
+                up[u] = Math.min(up[u], tin[v]); // or up[u] = Math.min(up[u], up[v]);
             } else {
+                stackEdges.add(new Edge(u, v));
                 dfs(v, u);
-                lowlink[u] = Math.min(lowlink[u], lowlink[v]);
-                cutPoint |= tin[u] <= lowlink[v];
-                if (tin[u] < lowlink[v]) // or if (lowlink[v] == tin[v])
+                up[u] = Math.min(up[u], up[v]);
+                if (tin[u] <= up[v]) {
+                    cutPoint = true;
+                    List<Edge> component = new ArrayList<>();
+                    while (true) {
+                        Edge e = stackEdges.pop();
+                        component.add(e);
+                        if (e.u == u && e.v == v)
+                            break;
+                    }
+                    vertexBiconnectedComponents.add(component);
+                }
+                if (tin[u] < up[v]) // or if (up[v] == tin[v])
                     bridges.add("(" + u + "," + v + ")");
                 ++children;
             }
@@ -58,7 +88,7 @@ public class Biconnectivity {
             cutPoint = children >= 2;
         if (cutPoint)
             cutPoints.add(u);
-        if (tin[u] == lowlink[u]) {
+        if (tin[u] == up[u]) {
             List<Integer> component = new ArrayList<>();
             while (true) {
                 int x = stack.pop();
@@ -86,20 +116,24 @@ public class Biconnectivity {
 
     // Usage example
     public static void main(String[] args) {
-        List<Integer>[] graph = Stream.generate(ArrayList::new).limit(6).toArray(List[]::new);
+        int[][] edges = {{0, 1}, {1, 2}, {0, 2}, {2, 3}, {1, 4}, {4, 5}, {5, 1}};
+//        int[][] edges = {{0, 1}};
 
-        int[][] esges = {{0, 1}, {1, 2}, {0, 2}, {2, 3}, {1, 4}, {4, 5}, {5, 1}};
-        for (int[] edge : esges) {
+        int n = Arrays.stream(edges).mapToInt(e -> Math.max(e[0], e[1])).max().getAsInt() + 1;
+        List<Integer>[] graph = Stream.generate(ArrayList::new).limit(n).toArray(List[]::new);
+
+        for (int[] edge : edges) {
             graph[edge[0]].add(edge[1]);
             graph[edge[1]].add(edge[0]);
         }
 
         Biconnectivity bc = new Biconnectivity();
-        List<List<Integer>> components = bc.biconnectivity(graph);
+        bc.biconnectivity(graph);
 
-        System.out.println("edge-biconnected components:" + components);
+        System.out.println("edge-biconnected components:" + bc.edgeBiconnectedComponents);
+        System.out.println("vertex-biconnected components:" + bc.vertexBiconnectedComponents);
         System.out.println("cut points: " + bc.cutPoints);
         System.out.println("bridges:" + bc.bridges);
-        System.out.println("condensation tree:" + Arrays.toString(ebcTree(graph, components)));
+        System.out.println("edge-biconnected condensation tree:" + Arrays.toString(ebcTree(graph, bc.edgeBiconnectedComponents)));
     }
 }

@@ -8,7 +8,7 @@ int ctz(ll x) {
     return x == 0 ? 64 : __builtin_ctzll(x);
 }
 
-// maximum independent set
+// maximum independent set in O(3^(n/3))
 int mis(const vector<ll> &g, ll unused) {
     if (unused == 0)
         return 0;
