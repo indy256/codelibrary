@@ -37,7 +37,7 @@
 + [ ] Maximum weighted matching in general graph ([contribute a link or implementation](https://github.com/indy256/codelibrary/issues/38))
 + [x] Spanning tree [**c++**](cpp/graphs/spanningtree) [**java**](java/graphs/spanningtree)
 + [x] Connectivity [**c++**](cpp/graphs/dfs) [**java**](java/graphs/dfs)
-+ [x] Biconnectivity [**c++**](cpp/graphs/dfs) [**java**](java/graphs/dfs)
++ [x] Biconnectivity [**java**](java/graphs/dfs/Biconnectivity.java)
 + [x] LCA [**c++**](cpp/graphs/lca) [**java**](java/graphs/lca)
 + [ ] Planarity testing ([contribute a link or implementation](https://github.com/indy256/codelibrary/issues/28))
 + [ ] Dynamic graph connectivity ([contribute a link or implementation](https://github.com/indy256/codelibrary/issues/29))
