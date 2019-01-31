@@ -29,7 +29,7 @@ public class Biconnectivity {
     List<List<Integer>> edgeBiconnectedComponents;
     List<List<Edge>> vertexBiconnectedComponents;
     List<Integer> cutPoints;
-    List<String> bridges;
+    List<Edge> bridges;
 
     public void biconnectivity(List<Integer>[] graph) {
         int n = graph.length;
@@ -63,7 +63,7 @@ public class Biconnectivity {
                 if (tin[u] > tin[v]) {
                     stackEdges.add(new Edge(u, v));
                 }
-                up[u] = Math.min(up[u], tin[v]); // or up[u] = Math.min(up[u], up[v]);
+                up[u] = Math.min(up[u], tin[v]);
             } else {
                 stackEdges.add(new Edge(u, v));
                 dfs(v, u);
@@ -80,7 +80,7 @@ public class Biconnectivity {
                     vertexBiconnectedComponents.add(component);
                 }
                 if (tin[u] < up[v]) // or if (up[v] == tin[v])
-                    bridges.add("(" + u + "," + v + ")");
+                    bridges.add(new Edge(u, v));
                 ++children;
             }
         }
@@ -117,7 +117,7 @@ public class Biconnectivity {
     // Usage example
     public static void main(String[] args) {
         int[][] edges = {{0, 1}, {1, 2}, {0, 2}, {2, 3}, {1, 4}, {4, 5}, {5, 1}};
-//        int[][] edges = {{0, 1}};
+        // int[][] edges = {{0, 1}};
 
         int n = Arrays.stream(edges).mapToInt(e -> Math.max(e[0], e[1])).max().getAsInt() + 1;
         List<Integer>[] graph = Stream.generate(ArrayList::new).limit(n).toArray(List[]::new);
