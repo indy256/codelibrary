@@ -2,10 +2,10 @@
 
 using namespace std;
 
-typedef vector<int> vi;
-typedef vector<vi> vvi;
+using vi = vector<int>;
+using vvi = vector<vi>;
 
-const int mod = 1234567891;
+const int mod = 1123456789;
 
 vvi matrix_unit(int n) {
     vvi res(n, vi(n));
