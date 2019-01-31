@@ -13,7 +13,6 @@ public class Biconnectivity {
             this.v = v;
         }
 
-        @Override
         public String toString() {
             return "(" + u + "," + v + ')';
         }
@@ -79,7 +78,7 @@ public class Biconnectivity {
                     }
                     vertexBiconnectedComponents.add(component);
                 }
-                if (tin[u] < up[v]) // or if (up[v] == tin[v])
+                if (tin[u] < up[v]) // or (up[v] == tin[v])
                     bridges.add(new Edge(u, v));
                 ++children;
             }
