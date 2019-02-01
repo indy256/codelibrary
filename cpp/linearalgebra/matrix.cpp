@@ -37,12 +37,16 @@ vvi matrix_mul(const vvi &a, const vvi &b) {
 }
 
 vvi matrix_pow(const vvi &a, int p) {
-    if (p == 0)
-        return matrix_unit(a.size());
-    if (p % 2 == 0)
-        return matrix_pow(matrix_mul(a, a), p / 2);
-    else
-        return matrix_mul(a, matrix_pow(a, p - 1));
+    vvi res = matrix_unit(a.size());
+    vvi x = a;
+    while (true) {
+        if (p & 1)
+            res = matrix_mul(res, x);
+        p >>= 1;
+        if (!p) break;
+        x = matrix_mul(x, x);
+    }
+    return res;
 }
 
 // a + a^2 + ... + a^p

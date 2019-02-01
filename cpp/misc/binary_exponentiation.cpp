@@ -4,7 +4,7 @@ using namespace std;
 
 // https://en.wikipedia.org/wiki/Exponentiation_by_squaring
 // https://cp-algorithms.com/algebra/binary-exp.html
-int powmod(int x, int n, int mod) {
+int pow_mod(int x, int n, int mod) {
     int y = x;
     int res = 1;
     for (; n > 0; n >>= 1) {
@@ -18,6 +18,6 @@ int powmod(int x, int n, int mod) {
 // usage example
 int main() {
     const int MOD = 1000000007;
-    int x = powmod(2, 10, MOD);
+    int x = pow_mod(2, 10, MOD);
     cout << x << endl;
 }

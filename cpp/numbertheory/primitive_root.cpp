@@ -4,7 +4,7 @@ using namespace std;
 
 // https://cp-algorithms.com/algebra/primitive-root.html
 
-int powmod(int x, int n, int mod) {
+int pow_mod(int x, int n, int mod) {
     int y = x;
     int res = 1;
     for (; n > 0; n >>= 1) {
@@ -28,10 +28,12 @@ int totient_function(int n) {
     return res;
 }
 
-// returns g such that g^i runs through all numbers from 1 to p-1 modulo p
-int generator(int p) {
+// returns g such that g^i runs through all numbers from 1 to m-1 modulo m
+// g exists for m = 2,4,p^a,2*p^a, where p > 2 is a prime number
+int generator(int m) {
+    if (m == 2) return 1;
     vector<int> factors;
-    int phi = totient_function(p);
+    int phi = totient_function(m);
     int n = phi;
     for (int i = 2; i * i <= n; ++i)
         if (n % i == 0) {
@@ -41,11 +43,11 @@ int generator(int p) {
         }
     if (n > 1)
         factors.push_back(n);
-    for (int res = 2; res <= p; ++res) {
-        if (gcd(res, p) != 1) continue;
+    for (int res = 2; res <= m; ++res) {
+        if (gcd(res, m) != 1) continue;
         bool ok = true;
         for (size_t i = 0; i < factors.size() && ok; ++i)
-            ok &= powmod(res, phi / factors[i], p) != 1;
+            ok &= pow_mod(res, phi / factors[i], m) != 1;
         if (ok) return res;
     }
     return -1;
@@ -53,5 +55,7 @@ int generator(int p) {
 
 // usage example
 int main() {
-    cout << generator(7) << endl;
+    for (int i = 0; i < 15; ++i) {
+        cout << "generator(" << i << ") = " << generator(i) << endl;
+    }
 }

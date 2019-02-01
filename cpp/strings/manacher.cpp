@@ -8,13 +8,16 @@ using namespace std;
 vector<int> odd_palindromes(const string &s) {
     size_t n = s.size();
     vector<int> d1(n);
-    int l = 0, r = -1;
+    int l = 0;
+    int r = -1;
     for (int i = 0; i < n; ++i) {
         int k = (i > r ? 0 : min(d1[l + r - i], r - i)) + 1;
         while (i + k < n && i - k >= 0 && s[i + k] == s[i - k]) ++k;
         d1[i] = k--;
-        if (i + k > r)
-            l = i - k, r = i + k;
+        if (i + k > r) {
+            l = i - k;
+            r = i + k;
+        }
     }
     return d1;
 }
@@ -23,17 +26,21 @@ vector<int> odd_palindromes(const string &s) {
 vector<int> even_palindromes(const string &s) {
     size_t n = s.size();
     vector<int> d2(n);
-    int l = 0, r = -1;
+    int l = 0;
+    int r = -1;
     for (int i = 0; i < n; ++i) {
         int k = (i > r ? 0 : min(d2[l + r - i + 1], r - i + 1)) + 1;
         while (i + k - 1 < n && i - k >= 0 && s[i + k - 1] == s[i - k]) ++k;
         d2[i] = --k;
-        if (i + k - 1 > r)
-            l = i - k, r = i + k - 1;
+        if (i + k - 1 > r) {
+            l = i - k;
+            r = i + k - 1;
+        }
     }
     return d2;
 }
 
+// usage example
 int main() {
     string text = "aaaba";
 

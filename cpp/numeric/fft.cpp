@@ -11,7 +11,7 @@ using namespace std;
 using cpx = complex<double>;
 const double PI = acos(-1);
 
-int reverse(unsigned i) {
+unsigned reverse_bits(unsigned i) {
     i = (i & 0x55555555) << 1 | ((i >> 1) & 0x55555555);
     i = (i & 0x33333333) << 2 | ((i >> 2) & 0x33333333);
     i = (i & 0x0f0f0f0f) << 4 | ((i >> 4) & 0x0f0f0f0f);
@@ -20,11 +20,11 @@ int reverse(unsigned i) {
 }
 
 void fft(vector<cpx> &z, bool inverse) {
-    int n = z.size();
+    size_t n = z.size();
     assert((n & (n - 1)) == 0);
     int shift = 32 - __builtin_ctz(n);
-    for (int i = 1; i < n; i++) {
-        int j = reverse((unsigned) i << shift);
+    for (unsigned i = 1; i < n; i++) {
+        unsigned j = reverse_bits(i << shift);
         if (i < j) {
             swap(z[i], z[j]);
         }
@@ -52,25 +52,26 @@ void fft(vector<cpx> &z, bool inverse) {
     }
 }
 
-void fft_slow(vector<cpx> &a, bool inverse) {
-    size_t n = a.size();
+void fft_slow(vector<cpx> &z, bool inverse) {
+    size_t n = z.size();
+    assert((n & (n - 1)) == 0);
     if (n == 1) return;
-    vector<cpx> a0(n / 2);
-    vector<cpx> a1(n / 2);
+    vector<cpx> z0(n / 2);
+    vector<cpx> z1(n / 2);
     for (int i = 0; i < n / 2; i++) {
-        a0[i] = a[2 * i];
-        a1[i] = a[2 * i + 1];
+        z0[i] = z[2 * i];
+        z1[i] = z[2 * i + 1];
     }
-    fft_slow(a0, inverse);
-    fft_slow(a1, inverse);
+    fft_slow(z0, inverse);
+    fft_slow(z1, inverse);
     for (int i = 0; i < n / 2; ++i) {
         double ang = 2 * PI * i / n * (inverse ? -1 : 1);
         cpx w(cos(ang), sin(ang));
-        a[i] = a0[i] + w * a1[i];
-        a[i + n / 2] = a0[i] - w * a1[i];
+        z[i] = z0[i] + w * z1[i];
+        z[i + n / 2] = z0[i] - w * z1[i];
         if (inverse) {
-            a[i] /= 2;
-            a[i + n / 2] /= 2;
+            z[i] /= 2;
+            z[i + n / 2] /= 2;
         }
     }
 }
