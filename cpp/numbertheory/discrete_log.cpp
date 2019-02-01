@@ -2,7 +2,7 @@
 
 using namespace std;
 
-// solves a^x = b (mod m)
+// returns any x such that a^x = b (mod m)
 // precondition: (a,m)=1
 int discrete_log(int a, int b, int m) {
     int n = (int) sqrt(m) + 1;
