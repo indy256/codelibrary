@@ -20,6 +20,7 @@ int solve(int a, int b, int m) {
     if (b % g) return -1;
     a /= g;
     b /= g;
+    m /= g;
     int x = (long long) b * mod_inverse(a, m) % m;
     return x;
 }

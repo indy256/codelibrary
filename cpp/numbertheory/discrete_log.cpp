@@ -3,7 +3,7 @@
 using namespace std;
 
 // solves a^x = b (mod m)
-// (a,m)=1
+// precondition: (a,m)=1
 int discrete_log(int a, int b, int m) {
     int n = (int) sqrt(m) + 1;
 
@@ -31,5 +31,6 @@ int discrete_log(int a, int b, int m) {
 
 // usage example
 int main() {
+    // 2^x = 3 (mod 5), x = 3
     cout << discrete_log(2, 3, 5) << endl;
 }
