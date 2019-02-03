@@ -144,14 +144,12 @@ vector<int> multiply_mod(const vector<int> &a, const vector<int> &b, int mod) {
 
     vector<cpx> fa(n);
     vector<cpx> fb(n);
-    cpx r2(0, -1), r3(0.25, 0), r4(0, -0.25), r5(0, 1);
-    for (int i = 0; i < n; i++) {
-        int j = (n - i) & (n - 1);
-        cpx a1 = (A[i] + conj(A[j]));
-        cpx a2 = (A[i] - conj(A[j])) * r2;
-        cpx b1 = (B[i] + conj(B[j])) * r3;
-        cpx b2 = (B[i] - conj(B[j])) * r4;
-        fa[i] = a1 * b1 + a2 * b2 * r5;
+    for (int i = 0, j = 0; i < n; i++, j = n - i) {
+        cpx a1 = (A[i] + conj(A[j])) * cpx(0.5, 0);
+        cpx a2 = (A[i] - conj(A[j])) * cpx(0, -0.5);
+        cpx b1 = (B[i] + conj(B[j])) * cpx(0.5, 0);
+        cpx b2 = (B[i] - conj(B[j])) * cpx(0, -0.5);
+        fa[i] = a1 * b1 + a2 * b2 * cpx(0, 1);
         fb[i] = a1 * b2 + a2 * b1;
     }
 
