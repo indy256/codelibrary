@@ -78,7 +78,7 @@
 
 #### Numerical algorithms
 + [x] Long arithmetics [**c++**](cpp/numeric/bigint.cpp)
-+ [x] Fast Fourier transform [**c++**](cpp/numeric/fft.cpp) [**java**](java/numeric/FFT.java)
++ [x] Fast Fourier transform (FFT) [**c++**](cpp/numeric/fft.cpp) [**java**](java/numeric/FFT.java)
 + [x] Karatsuba multiplication [**java**](java/numeric/KaratsubaMultiply.java)
 + [x] Newton interpolation [**java**](java/numeric/NewtonInterpolation.java)
 + [x] Laguerre's root-finding algorithm [**c++**](cpp/numeric/polynom-roots.cpp)
