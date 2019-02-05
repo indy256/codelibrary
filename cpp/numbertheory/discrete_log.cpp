@@ -3,8 +3,9 @@
 using namespace std;
 
 // returns any x such that a^x = b (mod m)
-// precondition: (a,m)=1
 int discrete_log(int a, int b, int m) {
+    assert(gcd(a, m) == 1);
+
     int n = (int) sqrt(m) + 1;
 
     int an = 1;

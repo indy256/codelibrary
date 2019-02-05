@@ -12,6 +12,7 @@ void dfs(const vector<vector<int>> &graph, vector<bool> &used, vector<int> &res,
     res.push_back(u);
 }
 
+// Get strongly connected components
 vector<vector<int>> scc(const vector<vector<int>> &graph) {
     int n = graph.size();
     vector<bool> used(n);
@@ -61,13 +62,12 @@ int main() {
                                  {0, 1}};
 
     vector<vector<int>> components = scc(graph);
-    vector<vector<int>> sg = scc_graph(graph, components);
-
     for (auto &component: components) {
         copy(component.begin(), component.end(), ostream_iterator<int>(cout, " "));
         cout << endl;
     }
 
+    vector<vector<int>> sg = scc_graph(graph, components);
     for (auto &a: sg) {
         copy(a.begin(), a.end(), ostream_iterator<int>(cout, " "));
         cout << endl;
