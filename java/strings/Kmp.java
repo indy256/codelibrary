@@ -34,6 +34,19 @@ public class Kmp {
         return -1;
     }
 
+    public static int minPeriod(String s) {
+        int n = s.length();
+        int[] p = prefixFunction(s);
+
+        int maxBorder = p[n - 1];
+        int minPeriod = n - maxBorder;
+
+        // check periodicity
+        // if (n % minPeriod != 0) return -1;
+
+        return minPeriod;
+    }
+
     // random tests
     public static void main(String[] args) {
         Random rnd = new Random(1);
@@ -45,6 +58,7 @@ public class Kmp {
             if (pos1 != pos2)
                 throw new RuntimeException();
         }
+        System.out.println(minPeriod("abababab"));
     }
 
     static String getRandomString(Random rnd, int maxlen) {
