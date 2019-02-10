@@ -6,7 +6,7 @@ using namespace std;
 // O(sqrt(n)) complexity
 map<long long, int> factorize(long long n) {
     map<long long, int> factors;
-    for (long long d = 2; d * d <= n; d++) {
+    for (int d = 2; (long long) d * d <= n; d++) {
         while (n % d == 0) {
             ++factors[d];
             n /= d;
@@ -20,7 +20,7 @@ map<long long, int> factorize(long long n) {
 
 // usage example
 int main() {
-    map<long long int, int> factors = factorize(24);
+    map<long long int, int> factors = factorize(4 * 3 * 1000000000039);
     for (auto e: factors) {
         cout << e.first << "^" << e.second << " " << endl;
     }
