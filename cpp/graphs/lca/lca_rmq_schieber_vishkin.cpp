@@ -4,28 +4,23 @@ using namespace std;
 
 const int MAX_NODES = 200000;
 int parent[MAX_NODES];
-unsigned preOrder[MAX_NODES];
+unsigned pre_order[MAX_NODES];
 unsigned I[MAX_NODES];
 int head[MAX_NODES];
 unsigned A[MAX_NODES];
 unsigned Time;
 
-int lowest_one_bit(int x) {
+unsigned lowest_one_bit(unsigned x) {
     return x & -x;
 }
 
-unsigned highest_one_bit(unsigned i) {
-    i |= (i >> 1);
-    i |= (i >> 2);
-    i |= (i >> 4);
-    i |= (i >> 8);
-    i |= (i >> 16);
-    return i - (i >> 1);
+unsigned highest_one_bit(unsigned x) {
+    return x ? 1u << (31 - __builtin_clz(x)) : 0;
 }
 
 void dfs1(const vector<vector<int>> &tree, int u, int p) {
     parent[u] = p;
-    I[u] = preOrder[u] = Time++;
+    I[u] = pre_order[u] = Time++;
     for (int v : tree[u]) {
         if (v == p) continue;
         dfs1(tree, v, u);
@@ -44,7 +39,8 @@ void dfs2(const vector<vector<int>> &tree, int u, int p, unsigned up) {
     }
 }
 
-void init(const vector<vector<int>> &tree, int root) {
+void init_lca(const vector<vector<int>> &tree, int root) {
+    Time = 0;
     dfs1(tree, root, -1);
     dfs2(tree, root, -1, 0);
 }
@@ -61,7 +57,36 @@ int lca(int x, int y) {
     int hz = lowest_one_bit(A[x] & A[y] & (~hb + 1));
     int ex = enter_into_strip(x, hz);
     int ey = enter_into_strip(y, hz);
-    return preOrder[ex] < preOrder[ey] ? ex : ey;
+    return pre_order[ex] < pre_order[ey] ? ex : ey;
+}
+
+void init_rmq(const vector<int> &values) {
+    int n = values.size();
+    vector<int> st;
+    vector<vector<int>> tree(n);
+    int root = 0;
+    // build Cartesian Tree
+    for (int i = 0; i < n; ++i) {
+        int last = -1;
+        while (!st.empty() && values[i] < values[st.back()]) {
+            last = st.back();
+            st.pop_back();
+        }
+        if (!st.empty()) {
+            if (!tree[st.back()].empty() && last != -1) {
+                assert(tree[st.back()].back() == last);
+                tree[st.back()].pop_back();
+            }
+            tree[st.back()].push_back(i);
+        } else {
+            root = i;
+        }
+        if (last != -1) {
+            tree[i].push_back(last);
+        }
+        st.push_back(i);
+    }
+    init_lca(tree, root);
 }
 
 // usage
@@ -69,6 +94,10 @@ int main() {
     vector<vector<int>> t{{1, 2},
                           {0},
                           {0}};
-    init(t, 0);
+    init_lca(t, 0);
     cout << lca(1, 2) << endl;
+
+    init_rmq({5, 1, 4, 3, 2});
+    cout << lca(1, 3) << endl;
+    cout << lca(2, 4) << endl;
 }

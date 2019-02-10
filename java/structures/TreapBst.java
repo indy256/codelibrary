@@ -143,7 +143,7 @@ public class TreapBst {
     }
 
     // O(n) treap creation (if not counting keys sorting)
-    // http://wcipeg.com/wiki/Cartesian_tree
+    // https://cp-algorithms.com/graph/rmq_linear.html
     static Treap createTreap(int[] keys) {
         Treap[] nodes = Arrays.stream(keys).mapToObj(Treap::new).sorted(Comparator.comparingInt(t -> t.key)).toArray(Treap[]::new);
         int n = keys.length;
@@ -152,21 +152,16 @@ public class TreapBst {
         Treap root = n > 0 ? nodes[0] : null;
         for (int i = 1; i < n; i++) {
             int last = i - 1;
-            if (nodes[last].prio >= nodes[i].prio) {
+            while (nodes[last].prio < nodes[i].prio && parent[last] != -1) {
+                last = parent[last];
+            }
+            if (nodes[last].prio < nodes[i].prio) {
+                nodes[i].left = nodes[last];
+                root = nodes[i];
+            } else {
+                nodes[i].left = nodes[last].right;
                 nodes[last].right = nodes[i];
                 parent[i] = last;
-            } else {
-                while (nodes[last].prio < nodes[i].prio && parent[last] != -1) {
-                    last = parent[last];
-                }
-                if (nodes[last].prio < nodes[i].prio) {
-                    nodes[i].left = nodes[last];
-                    root = nodes[i];
-                } else {
-                    nodes[i].left = nodes[last].right;
-                    nodes[last].right = nodes[i];
-                    parent[i] = last;
-                }
             }
         }
         updateSizes(root);

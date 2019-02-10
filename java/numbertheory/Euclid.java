@@ -26,7 +26,7 @@ public class Euclid {
     // returns { gcd(a,b), x, y } such that gcd(a,b) = a*x + b*y
     public static long[] euclid(long a, long b) {
         long x = 1, y = 0, x1 = 0, y1 = 1;
-        // invariant: a=a*x+b*y, b=a*x1+b*y1
+        // invariant: a=a_orig*x+b_orig*y, b=a_orig*x1+b_orig*y1
         while (b != 0) {
             long q = a / b;
             long _x1 = x1;
