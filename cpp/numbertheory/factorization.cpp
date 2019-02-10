@@ -6,7 +6,7 @@ using namespace std;
 // O(sqrt(n)) complexity
 map<long long, int> factorize(long long n) {
     map<long long, int> factors;
-    for (long d = 2; d * d <= n; d++) {
+    for (long long d = 2; d * d <= n; d++) {
         while (n % d == 0) {
             ++factors[d];
             n /= d;
