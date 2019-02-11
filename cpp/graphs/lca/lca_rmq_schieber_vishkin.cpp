@@ -39,6 +39,7 @@ void dfs2(const vector<vector<int>> &tree, int u, int p, unsigned up) {
     }
 }
 
+// initialization in O(n)
 void init_lca(const vector<vector<int>> &tree, int root) {
     Time = 0;
     dfs1(tree, root, -1);
@@ -52,6 +53,7 @@ int enter_into_strip(int x, int hz) {
     return parent[head[(I[x] & (~hw + 1)) | hw]];
 }
 
+// lca in O(1)
 int lca(int x, int y) {
     int hb = I[x] == I[y] ? lowest_one_bit(I[x]) : highest_one_bit(I[x] ^ I[y]);
     int hz = lowest_one_bit(A[x] & A[y] & (~hb + 1));
@@ -61,43 +63,54 @@ int lca(int x, int y) {
 }
 
 void init_rmq(const vector<int> &values) {
-    int n = values.size();
-    vector<int> st;
-    vector<vector<int>> tree(n);
-    int root = 0;
     // build Cartesian Tree
-    for (int i = 0; i < n; ++i) {
-        int last = -1;
-        while (!st.empty() && values[i] < values[st.back()]) {
-            last = st.back();
-            st.pop_back();
+    int n = values.size();
+    int root = 0;
+    vector<int> p(n, -1);
+    for (int i = 1; i < n; i++) {
+        int prev = i - 1;
+        int next = -1;
+        while (values[prev] > values[i] && p[prev] != -1) {
+            next = prev;
+            prev = p[prev];
         }
-        if (!st.empty()) {
-            if (!tree[st.back()].empty() && last != -1) {
-                assert(tree[st.back()].back() == last);
-                tree[st.back()].pop_back();
-            }
-            tree[st.back()].push_back(i);
-        } else {
+        if (values[prev] > values[i]) {
+            p[prev] = i;
             root = i;
+        } else {
+            p[i] = prev;
+            if (next != -1) {
+                p[next] = i;
+            }
         }
-        if (last != -1) {
-            tree[i].push_back(last);
-        }
-        st.push_back(i);
     }
+    vector<vector<int>> tree(n);
+    for (int i = 0; i < n; ++i)
+        if (p[i] != -1)
+            tree[p[i]].push_back(i);
     init_lca(tree, root);
 }
 
-// usage
+// random test
 int main() {
-    vector<vector<int>> t{{1, 2},
-                          {0},
-                          {0}};
-    init_lca(t, 0);
-    cout << lca(1, 2) << endl;
-
-    init_rmq({5, 1, 4, 3, 2});
-    cout << lca(1, 3) << endl;
-    cout << lca(2, 4) << endl;
+    mt19937 rng(1);
+    for (int step = 0; step < 1000; ++step) {
+        int n = uniform_int_distribution<int>(1, 10)(rng);
+        vector<int> v(n);
+        for (int i = 0; i < n; ++i) {
+            v[i] = uniform_int_distribution<int>(0, 5)(rng);
+        }
+        int a = uniform_int_distribution<int>(0, n - 1)(rng);
+        int b = uniform_int_distribution<int>(0, n - 1)(rng);
+        if (a > b) swap(a, b);
+        init_rmq(v);
+        int res1 = v[lca(a, b)];
+        int res2 = *min_element(&v[a], &v[b + 1]);
+        if (res1 != res2) {
+            for (int i = 0; i < n; ++i) cout << v[i] << " ";
+            cout << endl;
+            cout << a << " " << b << " - " << res1 << " " << res2 << endl;
+            throw;
+        }
+    }
 }

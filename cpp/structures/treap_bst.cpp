@@ -16,7 +16,6 @@ struct item {
 typedef item *pitem;
 
 void split(pitem t, int key, pitem &l, pitem &r) {
-    uniform_int_distribution<int>(1, 2)(rng);
     if (!t)
         l = r = nullptr;
     else if (key < t->key)
