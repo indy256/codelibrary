@@ -27,7 +27,8 @@ public class ExpressionParserShuntingYard {
         }
     }
 
-    static void processOperator(LinkedList<Integer> st, char op) {
+    static void processOperator(LinkedList<Integer> st, LinkedList<Character> ops) {
+        char op = ops.removeLast();
         int r = st.removeLast();
         int l = st.removeLast();
         switch (op) {
@@ -51,21 +52,21 @@ public class ExpressionParserShuntingYard {
 
     public static int eval(String s) {
         LinkedList<Integer> st = new LinkedList<>();
-        LinkedList<Character> op = new LinkedList<>();
+        LinkedList<Character> ops = new LinkedList<>();
         for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
             if (isDelim(c))
                 continue;
             if (c == '(')
-                op.add('(');
+                ops.add('(');
             else if (c == ')') {
-                while (op.getLast() != '(')
-                    processOperator(st, op.removeLast());
-                op.removeLast();
+                while (ops.getLast() != '(')
+                    processOperator(st, ops);
+                ops.removeLast();
             } else if (isOperator(c)) {
-                while (!op.isEmpty() && priority(c) <= priority(op.getLast()))
-                    processOperator(st, op.removeLast());
-                op.add(c);
+                while (!ops.isEmpty() && priority(c) <= priority(ops.getLast()))
+                    processOperator(st, ops);
+                ops.add(c);
             } else {
                 String operand = "";
                 while (i < s.length() && Character.isDigit(s.charAt(i)))
@@ -74,8 +75,8 @@ public class ExpressionParserShuntingYard {
                 st.add(Integer.parseInt(operand));
             }
         }
-        while (!op.isEmpty())
-            processOperator(st, op.removeLast());
+        while (!ops.isEmpty())
+            processOperator(st, ops);
         return st.get(0);
     }
 
