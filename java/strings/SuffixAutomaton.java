@@ -2,7 +2,7 @@ package strings;
 
 import java.util.*;
 
-// https://en.wikipedia.org/wiki/Directed_acyclic_word_graph
+// https://en.wikipedia.org/wiki/Suffix_automaton
 public class SuffixAutomaton {
 
     public static class State {
