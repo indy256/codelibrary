@@ -1,6 +1,6 @@
 package strings;
 
-// See http://codeforces.ru/blog/entry/16780 for description
+// https://en.wikipedia.org/wiki/Ukkonen%27s_algorithm
 public class SuffixTree {
     public static final String ALPHABET = "abcdefghijklmnopqrstuvwxyz0123456789\1\2";
 
