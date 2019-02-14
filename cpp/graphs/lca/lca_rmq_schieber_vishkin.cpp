@@ -24,7 +24,7 @@ void dfs1(const vector<vector<int>> &tree, int u, int p) {
     for (int v : tree[u]) {
         if (v == p) continue;
         dfs1(tree, v, u);
-        if (lowest_one_bit(I[v]) > lowest_one_bit(I[u])) {
+        if (lowest_one_bit(I[u]) < lowest_one_bit(I[v])) {
             I[u] = I[v];
         }
     }
@@ -50,13 +50,13 @@ int enter_into_strip(int x, int hz) {
     if (lowest_one_bit(I[x]) == hz)
         return x;
     int hw = highest_one_bit(A[x] & (hz - 1));
-    return parent[head[(I[x] & (~hw + 1)) | hw]];
+    return parent[head[(I[x] & -hw) | hw]];
 }
 
 // lca in O(1)
 int lca(int x, int y) {
     int hb = I[x] == I[y] ? lowest_one_bit(I[x]) : highest_one_bit(I[x] ^ I[y]);
-    int hz = lowest_one_bit(A[x] & A[y] & (~hb + 1));
+    int hz = lowest_one_bit(A[x] & A[y] & -hb);
     int ex = enter_into_strip(x, hz);
     int ey = enter_into_strip(y, hz);
     return pre_order[ex] < pre_order[ey] ? ex : ey;
