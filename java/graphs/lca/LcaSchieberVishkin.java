@@ -18,7 +18,7 @@ public class LcaSchieberVishkin {
         for (int v : tree[u]) {
             if (v == p) continue;
             dfs1(tree, v, u);
-            if (Integer.lowestOneBit(I[v]) > Integer.lowestOneBit(I[u])) {
+            if (Integer.lowestOneBit(I[u]) < Integer.lowestOneBit(I[v])) {
                 I[u] = I[v];
             }
         }
@@ -49,12 +49,12 @@ public class LcaSchieberVishkin {
         if (Integer.lowestOneBit(I[x]) == hz)
             return x;
         int hw = Integer.highestOneBit(A[x] & (hz - 1));
-        return parent[head[I[x] & (~hw + 1) | hw]];
+        return parent[head[I[x] & -hw | hw]];
     }
 
     public int lca(int x, int y) {
         int hb = I[x] == I[y] ? Integer.lowestOneBit(I[x]) : Integer.highestOneBit(I[x] ^ I[y]);
-        int hz = Integer.lowestOneBit(A[x] & A[y] & (~hb + 1));
+        int hz = Integer.lowestOneBit(A[x] & A[y] & -hb);
         int ex = enterIntoStrip(x, hz);
         int ey = enterIntoStrip(y, hz);
         return preOrder[ex] < preOrder[ey] ? ex : ey;
