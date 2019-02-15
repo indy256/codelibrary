@@ -48,9 +48,34 @@ vector<int> suffix_array(const string &S) {
     return sa;
 }
 
+// https://en.wikipedia.org/wiki/LCP_array
+vector<int> lcp_array(const string &s) {
+    int n = s.size();
+    vector<int> sa = suffix_array(s);
+    vector<int> rank(n);
+    for (int i = 0; i < n; i++)
+        rank[sa[i]] = i;
+    vector<int> lcp(n - 1);
+    for (int i = 0, h = 0; i < n; i++) {
+        if (rank[i] < n - 1) {
+            for (int j = sa[rank[i] + 1]; s[i + h] == s[j + h]; ++h);
+            lcp[rank[i]] = h;
+            if (h > 0)
+                --h;
+        }
+    }
+    return lcp;
+}
+
 // usage example
 int main() {
-    vector<int> sa = suffix_array("abcab");
-    copy(sa.begin(), sa.end(), ostream_iterator<int>(cout, " "));
+    string s = "abcab";
+
+    vector<int> sa = suffix_array(s);
+    for (int v : sa) cout << v << " ";
+    cout << endl;
+
+    vector<int> lcp = lcp_array(s);
+    for (int v : lcp) cout << v << " ";
     cout << endl;
 }

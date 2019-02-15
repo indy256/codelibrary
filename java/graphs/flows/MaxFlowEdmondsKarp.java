@@ -3,6 +3,7 @@ package graphs.flows;
 import java.util.*;
 import java.util.stream.Stream;
 
+// https://en.wikipedia.org/wiki/Edmonds%E2%80%93Karp_algorithm in O(V*E^2)
 public class MaxFlowEdmondsKarp {
 
     static class Edge {

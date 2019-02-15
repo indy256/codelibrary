@@ -2,6 +2,8 @@
 
 using namespace std;
 
+// https://cp-algorithms.com/string/suffix-automaton.html
+
 struct state {
     int length;
     int suffLink;
