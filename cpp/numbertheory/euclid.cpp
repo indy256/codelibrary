@@ -44,6 +44,7 @@ int solve1(int a, int b, int m) {
     m /= g;
     int x = (long long) b * mod_inverse(a, m) % m;
     return x;
+    // all solutions: x[i]=x+i*m, i=0..g-1
 }
 
 // https://cp-algorithms.com/algebra/linear-diophantine-equation.html
@@ -54,6 +55,7 @@ optional<tuple<int, int>> solve2(int a, int b, int c) {
     x0 *= c / g;
     y0 *= c / g;
     return make_optional(tuple{a > 0 ? x0 : -x0, b > 0 ? y0 : -y0});
+    // all solutions: x=x0+k*b/g, y=y0-k*a/g, k∈Z
 }
 
 // usage example
