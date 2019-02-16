@@ -6,12 +6,12 @@ using namespace std;
 
 // lexicographic order for pairs
 inline bool leq(int a1, int a2, int b1, int b2) {
-    return (a1 < b1 || a1 == b1 && a2 <= b2);
+    return (a1 < b1 || (a1 == b1 && a2 <= b2));
 }
 
 // lexicographic order for triples
 inline bool leq(int a1, int a2, int a3, int b1, int b2, int b3) {
-    return (a1 < b1 || a1 == b1 && leq(a2, a3, b2, b3));
+    return (a1 < b1 || (a1 == b1 && leq(a2, a3, b2, b3)));
 }
 
 // stably sort a[0..n-1] to b[0..n-1] with keys in 0..K from r
@@ -81,7 +81,7 @@ void suffixArray(int *T, int *SA, int n, int K) {
     //******* Step 3: Merge ********
     // merge sorted SA0 suffixes and sorted SA12 suffixes
     for (int p = 0, t = n0 - n1, k = 0; k < n; k++) {
-    #define GetI() (SA12[t] < n0 ? SA12[t] * 3 + 1 : (SA12[t] - n0) * 3 + 2)
+#define GetI() (SA12[t] < n0 ? SA12[t] * 3 + 1 : (SA12[t] - n0) * 3 + 2)
         int i = GetI(); // pos of current offset 12 suffix
         int j = SA0[p]; // pos of current offset 0 suffix
         if (SA12[t] < n0 ? // different compares for mod 1 and mod 2 suffixes
@@ -104,21 +104,33 @@ void suffixArray(int *T, int *SA, int n, int K) {
     delete[] R0;
 }
 
+vector<int> suffix_array(const string &s) {
+    int n = s.size();
+    if (n == 0) return {};
+    if (n == 1) return {0};
+    vector<int> t(n + 3);
+    for (int i = 0; i < n; i++) t[i] = s[i];
+    vector<int> sa(n);
+    suffixArray(t.data(), sa.data(), n, 256);
+    return sa;
+}
+
+// usage example
 int main() {
-    string str = "abcab";
-    int n = str.size();
-    int *T = new int[n + 3];
-    for (int i = 0; i < n; i++) {
-        T[i] = str[i];
-    }
-    T[n] = T[n+1] = T[n+2] = 0;
-
-    int *sa = new int[n + 3];
-
-    suffixArray(T, sa, n, 256);
-
-    for (int i = 0; i < n; i++) {
-        cout << sa[i] << " ";
-    }
+    string s = "abcab";
+    vector<int> sa = suffix_array(s);
+    for (int v : sa) cout << v << " ";
     cout << endl;
+
+    mt19937 rng(1);
+    s.clear();
+    for (int i = 0; i < 1000'000; ++i) {
+        char c = uniform_int_distribution<char>('a', 'd')(rng);
+        s.push_back(c);
+    }
+    auto t1 = chrono::high_resolution_clock::now();
+    sa = suffix_array(s);
+    auto t2 = chrono::high_resolution_clock::now();
+    chrono::duration<double, milli> duration = t2 - t1;
+    cout << duration.count() << " ms" << endl;
 }

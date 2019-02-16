@@ -128,15 +128,32 @@ void SA_IS(unsigned char *s, int *SA, int n, int K, int cs) {
     free(t);
 }
 
-int main() {
-    string str = "abcab";
-    int n = str.size();
-    unsigned char *s = (unsigned char *) str.c_str();
-    int *sa = new int[n + 3];
-    SA_IS(s, sa, n + 1, 256, 1);
+vector<int> suffix_array(const string &s) {
+    int n = s.size();
+    if (n == 0) return {};
+    if (n == 1) return {0};
+    vector<int> sa(n + 1);
+    SA_IS((unsigned char *) s.c_str(), sa.data(), n + 1, 256, 1);
+    sa.erase(sa.begin());
+    return sa;
+}
 
-    for (int i = 1; i <= n; i++) {
-        cout << sa[i] << " ";
-    }
+// usage example
+int main() {
+    string s = "abcab";
+    vector<int> sa = suffix_array(s);
+    for (int v : sa) cout << v << " ";
     cout << endl;
+
+    mt19937 rng(1);
+    s.clear();
+    for (int i = 0; i < 1000'000; ++i) {
+        char c = uniform_int_distribution<char>('a', 'd')(rng);
+        s.push_back(c);
+    }
+    auto t1 = chrono::high_resolution_clock::now();
+    sa = suffix_array(s);
+    auto t2 = chrono::high_resolution_clock::now();
+    chrono::duration<double, milli> duration = t2 - t1;
+    cout << duration.count() << " ms" << endl;
 }
