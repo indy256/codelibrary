@@ -4,7 +4,7 @@ using namespace std;
 
 // https://cp-algorithms.com/graph/min_cost_flow.html
 
-const int maxnodes = 200000;
+const int maxnodes = 200'000;
 
 int nodes = maxnodes;
 int prio[maxnodes], curflow[maxnodes], prevedge[maxnodes], prevnode[maxnodes], q[maxnodes], pot[maxnodes];

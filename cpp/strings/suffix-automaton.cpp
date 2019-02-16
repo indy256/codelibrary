@@ -12,7 +12,7 @@ struct state {
     vector<int> next = vector<int>(128, -1);
 };
 
-constexpr int MAXLEN = 100000;
+constexpr int MAXLEN = 100'000;
 state st[MAXLEN * 2];
 int sz;
 

@@ -39,7 +39,7 @@ cdouble find_one_root(const poly &p0, cdouble x) {
 	int n = p0.size() - 1;
 	poly p1 = derivative(p0);
 	poly p2 = derivative(p1);
-	for (int step = 0; step < 10000; step++) {
+	for (int step = 0; step < 10'000; step++) {
 		cdouble y0 = eval(p0, x);
 		if (cmp(y0, 0) == 0) break;
 		cdouble G = eval(p1, x) / y0;

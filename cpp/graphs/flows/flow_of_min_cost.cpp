@@ -20,7 +20,7 @@ void add_edge(int v, int to, int cap, int cost) {
 }
 
 int main() {
-    const int INF = 1000000000;
+    const int INF = 1000'000'000;
     for (bool found = true; found;) {
         found = false;
 

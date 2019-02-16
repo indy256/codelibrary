@@ -38,7 +38,7 @@
 + [x] Spanning tree [**c++**](cpp/graphs/spanningtree) [**java**](java/graphs/spanningtree)
 + [x] Connectivity [**c++**](cpp/graphs/dfs) [**java**](java/graphs/dfs)
 + [x] Biconnectivity [**java**](java/graphs/dfs/Biconnectivity.java)
-+ [x] LCA Schieber-Vishkin algorithm [**cpp**](cpp/graphs/lca/lca_rmq_schieber_vishkin.cpp) [**java**](java/graphs/lca/LcaSchieberVishkin)
++ [x] LCA Schieber-Vishkin algorithm [**cpp**](cpp/graphs/lca/lca_rmq_schieber_vishkin.cpp) [**java**](java/graphs/lca/LcaSchieberVishkin.java)
 + [x] LCA [**java**](java/graphs/lca)
 + [ ] Planarity testing ([contribute a link or implementation](https://github.com/indy256/codelibrary/issues/28))
 + [ ] Dynamic graph connectivity ([contribute a link or implementation](https://github.com/indy256/codelibrary/issues/29))

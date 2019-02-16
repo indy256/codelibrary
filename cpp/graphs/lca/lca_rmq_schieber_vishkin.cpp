@@ -2,7 +2,7 @@
 
 using namespace std;
 
-const int MAX_NODES = 200000;
+const int MAX_NODES = 200'000;
 int parent[MAX_NODES];
 unsigned pre_order[MAX_NODES];
 unsigned I[MAX_NODES];

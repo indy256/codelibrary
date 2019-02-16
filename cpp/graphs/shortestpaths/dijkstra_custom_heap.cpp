@@ -2,8 +2,8 @@
 
 using namespace std;
 
-const int maxnodes = 200000;
-const int maxedges = 1000000;
+const int maxnodes = 200'000;
+const int maxedges = 1000'000;
 
 // graph
 int edges;

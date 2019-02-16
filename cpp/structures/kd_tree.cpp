@@ -4,7 +4,7 @@ using namespace std;
 
 using pii = pair<int, int>;
 
-const int maxn = 100000;
+const int maxn = 100'000;
 int tx[maxn];
 int ty[maxn];
 bool divX[maxn];

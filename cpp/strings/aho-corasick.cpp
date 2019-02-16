@@ -3,7 +3,7 @@
 using namespace std;
 
 constexpr int ALPHABET_SIZE = 26;
-constexpr int MAX_STATES = 200000;
+constexpr int MAX_STATES = 200'000;
 
 int transitions[MAX_STATES][ALPHABET_SIZE];
 int sufflink[MAX_STATES];

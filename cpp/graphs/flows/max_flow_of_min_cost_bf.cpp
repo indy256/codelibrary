@@ -2,7 +2,7 @@
 
 using namespace std;
 
-const int maxnodes = 200000;
+const int maxnodes = 200'000;
 
 int nodes = maxnodes;
 int prio[maxnodes], curflow[maxnodes], prevedge[maxnodes], prevnode[maxnodes], q[maxnodes];

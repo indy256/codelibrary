@@ -5,7 +5,7 @@ using namespace std;
 using vi = vector<int>;
 using vvi = vector<vi>;
 
-const int mod = 1000000007;
+const int mod = 1000'000'007;
 
 vvi matrix_unit(int n) {
     vvi res(n, vi(n));

@@ -17,7 +17,7 @@ int pow_mod(int x, int n, int mod) {
 
 // usage example
 int main() {
-    const int MOD = 1000000007;
+    const int MOD = 1000'000'007;
     int x = pow_mod(2, 10, MOD);
     cout << x << endl;
 }

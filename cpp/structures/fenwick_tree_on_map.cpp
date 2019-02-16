@@ -2,7 +2,7 @@
 
 using namespace std;
 
-const int n = 2000000000;
+const int n = 2000'000'000;
 
 void add(map<int, int> &t, int i, int value) {
     for (; i < n; i |= i + 1)
@@ -27,5 +27,5 @@ int main() {
 
     cout << (4 == sum(t, 0)) << endl;
     cout << (19 == sum(t, 2)) << endl;
-    cout << (19 == sum(t, 1000000000)) << endl;
+    cout << (19 == sum(t, 1000'000'000)) << endl;
 }

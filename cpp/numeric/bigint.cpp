@@ -3,7 +3,7 @@
 using namespace std;
 
 // base and base_digits must be consistent
-constexpr int base = 1000000000;
+constexpr int base = 1000'000'000;
 constexpr int base_digits = 9;
 
 struct bigint {
@@ -389,8 +389,8 @@ struct bigint {
         res.sign = sign * v.sign;
         for (int i = 0, carry = 0; i < c.size(); i++) {
             long long cur = c[i] + carry;
-            res.z.push_back((int) (cur % 1000000));
-            carry = (int) (cur / 1000000);
+            res.z.push_back((int) (cur % 1000'000));
+            carry = (int) (cur / 1000'000);
         }
         res.z = convert_base(res.z, 6, base_digits);
         res.trim();
@@ -439,7 +439,7 @@ int main() {
         }
     }
 
-    bigint a = random_bigint(10000);
+    bigint a = random_bigint(10'000);
     bigint b = random_bigint(2000);
     clock_t start = clock();
     bigint c = a / b;

@@ -4,7 +4,7 @@ using namespace std;
 
 // https://cp-algorithms.com/data_structures/disjoint_set_union.html
 
-const int maxn = 200000;
+const int maxn = 200'000;
 int Rank[maxn];
 int p[maxn];
 int n;

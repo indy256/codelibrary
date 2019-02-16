@@ -7,7 +7,7 @@ constexpr int INSERTION_SORT_THRESHOLD = 47;
 int MIN_VALUE;
 int MAX_VALUE;
 constexpr int NO_VALUE = -1;
-constexpr int MAX_SIZE = 300000;
+constexpr int MAX_SIZE = 300'000;
 int a[MAX_SIZE];
 int p[MAX_SIZE];
 int s[MAX_SIZE];
@@ -275,7 +275,7 @@ void hackedSort(int left, int right, bool leftmost) {
 }
 
 int main() {
-    int n = 100000;
+    int n = 100'000;
 
     for (int i = 0; i < n; i++) {
         a[i] = NO_VALUE;
