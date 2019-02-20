@@ -16,7 +16,7 @@ public class NTT {
     }
 
     // a.length == b.length == 2^x
-    public static void fft(int[] a, boolean invert, int mod, int root) {
+    public static void ntt(int[] a, boolean invert, int mod, int root) {
         final int root_inv = pow(root, mod - 2, mod);
         final int root_pw = 1 << 20;
 
@@ -69,12 +69,12 @@ public class NTT {
 //		final int mod = 997 * (1 << 20) + 1;
 //		final int root = 363;
 
-        fft(aReal, false, mod, root);
-        fft(bReal, false, mod, root);
+        ntt(aReal, false, mod, root);
+        ntt(bReal, false, mod, root);
         for (int i = 0; i < resultSize; i++) {
             aReal[i] = (int) (((long) aReal[i] * bReal[i]) % mod);
         }
-        fft(aReal, true, mod, root);
+        ntt(aReal, true, mod, root);
         int carry = 0;
         for (int i = 0; i < resultSize; i++) {
             aReal[i] += carry;

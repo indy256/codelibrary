@@ -78,4 +78,16 @@ int main() {
     vector<int> lcp = lcp_array(s);
     for (int v : lcp) cout << v << " ";
     cout << endl;
+
+    mt19937 rng(1);
+    s.clear();
+    for (int i = 0; i < 1000'000; ++i) {
+        char c = uniform_int_distribution<char>('a', 'd')(rng);
+        s.push_back(c);
+    }
+    auto t1 = chrono::high_resolution_clock::now();
+    sa = suffix_array(s);
+    auto t2 = chrono::high_resolution_clock::now();
+    chrono::duration<double, milli> duration = t2 - t1;
+    cout << duration.count() << " ms" << endl;
 }
