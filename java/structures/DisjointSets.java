@@ -18,11 +18,8 @@ public class DisjointSets {
     public static boolean unite(int[] p, int a, int b) {
         a = root(p, a);
         b = root(p, b);
-        if (a != b) {
-            p[a] = b;
-            return true;
-        }
-        return false;
+        p[a] = b;
+        return a != b;
     }
 
     // Usage example
