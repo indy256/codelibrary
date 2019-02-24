@@ -60,14 +60,14 @@ void print(pitem t) {
 // usage example
 int main() {
     pitem t1 = nullptr;
-    item a1[] = {1, 2};
-    for (item &x: a1)
-        insert(t1, &x);
+    int a1[] = {1, 2};
+    for (int x: a1)
+        insert(t1, new item(x));
 
     pitem t2 = nullptr;
-    item a2[] = {7, 4, 5};
-    for (item &x: a2)
-        insert(t2, &x);
+    int a2[] = {7, 4, 5};
+    for (int x: a2)
+        insert(t2, new item(x));
 
     pitem t = nullptr;
     merge(t, t1, t2);

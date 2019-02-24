@@ -65,12 +65,12 @@ void print(const pitem &t) {
 int main() {
     pitem t1 = nullptr;
     int a1[] = {1, 2};
-    for (int &x: a1)
+    for (int x: a1)
         insert(t1, make_shared<item>(x));
 
     pitem t2 = nullptr;
     int a2[] = {7, 4, 5};
-    for (int &x: a2)
+    for (int x: a2)
         insert(t2, make_shared<item>(x));
 
     pitem t = nullptr;
