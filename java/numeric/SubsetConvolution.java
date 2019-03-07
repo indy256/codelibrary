@@ -29,11 +29,9 @@ public class SubsetConvolution {
         int[][] tc = new int[logn][n];
         for (int i = 0; i < n; ++i) {
             for (int j = 0; j < logn; ++j) {
-                int res = 0;
                 for (int k = 0; k <= j; ++k) {
-                    res += ta[k][i] * tb[j - k][i];
+                    tc[j][i] += ta[k][i] * tb[j - k][i];
                 }
-                tc[j][i] = res;
             }
         }
 
