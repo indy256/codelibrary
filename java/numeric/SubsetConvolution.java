@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 public class SubsetConvolution {
 
-    // calculates c[k] = sum(a[i]*b[j] | i|j==k, i&j==0) in O(2^log(n) * log^2(n))
+    // calculates c[k] = sum(a[i]*b[j] | i|j==k, i&j==0) in O(n * log^2(n))
     public static int[] subsetConvolution(int[] a, int[] b) {
         int n = a.length;
         int logn = Integer.bitCount(n - 1) + 1;
