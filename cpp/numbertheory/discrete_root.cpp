@@ -50,7 +50,7 @@ int discrete_root(int a, int b, int m) {
     sort(dec.begin(), dec.end());
     for (int i = 0; i < sq; ++i) {
         int my = pow_mod(g, (long long) i * b % (m - 1), m) * (long long) a % m;
-        auto it = lower_bound(dec.begin(), dec.end(), make_pair(my, 0));
+        auto it = lower_bound(dec.begin(), dec.end(), {my, 0});
         if (it != dec.end() && it->first == my) {
             int x = it->second * sq - i;
             int delta = (m - 1) / gcd(b, m - 1);

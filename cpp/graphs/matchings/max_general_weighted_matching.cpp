@@ -129,7 +129,7 @@ void expand_blossom(int b) {
         q_push(xns);
     }
     S[xr] = 1, pa[xr] = pa[b];
-    for (size_t i = pr + 1; i < flower[b].size(); ++i) {
+    for (int i = pr + 1; i < flower[b].size(); ++i) {
         int xs = flower[b][i];
         S[xs] = -1;
         set_slack(xs);

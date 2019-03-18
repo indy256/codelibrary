@@ -97,9 +97,9 @@ namespace SchreierSimsAlgorithm {
             for (int i = 0; i < n; i++)
                 for (int j = 0; j < bkts[i].size(); ++j) {
                     if (i <= res)
-                        toUpd.push(make_pair(pii(i, j), newPair));
+                        toUpd.push({pii(i, j), newPair});
                     if (res <= i)
-                        toUpd.push(make_pair(newPair, pii(i, j)));
+                        toUpd.push({newPair, pii(i, j)});
                 }
         }
     }

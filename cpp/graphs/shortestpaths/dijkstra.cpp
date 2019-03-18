@@ -50,7 +50,7 @@ tuple<vector<int>, vector<int>> dijkstra_set(const vector<vector<edge>> &g, int 
         for (auto[v, len] : g[u]) {
             int nprio = prio[u] + len;
             if (prio[v] > nprio) {
-                q.erase(make_pair(prio[v], v));
+                q.erase({prio[v], v});
                 prio[v] = nprio;
                 pred[v] = u;
                 q.emplace(prio[v], v);

@@ -87,21 +87,21 @@ pii findIntersection(vector<segment> s) {
         if (e[i].type == 1) {
             set<segment>::iterator it = q.lower_bound(s[id]);
             if (it != q.end() && intersect(*it, s[id]))
-                return make_pair(it->id, s[id].id);
+                return {it->id, s[id].id};
             if (it != q.begin() && intersect(*--it, s[id]))
-                return make_pair(it->id, s[id].id);
+                return {it->id, s[id].id};
             q.insert(s[id]);
         } else {
             set<segment>::iterator it = q.lower_bound(s[id]), next = it, prev = it;
             if (it != q.begin() && it != --q.end()) {
                 ++next, --prev;
                 if (intersect(*next, *prev))
-                    return make_pair(next->id, prev->id);
+                    return {next->id, prev->id};
             }
             q.erase(it);
         }
     }
-    return make_pair(-1, -1);
+    return {-1, -1};
 }
 
 // usage example

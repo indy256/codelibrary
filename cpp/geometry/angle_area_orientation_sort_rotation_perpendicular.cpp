@@ -59,7 +59,7 @@ struct Point {
 };
 
 pair<double, double> rotate_ccw(pair<double, double> p, double angle) {
-    return make_pair(p.first * cos(angle) - p.second * sin(angle), p.first * sin(angle) + p.second * cos(angle));
+    return {p.first * cos(angle) - p.second * sin(angle), p.first * sin(angle) + p.second * cos(angle)};
 }
 
 struct Line {
