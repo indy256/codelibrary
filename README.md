@@ -5,9 +5,8 @@
 ### Collection of algorithms and data structures in C++ and Java
 
 #### Data structures
-+ [x] Segment tree [**c++**](cpp/structures/segment_tree_interval_add_max.cpp) [**java**](java/structures/SegmentTreeIntervalAddMax.java)
++ [x] Segment tree [**c++**](cpp/structures/segment_tree.cpp) [**java**](java/structures/SegmentTree.java)
 + [x] Segment tree for sum with lowerBound operation [**java**](java/structures/SegmentTreeSumLowerBound.java)
-+ [x] Segment tree without recursion [**java**](java/structures/SegmentTreeSimple.java)
 + [x] Fenwick tree [**c++**](cpp/structures/fenwick_tree.cpp) [**java**](java/structures/FenwickTree.java)
 + [x] Fenwick tree with extended operations [**java**](java/structures/FenwickTreeExtended.java)
 + [x] Persistent tree [**java**](java/structures/PersistentTree.java)
