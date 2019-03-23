@@ -1,153 +1,139 @@
 package structures;
 
-import java.util.*;
+import static java.lang.Long.max;
 
 public class SegmentTree {
 
-    // Modify the following 5 methods to implement your custom operations on the tree.
-    // This example implements Add/Max operations. Operations like Add/Sum, Set/Max can also be implemented.
-    int updateOperation(int x, int y) {
-        return x + y;
-    }
+    static class node {
+        // initial values for leaves
+        long mx = 0;
+        long add = 0;
 
-    // query (or combine) operation
-    int queryOperation(int leftValue, int rightValue) {
-        return Math.max(leftValue, rightValue);
-    }
-
-    int deltaEffectOnSegment(int delta, int segmentLength) {
-        if (delta == getNeutralDelta()) return getNeutralDelta();
-        // Here you must write a fast equivalent of following slow code:
-        // int result = delta;
-        // for (int i = 1; i < segmentLength; i++) result = queryOperation(result, delta);
-        // return result;
-        return delta;
-    }
-
-    int getNeutralDelta() {
-        return 0;
-    }
-
-    int getInitValue() {
-        return 0;
-    }
-
-    // generic code
-    int n;
-    int[] value;
-    int[] delta; // delta[i] affects value[i], delta[2*i+1] and delta[2*i+2]
-
-    int joinValueWithDelta(int value, int delta) {
-        if (delta == getNeutralDelta()) return value;
-        return updateOperation(value, delta);
-    }
-
-    int joinDeltas(int delta1, int delta2) {
-        if (delta1 == getNeutralDelta()) return delta2;
-        if (delta2 == getNeutralDelta()) return delta1;
-        return updateOperation(delta1, delta2);
-    }
-
-    void pushDelta(int root, int left, int right) {
-        value[root] = joinValueWithDelta(value[root], deltaEffectOnSegment(delta[root], right - left + 1));
-        delta[2 * root + 1] = joinDeltas(delta[2 * root + 1], delta[root]);
-        delta[2 * root + 2] = joinDeltas(delta[2 * root + 2], delta[root]);
-        delta[root] = getNeutralDelta();
-    }
-
-    public SegmentTree(int n) {
-        this.n = n;
-        value = new int[4 * n];
-        delta = new int[4 * n];
-        init(0, 0, n - 1);
-    }
-
-    void init(int root, int left, int right) {
-        if (left == right) {
-            value[root] = getInitValue();
-            delta[root] = getNeutralDelta();
-        } else {
-            int mid = (left + right) >> 1;
-            init(2 * root + 1, left, mid);
-            init(2 * root + 2, mid + 1, right);
-            value[root] = queryOperation(value[2 * root + 1], value[2 * root + 2]);
-            delta[root] = getNeutralDelta();
+        void apply(int l, int r, long... v) {
+            mx += v[0];
+            add += v[0];
         }
     }
 
-    public int query(int from, int to) {
-        return query(from, to, 0, 0, n - 1);
+    node unite(node a, node b) {
+        node res = new node();
+        res.mx = max(a.mx, b.mx);
+        return res;
     }
 
-    int query(int from, int to, int root, int left, int right) {
-        if (from == left && to == right)
-            return joinValueWithDelta(value[root], deltaEffectOnSegment(delta[root], right - left + 1));
-        pushDelta(root, left, right);
-        int mid = (left + right) >> 1;
-        if (from <= mid && to > mid)
-            return queryOperation(
-                    query(from, Math.min(to, mid), root * 2 + 1, left, mid),
-                    query(Math.max(from, mid + 1), to, root * 2 + 2, mid + 1, right));
-        else if (from <= mid)
-            return query(from, Math.min(to, mid), root * 2 + 1, left, mid);
-        else if (to > mid)
-            return query(Math.max(from, mid + 1), to, root * 2 + 2, mid + 1, right);
-        else
-            throw new RuntimeException("Incorrect query from " + from + " to " + to);
+    void push(int x, int l, int r) {
+        int y = (l + r) >> 1;
+        int z = x + ((y - l + 1) << 1);
+        // push from x into (x + 1) and z
+        if (tree[x].add != 0) {
+            tree[x + 1].apply(l, y, tree[x].add);
+            tree[z].apply(y + 1, r, tree[x].add);
+            tree[x].add = 0;
+        }
     }
 
-    public void modify(int from, int to, int delta) {
-        modify(from, to, delta, 0, 0, n - 1);
+    void pull(int x, int z) {
+        tree[x] = unite(tree[x + 1], tree[z]);
     }
 
-    void modify(int from, int to, int delta, int root, int left, int right) {
-        if (from == left && to == right) {
-            this.delta[root] = joinDeltas(this.delta[root], delta);
+    int n;
+    node[] tree;
+
+    void build(int x, int l, int r) {
+        if (l == r) {
             return;
         }
-        pushDelta(root, left, right);
-        int mid = (left + right) >> 1;
-        if (from <= mid)
-            modify(from, Math.min(to, mid), delta, 2 * root + 1, left, mid);
-        if (to > mid)
-            modify(Math.max(from, mid + 1), to, delta, 2 * root + 2, mid + 1, right);
-        value[root] = queryOperation(
-                joinValueWithDelta(value[2 * root + 1], deltaEffectOnSegment(this.delta[2 * root + 1], mid - left + 1)),
-                joinValueWithDelta(value[2 * root + 2], deltaEffectOnSegment(this.delta[2 * root + 2], right - mid)));
+        int y = (l + r) >> 1;
+        int z = x + ((y - l + 1) << 1);
+        build(x + 1, l, y);
+        build(z, y + 1, r);
+        pull(x, z);
     }
 
-    // Random test
-    public static void main(String[] args) {
-        Random rnd = new Random();
-        for (int step = 0; step < 1000; step++) {
-            int n = rnd.nextInt(50) + 1;
-            int[] x = new int[n];
-            SegmentTree t = new SegmentTree(n);
-            Arrays.fill(x, t.getInitValue());
-            for (int i = 0; i < 1000; i++) {
-                int b = rnd.nextInt(n);
-                int a = rnd.nextInt(b + 1);
-                int cmd = rnd.nextInt(3);
-                if (cmd == 0) {
-                    int delta = rnd.nextInt(100) - 50;
-                    t.modify(a, b, delta);
-                    for (int j = a; j <= b; j++)
-                        x[j] = t.joinValueWithDelta(x[j], delta);
-                } else if (cmd == 1) {
-                    int res1 = t.query(a, b);
-                    int res2 = x[a];
-                    for (int j = a + 1; j <= b; j++)
-                        res2 = t.queryOperation(res2, x[j]);
-                    if (res1 != res2)
-                        throw new RuntimeException();
-                } else {
-                    for (int j = 0; j < n; j++) {
-                        if (t.query(j, j) != x[j])
-                            throw new RuntimeException();
-                    }
-                }
+    void build(int x, int l, int r, long[] v) {
+        if (l == r) {
+            tree[x].apply(l, r, v[l]);
+            return;
+        }
+        int y = (l + r) >> 1;
+        int z = x + ((y - l + 1) << 1);
+        build(x + 1, l, y, v);
+        build(z, y + 1, r, v);
+        pull(x, z);
+    }
+
+    node get(int x, int l, int r, int ll, int rr) {
+        if (ll <= l && r <= rr) {
+            return tree[x];
+        }
+        int y = (l + r) >> 1;
+        int z = x + ((y - l + 1) << 1);
+        push(x, l, r);
+        node res;
+        if (rr <= y) {
+            res = get(x + 1, l, y, ll, rr);
+        } else {
+            if (ll > y) {
+                res = get(z, y + 1, r, ll, rr);
+            } else {
+                res = unite(get(x + 1, l, y, ll, rr), get(z, y + 1, r, ll, rr));
             }
         }
-        System.out.println("Test passed");
+        pull(x, z);
+        return res;
+    }
+
+    void modify(int x, int l, int r, int ll, int rr, long... v) {
+        if (ll <= l && r <= rr) {
+            tree[x].apply(l, r, v);
+            return;
+        }
+        int y = (l + r) >> 1;
+        int z = x + ((y - l + 1) << 1);
+        push(x, l, r);
+        if (ll <= y) {
+            modify(x + 1, l, y, ll, rr, v);
+        }
+        if (rr > y) {
+            modify(z, y + 1, r, ll, rr, v);
+        }
+        pull(x, z);
+    }
+
+    SegmentTree(int n) {
+        this.n = n;
+        tree = new node[2 * n - 1];
+        for (int i = 0; i < tree.length; i++) tree[i] = new node();
+        build(0, 0, n - 1);
+    }
+
+    SegmentTree(long[] v) {
+        n = v.length;
+        tree = new node[2 * n - 1];
+        for (int i = 0; i < tree.length; i++) tree[i] = new node();
+        build(0, 0, n - 1, v);
+    }
+
+    node get(int ll, int rr) {
+        assert (0 <= ll && ll <= rr && rr <= n - 1);
+        return get(0, 0, n - 1, ll, rr);
+    }
+
+    node get(int p) {
+        assert (0 <= p && p <= n - 1);
+        return get(0, 0, n - 1, p, p);
+    }
+
+    void modify(int ll, int rr, long... v) {
+        assert (0 <= ll && ll <= rr && rr <= n - 1);
+        modify(0, 0, n - 1, ll, rr, v);
+    }
+
+    // Usage example
+    public static void main(String[] args) {
+        SegmentTree t = new SegmentTree(10);
+        t.modify(1, 2, 10);
+        t.modify(2, 3, 20);
+        System.out.println(t.get(1, 3).mx);
     }
 }

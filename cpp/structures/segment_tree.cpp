@@ -6,18 +6,18 @@ class segtree {
 public:
     struct node {
         // initial values for leaves
-        long long mn = 0;
+        long long mx = 0;
         long long add = 0;
 
         void apply(int l, int r, long long v) {
-            mn += v;
+            mx += v;
             add += v;
         }
     };
 
     node unite(const node &a, const node &b) const {
         node res;
-        res.mn = min(a.mn, b.mn);
+        res.mx = max(a.mx, b.mx);
         return res;
     }
 
@@ -138,5 +138,5 @@ int main() {
     segtree t(10);
     t.modify(2, 3, 1);
     t.modify(3, 4, 2);
-    cout << t.get(2, 3).mn << endl;
+    cout << t.get(2, 3).mx << endl;
 }
