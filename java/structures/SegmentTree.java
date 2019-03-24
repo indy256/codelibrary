@@ -1,7 +1,5 @@
 package structures;
 
-import static java.lang.Long.max;
-
 public class SegmentTree {
 
     static class node {
@@ -17,7 +15,7 @@ public class SegmentTree {
 
     node unite(node a, node b) {
         node res = new node();
-        res.mx = max(a.mx, b.mx);
+        res.mx = Math.max(a.mx, b.mx);
         return res;
     }
 

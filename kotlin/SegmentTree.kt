@@ -1,5 +1,3 @@
-import java.lang.Math.max
-
 class SegmentTree {
 
     val n: Int
@@ -14,7 +12,7 @@ class SegmentTree {
 
     fun unite(a: node, b: node): node {
         val res = node()
-        res.mx = max(a.mx, b.mx)
+        res.mx = Math.max(a.mx, b.mx)
         return res
     }
 
