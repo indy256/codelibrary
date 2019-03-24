@@ -1,6 +1,6 @@
 package structures;
 
-public class SegmentTreeSimple {
+public class SegmentTreeNonRec {
 
     public static int get(int[] t, int i) {
         return t[i + t.length / 2];
