@@ -54,6 +54,11 @@ public class Euclid {
         return a >= 0 ? a : a + m;
     }
 
+    public static int mod(long a, int m) {
+        a %= m;
+        return (int) (a >= 0 ? a : a + m);
+    }
+
     // precondition: m > 0 && gcd(a, m) = 1
     public static int modInverse(int a, int m) {
         a = mod(a, m);
@@ -79,7 +84,7 @@ public class Euclid {
         int[] x = a.clone();
         for (int i = 0; i < x.length; ++i)
             for (int j = 0; j < i; ++j)
-                x[i] = mod(BigInteger.valueOf(p[j]).modInverse(BigInteger.valueOf(p[i])).intValue() * (x[i] - x[j]), p[i]);
+                x[i] = mod(BigInteger.valueOf(p[j]).modInverse(BigInteger.valueOf(p[i])).longValue() * (x[i] - x[j]), p[i]);
         BigInteger res = BigInteger.valueOf(x[0]);
         BigInteger m = BigInteger.ONE;
         for (int i = 1; i < x.length; i++) {
@@ -134,5 +139,7 @@ public class Euclid {
                 + res[0]);
 
         System.out.println(Arrays.toString(generateInverses(7)));
+
+        System.out.println(garnerRestore(new int[]{200_000_125, 300_000_333}, new int[]{1000_000_007, 1000_000_009}));
     }
 }
