@@ -1,5 +1,5 @@
 fun factorize(N: Long): Map<Long, Int> {
-    val factors = mutableListOf<Long>()
+    val factors = arrayListOf<Long>()
     var n = N
     var d: Long = 2
     while (d * d <= n) {

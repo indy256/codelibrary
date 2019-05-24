@@ -1,3 +1,5 @@
+import java.util.*
+
 object Dijkstra {
     data class Edge(val target: Int, val cost: Int)
 
@@ -33,10 +35,10 @@ object Dijkstra {
 
     // Usage example
     @JvmStatic
-    fun main() {
+    fun main(args: Array<String>) {
         val cost = arrayOf(intArrayOf(0, 3, 2), intArrayOf(0, 0, -2), intArrayOf(0, 0, 0))
         val n = cost.size
-        val graph = (1..n).map { mutableListOf<Edge>() }.toTypedArray()
+        val graph = (1..n).map { arrayListOf<Edge>() }.toTypedArray()
         for (i in 0 until n) {
             for (j in 0 until n) {
                 if (cost[i][j] != 0) {
@@ -44,7 +46,7 @@ object Dijkstra {
                 }
             }
         }
-        println(graph)
+        println(Arrays.toString(graph))
         val (dist, pred) = shortestPaths(graph, 0)
         println(0 == dist[0])
         println(3 == dist[1])

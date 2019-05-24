@@ -38,7 +38,7 @@ object PersistentTree {
 
     // Usage example
     @JvmStatic
-    fun main() {
+    fun main(args: Array<String>) {
         val n = 10
         val t1 = build(0, n - 1)
         val t2 = set(0, 1, t1, 0, n - 1)

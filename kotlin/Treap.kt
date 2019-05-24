@@ -79,7 +79,7 @@ object Treap {
 
     // random test
     @JvmStatic
-    fun main() {
+    fun main(args: Array<String>) {
         val time = System.currentTimeMillis()
         var treap: Treap? = null
         val set = TreeSet<Int>()

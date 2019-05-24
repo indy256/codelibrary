@@ -5,13 +5,13 @@ import java.util.Arrays;
 // https://en.wikipedia.org/wiki/Combination
 public class Combinations {
 
-    public static boolean nextCombination(int[] p, int n) {
-        int m = p.length;
-        for (int i = m - 1; i >= 0; i--) {
-            if (p[i] < n - m + i) {
-                ++p[i];
-                while (++i < m) {
-                    p[i] = p[i - 1] + 1;
+    public static boolean nextCombination(int[] comb, int n) {
+        int k = comb.length;
+        for (int i = k - 1; i >= 0; i--) {
+            if (comb[i] < n - k + i) {
+                ++comb[i];
+                while (++i < k) {
+                    comb[i] = comb[i - 1] + 1;
                 }
                 return true;
             }
@@ -19,13 +19,13 @@ public class Combinations {
         return false;
     }
 
-    public static int[] combinationByNumber(int n, int m, long number) {
-        int[] c = new int[m];
+    public static int[] combinationByNumber(int n, int k, long number) {
+        int[] c = new int[k];
         int cnt = n;
-        for (int i = 0; i < m; i++) {
+        for (int i = 0; i < k; i++) {
             int j = 1;
             while (true) {
-                long am = binomial(cnt - j, m - 1 - i);
+                long am = binomial(cnt - j, k - 1 - i);
                 if (number < am)
                     break;
                 number -= am;
@@ -38,33 +38,33 @@ public class Combinations {
     }
 
     public static long numberByCombination(int[] c, int n) {
-        int m = c.length;
+        int k = c.length;
         long res = 0;
         int prev = -1;
-        for (int i = 0; i < m; i++) {
+        for (int i = 0; i < k; i++) {
             for (int j = prev + 1; j < c[i]; j++) {
-                res += binomial(n - 1 - j, m - 1 - i);
+                res += binomial(n - 1 - j, k - 1 - i);
             }
             prev = c[i];
         }
         return res;
     }
 
-    static long binomial(long n, long m) {
-        m = Math.min(m, n - m);
+    static long binomial(long n, long k) {
+        k = Math.min(k, n - k);
         long res = 1;
-        for (long i = 0; i < m; i++) {
+        for (long i = 0; i < k; i++) {
             res = res * (n - i) / (i + 1);
         }
         return res;
     }
 
     public static boolean nextCombinationWithRepeats(int[] p, int n) {
-        int m = p.length;
-        for (int i = m - 1; i >= 0; i--) {
+        int k = p.length;
+        for (int i = k - 1; i >= 0; i--) {
             if (p[i] < n - 1) {
                 ++p[i];
-                while (++i < m) {
+                while (++i < k) {
                     p[i] = p[i - 1];
                 }
                 return true;

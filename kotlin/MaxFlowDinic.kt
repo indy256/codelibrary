@@ -3,7 +3,7 @@ object MaxFlowDinic {
 
     data class Edge(val t: Int, val rev: Int, val cap: Int, var f: Int = 0)
 
-    fun addEdge(graph: Array<MutableList<Edge>>, s: Int, t: Int, cap: Int) {
+    fun addEdge(graph: Array<ArrayList<Edge>>, s: Int, t: Int, cap: Int) {
         graph[s].add(Edge(t, graph[t].size, cap))
         graph[t].add(Edge(s, graph[s].size - 1, 0))
     }
@@ -62,8 +62,8 @@ object MaxFlowDinic {
 
     // Usage example
     @JvmStatic
-    fun main() {
-        val graph = (1..3).map { mutableListOf<Edge>() }.toTypedArray()
+    fun main(args: Array<String>) {
+        val graph = (1..3).map { arrayListOf<Edge>() }.toTypedArray()
         addEdge(graph, 0, 1, 3)
         addEdge(graph, 0, 2, 2)
         addEdge(graph, 1, 2, 2)

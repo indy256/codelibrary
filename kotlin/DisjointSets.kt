@@ -20,7 +20,7 @@ object DisjointSets {
 
     // Usage example
     @JvmStatic
-    fun main() {
+    fun main(args: Array<String>) {
         val p = createSets(10)
         println(false == (root(p, 0) == root(p, 9)))
         unite(p, 0, 9)

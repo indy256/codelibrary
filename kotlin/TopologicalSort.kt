@@ -2,7 +2,7 @@
 fun topologicalSort(graph: Array<out List<Int>>): List<Int> {
     val n = graph.size
     val used = BooleanArray(n)
-    val order = mutableListOf<Int>()
+    val order = arrayListOf<Int>()
 
     fun dfs(u: Int) {
         used[u] = true
@@ -17,7 +17,7 @@ fun topologicalSort(graph: Array<out List<Int>>): List<Int> {
 
 // Usage example
 fun main() {
-    val graph = (1..3).map({ mutableListOf<Int>() }).toTypedArray()
+    val graph = (1..3).map { arrayListOf<Int>() }.toTypedArray()
     graph[2].add(0)
     graph[2].add(1)
     graph[0].add(1)
