@@ -1,33 +1,35 @@
 package parsing;
 
-import javax.script.*;
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
 
 public class ExpressionParserRecursiveDescent {
 
     String s;
     int pos;
     char token;
-    double tokval;
+    double tokenValue;
 
-    static boolean isDigitOrDot(char x) {
-        return Character.isDigit(x) || x == '.';
-    }
-
-    int next() {
+    void readToken() {
         while (true) {
-            if (pos == s.length())
-                return token = 255;
+            if (pos == s.length()) {
+                token = 255;
+                return;
+            }
             char c = s.charAt(pos++);
-            if ("+-*/^()\n".indexOf(c) != -1)
-                return token = c;
+            if ("+-*/^()\n".indexOf(c) != -1) {
+                token = c;
+                return;
+            }
             if (Character.isSpaceChar(c))
                 continue;
             if (Character.isDigit(c) || c == '.') {
                 String operand = "" + c;
-                while (pos < s.length() && isDigitOrDot(s.charAt(pos)))
-                    operand += c = s.charAt(pos++);
-                tokval = Double.parseDouble(operand);
-                return token = 'n';
+                while (pos < s.length() && (Character.isDigit(s.charAt(pos)) || s.charAt(pos) == '.'))
+                    operand += s.charAt(pos++);
+                tokenValue = Double.parseDouble(operand);
+                token = 'n';
+                return;
             }
             throw new RuntimeException("Bad character: " + c);
         }
@@ -36,7 +38,7 @@ public class ExpressionParserRecursiveDescent {
     void skip(int ch) {
         if (token != ch)
             throw new RuntimeException("Bad character: " + token + ", expected: " + ch);
-        next();
+        readToken();
     }
 
     // Original grammar:
@@ -54,7 +56,7 @@ public class ExpressionParserRecursiveDescent {
     // factor ::= number | '(' expression ')'
     double factor() {
         if (token == 'n') {
-            double v = tokval;
+            double v = tokenValue;
             skip('n');
             return v;
         }
@@ -106,10 +108,11 @@ public class ExpressionParserRecursiveDescent {
 
         ExpressionParserRecursiveDescent parser = new ExpressionParserRecursiveDescent();
         parser.s = exp;
-        parser.next();
+        parser.readToken();
         while (parser.token != 255) {
             if (parser.token == '\n') {
                 parser.skip('\n');
+                System.out.println();
                 continue;
             }
             System.out.printf("%.5f", parser.expression());
