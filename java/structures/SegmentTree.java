@@ -4,9 +4,9 @@ import java.util.function.Predicate;
 
 public class SegmentTree {
     int n;
-    node[] tree;
+    Node[] tree;
 
-    static class node {
+    static class Node {
         // initial values for leaves
         long mx = 0;
         long sum = 0;
@@ -19,8 +19,8 @@ public class SegmentTree {
         }
     }
 
-    node unite(node a, node b) {
-        node res = new node();
+    Node unite(Node a, Node b) {
+        Node res = new Node();
         res.mx = Math.max(a.mx, b.mx);
         res.sum = a.sum + b.sum;
         return res;
@@ -42,15 +42,15 @@ public class SegmentTree {
 
     SegmentTree(int n) {
         this.n = n;
-        tree = new node[2 * n - 1];
-        for (int i = 0; i < tree.length; i++) tree[i] = new node();
+        tree = new Node[2 * n - 1];
+        for (int i = 0; i < tree.length; i++) tree[i] = new Node();
         build(0, 0, n - 1);
     }
 
     SegmentTree(long[] v) {
         n = v.length;
-        tree = new node[2 * n - 1];
-        for (int i = 0; i < tree.length; i++) tree[i] = new node();
+        tree = new Node[2 * n - 1];
+        for (int i = 0; i < tree.length; i++) tree[i] = new Node();
         build(0, 0, n - 1, v);
     }
 
@@ -77,18 +77,18 @@ public class SegmentTree {
         pull(x, y);
     }
 
-    node get(int ll, int rr) {
+    Node get(int ll, int rr) {
         return get(ll, rr, 0, 0, n - 1);
     }
 
-    node get(int ll, int rr, int x, int l, int r) {
+    Node get(int ll, int rr, int x, int l, int r) {
         if (ll <= l && r <= rr) {
             return tree[x];
         }
         int m = (l + r) >> 1;
         int y = x + ((m - l + 1) << 1);
         push(x, l, r);
-        node res;
+        Node res;
         if (rr <= m) {
             res = get(ll, rr, x + 1, l, m);
         } else {
@@ -123,11 +123,12 @@ public class SegmentTree {
         pull(x, y);
     }
 
-    int findFirst(int ll, int rr, Predicate<node> f) {
+    // calls all FALSE elements to the left of the sought position exactly once
+    int findFirst(int ll, int rr, Predicate<Node> f) {
         return findFirst(ll, rr, f, 0, 0, n - 1);
     }
 
-    int findFirst(int ll, int rr, Predicate<node> f, int x, int l, int r) {
+    int findFirst(int ll, int rr, Predicate<Node> f, int x, int l, int r) {
         if (ll <= l && r <= rr && !f.test(tree[x])) {
             return -1;
         }

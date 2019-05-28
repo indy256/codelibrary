@@ -86,20 +86,20 @@ public:
         return res;
     }
 
-    template<class... T>
-    void modify(int x, int l, int r, int ll, int rr, const T &... v) {
+    template<class T>
+    void modify(int x, int l, int r, int ll, int rr, const T &v) {
         if (ll <= l && r <= rr) {
-            tree[x].apply(l, r, v...);
+            tree[x].apply(l, r, v);
             return;
         }
         int m = (l + r) >> 1;
         int y = x + ((m - l + 1) << 1);
         push(x, l, r);
         if (ll <= m) {
-            modify(x + 1, l, m, ll, rr, v...);
+            modify(x + 1, l, m, ll, rr, v);
         }
         if (rr > m) {
-            modify(y, m + 1, r, ll, rr, v...);
+            modify(y, m + 1, r, ll, rr, v);
         }
         pull(x, y);
     }
@@ -128,10 +128,10 @@ public:
         return get(0, 0, n - 1, p, p);
     }
 
-    template<class... T>
-    void modify(int ll, int rr, const T &... v) {
+    template<class T>
+    void modify(int ll, int rr, const T v) {
         assert(0 <= ll && ll <= rr && rr <= n - 1);
-        modify(0, 0, n - 1, ll, rr, v...);
+        modify(0, 0, n - 1, ll, rr, v);
     }
 
     int find_first(int ll, int rr, const function<bool(const node &)> &f, int x, int l, int r) {

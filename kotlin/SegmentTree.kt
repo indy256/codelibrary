@@ -1,8 +1,8 @@
 class SegmentTree {
     val n: Int
-    val tree: Array<node>
+    val tree: Array<Node>
 
-    class node(var mx: Long = 0, var sum: Long = 0, var add: Long = 0) {
+    class Node(var mx: Long = 0, var sum: Long = 0, var add: Long = 0) {
         fun apply(l: Int, r: Int, v: Long) {
             mx += v
             sum += (r - l + 1) * v;
@@ -10,8 +10,8 @@ class SegmentTree {
         }
     }
 
-    fun unite(a: node, b: node): node {
-        val res = node()
+    fun unite(a: Node, b: Node): Node {
+        val res = Node()
         res.mx = maxOf(a.mx, b.mx)
         res.sum = a.sum + b.sum
         return res
@@ -33,13 +33,13 @@ class SegmentTree {
 
     constructor(n: Int) {
         this.n = n
-        tree = Array(2 * n - 1) { node() }
+        tree = Array(2 * n - 1) { Node() }
         build(0, 0, n - 1)
     }
 
     constructor(v: LongArray) {
         n = v.size
-        tree = Array(2 * n - 1) { node() }
+        tree = Array(2 * n - 1) { Node() }
         build(0, 0, n - 1, v)
     }
 
@@ -66,14 +66,14 @@ class SegmentTree {
         pull(x, y)
     }
 
-    operator fun get(ll: Int, rr: Int, x: Int = 0, l: Int = 0, r: Int = 0): node {
+    operator fun get(ll: Int, rr: Int, x: Int = 0, l: Int = 0, r: Int = 0): Node {
         if (ll <= l && r <= rr) {
             return tree[x]
         }
         val m = (l + r) shr 1
         val y = x + ((m - l + 1) shl 1)
         push(x, l, r)
-        val res: node
+        val res: Node
         if (rr <= m) {
             res = get(x + 1, l, m, ll, rr)
         } else {
@@ -104,7 +104,8 @@ class SegmentTree {
         pull(x, y)
     }
 
-    fun findFirst(ll: Int, rr: Int, f: (node) -> Boolean, x: Int = 0, l: Int = 0, r: Int = n - 1): Int {
+    // calls all FALSE elements to the left of the sought position exactly once
+    fun findFirst(ll: Int, rr: Int, f: (Node) -> Boolean, x: Int = 0, l: Int = 0, r: Int = n - 1): Int {
         if (ll <= l && r <= rr && !f(tree[x])) {
             return -1
         }
