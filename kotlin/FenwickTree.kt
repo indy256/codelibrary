@@ -26,7 +26,7 @@ object FenwickTree {
     fun set(t: IntArray, pos: Int, value: Int) {
         var i = pos
         while (i < t.size) {
-            t[i] = Math.max(t[i], value)
+            t[i] = maxOf(t[i], value)
             i = i or i + 1
         }
     }
@@ -36,7 +36,7 @@ object FenwickTree {
         var i = pos
         var res = Int.MIN_VALUE
         while (i >= 0) {
-            res = Math.max(res, t[i])
+            res = maxOf(res, t[i])
             i = (i and i + 1) - 1
         }
         return res

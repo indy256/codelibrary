@@ -7,10 +7,12 @@ public:
     struct node {
         // initial values for leaves
         long long mx = 0;
+        long long sum = 0;
         long long add = 0;
 
         void apply(int l, int r, long long v) {
             mx += v;
+            sum += (r - l + 1) * v;
             add += v;
         }
     };
@@ -18,22 +20,22 @@ public:
     node unite(const node &a, const node &b) const {
         node res;
         res.mx = max(a.mx, b.mx);
+        res.sum = a.sum + b.sum;
         return res;
     }
 
     void push(int x, int l, int r) {
-        int y = (l + r) >> 1;
-        int z = x + ((y - l + 1) << 1);
-        // push from x into (x + 1) and z
+        int m = (l + r) >> 1;
+        int y = x + ((m - l + 1) << 1);
         if (tree[x].add != 0) {
-            tree[x + 1].apply(l, y, tree[x].add);
-            tree[z].apply(y + 1, r, tree[x].add);
+            tree[x + 1].apply(l, m, tree[x].add);
+            tree[y].apply(m + 1, r, tree[x].add);
             tree[x].add = 0;
         }
     }
 
-    void pull(int x, int z) {
-        tree[x] = unite(tree[x + 1], tree[z]);
+    void pull(int x, int y) {
+        tree[x] = unite(tree[x + 1], tree[y]);
     }
 
     int n;
@@ -43,11 +45,11 @@ public:
         if (l == r) {
             return;
         }
-        int y = (l + r) >> 1;
-        int z = x + ((y - l + 1) << 1);
-        build(x + 1, l, y);
-        build(z, y + 1, r);
-        pull(x, z);
+        int m = (l + r) >> 1;
+        int y = x + ((m - l + 1) << 1);
+        build(x + 1, l, m);
+        build(y, m + 1, r);
+        pull(x, y);
     }
 
     template<class T>
@@ -56,31 +58,31 @@ public:
             tree[x].apply(l, r, v[l]);
             return;
         }
-        int y = (l + r) >> 1;
-        int z = x + ((y - l + 1) << 1);
-        build(x + 1, l, y, v);
-        build(z, y + 1, r, v);
-        pull(x, z);
+        int m = (l + r) >> 1;
+        int y = x + ((m - l + 1) << 1);
+        build(x + 1, l, m, v);
+        build(y, m + 1, r, v);
+        pull(x, y);
     }
 
     node get(int x, int l, int r, int ll, int rr) {
         if (ll <= l && r <= rr) {
             return tree[x];
         }
-        int y = (l + r) >> 1;
-        int z = x + ((y - l + 1) << 1);
+        int m = (l + r) >> 1;
+        int y = x + ((m - l + 1) << 1);
         push(x, l, r);
         node res;
-        if (rr <= y) {
-            res = get(x + 1, l, y, ll, rr);
+        if (rr <= m) {
+            res = get(x + 1, l, m, ll, rr);
         } else {
-            if (ll > y) {
-                res = get(z, y + 1, r, ll, rr);
+            if (ll > m) {
+                res = get(y, m + 1, r, ll, rr);
             } else {
-                res = unite(get(x + 1, l, y, ll, rr), get(z, y + 1, r, ll, rr));
+                res = unite(get(x + 1, l, m, ll, rr), get(y, m + 1, r, ll, rr));
             }
         }
-        pull(x, z);
+        pull(x, y);
         return res;
     }
 
@@ -90,16 +92,16 @@ public:
             tree[x].apply(l, r, v...);
             return;
         }
-        int y = (l + r) >> 1;
-        int z = x + ((y - l + 1) << 1);
+        int m = (l + r) >> 1;
+        int y = x + ((m - l + 1) << 1);
         push(x, l, r);
-        if (ll <= y) {
-            modify(x + 1, l, y, ll, rr, v...);
+        if (ll <= m) {
+            modify(x + 1, l, m, ll, rr, v...);
         }
-        if (rr > y) {
-            modify(z, y + 1, r, ll, rr, v...);
+        if (rr > m) {
+            modify(y, m + 1, r, ll, rr, v...);
         }
-        pull(x, z);
+        pull(x, y);
     }
 
     segtree(int _n) : n(_n) {
@@ -131,12 +133,55 @@ public:
         assert(0 <= ll && ll <= rr && rr <= n - 1);
         modify(0, 0, n - 1, ll, rr, v...);
     }
+
+    int find_first(int ll, int rr, const function<bool(const node &)> &f, int x, int l, int r) {
+        if (ll <= l && r <= rr && !f(tree[x])) {
+            return -1;
+        }
+        if (l == r) {
+            return l;
+        }
+        push(x, l, r);
+        int m = (l + r) >> 1;
+        int y = x + ((m - l + 1) << 1);
+        int res = -1;
+        if (ll <= m) {
+            res = find_first(ll, rr, f, x + 1, l, m);
+        }
+        if (rr > m && res == -1) {
+            res = find_first(ll, rr, f, y, m + 1, r);
+        }
+        pull(x, y);
+        return res;
+    }
+
+    // calls all FALSE elements to the left of the sought position exactly once
+    int find_first(int ll, int rr, const function<bool(const node &)> &f) {
+        assert(0 <= ll && ll <= rr && rr <= n - 1);
+        return find_first(ll, rr, f, 0, 0, n - 1);
+    }
 };
 
 // usage example
+
+// Returns min(p | p<=rr && sum[ll..p]>=sum). If no such p exists, returns -1
+int sum_lower_bound(segtree &t, int ll, int rr, long long sum) {
+    long long sumSoFar = 0;
+    return t.find_first(ll, rr,
+                        [&](const segtree::node &node) {
+                            if (sumSoFar + node.sum >= sum) return true;
+                            sumSoFar += node.sum;
+                            return false;
+                        });
+}
+
 int main() {
     segtree t(10);
     t.modify(2, 3, 1);
     t.modify(3, 4, 2);
     cout << t.get(2, 3).mx << endl;
+
+    vector<long long> a{1, 2, 10, 20};
+    segtree tt(a);
+    cout << sum_lower_bound(tt, 0, tt.n - 1, 12) << endl;
 }

@@ -1,101 +1,43 @@
 package structures;
 
+import java.util.function.Predicate;
+
 public class SegmentTree {
+    int n;
+    node[] tree;
 
     static class node {
         // initial values for leaves
         long mx = 0;
+        long sum = 0;
         long add = 0;
 
-        void apply(int l, int r, long... v) {
-            mx += v[0];
-            add += v[0];
+        void apply(int l, int r, long v) {
+            mx += v;
+            sum += v * (r - l + 1);
+            add += v;
         }
     }
 
     node unite(node a, node b) {
         node res = new node();
         res.mx = Math.max(a.mx, b.mx);
+        res.sum = a.sum + b.sum;
         return res;
     }
 
     void push(int x, int l, int r) {
-        int y = (l + r) >> 1;
-        int z = x + ((y - l + 1) << 1);
-        // push from x into (x + 1) and z
+        int m = (l + r) >> 1;
+        int y = x + ((m - l + 1) << 1);
         if (tree[x].add != 0) {
-            tree[x + 1].apply(l, y, tree[x].add);
-            tree[z].apply(y + 1, r, tree[x].add);
+            tree[x + 1].apply(l, m, tree[x].add);
+            tree[y].apply(m + 1, r, tree[x].add);
             tree[x].add = 0;
         }
     }
 
-    void pull(int x, int z) {
-        tree[x] = unite(tree[x + 1], tree[z]);
-    }
-
-    int n;
-    node[] tree;
-
-    void build(int x, int l, int r) {
-        if (l == r) {
-            return;
-        }
-        int y = (l + r) >> 1;
-        int z = x + ((y - l + 1) << 1);
-        build(x + 1, l, y);
-        build(z, y + 1, r);
-        pull(x, z);
-    }
-
-    void build(int x, int l, int r, long[] v) {
-        if (l == r) {
-            tree[x].apply(l, r, v[l]);
-            return;
-        }
-        int y = (l + r) >> 1;
-        int z = x + ((y - l + 1) << 1);
-        build(x + 1, l, y, v);
-        build(z, y + 1, r, v);
-        pull(x, z);
-    }
-
-    node get(int x, int l, int r, int ll, int rr) {
-        if (ll <= l && r <= rr) {
-            return tree[x];
-        }
-        int y = (l + r) >> 1;
-        int z = x + ((y - l + 1) << 1);
-        push(x, l, r);
-        node res;
-        if (rr <= y) {
-            res = get(x + 1, l, y, ll, rr);
-        } else {
-            if (ll > y) {
-                res = get(z, y + 1, r, ll, rr);
-            } else {
-                res = unite(get(x + 1, l, y, ll, rr), get(z, y + 1, r, ll, rr));
-            }
-        }
-        pull(x, z);
-        return res;
-    }
-
-    void modify(int x, int l, int r, int ll, int rr, long... v) {
-        if (ll <= l && r <= rr) {
-            tree[x].apply(l, r, v);
-            return;
-        }
-        int y = (l + r) >> 1;
-        int z = x + ((y - l + 1) << 1);
-        push(x, l, r);
-        if (ll <= y) {
-            modify(x + 1, l, y, ll, rr, v);
-        }
-        if (rr > y) {
-            modify(z, y + 1, r, ll, rr, v);
-        }
-        pull(x, z);
+    void pull(int x, int y) {
+        tree[x] = unite(tree[x + 1], tree[y]);
     }
 
     SegmentTree(int n) {
@@ -112,19 +54,98 @@ public class SegmentTree {
         build(0, 0, n - 1, v);
     }
 
+    void build(int x, int l, int r) {
+        if (l == r) {
+            return;
+        }
+        int m = (l + r) >> 1;
+        int y = x + ((m - l + 1) << 1);
+        build(x + 1, l, m);
+        build(y, m + 1, r);
+        pull(x, y);
+    }
+
+    void build(int x, int l, int r, long[] v) {
+        if (l == r) {
+            tree[x].apply(l, r, v[l]);
+            return;
+        }
+        int m = (l + r) >> 1;
+        int y = x + ((m - l + 1) << 1);
+        build(x + 1, l, m, v);
+        build(y, m + 1, r, v);
+        pull(x, y);
+    }
+
     node get(int ll, int rr) {
-        assert (0 <= ll && ll <= rr && rr <= n - 1);
-        return get(0, 0, n - 1, ll, rr);
+        return get(ll, rr, 0, 0, n - 1);
     }
 
-    node get(int p) {
-        assert (0 <= p && p <= n - 1);
-        return get(0, 0, n - 1, p, p);
+    node get(int ll, int rr, int x, int l, int r) {
+        if (ll <= l && r <= rr) {
+            return tree[x];
+        }
+        int m = (l + r) >> 1;
+        int y = x + ((m - l + 1) << 1);
+        push(x, l, r);
+        node res;
+        if (rr <= m) {
+            res = get(ll, rr, x + 1, l, m);
+        } else {
+            if (ll > m) {
+                res = get(ll, rr, y, m + 1, r);
+            } else {
+                res = unite(get(ll, rr, x + 1, l, m), get(ll, rr, y, m + 1, r));
+            }
+        }
+        pull(x, y);
+        return res;
     }
 
-    void modify(int ll, int rr, long... v) {
-        assert (0 <= ll && ll <= rr && rr <= n - 1);
-        modify(0, 0, n - 1, ll, rr, v);
+    void modify(int ll, int rr, long v) {
+        modify(ll, rr, v, 0, 0, n - 1);
+    }
+
+    void modify(int ll, int rr, long v, int x, int l, int r) {
+        if (ll <= l && r <= rr) {
+            tree[x].apply(l, r, v);
+            return;
+        }
+        int m = (l + r) >> 1;
+        int y = x + ((m - l + 1) << 1);
+        push(x, l, r);
+        if (ll <= m) {
+            modify(ll, rr, v, x + 1, l, m);
+        }
+        if (rr > m) {
+            modify(ll, rr, v, y, m + 1, r);
+        }
+        pull(x, y);
+    }
+
+    int findFirst(int ll, int rr, Predicate<node> f) {
+        return findFirst(ll, rr, f, 0, 0, n - 1);
+    }
+
+    int findFirst(int ll, int rr, Predicate<node> f, int x, int l, int r) {
+        if (ll <= l && r <= rr && !f.test(tree[x])) {
+            return -1;
+        }
+        if (l == r) {
+            return l;
+        }
+        push(x, l, r);
+        int m = (l + r) >> 1;
+        int y = x + ((m - l + 1) << 1);
+        int res = -1;
+        if (ll <= m) {
+            res = findFirst(ll, rr, f, x + 1, l, m);
+        }
+        if (rr > m && res == -1) {
+            res = findFirst(ll, rr, f, y, m + 1, r);
+        }
+        pull(x, y);
+        return res;
     }
 
     // Usage example
@@ -132,6 +153,20 @@ public class SegmentTree {
         SegmentTree t = new SegmentTree(10);
         t.modify(1, 2, 10);
         t.modify(2, 3, 20);
-        System.out.println(t.get(1, 3).mx);
+        System.out.println(30 == t.get(1, 3).mx);
+        System.out.println(60 == t.get(1, 3).sum);
+
+        SegmentTree tt = new SegmentTree(new long[]{1, 2, 10, 20});
+        System.out.println(2 == sumLowerBound(tt, 0, tt.n - 1, 12));
+    }
+
+    // Returns min(p | p<=rr && sum[ll..p]>=sum). If no such p exists, returns -1
+    static int sumLowerBound(SegmentTree t, int ll, int rr, long sum) {
+        long[] sumSoFar = new long[1];
+        return t.findFirst(ll, rr, node -> {
+            if (sumSoFar[0] + node.sum >= sum) return true;
+            sumSoFar[0] += node.sum;
+            return false;
+        });
     }
 }
