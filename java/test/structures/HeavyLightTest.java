@@ -14,23 +14,23 @@ public class HeavyLightTest {
             int n = rnd.nextInt(50) + 1;
             List<Integer>[] tree = getRandomTree(n, rnd);
             HeavyLight hl = new HeavyLight(tree, true);
-            int[] x = new int[n];
-            Arrays.fill(x, hl.segmentTree.getInitValue());
+            long[] x = new long[n];
+            Arrays.fill(x, 0);
             for (int i = 0; i < 1000; i++) {
                 int a = rnd.nextInt(n);
                 int b = rnd.nextInt(n);
                 List<Integer> path = new ArrayList<>();
                 getPathFromAtoB(tree, a, b, -1, path);
                 if (rnd.nextBoolean()) {
-                    int delta = rnd.nextInt(50) - 100;
+                    long delta = rnd.nextInt(50) - 100;
                     hl.modify(a, b, delta);
                     for (int u : path)
-                        x[u] = hl.segmentTree.joinValueWithDelta(x[u], delta);
+                        x[u] = x[u] + delta;
                 } else {
-                    int res1 = hl.query(a, b);
-                    int res2 = hl.getNeutralValue();
+                    long res1 = hl.get(a, b);
+                    long res2 = 0;
                     for (int u : path)
-                        res2 = hl.segmentTree.queryOperation(res2, x[u]);
+                        res2 = res2 + x[u];
                     if (res1 != res2)
                         throw new RuntimeException();
                 }
@@ -44,7 +44,7 @@ public class HeavyLightTest {
             Map<Long, Integer> x = new HashMap<>();
             for (int u = 0; u < tree.length; u++)
                 for (int v : tree[u])
-                    x.put(edge(u, v), hl.segmentTree.getInitValue());
+                    x.put(edge(u, v), 0);
             for (int i = 0; i < 1000; i++) {
                 int a = rnd.nextInt(n);
                 int b = rnd.nextInt(n);
@@ -55,14 +55,14 @@ public class HeavyLightTest {
                     hl.modify(a, b, delta);
                     for (int j = 0; j + 1 < path.size(); j++) {
                         long key = edge(path.get(j), path.get(j + 1));
-                        x.put(key, hl.segmentTree.joinValueWithDelta(x.get(key), delta));
+                        x.put(key, x.get(key) + delta);
                     }
                 } else {
-                    int res1 = hl.query(a, b);
-                    int res2 = hl.getNeutralValue();
+                    long res1 = hl.get(a, b);
+                    long res2 = 0;
                     for (int j = 0; j + 1 < path.size(); j++) {
                         long key = edge(path.get(j), path.get(j + 1));
-                        res2 = hl.segmentTree.queryOperation(res2, x.get(key));
+                        res2 = res2 + x.get(key);
                     }
                     if (res1 != res2)
                         throw new RuntimeException();

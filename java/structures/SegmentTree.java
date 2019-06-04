@@ -77,7 +77,7 @@ public class SegmentTree {
         pull(x, y);
     }
 
-    Node get(int ll, int rr) {
+    public Node get(int ll, int rr) {
         return get(ll, rr, 0, 0, n - 1);
     }
 
