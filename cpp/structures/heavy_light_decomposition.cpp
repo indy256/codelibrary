@@ -2,136 +2,125 @@
 
 using namespace std;
 
-class SegmentTree {
+class segtree {
 public:
-    explicit SegmentTree(int n) : value(2 * n), delta(2 * n, neutral_delta()) {
-        fill(value.begin(), value.begin() + n, neutral_value());
-        for (int i = 2 * n - 1; i > 1; i -= 2) {
-            value[i >> 1] = query_operation(value[i], value[i ^ 1]);
-        }
-    }
+    struct node {
+        // initial values for leaves
+        long long mx = 0;
+        long long sum = 0;
+        long long add = 0;
 
-    int query(int from, int to) {
-        from += value.size() >> 1;
-        to += value.size() >> 1;
-        push_delta(from);
-        push_delta(to);
-        int res = neutral_value();
-        bool found = false;
-        for (int len = 1; from <= to; from = (from + 1) >> 1, to = (to - 1) >> 1, len <<= 1) {
-            if ((from & 1) != 0) {
-                res = found ? query_operation(res, join_node_value_with_delta(from, len)) :
-                      join_node_value_with_delta(from, len);
-                found = true;
-            }
-            if ((to & 1) == 0) {
-                res = found ? query_operation(res, join_node_value_with_delta(to, len)) :
-                      join_node_value_with_delta(to, len);
-                found = true;
-            }
+        void apply(int l, int r, long long v) {
+            mx += v;
+            sum += (r - l + 1) * v;
+            add += v;
         }
+    };
+
+    node unite(const node &a, const node &b) const {
+        node res;
+        res.mx = max(a.mx, b.mx);
+        res.sum = a.sum + b.sum;
         return res;
     }
 
-    void modify(int from, int to, int delta_value) {
-        from += value.size() >> 1;
-        to += value.size() >> 1;
-        push_delta(from);
-        push_delta(to);
-        int a = from;
-        int b = to;
-        for (; from <= to; from = (from + 1) >> 1, to = (to - 1) >> 1) {
-            if ((from & 1) != 0) {
-                delta[from] = join_deltas(delta[from], delta_value);
+    void push(int x, int l, int r) {
+        int m = (l + r) >> 1;
+        int y = x + ((m - l + 1) << 1);
+        if (tree[x].add != 0) {
+            tree[x + 1].apply(l, m, tree[x].add);
+            tree[y].apply(m + 1, r, tree[x].add);
+            tree[x].add = 0;
+        }
+    }
+
+    void pull(int x, int y) {
+        tree[x] = unite(tree[x + 1], tree[y]);
+    }
+
+    int n;
+    vector<node> tree;
+
+    void build(int x, int l, int r) {
+        if (l == r) {
+            return;
+        }
+        int m = (l + r) >> 1;
+        int y = x + ((m - l + 1) << 1);
+        build(x + 1, l, m);
+        build(y, m + 1, r);
+        pull(x, y);
+    }
+
+    node get(int x, int l, int r, int ll, int rr) {
+        if (ll <= l && r <= rr) {
+            return tree[x];
+        }
+        int m = (l + r) >> 1;
+        int y = x + ((m - l + 1) << 1);
+        push(x, l, r);
+        node res;
+        if (rr <= m) {
+            res = get(x + 1, l, m, ll, rr);
+        } else {
+            if (ll > m) {
+                res = get(y, m + 1, r, ll, rr);
+            } else {
+                res = unite(get(x + 1, l, m, ll, rr), get(y, m + 1, r, ll, rr));
             }
-            if ((to & 1) == 0) {
-                delta[to] = join_deltas(delta[to], delta_value);
-            }
         }
-        for (int i = a, len = 1; i > 1; i >>= 1, len <<= 1) {
-            value[i >> 1] = query_operation(join_node_value_with_delta(i, len), join_node_value_with_delta(i ^ 1, len));
+        pull(x, y);
+        return res;
+    }
+
+    template<class T>
+    void modify(int x, int l, int r, int ll, int rr, const T &v) {
+        if (ll <= l && r <= rr) {
+            tree[x].apply(l, r, v);
+            return;
         }
-        for (int i = b, len = 1; i > 1; i >>= 1, len <<= 1) {
-            value[i >> 1] = query_operation(join_node_value_with_delta(i, len), join_node_value_with_delta(i ^ 1, len));
+        int m = (l + r) >> 1;
+        int y = x + ((m - l + 1) << 1);
+        push(x, l, r);
+        if (ll <= m) {
+            modify(x + 1, l, m, ll, rr, v);
         }
-    }
-
-    vector<int> value;
-    vector<int> delta; // delta[i] affects value[i], delta[2*i+1] and delta[2*i+2]
-
-    int neutral_delta() {
-        return 0;
-    }
-
-    int neutral_value() {
-        return 0;
-    }
-
-    // Modify the following 5 methods to implement your custom operations on the tree.
-    // This example implements Add/Sum operations. Operations like Add/Max, Set/Max can also be implemented.
-    int update_operation(int x, int y) {
-        return x + y;
-    }
-
-    // query (or combine) operation
-    int query_operation(int leftValue, int rightValue) {
-        return leftValue + rightValue;
-    }
-
-    int delta_effect_on_segment(int delta, int segmentLength) {
-        if (delta == neutral_delta()) return neutral_delta();
-        // Here you must write a fast equivalent of following slow code:
-        // int result = delta;
-        // for (int i = 1; i < segmentLength; i++) result = queryOperation(result, delta);
-        // return result;
-        return delta * segmentLength;
-    }
-
-    int join_value_with_delta(int value, int delta) {
-        if (delta == neutral_delta()) return value;
-        return update_operation(value, delta);
-    }
-
-    int join_deltas(int delta1, int delta2) {
-        if (delta1 == neutral_delta()) return delta2;
-        if (delta2 == neutral_delta()) return delta1;
-        return update_operation(delta1, delta2);
-    }
-
-    void push_delta(int i) {
-        int d = 0;
-        for (; (i >> d) > 0; d++) {
+        if (rr > m) {
+            modify(y, m + 1, r, ll, rr, v);
         }
-        for (d -= 2; d >= 0; d--) {
-            int x = i >> d;
-            value[x >> 1] = join_node_value_with_delta(x >> 1, 1 << (d + 1));
-            delta[x] = join_deltas(delta[x], delta[x >> 1]);
-            delta[x ^ 1] = join_deltas(delta[x ^ 1], delta[x >> 1]);
-            delta[x >> 1] = neutral_delta();
-        }
+        pull(x, y);
     }
 
-    int join_node_value_with_delta(int i, int len) {
-        return join_value_with_delta(value[i], delta_effect_on_segment(delta[i], len));
+    segtree(int _n) : n(_n) {
+        assert(n > 0);
+        tree.resize(2 * n - 1);
+        build(0, 0, n - 1);
+    }
+
+    node get(int ll, int rr) {
+        assert(0 <= ll && ll <= rr && rr <= n - 1);
+        return get(0, 0, n - 1, ll, rr);
+    }
+
+    template<class T>
+    void modify(int ll, int rr, const T v) {
+        assert(0 <= ll && ll <= rr && rr <= n - 1);
+        modify(0, 0, n - 1, ll, rr, v);
     }
 };
 
 class HeavyLight {
+public:
     vector<vector<int>> tree;
     bool valuesOnVertices; // true - values on vertices, false - values on edges
-    SegmentTree segment_tree;
+    segtree segment_tree;
     vector<int> parent;
     vector<int> heavy;
     vector<int> depth;
     vector<int> pathRoot;
     vector<int> pos;
-public:
 
-    int getNeutralValue() {
-        return 0;
-    }
-
-    explicit HeavyLight(const vector<vector<int>> &tree, bool valuesOnVertices) :
+    HeavyLight(const vector<vector<int>> &tree, bool valuesOnVertices) :
             tree(tree), valuesOnVertices(valuesOnVertices), segment_tree(tree.size()),
             parent(tree.size()), heavy(tree.size(), -1), depth(tree.size()), pathRoot(tree.size()), pos(tree.size()) {
         int n = tree.size();
@@ -167,25 +156,19 @@ public:
         return size;
     }
 
-    int query(int u, int v) {
-        int res = getNeutralValue();
-        auto op = [this, &res](int a, int b) { res = segment_tree.query_operation(res, segment_tree.query(a, b)); };
-        process_path(u, v, op);
+    long long get(int u, int v) {
+        long long res = 0;
+        process_path(u, v, [this, &res](int a, int b) { res += segment_tree.get(a, b).sum; });
         return res;
     }
 
     void modify(int u, int v, int delta) {
-        auto op = [this, delta](int a, int b) { segment_tree.modify(a, b, delta); };
-        process_path(u, v, op);
+        process_path(u, v, [this, delta](int a, int b) { segment_tree.modify(a, b, delta); });
     }
 
     void process_path(int u, int v, const function<void(int x, int y)> &op) {
         for (; pathRoot[u] != pathRoot[v]; v = parent[pathRoot[v]]) {
-            if (depth[pathRoot[u]] > depth[pathRoot[v]]) {
-                int t = u;
-                u = v;
-                v = t;
-            }
+            if (depth[pathRoot[u]] > depth[pathRoot[v]]) swap(u, v);
             op(pos[pathRoot[v]], pos[v]);
         }
         if (!valuesOnVertices && u == v) return;
@@ -193,7 +176,7 @@ public:
     }
 };
 
-// usage example()
+// usage example
 int main() {
     vector<vector<int>> tree{{1, 2},
                              {0, 3, 4},
@@ -204,10 +187,10 @@ int main() {
     HeavyLight hl_v(tree, true);
     hl_v.modify(3, 2, 1);
     hl_v.modify(1, 0, -1);
-    cout << (hl_v.query(4, 2)) << endl;
+    cout << hl_v.get(4, 2) << endl;
 
     HeavyLight hl_e(tree, false);
     hl_e.modify(3, 2, 1);
     hl_e.modify(1, 0, -1);
-    cout << (hl_e.query(4, 2)) << endl;
+    cout << hl_e.get(4, 2) << endl;
 }
