@@ -5,89 +5,63 @@ import java.util.*;
 // https://en.wikipedia.org/wiki/Treap
 public class TreapImplicitKey {
 
-    // Modify the following 5 methods to implement your custom operations on the tree.
-    // This example implements Add/Max operations. Operations like Add/Sum, Set/Max can also be implemented.
-    static int updateOperation(int x, int y) {
-        return x + y;
-    }
-
-    // query (or combine) operation
-    static int queryOperation(int leftValue, int rightValue) {
-        return Math.max(leftValue, rightValue);
-    }
-
-    static int deltaEffectOnSegment(int delta, int segmentLength) {
-        if (delta == getNeutralDelta()) return getNeutralDelta();
-        // Here you must write a fast equivalent of following slow code:
-        // int result = delta;
-        // for (int i = 1; i < segmentLength; i++) result = queryOperation(result, delta);
-        // return result;
-        return delta;
-    }
-
-    static int getNeutralDelta() {
-        return 0;
-    }
-
-    static int getNeutralValue() {
-        return Integer.MIN_VALUE;
-    }
-
-    // generic code
     static Random random = new Random();
 
-    static int joinValueWithDelta(int value, int delta) {
-        if (delta == getNeutralDelta()) return value;
-        return updateOperation(value, delta);
-    }
-
-    static int joinDeltas(int delta1, int delta2) {
-        if (delta1 == getNeutralDelta()) return delta2;
-        if (delta2 == getNeutralDelta()) return delta1;
-        return updateOperation(delta1, delta2);
-    }
-
-    static void pushDelta(Treap root) {
-        if (root == null)
-            return;
-        root.nodeValue = joinValueWithDelta(root.nodeValue, root.delta);
-        root.subTreeValue = joinValueWithDelta(root.subTreeValue, deltaEffectOnSegment(root.delta, root.size));
-        if (root.left != null)
-            root.left.delta = joinDeltas(root.left.delta, root.delta);
-        if (root.right != null)
-            root.right.delta = joinDeltas(root.right.delta, root.delta);
-        root.delta = getNeutralDelta();
-    }
-
     public static class Treap {
-        int nodeValue;
-        int subTreeValue;
-        int delta; // delta affects nodeValue, subTreeValue, left.delta and right.delta
+        long nodeMx;
+        long subTreeMx;
+        long nodeSum;
+        long subTreeSum;
+        long add;
+
         int size;
         long prio;
         Treap left;
         Treap right;
 
         Treap(int value) {
-            nodeValue = value;
-            subTreeValue = value;
-            delta = getNeutralDelta();
+            nodeMx = value;
+            subTreeMx = value;
+            add = 0;
             size = 1;
             prio = random.nextLong();
         }
 
-        void update() {
-            subTreeValue = queryOperation(queryOperation(getSubTreeValue(left), joinValueWithDelta(nodeValue, delta)), getSubTreeValue(right));
+        void apply(long v) {
+            nodeMx += v;
+            subTreeMx += v;
+            add += v;
+            nodeSum += v;
+            subTreeSum += v * (size - 1);
+        }
+
+        void pull() {
+            subTreeMx = Math.max(nodeMx, Math.max(getSubTreeMx(left), getSubTreeMx(right)));
+            subTreeSum = nodeSum + getSubTreeSum(left) + getSubTreeSum(right);
             size = 1 + getSize(left) + getSize(right);
         }
     }
 
-    static int getSize(Treap root) {
-        return root == null ? 0 : root.size;
+    static void push(Treap root) {
+        if (root != null && root.add != 0) {
+            if (root.left != null)
+                root.left.apply(root.add);
+            if (root.right != null)
+                root.right.apply(root.add);
+            root.add = 0;
+        }
     }
 
-    static int getSubTreeValue(Treap root) {
-        return root == null ? getNeutralValue() : joinValueWithDelta(root.subTreeValue, deltaEffectOnSegment(root.delta, root.size));
+    static long getSubTreeMx(Treap root) {
+        return root == null ? Long.MIN_VALUE : root.subTreeMx;
+    }
+
+    static long getSubTreeSum(Treap root) {
+        return root == null ? 0 : root.subTreeSum;
+    }
+
+    static int getSize(Treap root) {
+        return root == null ? 0 : root.size;
     }
 
     public static class TreapPair {
@@ -103,37 +77,36 @@ public class TreapImplicitKey {
     public static TreapPair split(Treap root, int minRight) {
         if (root == null)
             return new TreapPair(null, null);
-        pushDelta(root);
+        push(root);
         if (getSize(root.left) >= minRight) {
             TreapPair sub = split(root.left, minRight);
             root.left = sub.right;
-            root.update();
+            root.pull();
             sub.right = root;
             return sub;
         } else {
             TreapPair sub = split(root.right, minRight - getSize(root.left) - 1);
             root.right = sub.left;
-            root.update();
+            root.pull();
             sub.left = root;
             return sub;
         }
     }
 
     public static Treap merge(Treap left, Treap right) {
-        pushDelta(left);
-        pushDelta(right);
+        push(left);
+        push(right);
         if (left == null)
             return right;
         if (right == null)
             return left;
-        // if (random.nextInt(left.size + right.size) < left.size) {
         if (left.prio > right.prio) {
             left.right = merge(left.right, right);
-            left.update();
+            left.pull();
             return left;
         } else {
             right.left = merge(left, right.left);
-            right.update();
+            right.pull();
             return right;
         }
     }
@@ -148,36 +121,37 @@ public class TreapImplicitKey {
         return merge(t.left, split(t.right, index + 1 - getSize(t.left)).right);
     }
 
-    public static Treap modify(Treap root, int a, int b, int delta) {
+    public static Treap modify(Treap root, int a, int b, long delta) {
         TreapPair t1 = split(root, b + 1);
         TreapPair t2 = split(t1.left, a);
-        t2.right.delta = joinDeltas(t2.right.delta, delta);
+
+        t2.right.apply(delta);
         return merge(merge(t2.left, t2.right), t1.right);
     }
 
     public static class TreapAndResult {
         Treap treap;
-        int value;
+        long mx;
 
-        TreapAndResult(Treap t, int value) {
+        TreapAndResult(Treap t, long mx) {
             this.treap = t;
-            this.value = value;
+            this.mx = mx;
         }
     }
 
     public static TreapAndResult query(Treap root, int a, int b) {
         TreapPair t1 = split(root, b + 1);
         TreapPair t2 = split(t1.left, a);
-        int value = getSubTreeValue(t2.right);
-        return new TreapAndResult(merge(merge(t2.left, t2.right), t1.right), value);
+        long mx = getSubTreeMx(t2.right);
+        return new TreapAndResult(merge(merge(t2.left, t2.right), t1.right), mx);
     }
 
     public static void print(Treap root) {
         if (root == null)
             return;
-        pushDelta(root);
+        push(root);
         print(root.left);
-        System.out.print(root.nodeValue + " ");
+        System.out.print(root.nodeMx + " ");
         print(root.right);
     }
 
@@ -202,23 +176,23 @@ public class TreapImplicitKey {
                 int a = rnd.nextInt(b + 1);
                 int res = list.get(a);
                 for (int i = a + 1; i <= b; i++)
-                    res = queryOperation(res, list.get(i));
+                    res = Math.max(res, list.get(i));
                 TreapAndResult tr = query(treap, a, b);
                 treap = tr.treap;
-                if (res != tr.value)
+                if (res != tr.mx)
                     throw new RuntimeException();
             } else if (cmd < 5 && list.size() > 0) {
                 int b = rnd.nextInt(list.size());
                 int a = rnd.nextInt(b + 1);
                 int delta = rnd.nextInt(100) - 50;
                 for (int i = a; i <= b; i++)
-                    list.set(i, joinValueWithDelta(list.get(i), delta));
+                    list.set(i, list.get(i) + delta);
                 treap = modify(treap, a, b, delta);
             } else {
                 for (int i = 0; i < list.size(); i++) {
                     TreapAndResult tr = query(treap, i, i);
                     treap = tr.treap;
-                    int v = tr.value;
+                    long v = tr.mx;
                     if (list.get(i) != v)
                         throw new RuntimeException();
                 }
