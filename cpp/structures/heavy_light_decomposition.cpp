@@ -59,7 +59,7 @@ public:
         return res;
     }
 
-    void modify(int u, int v, int delta) {
+    void modify(int u, int v, long long delta) {
         process_path(u, v, [this, delta](int a, int b) { segment_tree.modify(a, b, delta); });
     }
 

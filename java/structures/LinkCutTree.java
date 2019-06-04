@@ -6,66 +6,33 @@ import java.util.*;
 // Based on Daniel Sleator's implementation http://www.codeforces.com/contest/117/submission/860934
 public class LinkCutTree {
 
-    // Modify the following 5 methods to implement your custom operations on the tree.
-    // This example implements Add/Sum operations. Operations like Add/Max, Set/Max can also be implemented.
-    static int updateOperation(int x, int y) {
-        return x + y;
-    }
-
-    // query (or combine) operation
-    static int queryOperation(int leftValue, int rightValue) {
-        return leftValue + rightValue;
-    }
-
-    static int deltaEffectOnSegment(int delta, int segmentLength) {
-        if (delta == getNeutralDelta()) return getNeutralDelta();
-        // Here you must write a fast equivalent of following slow code:
-        // int result = delta;
-        // for (int i = 1; i < segmentLength; i++) result = queryOperation(result, delta);
-        // return result;
-        return delta * segmentLength;
-    }
-
-    static int getNeutralDelta() {
-        return 0;
-    }
-
-    static int getNeutralValue() {
-        return 0;
-    }
-
-    // generic code
-    static int joinValueWithDelta(int value, int delta) {
-        if (delta == getNeutralDelta()) return value;
-        return updateOperation(value, delta);
-    }
-
-    static int joinDeltas(int delta1, int delta2) {
-        if (delta1 == getNeutralDelta()) return delta2;
-        if (delta2 == getNeutralDelta()) return delta1;
-        return updateOperation(delta1, delta2);
-    }
-
     public static class Node {
-        int nodeValue;
-        int subTreeValue;
-        int delta; // delta affects nodeValue, subTreeValue, left.delta and right.delta
-        int size;
+        long nodeValue;
+        long subTreeSum;
+        long add;
         boolean revert;
+
+        int size;
         Node left;
         Node right;
         Node parent;
 
-        Node(int value) {
+        Node(long value) {
             nodeValue = value;
-            subTreeValue = value;
-            delta = getNeutralDelta();
+            subTreeSum = value;
+            add = 0;
             size = 1;
         }
 
         // tests whether x is a root of a splay tree
         boolean isRoot() {
             return parent == null || (parent.left != this && parent.right != this);
+        }
+
+        void apply(long v) {
+            nodeValue += v;
+            subTreeSum += v * size;
+            add += v;
         }
 
         void push() {
@@ -79,28 +46,27 @@ public class LinkCutTree {
                 if (right != null)
                     right.revert = !right.revert;
             }
-
-            nodeValue = joinValueWithDelta(nodeValue, delta);
-            subTreeValue = joinValueWithDelta(subTreeValue, deltaEffectOnSegment(delta, size));
-            if (left != null)
-                left.delta = joinDeltas(left.delta, delta);
-            if (right != null)
-                right.delta = joinDeltas(right.delta, delta);
-            delta = getNeutralDelta();
+            if (add != 0) {
+                if (left != null)
+                    left.apply(add);
+                if (right != null)
+                    right.apply(add);
+                add = 0;
+            }
         }
 
-        void update() {
-            subTreeValue = queryOperation(queryOperation(getSubTreeValue(left), joinValueWithDelta(nodeValue, delta)), getSubTreeValue(right));
+        void pull() {
+            subTreeSum = nodeValue + getSubTreeSum(left) + getSubTreeSum(right);
             size = 1 + getSize(left) + getSize(right);
         }
     }
 
-    static int getSize(Node root) {
-        return root == null ? 0 : root.size;
+    static long getSubTreeSum(Node root) {
+        return root == null ? 0 : root.subTreeSum;
     }
 
-    static int getSubTreeValue(Node root) {
-        return root == null ? getNeutralValue() : joinValueWithDelta(root.subTreeValue, deltaEffectOnSegment(root.delta, root.size));
+    static int getSize(Node root) {
+        return root == null ? 0 : root.size;
     }
 
     static void connect(Node ch, Node p, Boolean isLeftChild) {
@@ -132,7 +98,7 @@ public class LinkCutTree {
         connect(leftChildX ? x.right : x.left, p, leftChildX);
         connect(p, x, !leftChildX);
         connect(x, g, isRootP ? null : p == g.left);
-        p.update();
+        p.pull();
     }
 
     // brings x to the root, balancing tree
@@ -167,7 +133,7 @@ public class LinkCutTree {
             rotate(x);
         }
         x.push();
-        x.update();
+        x.pull();
     }
 
     // makes node x the root of the virtual tree, and also x becomes the leftmost node in its splay tree
@@ -213,16 +179,16 @@ public class LinkCutTree {
         y.right = null;
     }
 
-    public static int query(Node from, Node to) {
+    public static long query(Node from, Node to) {
         makeRoot(from);
         expose(to);
-        return getSubTreeValue(to);
+        return getSubTreeSum(to);
     }
 
-    public static void modify(Node from, Node to, int delta) {
+    public static void modify(Node from, Node to, long delta) {
         makeRoot(from);
         expose(to);
-        to.delta = joinDeltas(to.delta, delta);
+        to.apply(delta);
     }
 
     // random test
@@ -252,9 +218,9 @@ public class LinkCutTree {
                     if (connected(x, y)) {
                         List<Integer> path = new ArrayList<>();
                         getPathFromAtoB(g, u, v, -1, path);
-                        int res = getNeutralValue();
+                        int res = 0;
                         for (int i : path)
-                            res = queryOperation(res, val[i]);
+                            res = res + val[i];
                         if (query(x, y) != res)
                             throw new RuntimeException();
                     }
@@ -264,7 +230,7 @@ public class LinkCutTree {
                         getPathFromAtoB(g, u, v, -1, path);
                         int delta = rnd.nextInt(100) + 1;
                         for (int i : path)
-                            val[i] = joinValueWithDelta(val[i], delta);
+                            val[i] += delta;
                         modify(x, y, delta);
                     }
                 } else {

@@ -8,9 +8,8 @@ public class TreapImplicitKey {
     static Random random = new Random();
 
     public static class Treap {
-        long nodeMx;
+        long nodeValue;
         long subTreeMx;
-        long nodeSum;
         long subTreeSum;
         long add;
 
@@ -20,35 +19,35 @@ public class TreapImplicitKey {
         Treap right;
 
         Treap(int value) {
-            nodeMx = value;
+            nodeValue = value;
             subTreeMx = value;
+            subTreeSum = value;
             add = 0;
             size = 1;
             prio = random.nextLong();
         }
 
         void apply(long v) {
-            nodeMx += v;
+            nodeValue += v;
             subTreeMx += v;
+            subTreeSum += v * size;
             add += v;
-            nodeSum += v;
-            subTreeSum += v * (size - 1);
+        }
+
+        void push() {
+            if (add != 0) {
+                if (left != null)
+                    left.apply(add);
+                if (right != null)
+                    right.apply(add);
+                add = 0;
+            }
         }
 
         void pull() {
-            subTreeMx = Math.max(nodeMx, Math.max(getSubTreeMx(left), getSubTreeMx(right)));
-            subTreeSum = nodeSum + getSubTreeSum(left) + getSubTreeSum(right);
+            subTreeMx = Math.max(nodeValue, Math.max(getSubTreeMx(left), getSubTreeMx(right)));
+            subTreeSum = nodeValue + getSubTreeSum(left) + getSubTreeSum(right);
             size = 1 + getSize(left) + getSize(right);
-        }
-    }
-
-    static void push(Treap root) {
-        if (root != null && root.add != 0) {
-            if (root.left != null)
-                root.left.apply(root.add);
-            if (root.right != null)
-                root.right.apply(root.add);
-            root.add = 0;
         }
     }
 
@@ -77,7 +76,7 @@ public class TreapImplicitKey {
     public static TreapPair split(Treap root, int minRight) {
         if (root == null)
             return new TreapPair(null, null);
-        push(root);
+        root.push();
         if (getSize(root.left) >= minRight) {
             TreapPair sub = split(root.left, minRight);
             root.left = sub.right;
@@ -94,12 +93,12 @@ public class TreapImplicitKey {
     }
 
     public static Treap merge(Treap left, Treap right) {
-        push(left);
-        push(right);
         if (left == null)
             return right;
         if (right == null)
             return left;
+        left.push();
+        right.push();
         if (left.prio > right.prio) {
             left.right = merge(left.right, right);
             left.pull();
@@ -149,9 +148,9 @@ public class TreapImplicitKey {
     public static void print(Treap root) {
         if (root == null)
             return;
-        push(root);
+        root.push();
         print(root.left);
-        System.out.print(root.nodeMx + " ");
+        System.out.print(root.nodeValue + " ");
         print(root.right);
     }
 
