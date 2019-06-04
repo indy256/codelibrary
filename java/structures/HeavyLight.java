@@ -1,6 +1,7 @@
 package structures;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.stream.Stream;
 
@@ -12,10 +13,10 @@ public class HeavyLight {
     boolean valuesOnVertices; // true - values on vertices, false - values on edges
     public SegmentTree segmentTree;
     int[] parent;
-    int[] heavy;
     int[] depth;
     int[] pathRoot;
-    int[] pos;
+    int[] in;
+    int time;
 
     public HeavyLight(List<Integer>[] tree, boolean valuesOnVertices) {
         this.tree = tree;
@@ -24,41 +25,42 @@ public class HeavyLight {
         segmentTree = new SegmentTree(n);
 
         parent = new int[n];
-        heavy = new int[n];
         depth = new int[n];
         pathRoot = new int[n];
-        pos = new int[n];
+        in = new int[n];
 
-        Arrays.fill(heavy, -1);
         parent[0] = -1;
-        depth[0] = 0;
-        dfs(0);
-        for (int u = 0, p = 0; u < n; u++) {
-            if (parent[u] == -1 || heavy[parent[u]] != u) {
-                for (int v = u; v != -1; v = heavy[v]) {
-                    pathRoot[v] = u;
-                    pos[v] = p++;
-                }
-            }
-        }
+        dfs1(0);
+        dfs2(0);
     }
 
-    int dfs(int u) {
+    int dfs1(int u) {
         int size = 1;
         int maxSubtree = 0;
-        for (int v : tree[u]) {
+        for (int i = 0; i < tree[u].size(); i++) {
+            int v = tree[u].get(i);
             if (v == parent[u])
                 continue;
             parent[v] = u;
             depth[v] = depth[u] + 1;
-            int subtree = dfs(v);
+            int subtree = dfs1(v);
             if (maxSubtree < subtree) {
                 maxSubtree = subtree;
-                heavy[u] = v;
+                tree[u].set(i, tree[u].set(0, v));
             }
             size += subtree;
         }
         return size;
+    }
+
+    void dfs2(int u) {
+        in[u] = time++;
+        for (int v : tree[u]) {
+            if (v == parent[u])
+                continue;
+            pathRoot[v] = v == tree[u].get(0) ? pathRoot[u] : v;
+            dfs2(v);
+        }
     }
 
     public long get(int u, int v) {
@@ -78,10 +80,10 @@ public class HeavyLight {
                 u = v;
                 v = t;
             }
-            op.accept(pos[pathRoot[v]], pos[v]);
+            op.accept(in[pathRoot[v]], in[v]);
         }
         if (u != v || valuesOnVertices)
-            op.accept(Math.min(pos[u], pos[v]) + (valuesOnVertices ? 0 : 1), Math.max(pos[u], pos[v]));
+            op.accept(Math.min(in[u], in[v]) + (valuesOnVertices ? 0 : 1), Math.max(in[u], in[v]));
     }
 
     // Usage example

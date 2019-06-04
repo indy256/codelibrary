@@ -1,113 +1,7 @@
 #include <bits/stdc++.h>
+#include "segment_tree.cpp"
 
 using namespace std;
-
-class segtree {
-public:
-    struct node {
-        // initial values for leaves
-        long long mx = 0;
-        long long sum = 0;
-        long long add = 0;
-
-        void apply(int l, int r, long long v) {
-            mx += v;
-            sum += (r - l + 1) * v;
-            add += v;
-        }
-    };
-
-    node unite(const node &a, const node &b) const {
-        node res;
-        res.mx = max(a.mx, b.mx);
-        res.sum = a.sum + b.sum;
-        return res;
-    }
-
-    void push(int x, int l, int r) {
-        int m = (l + r) >> 1;
-        int y = x + ((m - l + 1) << 1);
-        if (tree[x].add != 0) {
-            tree[x + 1].apply(l, m, tree[x].add);
-            tree[y].apply(m + 1, r, tree[x].add);
-            tree[x].add = 0;
-        }
-    }
-
-    void pull(int x, int y) {
-        tree[x] = unite(tree[x + 1], tree[y]);
-    }
-
-    int n;
-    vector<node> tree;
-
-    void build(int x, int l, int r) {
-        if (l == r) {
-            return;
-        }
-        int m = (l + r) >> 1;
-        int y = x + ((m - l + 1) << 1);
-        build(x + 1, l, m);
-        build(y, m + 1, r);
-        pull(x, y);
-    }
-
-    node get(int x, int l, int r, int ll, int rr) {
-        if (ll <= l && r <= rr) {
-            return tree[x];
-        }
-        int m = (l + r) >> 1;
-        int y = x + ((m - l + 1) << 1);
-        push(x, l, r);
-        node res;
-        if (rr <= m) {
-            res = get(x + 1, l, m, ll, rr);
-        } else {
-            if (ll > m) {
-                res = get(y, m + 1, r, ll, rr);
-            } else {
-                res = unite(get(x + 1, l, m, ll, rr), get(y, m + 1, r, ll, rr));
-            }
-        }
-        pull(x, y);
-        return res;
-    }
-
-    template<class T>
-    void modify(int x, int l, int r, int ll, int rr, const T &v) {
-        if (ll <= l && r <= rr) {
-            tree[x].apply(l, r, v);
-            return;
-        }
-        int m = (l + r) >> 1;
-        int y = x + ((m - l + 1) << 1);
-        push(x, l, r);
-        if (ll <= m) {
-            modify(x + 1, l, m, ll, rr, v);
-        }
-        if (rr > m) {
-            modify(y, m + 1, r, ll, rr, v);
-        }
-        pull(x, y);
-    }
-
-    segtree(int _n) : n(_n) {
-        assert(n > 0);
-        tree.resize(2 * n - 1);
-        build(0, 0, n - 1);
-    }
-
-    node get(int ll, int rr) {
-        assert(0 <= ll && ll <= rr && rr <= n - 1);
-        return get(0, 0, n - 1, ll, rr);
-    }
-
-    template<class T>
-    void modify(int ll, int rr, const T v) {
-        assert(0 <= ll && ll <= rr && rr <= n - 1);
-        modify(0, 0, n - 1, ll, rr, v);
-    }
-};
 
 class HeavyLight {
 public:
@@ -115,46 +9,48 @@ public:
     bool valuesOnVertices; // true - values on vertices, false - values on edges
     segtree segment_tree;
     vector<int> parent;
-    vector<int> heavy;
     vector<int> depth;
     vector<int> pathRoot;
-    vector<int> pos;
+    vector<int> in;
 
-    HeavyLight(const vector<vector<int>> &tree, bool valuesOnVertices) :
-            tree(tree), valuesOnVertices(valuesOnVertices), segment_tree(tree.size()),
-            parent(tree.size()), heavy(tree.size(), -1), depth(tree.size()), pathRoot(tree.size()), pos(tree.size()) {
-        int n = tree.size();
+    HeavyLight(const vector<vector<int>> &t, bool valuesOnVertices) :
+            tree(t), valuesOnVertices(valuesOnVertices), segment_tree(t.size()),
+            parent(t.size()), depth(t.size()), pathRoot(t.size()), in(t.size()) {
+        int n = t.size();
 
+        int time = 0;
         parent[0] = -1;
-        depth[0] = 0;
 
-        function<int(int)> dfs = [&](int u) {
+        function<int(int)> dfs1 = [&](int u) {
             int size = 1;
             int maxSubtree = 0;
-            for (int v : tree[u]) {
+            for (int &v : tree[u]) {
                 if (v == parent[u])
                     continue;
                 parent[v] = u;
                 depth[v] = depth[u] + 1;
-                int subtree = dfs(v);
+                int subtree = dfs1(v);
                 if (maxSubtree < subtree) {
                     maxSubtree = subtree;
-                    heavy[u] = v;
+                    swap(v, tree[u][0]);
                 }
                 size += subtree;
             }
             return size;
         };
 
-        dfs(0);
-        for (int u = 0, p = 0; u < n; u++) {
-            if (parent[u] == -1 || heavy[parent[u]] != u) {
-                for (int v = u; v != -1; v = heavy[v]) {
-                    pathRoot[v] = u;
-                    pos[v] = p++;
-                }
+        function<void(int)> dfs2 = [&](int u) {
+            in[u] = time++;
+            for (int v : t[u]) {
+                if (v == parent[u])
+                    continue;
+                pathRoot[v] = v == t[u][0] ? pathRoot[u] : v;
+                dfs2(v);
             }
-        }
+        };
+
+        dfs1(0);
+        dfs2(0);
     }
 
     long long get(int u, int v) {
@@ -171,10 +67,10 @@ public:
         for (; pathRoot[u] != pathRoot[v]; v = parent[pathRoot[v]]) {
             if (depth[pathRoot[u]] > depth[pathRoot[v]])
                 swap(u, v);
-            op(pos[pathRoot[v]], pos[v]);
+            op(in[pathRoot[v]], in[v]);
         }
         if (u != v || valuesOnVertices)
-            op(min(pos[u], pos[v]) + (valuesOnVertices ? 0 : 1), max(pos[u], pos[v]));
+            op(min(in[u], in[v]) + (valuesOnVertices ? 0 : 1), max(in[u], in[v]));
     }
 };
 
