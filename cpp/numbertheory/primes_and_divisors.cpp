@@ -76,14 +76,13 @@ vector<int> generate_divisors(int n) {
 }
 
 // usage example
-void print(const vector<int> &a) {
-    copy(a.begin(), a.end(), ostream_iterator<int>(cout, " "));
-    cout << endl;
-}
-
 int main() {
-    int n = 32;
+    auto print = [](const vector<int> &a) {
+        for (int x: a)cout << x << " ";
+        cout << endl;
+    };
 
+    int n = 32;
     print(get_primes(n));
     print(generate_primes_linear_time(n));
     print(generate_min_divisors(n));

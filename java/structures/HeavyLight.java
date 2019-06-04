@@ -80,8 +80,8 @@ public class HeavyLight {
             }
             op.accept(pos[pathRoot[v]], pos[v]);
         }
-        if (!valuesOnVertices && u == v) return;
-        op.accept(Math.min(pos[u], pos[v]) + (valuesOnVertices ? 0 : 1), Math.max(pos[u], pos[v]));
+        if (u != v || valuesOnVertices)
+            op.accept(Math.min(pos[u], pos[v]) + (valuesOnVertices ? 0 : 1), Math.max(pos[u], pos[v]));
     }
 
     // Usage example

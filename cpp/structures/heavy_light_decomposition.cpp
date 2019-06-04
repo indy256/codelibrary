@@ -127,6 +127,25 @@ public:
 
         parent[0] = -1;
         depth[0] = 0;
+
+        function<int(int)> dfs = [&](int u) {
+            int size = 1;
+            int maxSubtree = 0;
+            for (int v : tree[u]) {
+                if (v == parent[u])
+                    continue;
+                parent[v] = u;
+                depth[v] = depth[u] + 1;
+                int subtree = dfs(v);
+                if (maxSubtree < subtree) {
+                    maxSubtree = subtree;
+                    heavy[u] = v;
+                }
+                size += subtree;
+            }
+            return size;
+        };
+
         dfs(0);
         for (int u = 0, p = 0; u < n; u++) {
             if (parent[u] == -1 || heavy[parent[u]] != u) {
@@ -136,24 +155,6 @@ public:
                 }
             }
         }
-    }
-
-    int dfs(int u) {
-        int size = 1;
-        int maxSubtree = 0;
-        for (int v : tree[u]) {
-            if (v == parent[u])
-                continue;
-            parent[v] = u;
-            depth[v] = depth[u] + 1;
-            int subtree = dfs(v);
-            if (maxSubtree < subtree) {
-                maxSubtree = subtree;
-                heavy[u] = v;
-            }
-            size += subtree;
-        }
-        return size;
     }
 
     long long get(int u, int v) {
@@ -168,11 +169,12 @@ public:
 
     void process_path(int u, int v, const function<void(int x, int y)> &op) {
         for (; pathRoot[u] != pathRoot[v]; v = parent[pathRoot[v]]) {
-            if (depth[pathRoot[u]] > depth[pathRoot[v]]) swap(u, v);
+            if (depth[pathRoot[u]] > depth[pathRoot[v]])
+                swap(u, v);
             op(pos[pathRoot[v]], pos[v]);
         }
-        if (!valuesOnVertices && u == v) return;
-        op(min(pos[u], pos[v]) + (valuesOnVertices ? 0 : 1), max(pos[u], pos[v]));
+        if (u != v || valuesOnVertices)
+            op(min(pos[u], pos[v]) + (valuesOnVertices ? 0 : 1), max(pos[u], pos[v]));
     }
 };
 

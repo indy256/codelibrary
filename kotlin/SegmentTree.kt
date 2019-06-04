@@ -113,7 +113,7 @@ class SegmentTree {
             return l
         }
         push(x, l, r)
-        val m = l + r shr 1
+        val m = (l + r) shr 1
         val y = x + ((m - l + 1) shl 1)
         var res = -1
         if (ll <= m) {
