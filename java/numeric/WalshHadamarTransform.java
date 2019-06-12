@@ -2,8 +2,6 @@ package numeric;
 
 import java.util.Arrays;
 
-import static numeric.WalshHadamarTransform.Operation.XOR;
-
 public class WalshHadamarTransform {
 
     enum Operation {XOR, OR, AND}
@@ -45,7 +43,7 @@ public class WalshHadamarTransform {
                 }
             }
         }
-        if (op == XOR && inverse) {
+        if (op == Operation.XOR && inverse) {
             for (int i = 0; i < n; i++) {
                 a[i] /= n;
             }
@@ -56,6 +54,6 @@ public class WalshHadamarTransform {
     public static void main(String[] args) {
         int[] a = {3, 2, 1, 5};
         int[] b = {6, 3, 4, 8};
-        System.out.println(Arrays.toString(convolution(a, b, XOR)));
+        System.out.println(Arrays.toString(convolution(a, b, Operation.AND)));
     }
 }

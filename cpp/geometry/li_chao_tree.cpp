@@ -7,10 +7,10 @@ using namespace std;
 using T = long long;
 
 struct Line {
-    T k, d;
+    T a, d;
 
     T eval(T x) {
-        return k * x + d;
+        return a * x + d;
     }
 };
 
