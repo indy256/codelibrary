@@ -14,10 +14,7 @@ struct bigint {
     // sign == -1 <==> value < 0
     int sign;
 
-    bigint() : sign(1) {
-    }
-
-    bigint(long long v) {
+    bigint(long long v = 0) {
         *this = v;
     }
 
