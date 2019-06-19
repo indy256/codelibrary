@@ -14,7 +14,10 @@ struct bigint {
     // sign == -1 <==> value < 0
     int sign;
 
-    bigint(long long v = 0) {
+    bigint() : sign(1) {
+    }
+
+    bigint(long long v) {
         *this = v;
     }
 
@@ -329,7 +332,7 @@ struct bigint {
         return res;
     }
 
-    typedef vector<long long> vll;
+    using vll = vector<long long>;
 
     static vll karatsubaMultiply(const vll &a, const vll &b) {
         int n = a.size();
@@ -393,13 +396,14 @@ struct bigint {
         res.trim();
         return res;
     }
-
 };
+
+mt19937 rng(1);
 
 bigint random_bigint(int n) {
     string s;
     for (int i = 0; i < n; i++) {
-        s += rand() % 10 + '0';
+        s += uniform_int_distribution<int>('0', '9')(rng);
     }
     return bigint(s);
 }
@@ -411,7 +415,7 @@ int main() {
     cout << x / y << endl;
 
     for (int i = 0; i < 1000; i++) {
-        int n = rand() % 100 + 1;
+        int n = uniform_int_distribution<int>(1, 100)(rng);
         bigint a = random_bigint(n);
         bigint res = sqrt(a);
         bigint xx = res * res;
@@ -423,7 +427,7 @@ int main() {
             break;
         }
 
-        int m = rand() % n + 1;
+        int m = uniform_int_distribution<int>(1, n)(rng);
         bigint b = random_bigint(m) + 1;
         res = a / b;
         xx = res * b;
@@ -438,7 +442,9 @@ int main() {
 
     bigint a = random_bigint(10'000);
     bigint b = random_bigint(2000);
-    clock_t start = clock();
+    auto t1 = chrono::high_resolution_clock::now();
     bigint c = a / b;
-    printf("time=%.3lfsec\n", (clock() - start) * 1. / CLOCKS_PER_SEC);
+    auto t2 = chrono::high_resolution_clock::now();
+    chrono::duration<double, milli> duration = t2 - t1;
+    cout << duration.count() << " ms" << endl;
 }
