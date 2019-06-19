@@ -2,9 +2,12 @@
 
 using namespace std;
 
-// base and base_digits must be consistent
+constexpr int digits(int base) noexcept {
+    return base <= 1 ? 0 : 1 + digits(base / 10);
+}
+
 constexpr int base = 1000'000'000;
-constexpr int base_digits = 9;
+constexpr int base_digits = digits(base);
 
 struct bigint {
     // value == 0 is represented by empty z
