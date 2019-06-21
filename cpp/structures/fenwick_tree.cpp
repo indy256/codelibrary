@@ -24,6 +24,7 @@ struct fenwick {
     }
 
     // returns min(p | sum[0..p] >= sum)
+    // requires non-negative tree values
     int lower_bound(T sum) {
         int pos = 0;
         for (int blockSize = 1 << (31 - __builtin_clz(t.size())); blockSize != 0; blockSize >>= 1) {

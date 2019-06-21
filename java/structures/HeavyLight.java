@@ -63,9 +63,9 @@ public class HeavyLight {
         }
     }
 
-    public long get(int u, int v) {
-        long[] res = new long[]{0};
-        processPath(u, v, (a, b) -> res[0] += segmentTree.get(a, b).sum);
+    public SegmentTree.Node get(int u, int v) {
+        SegmentTree.Node[] res = {new SegmentTree.Node()};
+        processPath(u, v, (a, b) -> res[0] = SegmentTree.unite(res[0], segmentTree.get(a, b)));
         return res[0];
     }
 
@@ -104,11 +104,11 @@ public class HeavyLight {
         HeavyLight hlV = new HeavyLight(tree, true);
         hlV.modify(3, 2, 1);
         hlV.modify(1, 0, -1);
-        System.out.println(1 == hlV.get(4, 2));
+        System.out.println(1 == hlV.get(4, 2).sum);
 
         HeavyLight hlE = new HeavyLight(tree, false);
         hlE.modify(3, 2, 1);
         hlE.modify(1, 0, -1);
-        System.out.println(1 == hlE.get(4, 2));
+        System.out.println(1 == hlE.get(4, 2).sum);
     }
 }

@@ -27,7 +27,7 @@ public class HeavyLightTest {
                     for (int u : path)
                         x[u] = x[u] + delta;
                 } else {
-                    long res1 = hl.get(a, b);
+                    long res1 = hl.get(a, b).sum;
                     long res2 = 0;
                     for (int u : path)
                         res2 = res2 + x[u];
@@ -58,7 +58,7 @@ public class HeavyLightTest {
                         x.put(key, x.get(key) + delta);
                     }
                 } else {
-                    long res1 = hl.get(a, b);
+                    long res1 = hl.get(a, b).sum;
                     long res2 = 0;
                     for (int j = 0; j + 1 < path.size(); j++) {
                         long key = edge(path.get(j), path.get(j + 1));

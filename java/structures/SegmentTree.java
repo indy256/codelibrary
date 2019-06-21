@@ -6,11 +6,11 @@ public class SegmentTree {
     int n;
     Node[] tree;
 
-    static class Node {
+    public static class Node {
         // initial values for leaves
-        long mx = 0;
-        long sum = 0;
-        long add = 0;
+        public long mx = 0;
+        public long sum = 0;
+        public long add = 0;
 
         void apply(int l, int r, long v) {
             mx += v;
@@ -19,7 +19,7 @@ public class SegmentTree {
         }
     }
 
-    Node unite(Node a, Node b) {
+    static Node unite(Node a, Node b) {
         Node res = new Node();
         res.mx = Math.max(a.mx, b.mx);
         res.sum = a.sum + b.sum;

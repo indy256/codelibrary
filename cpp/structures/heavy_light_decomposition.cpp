@@ -53,9 +53,9 @@ public:
         dfs2(0);
     }
 
-    long long get(int u, int v) {
-        long long res = 0;
-        process_path(u, v, [this, &res](int a, int b) { res += segment_tree.get(a, b).sum; });
+    segtree::node get(int u, int v) {
+        segtree::node res;
+        process_path(u, v, [this, &res](int a, int b) { res = segtree::unite(res, segment_tree.get(a, b)); });
         return res;
     }
 
@@ -75,7 +75,7 @@ public:
 };
 
 // usage example
-int _main() {
+int main() {
     vector<vector<int>> tree{{1, 2},
                              {0, 3, 4},
                              {0},
@@ -85,10 +85,10 @@ int _main() {
     HeavyLight hl_v(tree, true);
     hl_v.modify(3, 2, 1);
     hl_v.modify(1, 0, -1);
-    cout << hl_v.get(4, 2) << endl;
+    cout << hl_v.get(4, 2).sum << endl;
 
     HeavyLight hl_e(tree, false);
     hl_e.modify(3, 2, 1);
     hl_e.modify(1, 0, -1);
-    cout << hl_e.get(4, 2) << endl;
+    cout << hl_e.get(4, 2).sum << endl;
 }
