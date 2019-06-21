@@ -2,8 +2,7 @@
 
 using namespace std;
 
-class segtree {
-public:
+struct segtree {
     struct node {
         // initial values for leaves
         long long mx = 0;
@@ -175,7 +174,7 @@ int sum_lower_bound(segtree &t, int ll, int rr, long long sum) {
                         });
 }
 
-int _main() {
+int main() {
     segtree t(10);
     t.modify(2, 3, 1);
     t.modify(3, 4, 2);
