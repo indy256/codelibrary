@@ -17,10 +17,7 @@ struct bigint {
     // sign == -1 <==> value < 0
     int sign;
 
-    bigint() : sign(1) {
-    }
-
-    bigint(long long v) {
+    bigint(long long v = 0) {
         *this = v;
     }
 
@@ -54,7 +51,8 @@ struct bigint {
     }
 
     friend bigint operator+(bigint a, const bigint &b) {
-        return a += b;
+        a += b;
+        return a;
     }
 
     bigint &operator-=(const bigint &other) {
@@ -78,7 +76,8 @@ struct bigint {
     }
 
     friend bigint operator-(bigint a, const bigint &b) {
-        return a -= b;
+        a -= b;
+        return a;
     }
 
     bigint &operator*=(int v) {
