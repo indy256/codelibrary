@@ -63,12 +63,12 @@ void erase(pNode &t, int key) {
     }
 }
 
-int kth(pNode root, int k) {
-    if (k < Node::get_size(root->l))
-        return kth(root->l, k);
-    else if (k > Node::get_size(root->l))
-        return kth(root->r, k - Node::get_size(root->l) - 1);
-    return root->key;
+int kth(pNode t, int k) {
+    if (k < Node::get_size(t->l))
+        return kth(t->l, k);
+    else if (k > Node::get_size(t->l))
+        return kth(t->r, k - Node::get_size(t->l) - 1);
+    return t->key;
 }
 
 void print(pNode t) {

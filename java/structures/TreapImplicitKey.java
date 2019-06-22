@@ -165,16 +165,16 @@ public class TreapImplicitKey {
         int m = Node.getSize(root.left);
         int res = -1;
         if (ll < m) {
-            res = findFirst(root.left, ll, rr, f, l, m - 1);
+            res = findFirst(root.left, ll, rr, f, l, l + m - 1);
         }
         if (res == -1) {
             Node single = new Node(0);
             single.size = 1;
             single.apply(root.nodeValue);
-            res = findFirst(single, ll, rr, f, m, m);
+            res = findFirst(single, ll, rr, f, l + m, l + m);
         }
         if (rr > m && res == -1) {
-            res = findFirst(root.right, ll, rr, f, m + 1, r);
+            res = findFirst(root.right, ll, rr, f, l + m + 1, r);
         }
         root.pull();
         return res;
