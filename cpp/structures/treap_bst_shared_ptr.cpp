@@ -2,14 +2,15 @@
 
 using namespace std;
 
-mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
+mt19937_64 rng(chrono::steady_clock::now().time_since_epoch().count());
 
 struct item;
 
 typedef shared_ptr<item> pitem;
 
 struct item {
-    int key, prio;
+    int key;
+    long long prio;
     pitem l, r;
 
     item(int key) : key(key), prio(rng()), l(nullptr), r(nullptr) {}

@@ -161,8 +161,6 @@ struct segtree {
     }
 };
 
-// usage example
-
 // Returns min(p | p<=rr && sum[ll..p]>=sum). If no such p exists, returns -1
 int sum_lower_bound(segtree &t, int ll, int rr, long long sum) {
     long long sumSoFar = 0;
@@ -174,6 +172,7 @@ int sum_lower_bound(segtree &t, int ll, int rr, long long sum) {
                         });
 }
 
+// usage example
 int _main() {
     segtree t(10);
     t.modify(2, 3, 1);

@@ -4,10 +4,12 @@ using namespace std;
 
 // https://cp-algorithms.com/data_structures/treap.html
 
-mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
+mt19937_64 rng(chrono::steady_clock::now().time_since_epoch().count());
 
 struct Node {
-    int key, prio, size;
+    int key;
+    int size;
+    long long prio;
     Node *l, *r;
 
     Node(int key) : key(key), prio(rng()), size(1), l(nullptr), r(nullptr) {}
@@ -51,10 +53,14 @@ void insert(pNode &t, pNode it) {
 }
 
 void erase(pNode &t, int key) {
-    if (t->key == key)
-        merge(t, t->l, t->r);
-    else
+    if (t->key == key) {
+        pNode l = t->l;
+        pNode r = t->r;
+        delete t;
+        merge(t, l, r);
+    } else {
         erase(key < t->key ? t->l : t->r, key), t->update();
+    }
 }
 
 int kth(pNode root, int k) {
@@ -90,5 +96,11 @@ int main() {
 
     for (int i = 0; i < t->size; ++i) {
         cout << kth(t, i) << endl;
+    }
+
+    for (int i = 0; Node::get_size(t); ++i) {
+        int key = kth(t, 0);
+        cout << key << endl;
+        erase(t, key);
     }
 }
