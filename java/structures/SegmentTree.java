@@ -149,18 +149,6 @@ public class SegmentTree {
         return res;
     }
 
-    // Usage example
-    public static void main(String[] args) {
-        SegmentTree t = new SegmentTree(10);
-        t.modify(1, 2, 10);
-        t.modify(2, 3, 20);
-        System.out.println(30 == t.get(1, 3).mx);
-        System.out.println(60 == t.get(1, 3).sum);
-
-        SegmentTree tt = new SegmentTree(new long[]{1, 2, 10, 20});
-        System.out.println(2 == sumLowerBound(tt, 0, tt.n - 1, 12));
-    }
-
     // Returns min(p | p<=rr && sum[ll..p]>=sum). If no such p exists, returns -1
     static int sumLowerBound(SegmentTree t, int ll, int rr, long sum) {
         long[] sumSoFar = new long[1];
@@ -169,5 +157,17 @@ public class SegmentTree {
             sumSoFar[0] += node.sum;
             return false;
         });
+    }
+
+    // Usage example
+    public static void main(String[] args) {
+        SegmentTree t = new SegmentTree(10);
+        t.modify(1, 2, 10);
+        t.modify(2, 3, 20);
+        System.out.println(30 == t.get(1, 3).mx);
+        System.out.println(60 == t.get(1, 3).sum);
+
+        SegmentTree tt = new SegmentTree(new long[]{2, 1, 10, 20});
+        System.out.println(2 == sumLowerBound(tt, 0, tt.n - 1, 12));
     }
 }

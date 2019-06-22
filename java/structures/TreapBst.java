@@ -6,14 +6,14 @@ import java.util.*;
 public class TreapBst {
     static Random random = new Random();
 
-    static class Treap {
+    static class Node {
         int key;
         long prio;
-        Treap left;
-        Treap right;
+        Node left;
+        Node right;
         int size;
 
-        Treap(int key) {
+        Node(int key) {
             this.key = key;
             prio = random.nextLong();
             size = 1;
@@ -24,21 +24,21 @@ public class TreapBst {
         }
     }
 
-    static int getSize(Treap root) {
+    static int getSize(Node root) {
         return root == null ? 0 : root.size;
     }
 
     static class TreapPair {
-        Treap left;
-        Treap right;
+        Node left;
+        Node right;
 
-        TreapPair(Treap left, Treap right) {
+        TreapPair(Node left, Node right) {
             this.left = left;
             this.right = right;
         }
     }
 
-    static TreapPair split(Treap root, int minRight) {
+    static TreapPair split(Node root, int minRight) {
         if (root == null)
             return new TreapPair(null, null);
         if (root.key >= minRight) {
@@ -56,7 +56,7 @@ public class TreapBst {
         }
     }
 
-    static Treap merge(Treap left, Treap right) {
+    static Node merge(Node left, Node right) {
         if (left == null)
             return right;
         if (right == null)
@@ -73,16 +73,16 @@ public class TreapBst {
         }
     }
 
-    static Treap insert(Treap root, int key) {
+    static Node insert(Node root, int key) {
         TreapPair t = split(root, key);
-        return merge(merge(t.left, new Treap(key)), t.right);
+        return merge(merge(t.left, new Node(key)), t.right);
     }
 
-    static Treap insert2(Treap root, int key) { // alternative implementation
-        return insert_(root, new Treap(key));
+    static Node insert2(Node root, int key) { // alternative implementation
+        return insert_(root, new Node(key));
     }
 
-    static Treap insert_(Treap root, Treap node) {
+    static Node insert_(Node root, Node node) {
         if (root == null) {
             return node;
         }
@@ -104,12 +104,12 @@ public class TreapBst {
         }
     }
 
-    static Treap remove(Treap root, int key) {
+    static Node remove(Node root, int key) {
         TreapPair t = split(root, key);
         return merge(t.left, split(t.right, key + 1).right);
     }
 
-    static Treap remove2(Treap root, int key) { // alternative implementation
+    static Node remove2(Node root, int key) { // alternative implementation
         if (root == null) {
             return null;
         }
@@ -126,7 +126,7 @@ public class TreapBst {
         }
     }
 
-    static int kth(Treap root, int k) {
+    static int kth(Node root, int k) {
         if (k < getSize(root.left))
             return kth(root.left, k);
         else if (k > getSize(root.left))
@@ -134,7 +134,7 @@ public class TreapBst {
         return root.key;
     }
 
-    static void print(Treap root) {
+    static void print(Node root) {
         if (root == null)
             return;
         print(root.left);
@@ -144,12 +144,12 @@ public class TreapBst {
 
     // O(n) treap creation (given keys are sorted)
     // https://cp-algorithms.com/graph/rmq_linear.html
-    static Treap createTreap(int[] keys) {
-        Treap[] nodes = Arrays.stream(keys).mapToObj(Treap::new).sorted(Comparator.comparingInt(t -> t.key)).toArray(Treap[]::new);
+    static Node createTreap(int[] keys) {
+        Node[] nodes = Arrays.stream(keys).mapToObj(Node::new).sorted(Comparator.comparingInt(t -> t.key)).toArray(Node[]::new);
         int n = keys.length;
         int[] parent = new int[n];
         Arrays.fill(parent, -1);
-        Treap root = n > 0 ? nodes[0] : null;
+        Node root = n > 0 ? nodes[0] : null;
         for (int i = 1; i < n; i++) {
             int last = i - 1;
             while (nodes[last].prio < nodes[i].prio && parent[last] != -1) {
@@ -168,7 +168,7 @@ public class TreapBst {
         return root;
     }
 
-    private static void updateSizes(Treap root) {
+    private static void updateSizes(Node root) {
         if (root == null)
             return;
         updateSizes(root.left);
@@ -179,7 +179,7 @@ public class TreapBst {
     // random test
     public static void main(String[] args) {
         long time = System.currentTimeMillis();
-        Treap treap = null;
+        Node treap = null;
         Set<Integer> set = new TreeSet<>();
         for (int i = 0; i < 1000_000; i++) {
             int key = random.nextInt(100_000);
@@ -202,7 +202,7 @@ public class TreapBst {
         for (int step = 0; step < 1000; step++) {
             int n = random.nextInt(10) + 1;
             int[] keys = random.ints(n, 0, 100).toArray();
-            Treap t = createTreap(keys);
+            Node t = createTreap(keys);
             Arrays.sort(keys);
             for (int i = 0; i < n; i++) {
                 if (kth(t, i) != keys[i])
@@ -212,7 +212,7 @@ public class TreapBst {
         }
     }
 
-    private static void checkHeapInvariant(Treap root) {
+    private static void checkHeapInvariant(Node root) {
         if (root == null)
             return;
         if (root.left != null && root.left.prio > root.prio)

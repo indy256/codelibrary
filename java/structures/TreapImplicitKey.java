@@ -1,13 +1,14 @@
 package structures;
 
 import java.util.*;
+import java.util.function.Predicate;
 
 // https://en.wikipedia.org/wiki/Treap
 public class TreapImplicitKey {
 
     static Random random = new Random();
 
-    public static class Treap {
+    public static class Node {
         long nodeValue;
         long mx;
         long sum;
@@ -15,10 +16,10 @@ public class TreapImplicitKey {
 
         int size;
         long prio;
-        Treap left;
-        Treap right;
+        Node left;
+        Node right;
 
-        Treap(int value) {
+        Node(long value) {
             nodeValue = value;
             mx = value;
             sum = value;
@@ -51,29 +52,29 @@ public class TreapImplicitKey {
         }
     }
 
-    static long getMx(Treap root) {
+    static long getMx(Node root) {
         return root == null ? Long.MIN_VALUE : root.mx;
     }
 
-    static long getSum(Treap root) {
+    static long getSum(Node root) {
         return root == null ? 0 : root.sum;
     }
 
-    static int getSize(Treap root) {
+    static int getSize(Node root) {
         return root == null ? 0 : root.size;
     }
 
     public static class TreapPair {
-        Treap left;
-        Treap right;
+        Node left;
+        Node right;
 
-        TreapPair(Treap left, Treap right) {
+        TreapPair(Node left, Node right) {
             this.left = left;
             this.right = right;
         }
     }
 
-    public static TreapPair split(Treap root, int minRight) {
+    public static TreapPair split(Node root, int minRight) {
         if (root == null)
             return new TreapPair(null, null);
         root.push();
@@ -92,7 +93,7 @@ public class TreapImplicitKey {
         }
     }
 
-    public static Treap merge(Treap left, Treap right) {
+    public static Node merge(Node left, Node right) {
         if (left == null)
             return right;
         if (right == null)
@@ -110,45 +111,76 @@ public class TreapImplicitKey {
         }
     }
 
-    public static Treap insert(Treap root, int index, int value) {
+    public static Node insert(Node root, int index, long value) {
         TreapPair t = split(root, index);
-        return merge(merge(t.left, new Treap(value)), t.right);
+        return merge(merge(t.left, new Node(value)), t.right);
     }
 
-    public static Treap remove(Treap root, int index) {
+    public static Node remove(Node root, int index) {
         TreapPair t = split(root, index);
         return merge(t.left, split(t.right, index + 1 - getSize(t.left)).right);
     }
 
-    public static Treap modify(Treap root, int a, int b, long delta) {
-        TreapPair t1 = split(root, b + 1);
-        TreapPair t2 = split(t1.left, a);
+    public static Node modify(Node root, int ll, int rr, long delta) {
+        TreapPair t1 = split(root, rr + 1);
+        TreapPair t2 = split(t1.left, ll);
 
         t2.right.apply(delta);
         return merge(merge(t2.left, t2.right), t1.right);
     }
 
     public static class TreapAndResult {
-        Treap treap;
+        Node treap;
         long mx;
         long sum;
 
-        TreapAndResult(Treap t, long mx, long sum) {
+        TreapAndResult(Node t, long mx, long sum) {
             this.treap = t;
             this.mx = mx;
             this.sum = sum;
         }
     }
 
-    public static TreapAndResult query(Treap root, int a, int b) {
-        TreapPair t1 = split(root, b + 1);
-        TreapPair t2 = split(t1.left, a);
+    public static TreapAndResult query(Node root, int ll, int rr) {
+        TreapPair t1 = split(root, rr + 1);
+        TreapPair t2 = split(t1.left, ll);
         long mx = getMx(t2.right);
-        long sum = getMx(t2.right);
+        long sum = getSum(t2.right);
         return new TreapAndResult(merge(merge(t2.left, t2.right), t1.right), mx, sum);
     }
 
-    public static void print(Treap root) {
+    // calls all FALSE elements to the left of the sought position exactly once
+    public static int findFirst(Node root, int ll, int rr, Predicate<Node> f) {
+        return findFirst(root, ll, rr, f, 0, getSize(root) - 1);
+    }
+
+    static int findFirst(Node root, int ll, int rr, Predicate<Node> f, int l, int r) {
+        if (ll <= l && r <= rr && !f.test(root)) {
+            return -1;
+        }
+        if (l == r) {
+            return l;
+        }
+        root.push();
+        int m = getSize(root.left);
+        int res = -1;
+        if (ll < m) {
+            res = findFirst(root.left, ll, rr, f, l, m - 1);
+        }
+        if (res == -1) {
+            Node single = new Node(0);
+            single.size = 1;
+            single.apply(root.nodeValue);
+            res = findFirst(single, ll, rr, f, m, m);
+        }
+        if (rr > m && res == -1) {
+            res = findFirst(root.right, ll, rr, f, m + 1, r);
+        }
+        root.pull();
+        return res;
+    }
+
+    public static void print(Node root) {
         if (root == null)
             return;
         root.push();
@@ -157,9 +189,19 @@ public class TreapImplicitKey {
         print(root.right);
     }
 
+    // Returns min(p | p<=rr && sum[ll..p]>=sum). If no such p exists, returns -1
+    static int sumLowerBound(Node treap, int ll, int rr, long sum) {
+        long[] sumSoFar = new long[1];
+        return findFirst(treap, ll, rr, node -> {
+            if (sumSoFar[0] + node.sum >= sum) return true;
+            sumSoFar[0] += node.sum;
+            return false;
+        });
+    }
+
     // Random test
     public static void main(String[] args) {
-        Treap treap = null;
+        Node treap = null;
         List<Integer> list = new ArrayList<>();
         Random rnd = new Random(1);
         for (int step = 0; step < 100000; step++) {
@@ -201,5 +243,11 @@ public class TreapImplicitKey {
             }
         }
         System.out.println("Test passed");
+
+        treap = null;
+        for (long v : new long[]{2, 1, 10, 20}) {
+            treap = insert(treap, getSize(treap), v);
+        }
+        System.out.println(2 == sumLowerBound(treap, 0, treap.size - 1, 12));
     }
 }
