@@ -9,8 +9,8 @@ public class TreapImplicitKey {
 
     public static class Treap {
         long nodeValue;
-        long subTreeMx;
-        long subTreeSum;
+        long mx;
+        long sum;
         long add;
 
         int size;
@@ -20,8 +20,8 @@ public class TreapImplicitKey {
 
         Treap(int value) {
             nodeValue = value;
-            subTreeMx = value;
-            subTreeSum = value;
+            mx = value;
+            sum = value;
             add = 0;
             size = 1;
             prio = random.nextLong();
@@ -29,8 +29,8 @@ public class TreapImplicitKey {
 
         void apply(long v) {
             nodeValue += v;
-            subTreeMx += v;
-            subTreeSum += v * size;
+            mx += v;
+            sum += v * size;
             add += v;
         }
 
@@ -45,18 +45,18 @@ public class TreapImplicitKey {
         }
 
         void pull() {
-            subTreeMx = Math.max(nodeValue, Math.max(getSubTreeMx(left), getSubTreeMx(right)));
-            subTreeSum = nodeValue + getSubTreeSum(left) + getSubTreeSum(right);
+            mx = Math.max(nodeValue, Math.max(getMx(left), getMx(right)));
+            sum = nodeValue + getSum(left) + getSum(right);
             size = 1 + getSize(left) + getSize(right);
         }
     }
 
-    static long getSubTreeMx(Treap root) {
-        return root == null ? Long.MIN_VALUE : root.subTreeMx;
+    static long getMx(Treap root) {
+        return root == null ? Long.MIN_VALUE : root.mx;
     }
 
-    static long getSubTreeSum(Treap root) {
-        return root == null ? 0 : root.subTreeSum;
+    static long getSum(Treap root) {
+        return root == null ? 0 : root.sum;
     }
 
     static int getSize(Treap root) {
@@ -131,18 +131,21 @@ public class TreapImplicitKey {
     public static class TreapAndResult {
         Treap treap;
         long mx;
+        long sum;
 
-        TreapAndResult(Treap t, long mx) {
+        TreapAndResult(Treap t, long mx, long sum) {
             this.treap = t;
             this.mx = mx;
+            this.sum = sum;
         }
     }
 
     public static TreapAndResult query(Treap root, int a, int b) {
         TreapPair t1 = split(root, b + 1);
         TreapPair t2 = split(t1.left, a);
-        long mx = getSubTreeMx(t2.right);
-        return new TreapAndResult(merge(merge(t2.left, t2.right), t1.right), mx);
+        long mx = getMx(t2.right);
+        long sum = getMx(t2.right);
+        return new TreapAndResult(merge(merge(t2.left, t2.right), t1.right), mx, sum);
     }
 
     public static void print(Treap root) {

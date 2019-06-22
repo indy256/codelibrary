@@ -142,7 +142,7 @@ public class TreapBst {
         print(root.right);
     }
 
-    // O(n) treap creation (if not counting keys sorting)
+    // O(n) treap creation (given keys are sorted)
     // https://cp-algorithms.com/graph/rmq_linear.html
     static Treap createTreap(int[] keys) {
         Treap[] nodes = Arrays.stream(keys).mapToObj(Treap::new).sorted(Comparator.comparingInt(t -> t.key)).toArray(Treap[]::new);
