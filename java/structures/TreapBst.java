@@ -22,10 +22,10 @@ public class TreapBst {
         void update() {
             size = 1 + getSize(left) + getSize(right);
         }
-    }
 
-    static int getSize(Node root) {
-        return root == null ? 0 : root.size;
+        static int getSize(Node root) {
+            return root == null ? 0 : root.size;
+        }
     }
 
     static class TreapPair {
@@ -127,10 +127,10 @@ public class TreapBst {
     }
 
     static int kth(Node root, int k) {
-        if (k < getSize(root.left))
+        if (k < Node.getSize(root.left))
             return kth(root.left, k);
-        else if (k > getSize(root.left))
-            return kth(root.right, k - getSize(root.left) - 1);
+        else if (k > Node.getSize(root.left))
+            return kth(root.right, k - Node.getSize(root.left) - 1);
         return root.key;
     }
 
@@ -190,10 +190,10 @@ public class TreapBst {
                 treap = insert(treap, key);
                 set.add(key);
             }
-            if (set.size() != getSize(treap))
+            if (set.size() != Node.getSize(treap))
                 throw new RuntimeException();
         }
-        for (int i = 0; i < getSize(treap); i++) {
+        for (int i = 0; i < Node.getSize(treap); i++) {
             if (!set.contains(kth(treap, i)))
                 throw new RuntimeException();
         }

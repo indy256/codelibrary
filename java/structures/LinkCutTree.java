@@ -59,14 +59,14 @@ public class LinkCutTree {
             subTreeSum = nodeValue + getSubTreeSum(left) + getSubTreeSum(right);
             size = 1 + getSize(left) + getSize(right);
         }
-    }
 
-    static long getSubTreeSum(Node root) {
-        return root == null ? 0 : root.subTreeSum;
-    }
+        static long getSubTreeSum(Node root) {
+            return root == null ? 0 : root.subTreeSum;
+        }
 
-    static int getSize(Node root) {
-        return root == null ? 0 : root.size;
+        static int getSize(Node root) {
+            return root == null ? 0 : root.size;
+        }
     }
 
     static void connect(Node ch, Node p, Boolean isLeftChild) {
@@ -182,7 +182,7 @@ public class LinkCutTree {
     public static long query(Node from, Node to) {
         makeRoot(from);
         expose(to);
-        return getSubTreeSum(to);
+        return Node.getSubTreeSum(to);
     }
 
     public static void modify(Node from, Node to, long delta) {

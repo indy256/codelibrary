@@ -50,18 +50,18 @@ public class TreapImplicitKey {
             sum = nodeValue + getSum(left) + getSum(right);
             size = 1 + getSize(left) + getSize(right);
         }
-    }
 
-    static long getMx(Node root) {
-        return root == null ? Long.MIN_VALUE : root.mx;
-    }
+        static long getMx(Node root) {
+            return root == null ? Long.MIN_VALUE : root.mx;
+        }
 
-    static long getSum(Node root) {
-        return root == null ? 0 : root.sum;
-    }
+        static long getSum(Node root) {
+            return root == null ? 0 : root.sum;
+        }
 
-    static int getSize(Node root) {
-        return root == null ? 0 : root.size;
+        static int getSize(Node root) {
+            return root == null ? 0 : root.size;
+        }
     }
 
     public static class TreapPair {
@@ -78,14 +78,14 @@ public class TreapImplicitKey {
         if (root == null)
             return new TreapPair(null, null);
         root.push();
-        if (getSize(root.left) >= minRight) {
+        if (Node.getSize(root.left) >= minRight) {
             TreapPair sub = split(root.left, minRight);
             root.left = sub.right;
             root.pull();
             sub.right = root;
             return sub;
         } else {
-            TreapPair sub = split(root.right, minRight - getSize(root.left) - 1);
+            TreapPair sub = split(root.right, minRight - Node.getSize(root.left) - 1);
             root.right = sub.left;
             root.pull();
             sub.left = root;
@@ -118,7 +118,7 @@ public class TreapImplicitKey {
 
     public static Node remove(Node root, int index) {
         TreapPair t = split(root, index);
-        return merge(t.left, split(t.right, index + 1 - getSize(t.left)).right);
+        return merge(t.left, split(t.right, index + 1 - Node.getSize(t.left)).right);
     }
 
     public static Node modify(Node root, int ll, int rr, long delta) {
@@ -144,14 +144,14 @@ public class TreapImplicitKey {
     public static TreapAndResult query(Node root, int ll, int rr) {
         TreapPair t1 = split(root, rr + 1);
         TreapPair t2 = split(t1.left, ll);
-        long mx = getMx(t2.right);
-        long sum = getSum(t2.right);
+        long mx = Node.getMx(t2.right);
+        long sum = Node.getSum(t2.right);
         return new TreapAndResult(merge(merge(t2.left, t2.right), t1.right), mx, sum);
     }
 
     // calls all FALSE elements to the left of the sought position exactly once
     public static int findFirst(Node root, int ll, int rr, Predicate<Node> f) {
-        return findFirst(root, ll, rr, f, 0, getSize(root) - 1);
+        return findFirst(root, ll, rr, f, 0, Node.getSize(root) - 1);
     }
 
     static int findFirst(Node root, int ll, int rr, Predicate<Node> f, int l, int r) {
@@ -162,7 +162,7 @@ public class TreapImplicitKey {
             return l;
         }
         root.push();
-        int m = getSize(root.left);
+        int m = Node.getSize(root.left);
         int res = -1;
         if (ll < m) {
             res = findFirst(root.left, ll, rr, f, l, m - 1);
@@ -246,7 +246,7 @@ public class TreapImplicitKey {
 
         treap = null;
         for (long v : new long[]{2, 1, 10, 20}) {
-            treap = insert(treap, getSize(treap), v);
+            treap = insert(treap, Node.getSize(treap), v);
         }
         System.out.println(2 == sumLowerBound(treap, 0, treap.size - 1, 12));
     }
