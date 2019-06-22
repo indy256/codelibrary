@@ -173,7 +173,7 @@ int sum_lower_bound(segtree &t, int ll, int rr, long long sum) {
 }
 
 // usage example
-int _main() {
+int main() {
     segtree t(10);
     t.modify(2, 3, 1);
     t.modify(3, 4, 2);

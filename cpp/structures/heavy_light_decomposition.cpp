@@ -75,7 +75,7 @@ public:
 };
 
 // usage example
-int main() {
+int _main() {
     vector<vector<int>> tree{{1, 2},
                              {0, 3, 4},
                              {0},
