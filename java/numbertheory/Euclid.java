@@ -59,7 +59,7 @@ public class Euclid {
         return (int) (a >= 0 ? a : a + m);
     }
 
-    // precondition: m > 0 && gcd(a, m) = 1
+    // precondition: m > 1 && gcd(a, m) = 1
     public static int modInverse(int a, int m) {
         a = mod(a, m);
         return a == 0 ? 0 : mod((int) ((1 - (long) modInverse(m, a) * m) / a), m);

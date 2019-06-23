@@ -3,15 +3,18 @@
 
 using namespace std;
 
-int mod(int a, int m) {
-    a %= m;
-    return a >= 0 ? a : a + m;
-}
-
-// precondition: m > 0 && gcd(a, m) = 1
-int mod_inverse(int a, int m) {
-    a = mod(a, m);
-    return a == 0 ? 0 : mod(((1 - (long long) mod_inverse(m, a) * m) / a), m);
+// precondition: mod > 1 && gcd(a, mod) = 1
+int mod_inverse(int a, int mod) {
+    int u = 0, v = 1, m = mod;
+    while (a != 0) {
+        int t = m / a;
+        m -= t * a;
+        swap(a, m);
+        u -= t * v;
+        swap(u, v);
+    }
+    assert(m == 1);
+    return (u + mod) % mod;
 }
 
 // returns { gcd(a,b), x, y } such that gcd(a,b) = a*x + b*y
@@ -63,11 +66,13 @@ int main() {
     auto[gcd, x, y] = euclid(6, 9);
     cout << gcd << " = 6 * " << x << " + 9 * " << y << endl;
 
-    cout << solve1(2, 3, 5) << endl;
+    cout << "x=" << solve1(2, 3, 5) << endl;
 
     auto res = solve2(4, 6, 2);
     if (res) {
         auto[xx, yy] = *res;
-        cout << xx << " " << yy << endl;
+        cout << "x=" << xx << " y=" << yy << endl;
     }
+
+    cout << mod_inverse(3, 10) << endl;
 }
