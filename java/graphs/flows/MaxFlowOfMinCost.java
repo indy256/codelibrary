@@ -29,7 +29,7 @@ public class MaxFlowOfMinCost {
         int[] q = new int[n];
         int qt = 0;
         q[qt++] = s;
-        for (int qh = 0; (qh - qt) % n != 0; qh++) {
+        for (int qh = 0; qh != qt; qh++) {
             int u = q[qh % n];
             inqueue[u] = false;
             for (int i = 0; i < graph[u].size(); i++) {

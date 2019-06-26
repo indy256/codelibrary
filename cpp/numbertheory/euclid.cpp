@@ -14,7 +14,7 @@ int mod_inverse(int a, int mod) {
         swap(u, v);
     }
     assert(m == 1);
-    return (u + mod) % mod;
+    return u < 0 ? u + mod : u;
 }
 
 // returns { gcd(a,b), x, y } such that gcd(a,b) = a*x + b*y

@@ -127,6 +127,16 @@ class SegmentTree {
     }
 }
 
+// Returns min(p | p<=rr && sum[ll..p]>=sum). If no such p exists, returns -1
+fun sumLowerBound(t: SegmentTree, ll: Int, rr: Int, sum: Long): Int {
+    var sumSoFar: Long = 0
+    return t.findFirst(ll, rr, { node ->
+        if (sumSoFar + node.sum >= sum) return@findFirst true
+        sumSoFar += node.sum
+        return@findFirst false
+    })
+}
+
 // Usage example
 fun main() {
     val t = SegmentTree(10)
@@ -136,14 +146,4 @@ fun main() {
 
     val tt = SegmentTree(longArrayOf(1, 2, 10, 20))
     assert(sumLowerBound(tt, 0, tt.n - 1, 12) == 2)
-}
-
-// Returns min(p | p<=rr && sum[ll..p]>=sum). If no such p exists, returns -1
-fun sumLowerBound(t: SegmentTree, ll: Int, rr: Int, sum: Long): Int {
-    var sumSoFar: Long = 0
-    return t.findFirst(ll, rr, { node ->
-        if (sumSoFar + node.sum >= sum) return@findFirst true
-        sumSoFar += node.sum
-        return@findFirst false
-    })
 }

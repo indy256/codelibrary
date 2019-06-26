@@ -26,7 +26,7 @@ void bellman_ford(int s) {
     prio[s] = 0;
     int qt = 0;
     q[qt++] = s;
-    for (int qh = 0; (qh - qt) % nodes != 0; qh++) {
+    for (int qh = 0; qh != qt; qh++) {
         int u = q[qh % nodes];
         inqueue[u] = false;
         for (int i = 0; i < graph[u].size(); i++) {
