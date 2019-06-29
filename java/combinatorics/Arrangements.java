@@ -95,7 +95,7 @@ public class Arrangements {
         } while (nextArrangement(a, n));
 
         // print all arrangements with repeats
-        a = new int[]{0, 0};
+        a = new int[2];
         do {
             System.out.println(Arrays.toString(a));
         } while (nextArrangementWithRepeats(a, 2));

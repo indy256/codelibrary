@@ -3,8 +3,16 @@ package combinatorics;
 import java.util.*;
 import java.util.stream.Stream;
 
-// https://en.wikipedia.org/wiki/Pr?fer_sequence
 public class RandomGraph {
+
+    // precondition: n >= 2
+    public static List<Integer>[] getRandomTree(int V, Random rnd) {
+        int[] a = new int[V - 2];
+        for (int i = 0; i < a.length; i++) {
+            a[i] = rnd.nextInt(V);
+        }
+        return PruferCode.pruferCode2Tree(a);
+    }
 
     public static List<Integer>[] getRandomTree2(int n, Random rnd) {
         List<Integer>[] t = Stream.generate(ArrayList::new).limit(n).toArray(List[]::new);
@@ -16,87 +24,6 @@ public class RandomGraph {
             t[p[i]].add(parent);
         }
         return t;
-    }
-
-    public static List<Integer>[] pruferCode2Tree(int[] pruferCode) {
-        int n = pruferCode.length + 2;
-        List<Integer>[] tree = Stream.generate(ArrayList::new).limit(n).toArray(List[]::new);
-        int[] degree = new int[n];
-        Arrays.fill(degree, 1);
-        for (int v : pruferCode)
-            ++degree[v];
-        int ptr = 0;
-        while (degree[ptr] != 1)
-            ++ptr;
-        int leaf = ptr;
-        for (int v : pruferCode) {
-            tree[leaf].add(v);
-            tree[v].add(leaf);
-            --degree[leaf];
-            --degree[v];
-            if (degree[v] == 1 && v < ptr) {
-                leaf = v;
-            } else {
-                for (++ptr; ptr < n && degree[ptr] != 1; ++ptr) ;
-                leaf = ptr;
-            }
-        }
-        for (int v = 0; v < n - 1; v++) {
-            if (degree[v] == 1) {
-                tree[v].add(n - 1);
-                tree[n - 1].add(v);
-            }
-        }
-        return tree;
-    }
-
-    public static int[] tree2PruferCode(List<Integer>[] tree) {
-        int n = tree.length;
-        int[] parent = new int[n];
-        parent[n - 1] = -1;
-        pruferDfs(tree, parent, n - 1);
-        int[] degree = new int[n];
-        int ptr = -1;
-        for (int i = 0; i < n; ++i) {
-            degree[i] = tree[i].size();
-            if (degree[i] == 1 && ptr == -1)
-                ptr = i;
-        }
-        int[] res = new int[n - 2];
-        int leaf = ptr;
-        for (int i = 0; i < n - 2; ++i) {
-            int next = parent[leaf];
-            res[i] = next;
-            --degree[next];
-            if (degree[next] == 1 && next < ptr) {
-                leaf = next;
-            } else {
-                ++ptr;
-                while (ptr < n && degree[ptr] != 1)
-                    ++ptr;
-                leaf = ptr;
-            }
-        }
-        return res;
-    }
-
-    static void pruferDfs(List<Integer>[] tree, int[] parent, int v) {
-        for (int i = 0; i < tree[v].size(); ++i) {
-            int to = tree[v].get(i);
-            if (to != parent[v]) {
-                parent[to] = v;
-                pruferDfs(tree, parent, to);
-            }
-        }
-    }
-
-    // precondition: n >= 2
-    public static List<Integer>[] getRandomTree(int V, Random rnd) {
-        int[] a = new int[V - 2];
-        for (int i = 0; i < a.length; i++) {
-            a[i] = rnd.nextInt(V);
-        }
-        return pruferCode2Tree(a);
     }
 
     // precondition: V >= 2, V-1 <= E <= V*(V-1)/2
@@ -170,10 +97,10 @@ public class RandomGraph {
 
     // Usage example
     public static void main(String[] args) {
-        List<Integer>[] tree = pruferCode2Tree(new int[]{3, 3, 3, 4});
+        List<Integer>[] tree = PruferCode.pruferCode2Tree(new int[]{3, 3, 3, 4});
         System.out.println(Arrays.toString(tree));
-        System.out.println(Arrays.toString(tree2PruferCode(tree)));
-        System.out.println(Arrays.toString(pruferCode2Tree(new int[]{0, 0})));
+        System.out.println(Arrays.toString(PruferCode.tree2PruferCode(tree)));
+        System.out.println(Arrays.toString(PruferCode.pruferCode2Tree(new int[]{0, 0})));
 
         Random rnd = new Random(1);
         for (int step = 0; step < 1000; step++) {

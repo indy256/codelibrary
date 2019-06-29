@@ -79,7 +79,7 @@ public class Combinations {
         System.out.println(!nextCombination(p, 2));
         System.out.println(Arrays.equals(new int[]{0, 1}, p));
 
-        p = new int[]{0, 0};
+        p = new int[2];
         System.out.println(nextCombinationWithRepeats(p, 2));
         System.out.println(Arrays.equals(new int[]{0, 1}, p));
 
@@ -91,7 +91,7 @@ public class Combinations {
         System.out.println(78 == numberByCombination(new int[]{1, 2, 3, 6, 8}, 9));
         System.out.println(Arrays.toString(combinationByNumber(9, 5, 78)));
 
-        p = new int[]{0, 0, 0};
+        p = new int[3];
         do {
             System.out.println(Arrays.toString(p));
         } while (nextCombinationWithRepeats(p, 3));
