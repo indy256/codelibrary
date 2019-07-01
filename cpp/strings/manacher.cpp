@@ -45,10 +45,10 @@ int main() {
     string text = "aaaba";
 
     auto d1 = odd_palindromes(text);
-    copy(d1.begin(), d1.end(), ostream_iterator<int>(cout, " "));
+    for (int d:d1) cout << d << " ";
     cout << endl;
 
     auto d2 = even_palindromes(text);
-    copy(d2.begin(), d2.end(), ostream_iterator<int>(cout, " "));
+    for (int d:d2) cout << d << " ";
     cout << endl;
 }

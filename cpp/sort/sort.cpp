@@ -41,11 +41,11 @@ void counting_sort(vector<int> &a) {
 int main() {
     vector a{4, 1, 2, 3};
     merge_sort(a, 0, a.size());
-    copy(a.begin(), a.end(), ostream_iterator<int>(cout, " "));
+    for (int x:a) cout << x << " ";
     cout << endl;
 
     a = {4, 1, 2, 3};
     counting_sort(a);
-    copy(a.begin(), a.end(), ostream_iterator<int>(cout, " "));
+    for (int x:a) cout << x << " ";
     cout << endl;
 }

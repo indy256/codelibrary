@@ -21,6 +21,6 @@ vector<int> z_function(const string &s) {
 // usage example
 int main() {
     vector<int> z = z_function("abcababc");
-    copy(z.begin(), z.end(), ostream_iterator<int>(cout, " "));
+    for (int x:z) cout << x << " ";
     cout << endl;
 }

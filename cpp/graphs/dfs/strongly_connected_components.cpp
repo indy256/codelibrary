@@ -63,13 +63,13 @@ int main() {
 
     vector<vector<int>> components = scc(graph);
     for (auto &component: components) {
-        copy(component.begin(), component.end(), ostream_iterator<int>(cout, " "));
+        for (int v:component) cout << v << " ";
         cout << endl;
     }
 
     vector<vector<int>> sg = scc_graph(graph, components);
     for (auto &a: sg) {
-        copy(a.begin(), a.end(), ostream_iterator<int>(cout, " "));
+        for (int v : a) cout << v << " ";
         cout << endl;
     }
 }

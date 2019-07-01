@@ -44,6 +44,6 @@ int main() {
 
     cout << (2 == max_matching_cardinality) << endl;
 
-    copy(mapping.begin(), mapping.end(), ostream_iterator<int>(cout, " "));
+    for (int x:mapping) cout << x << " ";
     cout << endl;
 }

@@ -36,6 +36,6 @@ int main() {
                                  {2, 1, 0}};
 
     vector<int> matching = stable_matching(prefer_m, prefer_w);
-    copy(matching.begin(), matching.end(), ostream_iterator<int>(cout, " "));
+    for (int x:matching) cout << x << " ";
     cout << endl;
 }

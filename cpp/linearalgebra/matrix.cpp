@@ -62,7 +62,7 @@ vvi matrix_pow_sum(const vvi &a, int p) {
 
 void matrix_print(const vvi &a) {
     for (auto row : a) {
-        copy(row.begin(), row.end(), ostream_iterator<int>(cout, " "));
+        for (int x:row) cout << x << " ";
         cout << endl;
     }
 }

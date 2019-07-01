@@ -46,7 +46,7 @@ int main() {
                               {0}};
     auto cycle = find_cycle(graph);
     cout << cycle.size() << endl;
-    copy(cycle.begin(), cycle.end(), ostream_iterator<int>(cout, " "));
+    for (int x:cycle) cout << x << " ";
     cout << endl;
 
     graph = {{1},

@@ -29,7 +29,7 @@ void bfs(const vector<vector<int>> &graph, vector<bool> &used, vector<int> &mapp
 }
 
 bool dfs(const vector<vector<int>> &graph, vector<bool> &vis, vector<bool> &used, vector<int> &matching,
-                vector<int> &dist, int u1) {
+         vector<int> &dist, int u1) {
     vis[u1] = true;
     for (int v : graph[u1]) {
         int u2 = matching[v];
@@ -75,6 +75,6 @@ int main() {
 
     cout << (2 == max_matching_cardinality) << endl;
 
-    copy(mapping.begin(), mapping.end(), ostream_iterator<int>(cout, " "));
+    for (int x:mapping) cout << x << " ";
     cout << endl;
 }

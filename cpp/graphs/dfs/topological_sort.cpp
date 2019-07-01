@@ -31,6 +31,6 @@ int main() {
 
     vector<int> order = topological_sort(g);
 
-    copy(order.begin(), order.end(), ostream_iterator<int>(cout, " "));
+    for (int v : order) cout << v << " ";
     cout << endl;
 }

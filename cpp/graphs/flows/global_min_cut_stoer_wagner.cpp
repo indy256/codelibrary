@@ -51,8 +51,8 @@ int main() {
                                  {1, 0, 1, 1},
                                  {1, 1, 0, 1},
                                  {0, 1, 1, 0}};
-    auto cut = min_cut(capacity);
-    cout << cut.first << endl;
-    copy(cut.second.begin(), cut.second.end(), ostream_iterator<int>(cout, " "));
+    auto[cap, cut] = min_cut(capacity);
+    cout << cap << endl;
+    for (int v:cut) cout << v << " ";
     cout << endl;
 }

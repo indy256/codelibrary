@@ -20,6 +20,6 @@ vector<int> nsv(vector<int> a) {
 int main() {
     const vector<int> p = nsv({1, 1, 3, 2});
 
-    copy(p.begin(), p.end(), ostream_iterator<int>(cout, " "));
+    for (int x:p) cout << x << " ";
     cout << endl;
 }

@@ -40,5 +40,6 @@ int main() {
                                   {edge{1, 10}, edge{0, 5}}};
     auto[tree_weight, pred] = prim_mst(graph);
     cout << tree_weight << endl;
-    copy(pred.begin(), pred.end(), ostream_iterator<int>(cout, " "));
+    for (int x : pred) cout << x << " ";
+    cout << endl;
 }

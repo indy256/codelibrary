@@ -171,6 +171,6 @@ int main() {
     vector<int> b{2, 1};
     vector<int> res = multiply(a, b);
 
-    copy(res.begin(), res.end(), ostream_iterator<int>(cout, " "));
+    for (int x:res) cout << x << " ";
     cout << endl;
 }

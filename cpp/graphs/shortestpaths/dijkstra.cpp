@@ -70,9 +70,9 @@ int main() {
     auto[prio1, pred1] = dijkstra_heap(g, 0);
     auto[prio2, pred2] = dijkstra_set(g, 0);
 
-    copy(prio1.begin(), prio1.end(), ostream_iterator<int>(cout, " "));
+    for (int x:prio1) cout << x << " ";
     cout << endl;
 
-    copy(prio2.begin(), prio2.end(), ostream_iterator<int>(cout, " "));
+    for (int x:prio2) cout << x << " ";
     cout << endl;
 }
