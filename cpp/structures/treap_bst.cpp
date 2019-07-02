@@ -19,7 +19,7 @@ struct Node {
     }
 
     static int get_size(Node *node) {
-        return node == nullptr ? 0 : node->size;
+        return node ? node->size : 0;
     }
 };
 
@@ -79,6 +79,15 @@ void print(pNode t) {
     print(t->r);
 }
 
+void clear(pNode &t) {
+    if (!t)
+        return;
+    clear(t->l);
+    clear(t->r);
+    delete t;
+    t = nullptr;
+}
+
 // usage example
 int main() {
     pNode t1 = nullptr;
@@ -98,9 +107,5 @@ int main() {
         cout << kth(t, i) << endl;
     }
 
-    for (int i = 0; Node::get_size(t); ++i) {
-        int key = kth(t, 0);
-        cout << key << endl;
-        erase(t, key);
-    }
+    clear(t);
 }
