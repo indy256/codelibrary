@@ -169,6 +169,15 @@ int sum_lower_bound(pNode t, int ll, int rr, long long sum) {
                       });
 }
 
+void clear(pNode &t) {
+    if (!t)
+        return;
+    clear(t->l);
+    clear(t->r);
+    delete t;
+    t = nullptr;
+}
+
 void print(pNode t) {
     if (!t)
         return;
@@ -197,4 +206,6 @@ int main() {
         insert(t, Node::get_size(t), v);
     }
     cout << (2 == sum_lower_bound(t, 0, Node::get_size(t) - 1, 12));
+
+    clear(t);
 }
