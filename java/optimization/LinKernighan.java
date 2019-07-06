@@ -23,6 +23,7 @@ public class LinKernighan extends JFrame {
     }
 
     public void linKernighan() {
+//        int[] curState = optimize(getRandomPermutation(n));
         int[] curState = IntStream.range(0, n).toArray();
         double curDist = eval(curState);
         updateBest(curState, curDist);
@@ -105,6 +106,39 @@ public class LinKernighan extends JFrame {
         double dx = x1 - x2;
         double dy = y1 - y2;
         return Math.sqrt(dx * dx + dy * dy);
+    }
+
+    int[] getRandomPermutation(int n) {
+        int[] res = new int[n];
+        for (int i = 0; i < n; i++) {
+            int j = rnd.nextInt(i + 1);
+            res[i] = res[j];
+            res[j] = i;
+        }
+        return res;
+    }
+
+    int[] optimize(int[] p) {
+        int[] res = p.clone();
+        for (boolean improved = true; improved; ) {
+            improved = false;
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < n; j++) {
+                    if (i == j || (j + 1) % n == i) continue;
+                    int i1 = (i - 1 + n) % n;
+                    int j1 = (j + 1) % n;
+                    double delta = dist(x[res[i1]], y[res[i1]], x[res[j]], y[res[j]])
+                            + dist(x[res[i]], y[res[i]], x[res[j1]], y[res[j1]])
+                            - dist(x[res[i1]], y[res[i1]], x[res[i]], y[res[i]])
+                            - dist(x[res[j]], y[res[j]], x[res[j1]], y[res[j1]]);
+                    if (delta < -1e-9) {
+                        reverse(res, i, j);
+                        improved = true;
+                    }
+                }
+            }
+        }
+        return res;
     }
 
     // visualization code

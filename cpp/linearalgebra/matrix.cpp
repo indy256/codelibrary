@@ -60,8 +60,26 @@ vvi matrix_pow_sum(const vvi &a, int p) {
         return matrix_add(a, matrix_mul(matrix_pow_sum(a, p - 1), a));
 }
 
+// returns f[n] = f[n-1]*a[k-1] + ... + f[n-k]*a[0], where f[0], ..., f[k-1] are given
+int nth_recurrence_relation(const vi &f, const vi &a, int n) {
+    int k = f.size();
+    if (n < k)
+        return f[n];
+    vvi A(k, vi(k));
+    vvi F(k, vi(1));
+    for (int i = 0; i < k; ++i) {
+        A[0][i] = a[k - 1 - i];
+        F[i][0] = f[i];
+    }
+    for (int i = 0; i < k - 1; ++i) {
+        A[i + 1][i] = 1;
+    }
+    vvi An = matrix_pow(A, n - k + 1);
+    return matrix_mul(An, F)[0][0];
+}
+
 void matrix_print(const vvi &a) {
-    for (auto row : a) {
+    for (auto &row : a) {
         for (int x:row) cout << x << " ";
         cout << endl;
     }
@@ -69,10 +87,17 @@ void matrix_print(const vvi &a) {
 
 // usage example
 int main() {
-    vvi a(2, vi(2));
-    a[0][0] = 1;
-    a[0][1] = 1;
-    a[1][0] = 1;
-    vvi b = matrix_pow(a, 2);
-    matrix_print(b);
+    vvi A(2, vi(2));
+    A[0][0] = 1;
+    A[0][1] = 1;
+    A[1][0] = 1;
+    vvi B = matrix_pow(A, 2);
+    matrix_print(B);
+
+    // Fibonacci numbers
+    vector f{1, 1};
+    vector a{1, 1};
+    for (int i = 0; i < 10; ++i) {
+        cout << nth_recurrence_relation(f, a, i) << endl;
+    }
 }
