@@ -66,13 +66,13 @@ vector<T> &operator*=(vector<T> &a, const vector<T> &b) {
 template<class T>
 vector<T> inverse(const vector<T> &a) {
     assert(!a.empty());
-    int n = (int) a.size();
+    int n = a.size();
     vector<T> b = {1 / a[0]};
     while (b.size() < n) {
         vector<T> a_cut(a.begin(), a.begin() + min(a.size(), b.size() << 1));
         vector<T> x = b * b * a_cut;
         b.resize(b.size() << 1);
-        for (int i = (int) b.size() >> 1; i < min(x.size(), b.size()); i++) {
+        for (int i = b.size() >> 1; i < min(x.size(), b.size()); i++) {
             b[i] = -x[i];
         }
     }
@@ -82,8 +82,8 @@ vector<T> inverse(const vector<T> &a) {
 
 template<class T>
 vector<T> &operator/=(vector<T> &a, vector<T> b) {
-    int n = (int) a.size();
-    int m = (int) b.size();
+    int n = a.size();
+    int m = b.size();
     if (n < m) {
         a.clear();
     } else {
@@ -105,8 +105,8 @@ vector<T> operator/(vector<T> a, const vector<T> &b) {
 
 template<class T>
 vector<T> &operator%=(vector<T> &a, const vector<T> &b) {
-    int n = (int) a.size();
-    int m = (int) b.size();
+    int n = a.size();
+    int m = b.size();
     if (n >= m) {
         vector<T> c = (a / b) * b;
         a.resize(m - 1);
@@ -130,7 +130,7 @@ vector<T> power(const vector<T> &a, long long b, const vector<T> &mod) {
     int highest_one_bit = b ? __builtin_clzll(1) - __builtin_clzll(b) : -1;
     for (int i = highest_one_bit; i >= 0; i--) {
         res = res * res % mod;
-        if (b & (1LL << i)) {
+        if (b >> i & 1) {
             res = res * a % mod;
         }
     }

@@ -15,7 +15,7 @@ unsigned lowest_one_bit(unsigned x) {
 }
 
 unsigned highest_one_bit(unsigned x) {
-    return x ? 1u << (31 - __builtin_clz(x)) : 0;
+    return x ? 1u << (__builtin_clz(1) - __builtin_clz(x)) : 0;
 }
 
 void dfs1(const vector<vector<int>> &tree, int u, int p) {

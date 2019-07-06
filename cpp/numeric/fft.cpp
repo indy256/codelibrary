@@ -78,7 +78,7 @@ void fft_slow(vector<cpx> &z, bool inverse) {
 
 vector<int> multiply(const vector<int> &a, const vector<int> &b) {
     int need = a.size() + b.size();
-    int n = 1 << (32 - __builtin_clz(need - 1));
+    int n = 1 << (__builtin_clz(1) + 1 - __builtin_clz(need - 1));
     vector<cpx> p(n);
     for (int i = 0; i < n; i++) {
         p[i] = cpx(i < a.size() ? a[i] : 0, i < b.size() ? b[i] : 0);
@@ -104,7 +104,7 @@ vector<int> multiply(const vector<int> &a, const vector<int> &b) {
 
 vector<int> multiply_slow(const vector<int> &a, const vector<int> &b) {
     int need = a.size() + b.size();
-    int n = 1 << (32 - __builtin_clz(need - 1));
+    int n = 1 << (__builtin_clz(1) + 1 - __builtin_clz(need - 1));
     vector<cpx> fa(a.begin(), a.end());
     vector<cpx> fb(b.begin(), b.end());
     fa.resize(n);
@@ -126,7 +126,7 @@ vector<int> multiply_slow(const vector<int> &a, const vector<int> &b) {
 
 vector<int> multiply_mod(const vector<int> &a, const vector<int> &b, int mod) {
     int need = a.size() + b.size() - 1;
-    int n = max(2, 1 << (32 - (need == 1 ? 0 : __builtin_clz(need - 1))));
+    int n = max(2, 1 << (__builtin_clz(1) + 1 - (need == 1 ? 0 : __builtin_clz(need - 1))));
 
     vector<cpx> A(n);
     for (int i = 0; i < a.size(); i++) {
