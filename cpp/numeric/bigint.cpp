@@ -210,6 +210,11 @@ struct bigint {
         return *this;
     }
 
+    bigint &operator%=(const bigint &v) {
+        *this = *this % v;
+        return *this;
+    }
+
     bool operator<(const bigint &v) const {
         if (sign != v.sign)
             return sign < v.sign;
