@@ -2,71 +2,81 @@
 
 using namespace std;
 
-using vi = vector<int>;
-using vvi = vector<vi>;
-
-const int mod = 1000'000'007;
-
-vvi matrix_unit(int n) {
-    vvi res(n, vi(n));
+template<class T>
+vector<vector<T>> matrix_unit(int n) {
+    vector<vector<T>> res(n, vector<T>(n));
     for (int i = 0; i < n; i++)
         res[i][i] = 1;
     return res;
 }
 
-vvi matrix_add(const vvi &a, const vvi &b) {
-    int n = a.size();
-    int m = a[0].size();
-    vvi res(n, vi(m));
-    for (int i = 0; i < n; i++)
-        for (int j = 0; j < m; j++)
-            res[i][j] = (a[i][j] + b[i][j]) % mod;
-    return res;
+template<class T>
+vector<vector<T>> &operator+=(vector<vector<T>> &a, const vector<vector<T>> &b) {
+    for (int i = 0; i < a.size(); i++)
+        for (int j = 0; j < a[0].size(); j++)
+            a[i][j] += b[i][j];
+    return a;
 }
 
-vvi matrix_mul(const vvi &a, const vvi &b) {
+template<class T>
+vector<vector<T>> operator+(vector<vector<T>> a, const vector<vector<T>> &b) {
+    a += b;
+    return a;
+}
+
+template<class T>
+vector<vector<T>> operator*(const vector<vector<T>> &a, const vector<vector<T>> &b) {
     int n = a.size();
     int m = a[0].size();
     int k = b[0].size();
-    vvi res(n, vi(k));
+    vector<vector<T>> res(n, vector<T>(k));
     for (int i = 0; i < n; i++)
         for (int j = 0; j < k; j++)
             for (int p = 0; p < m; p++)
-                res[i][j] = (res[i][j] + (long long) a[i][p] * b[p][j]) % mod;
+                res[i][j] += a[i][p] * b[p][j];
     return res;
 }
 
-vvi matrix_pow(const vvi &a, int p) {
-    vvi res = matrix_unit(a.size());
-    vvi x = a;
-    while (true) {
-        if (p & 1)
-            res = matrix_mul(res, x);
-        p >>= 1;
-        if (!p) break;
-        x = matrix_mul(x, x);
+template<class T>
+vector<vector<T>> &operator*=(vector<vector<T>> &a, const vector<vector<T>> &b) {
+    a = a * b;
+    return a;
+}
+
+template<class T>
+vector<vector<T>> operator^(const vector<vector<T>> &a, long long p) {
+    vector<vector<T>> res = matrix_unit<T>(a.size());
+    int highest_one_bit = p ? __builtin_clzll(1) - __builtin_clzll(p) : -1;
+    for (int i = highest_one_bit; i >= 0; i--) {
+        res *= res;
+        if (p >> i & 1) {
+            res *= a;
+        }
     }
     return res;
 }
 
 // a + a^2 + ... + a^p
-vvi matrix_pow_sum(const vvi &a, int p) {
+template<class T>
+vector<vector<T>> matrix_pow_sum(const vector<vector<T>> &a, long long p) {
     int n = a.size();
     if (p == 0)
-        return vvi(n, vi(n));
+        return vector<vector<T>>(n, vector<T>(n));
     if (p % 2 == 0)
-        return matrix_mul(matrix_pow_sum(a, p / 2), matrix_add(matrix_unit(n), matrix_pow(a, p / 2)));
+        return matrix_pow_sum(a, p / 2) * (matrix_unit<T>(n) + a ^ (p / 2));
     else
-        return matrix_add(a, matrix_mul(matrix_pow_sum(a, p - 1), a));
+        return a + matrix_pow_sum(a, p - 1) * a;
 }
 
-// returns f[n] = f[n-1]*a[k-1] + ... + f[n-k]*a[0], where f[0], ..., f[k-1] are given
-int nth_recurrence_relation(const vi &f, const vi &a, int n) {
+// returns f[n] = f[n-1]*a[k-1] + ... + f[n-k]*a[0], where f[0], ..., f[k-1] are provided
+// O(k^3*log(n)) complexity
+template<class T>
+T nth_element_of_recurrence(const vector<T> &a, const vector<T> &f, long long n) {
     int k = f.size();
     if (n < k)
         return f[n];
-    vvi A(k, vi(k));
-    vvi F(k, vi(1));
+    vector<vector<T>> A(k, vector<T>(k));
+    vector<vector<T>> F(k, vector<T>(1));
     for (int i = 0; i < k; ++i) {
         A[0][i] = a[k - 1 - i];
         F[i][0] = f[i];
@@ -74,30 +84,33 @@ int nth_recurrence_relation(const vi &f, const vi &a, int n) {
     for (int i = 0; i < k - 1; ++i) {
         A[i + 1][i] = 1;
     }
-    vvi An = matrix_pow(A, n - k + 1);
-    return matrix_mul(An, F)[0][0];
+    vector<vector<T>> An = A ^(n - k + 1);
+    return (An * F)[0][0];
 }
 
-void matrix_print(const vvi &a) {
+template<class T>
+void matrix_print(const vector<vector<T>> &a) {
     for (auto &row : a) {
-        for (int x:row) cout << x << " ";
+        for (T x:row) cout << (int) x << " ";
         cout << endl;
     }
 }
 
 // usage example
+#include "../numbertheory/modint.cpp"
+
 int main() {
-    vvi A(2, vi(2));
+    // Fibonacci numbers
+    vector<mint> f{1, 1};
+    vector<mint> a{1, 1};
+    for (int i = 0; i < 60; ++i) {
+        cout << (int) nth_element_of_recurrence(a, f, i) << endl;
+    }
+
+    vector<vector<mint>> A(2, vector<mint>(2));
     A[0][0] = 1;
     A[0][1] = 1;
     A[1][0] = 1;
-    vvi B = matrix_pow(A, 2);
+    vector<vector<mint>> B = A ^2;
     matrix_print(B);
-
-    // Fibonacci numbers
-    vector f{1, 1};
-    vector a{1, 1};
-    for (int i = 0; i < 10; ++i) {
-        cout << nth_recurrence_relation(f, a, i) << endl;
-    }
 }
