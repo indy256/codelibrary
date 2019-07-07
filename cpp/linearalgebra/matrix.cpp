@@ -60,12 +60,18 @@ vector<vector<T>> operator^(const vector<vector<T>> &a, long long p) {
 template<class T>
 vector<vector<T>> matrix_pow_sum(const vector<vector<T>> &a, long long p) {
     int n = a.size();
-    if (p == 0)
-        return vector<vector<T>>(n, vector<T>(n));
-    if (p % 2 == 0)
-        return matrix_pow_sum(a, p / 2) * (matrix_unit<T>(n) + a ^ (p / 2));
-    else
-        return a + matrix_pow_sum(a, p - 1) * a;
+    vector<vector<T>> res = vector<vector<T>>(n, vector<T>(n));
+    vector<vector<T>> b = matrix_unit<T>(n);
+    int highest_one_bit = p ? __builtin_clzll(1) - __builtin_clzll(p) : -1;
+    for (int i = highest_one_bit; i >= 0; i--) {
+        res = res * (matrix_unit<T>(n) + b);
+        b *= b;
+        if (p >> i & 1) {
+            b *= a;
+            res = res * a + a;
+        }
+    }
+    return res;
 }
 
 // returns f[n] = f[n-1]*a[k-1] + ... + f[n-k]*a[0], where f[0], ..., f[k-1] are provided
@@ -111,6 +117,6 @@ int main() {
     A[0][0] = 1;
     A[0][1] = 1;
     A[1][0] = 1;
-    vector<vector<mint>> B = A ^2;
-    matrix_print(B);
+    matrix_print(matrix_pow_sum(A, 4));
+    matrix_print(A + (A ^ 2) + (A ^ 3) + (A ^ 4));
 }
