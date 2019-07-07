@@ -85,13 +85,12 @@ T nth_element_of_recurrence(const vector<T> &a, const vector<T> &f, long long n)
     vector<vector<T>> F(k, vector<T>(1));
     for (int i = 0; i < k; ++i) {
         A[0][i] = a[k - 1 - i];
-        F[i][0] = f[i];
+        F[i][0] = f[k - 1 - i];
     }
     for (int i = 0; i < k - 1; ++i) {
         A[i + 1][i] = 1;
     }
-    vector<vector<T>> An = A ^(n - k + 1);
-    return (An * F)[0][0];
+    return ((A ^ (n - k + 1)) * F)[0][0];
 }
 
 template<class T>
@@ -103,7 +102,7 @@ void matrix_print(const vector<vector<T>> &a) {
 }
 
 // usage example
-#include "../numbertheory/modint.cpp"
+#include "../numbertheory/modint.h"
 
 int main() {
     // Fibonacci numbers

@@ -1,5 +1,5 @@
 #include <bits/stdc++.h>
-#include "segment_tree.cpp"
+#include "segment_tree.h"
 
 using namespace std;
 
@@ -75,7 +75,7 @@ public:
 };
 
 // usage example
-int _main() {
+int main() {
     vector<vector<int>> tree{{1, 2},
                              {0, 3, 4},
                              {0},

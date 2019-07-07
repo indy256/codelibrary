@@ -1,4 +1,5 @@
 #include <bits/stdc++.h>
+#include "fft.h"
 
 using namespace std;
 
@@ -42,25 +43,6 @@ vector<T> operator-(vector<T> a) {
         a[i] = -a[i];
     }
     return a;
-}
-
-template<class T>
-vector<T> operator*(const vector<T> &a, const vector<T> &b) {
-    if (a.empty() || b.empty()) {
-        return {};
-    }
-    vector<T> c(a.size() + b.size() - 1);
-    for (int i = 0; i < a.size(); i++) {
-        for (int j = 0; j < b.size(); j++) {
-            c[i + j] += a[i] * b[j];
-        }
-    }
-    return c;
-}
-
-template<class T>
-vector<T> &operator*=(vector<T> &a, const vector<T> &b) {
-    return a = a * b;
 }
 
 template<class T>
@@ -146,16 +128,42 @@ T nth_element_of_recurrence(vector<T> a, const vector<T> &f, long long n) {
     a = -a;
     a.emplace_back(1);
     vector<T> xn = power({0, 1}, n, a);
-    T res{0};
-    for (int i = 0; i < min(f.size(), xn.size()); ++i) {
-        res += f[i] * xn[i];
+    return inner_product(f.begin(), f.begin() + min(f.size(), xn.size()), xn.begin(), T{0});
+}
+
+template<class T>
+vector<T> derivative(vector<T> a) {
+    for (int i = 0; i < a.size(); i++) {
+        a[i] *= i;
     }
+    if (!a.empty()) {
+        a.erase(a.begin());
+    }
+    return a;
+}
+
+template<class T>
+vector<T> integrate(vector<T> a) {
+    a.insert(a.begin(), 0);
+    for (int i = 1; i < a.size(); i++) {
+        a[i] /= i;
+    }
+    return a;
+}
+
+template<class T>
+vector<T> logarithm(const vector<T> &a) {
+    assert(!a.empty() && a[0] == 1);
+    vector<T> res = integrate(derivative(a) * inverse(a));
+    res.resize(a.size());
     return res;
 }
 
-
 // usage example
-#include "../numbertheory/modint.cpp"
+#include "../numbertheory/modint.h"
+
+constexpr int mod = (int) 1e9 + 7;
+using mint = modint<mod>;
 
 int main() {
     // Fibonacci numbers
