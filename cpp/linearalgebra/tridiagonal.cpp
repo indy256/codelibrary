@@ -3,7 +3,7 @@
 using namespace std;
 
 // https://en.wikipedia.org/wiki/Tridiagonal_matrix_algorithm
-template<typename T>
+template<class T>
 vector<T> tridiagonal_solve(vector<T> diag, const vector<T> &super, const vector<T> &sub, vector<T> b) {
     for (int i = 0; i < b.size() - 1; ++i) {
         diag[i + 1] -= super[i] * sub[i] / diag[i];

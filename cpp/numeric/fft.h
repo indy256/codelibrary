@@ -1,4 +1,5 @@
-//#pragma GCC optimize ("Ofast")
+#pragma GCC optimize ("Ofast")
+
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -85,21 +86,20 @@ vector<int> &operator*=(vector<int> &a, const vector<int> &b) {
     return a;
 }
 
-template<class T>
-vector<T> operator*(const vector<T> &a, const vector<T> &b) {
+vector<int> multiply_mod(const vector<int> &a, const vector<int> &b, int m) {
     int need = a.size() + b.size() - 1;
     int n = 1;
     while (n < need) n <<= 1;
     vector<cpx> A(n);
     for (int i = 0; i < a.size(); i++) {
-        int x = (int) a[i];
+        int x = (a[i] % m + m) % m;
         A[i] = cpx(x & ((1 << 15) - 1), x >> 15);
     }
     fft(A, false);
 
     vector<cpx> B(n);
     for (int i = 0; i < b.size(); i++) {
-        int x = (int) b[i];
+        int x = (b[i] % m + m) % m;
         B[i] = cpx(x & ((1 << 15) - 1), x >> 15);
     }
     fft(B, false);
@@ -117,18 +117,12 @@ vector<T> operator*(const vector<T> &a, const vector<T> &b) {
 
     fft(fa, true);
     fft(fb, true);
-    vector<T> res(need);
+    vector<int> res(need);
     for (int i = 0; i < need; i++) {
         long long aa = (long long) (fa[i].real() + 0.5);
         long long bb = (long long) (fb[i].real() + 0.5);
         long long cc = (long long) (fa[i].imag() + 0.5);
-        res[i] = T(aa + ((long long) (int) T(bb) << 15) + ((long long) (int) T(cc) << 30));
+        res[i] = (aa % m + (bb % m << 15) + (cc % m << 30)) % m;
     }
     return res;
-}
-
-template<class T>
-vector<T> &operator*=(vector<T> &a, const vector<T> &b) {
-    a = a * b;
-    return a;
 }
