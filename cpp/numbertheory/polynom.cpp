@@ -27,6 +27,27 @@ int main() {
         for (int i = 0; i < poly.size(); ++i) {
             cout << (int) poly[i] << " ";
         }
+        cout << endl << endl;
+    }
+    {
+        for (int i = 0; i < 10; ++i) {
+            vector<mint> s = sequence<mint>(i);
+            for (auto x:s) cout << (int) x << " ";
+            cout << endl;
+        }
+        cout << endl;
+    }
+    {
+        for (int i = 0; i < 10; ++i) {
+            cout << (int) factorial<mint>(i) << endl;
+        }
+
+        auto t1 = chrono::high_resolution_clock::now();
+        cout << (int) factorial<mint>(1000'000'000) << endl;
+        auto t2 = chrono::high_resolution_clock::now();
+        chrono::duration<double, milli> duration = t2 - t1;
+        cout << duration.count() << " ms" << endl;
+
         cout << endl;
     }
 }
