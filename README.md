@@ -5,8 +5,7 @@
 ### Collection of algorithms and data structures in C++ and Java
 
 #### Data structures
-+ [x] Segment tree [**c++**](cpp/structures/segment_tree.cpp) [**java**](java/structures/SegmentTree.java)
-+ [x] Segment tree for sum with lowerBound operation [**java**](java/structures/SegmentTreeSumLowerBound.java)
++ [x] Segment tree [**c++**](cpp/structures/segment_tree.h) [**java**](java/structures/SegmentTree.java)
 + [x] Fenwick tree [**c++**](cpp/structures/fenwick_tree.cpp) [**java**](java/structures/FenwickTree.java)
 + [x] Fenwick tree with extended operations [**java**](java/structures/FenwickTreeExtended.java)
 + [x] Persistent tree [**java**](java/structures/PersistentTree.java)
@@ -80,7 +79,6 @@
 
 #### Numerical algorithms
 + [x] Long arithmetics [**c++**](cpp/numeric/bigint.cpp)
-+ [x] Fast Fourier transform (FFT) [**c++**](cpp/numeric/fft.cpp) [**java**](java/numeric/FFT.java)
 + [x] Fast subset convolution [**java**](java/numeric/SubsetConvolution.java)
 + [x] Fast Walsh-Hadamar transform [**java**](java/numeric/WalshHadamarTransform.java)
 + [x] Karatsuba multiplication [**java**](java/numeric/KaratsubaMultiply.java)
@@ -96,7 +94,8 @@
 + [x] Discrete root [**c++**](cpp/numbertheory/discrete_root.cpp)
 + [x] Multiplicative function [**java**](java/numbertheory/MultiplicativeFunction.java)
 + [x] Rational numbers [**java**](java/numbertheory/Rational.java)
-+ [ ] Implement polynom class ([contribute a link or implementation](https://github.com/indy256/codelibrary/issues/36))
++ [x] Fast Fourier transform (FFT) [**c++**](cpp/numbertheory/fft.h) [**java**](java/numeric/FFT.java)
++ [x] Polynom class [**c++**](cpp/numbertheory/polynom.cpp)
 
 #### Combinatorics
 + [x] Permutations [**java**](java/combinatorics/Permutations.java)
