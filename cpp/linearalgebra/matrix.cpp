@@ -56,6 +56,19 @@ vector<vector<T>> operator^(const vector<vector<T>> &a, long long p) {
     return res;
 }
 
+template<class T>
+vector<vector<T>> transpose(const vector<vector<T>> &a) {
+    int n = a.size();
+    int m = a[0].size();
+    vector<vector<T>> b(m, vector<T>(n));
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < m; ++j) {
+            b[j][i] = a[i][j];
+        }
+    }
+    return b;
+}
+
 // a + a^2 + ... + a^p
 template<class T>
 vector<vector<T>> matrix_pow_sum(const vector<vector<T>> &a, long long p) {
@@ -82,15 +95,12 @@ T nth_element_of_recurrence(const vector<T> &a, const vector<T> &f, long long n)
     if (n < k)
         return f[n];
     vector<vector<T>> A(k, vector<T>(k));
-    vector<vector<T>> F(k, vector<T>(1));
-    for (int i = 0; i < k; ++i) {
-        A[0][i] = a[k - 1 - i];
-        F[i][0] = f[k - 1 - i];
-    }
+    A[k - 1] = a;
     for (int i = 0; i < k - 1; ++i) {
-        A[i + 1][i] = 1;
+        A[i][i + 1] = 1;
     }
-    return ((A ^ (n - k + 1)) * F)[0][0];
+    vector<vector<T>> F = transpose(vector<vector<T>>{f});
+    return ((A ^ n) * F)[0][0];
 }
 
 template<class T>
@@ -103,6 +113,9 @@ void matrix_print(const vector<vector<T>> &a) {
 
 // usage example
 #include "../numbertheory/modint.h"
+
+constexpr int mod = (int) 1e9 + 7;
+using mint = modint<mod>;
 
 int main() {
     // Fibonacci numbers
