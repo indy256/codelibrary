@@ -95,7 +95,7 @@
 + [x] Multiplicative function [**java**](java/numbertheory/MultiplicativeFunction.java)
 + [x] Rational numbers [**java**](java/numbertheory/Rational.java)
 + [x] Fast Fourier transform (FFT) [**c++**](cpp/numbertheory/fft.h) [**java**](java/numeric/FFT.java)
-+ [x] Polynom class [**c++**](cpp/numbertheory/polynom.cpp)
++ [x] Polynom class [**c++**](cpp/numbertheory/polynom.h)
 
 #### Combinatorics
 + [x] Permutations [**java**](java/combinatorics/Permutations.java)
