@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 #include "fft.h"
-#include "../numbertheory/modint.h"
+#include "modint.h"
 
 using namespace std;
 
