@@ -32,9 +32,8 @@ unsigned reverse_bits(unsigned i) {
 void fft(vector<cpx> &z, bool inverse) {
     int n = z.size();
     assert((n & (n - 1)) == 0);
-    int zeros = __builtin_ctz(n);
     ensure_capacity(n);
-    int shift = 32 - zeros;
+    int shift = 32 - __builtin_ctz(n);
     for (unsigned i = 1; i < n; i++) {
         unsigned j = reverse_bits(i << shift);
         if (i < j)
