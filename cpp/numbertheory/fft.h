@@ -57,8 +57,9 @@ void fft(vector<cpx> &z, bool inverse) {
     }
 }
 
+// biginteger multiplication
 vector<int> operator*(const vector<int> &a, const vector<int> &b) {
-    int need = a.size() + b.size() - 1;
+    int need = a.size() + b.size();
     int n = 1;
     while (n < need) n <<= 1;
     vector<cpx> p(n);
