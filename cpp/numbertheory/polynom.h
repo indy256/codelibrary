@@ -4,6 +4,8 @@
 
 using namespace std;
 
+// https://cp-algorithms.com/algebra/polynomial.html
+
 template<class T>
 vector<T> &operator+=(vector<T> &a, const vector<T> &b) {
     if (a.size() < b.size()) {
@@ -203,16 +205,16 @@ vector<T> logarithm(const vector<T> &a) {
 template<class T>
 vector<T> exponent(const vector<T> &a) {
     assert(!a.empty() && a[0] == 0);
-    int n = (int) a.size();
+    int n = a.size();
     vector<T> b = {1};
-    while ((int) b.size() < n) {
+    while (b.size() < n) {
         vector<T> x(a.begin(), a.begin() + min(a.size(), b.size() << 1));
         x[0] += 1;
         vector<T> old_b = b;
         b.resize(b.size() << 1);
         x -= logarithm(b);
         x *= old_b;
-        for (int i = (int) b.size() >> 1; i < (int) min(x.size(), b.size()); i++) {
+        for (int i = b.size() >> 1; i < min(x.size(), b.size()); i++) {
             b[i] = x[i];
         }
     }
@@ -223,14 +225,14 @@ vector<T> exponent(const vector<T> &a) {
 template<class T>
 vector<T> sqrt(const vector<T> &a) {
     assert(!a.empty() && a[0] == 1);
-    int n = (int) a.size();
+    int n = a.size();
     vector<T> b = {1};
-    while ((int) b.size() < n) {
+    while (b.size() < n) {
         vector<T> x(a.begin(), a.begin() + min(a.size(), b.size() << 1));
         b.resize(b.size() << 1);
         x *= inverse(b);
         T inv2 = 1 / static_cast<T>(2);
-        for (int i = (int) b.size() >> 1; i < (int) min(x.size(), b.size()); i++) {
+        for (int i = b.size() >> 1; i < min(x.size(), b.size()); i++) {
             b[i] = x[i] * inv2;
         }
     }
@@ -361,6 +363,7 @@ vector<T> interpolate(const vector<T> &x, const vector<T> &y) {
 }
 
 // f[i] = 1^n + 2^n + ... + up^n
+// O(n*log(n)) complexity
 template<class T>
 vector<T> faulhaber(const T &up, int n) {
     vector<T> ex(n + 1);
