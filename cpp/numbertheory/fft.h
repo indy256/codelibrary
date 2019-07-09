@@ -4,10 +4,22 @@ using namespace std;
 
 // Fast Fourier transform
 // https://cp-algorithms.com/algebra/fft.html
-// https://github.com/indy256/olymp-docs/blob/master/adamant/fft_eng.pdf
+// https://drive.google.com/file/d/1B9BIfATnI_qL6rYiE5hY9bh20SMVmHZ7/view
 
 using cpx = complex<double>;
 const double PI = acos(-1);
+vector<cpx> roots = {{0, 0},
+                     {1, 0}};
+
+void ensure_capacity(int new_len) {
+    for (int len = roots.size(); len < new_len; len *= 2) {
+        for (int i = len >> 1; i < len; i++) {
+            roots.emplace_back(roots[i]);
+            double angle = 2 * PI * (2 * i + 1 - len) / (len * 2);
+            roots.emplace_back(cos(angle), sin(angle));
+        }
+    }
+}
 
 unsigned reverse_bits(unsigned i) {
     i = (i & 0x55555555) << 1 | ((i >> 1) & 0x55555555);
@@ -18,30 +30,24 @@ unsigned reverse_bits(unsigned i) {
 }
 
 void fft(vector<cpx> &z, bool inverse) {
-    size_t n = z.size();
+    int n = z.size();
     assert((n & (n - 1)) == 0);
-    int shift = 32 - __builtin_ctz(n);
+    int zeros = __builtin_ctz(n);
+    ensure_capacity(n);
+    int shift = 32 - zeros;
     for (unsigned i = 1; i < n; i++) {
         unsigned j = reverse_bits(i << shift);
-        if (i < j) {
+        if (i < j)
             swap(z[i], z[j]);
-        }
     }
-    vector<cpx> w;
-    for (int len = 2; len <= n; len <<= 1) {
-        int halfLen = len >> 1;
-        w.resize(len);
-        for (int i = halfLen >> 1; i < halfLen; i++) {
-            w[i << 1] = w[i];
-            double angle = 2 * PI * ((i << 1) - halfLen + 1) / len * (inverse ? -1 : 1);
-            w[(i << 1) + 1] = cpx(cos(angle), sin(angle));
-        }
-        for (int i = 0; i < n; i += len) {
-            for (int j = 0; j < halfLen; j++) {
+    for (int len = 1; len < n; len <<= 1) {
+        for (int i = 0; i < n; i += len * 2) {
+            for (int j = 0; j < len; j++) {
+                cpx root = inverse ? conj(roots[j + len]) : roots[j + len];
                 cpx u = z[i + j];
-                cpx v = z[i + j + halfLen] * w[j + halfLen];
+                cpx v = z[i + j + len] * root;
                 z[i + j] = u + v;
-                z[i + j + halfLen] = u - v;
+                z[i + j + len] = u - v;
             }
         }
     }
