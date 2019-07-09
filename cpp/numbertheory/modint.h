@@ -56,7 +56,11 @@ public:
 
     friend modint operator-(modint lhs, modint rhs) { return lhs -= rhs; }
 
-    friend modint operator*(modint lhs, const modint rhs) { return lhs *= rhs; }
+    friend modint operator*(modint lhs, modint rhs) { return lhs *= rhs; }
 
-    friend modint operator/(modint lhs, const modint rhs) { return lhs /= rhs; }
+    friend modint operator/(modint lhs, modint rhs) { return lhs /= rhs; }
+
+    friend bool operator==(modint lhs, modint rhs) { return lhs.value == rhs.value; }
+
+    friend bool operator!=(modint lhs, modint rhs) { return lhs.value != rhs.value; }
 };

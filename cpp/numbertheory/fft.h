@@ -50,11 +50,9 @@ void fft(vector<cpx> &z, bool inverse) {
             }
         }
     }
-    if (inverse) {
-        for (int i = 0; i < n; i++) {
+    if (inverse)
+        for (int i = 0; i < n; i++)
             z[i] /= n;
-        }
-    }
 }
 
 // biginteger multiplication
