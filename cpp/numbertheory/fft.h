@@ -11,8 +11,8 @@ const double PI = acos(-1);
 vector<cpx> roots = {{0, 0},
                      {1, 0}};
 
-void ensure_capacity(int new_len) {
-    for (int len = roots.size(); len < new_len; len *= 2) {
+void ensure_capacity(int min_capacity) {
+    for (int len = roots.size(); len < min_capacity; len *= 2) {
         for (int i = len >> 1; i < len; i++) {
             roots.emplace_back(roots[i]);
             double angle = 2 * PI * (2 * i + 1 - len) / (len * 2);
