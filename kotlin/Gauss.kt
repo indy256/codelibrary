@@ -6,8 +6,8 @@ fun gauss(A: Array<DoubleArray>, b: DoubleArray): DoubleArray {
     val a = A.mapIndexed { i, Ai -> Ai + b[i] }.toTypedArray()
     val n = a.size
     for (i in 0 until n) {
-        val best = (i until n).maxBy { Math.abs(a[it][i]) }!!
-        a[i] = a[best].also { a[best] = a[i] }
+        val pivot = (i until n).maxBy { Math.abs(a[it][i]) }!!
+        a[i] = a[pivot].also { a[pivot] = a[i] }
         for (j in i + 1..n)
             a[i][j] /= a[i][i]
         for (j in 0 until n)
