@@ -34,6 +34,7 @@ vector<T> gauss(vector<vector<T>> A, vector<T> b) {
                 pivot = j;
                 break;
             }
+        assert(A[pivot][i] != 0);
         swap(A[i], A[pivot]);
         swap(b[i], b[pivot]);
         for (int j = i + 1; j < n; j++)
