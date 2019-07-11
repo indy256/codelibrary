@@ -4,7 +4,7 @@ import java.util.*;
 import java.util.function.Predicate;
 
 // https://en.wikipedia.org/wiki/Treap
-public class TreapImplicitKey {
+public class TreapIndexed {
 
     static Random random = new Random();
 
