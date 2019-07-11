@@ -125,7 +125,8 @@ public class TreapIndexed {
         TreapPair t1 = split(root, rr + 1);
         TreapPair t2 = split(t1.left, ll);
 
-        t2.right.apply(delta);
+        if (t2.right != null)
+            t2.right.apply(delta);
         return merge(merge(t2.left, t2.right), t1.right);
     }
 
