@@ -6,6 +6,8 @@
 
 #### Data structures
 + [x] Segment tree [**c++**](cpp/structures/segment_tree.h) [**java**](java/structures/SegmentTree.java) [**kotlin**](kotlin/SegmentTree.kt)
++ [x] Segment tree without recursion [**c++**](cpp/structures/segment_tree_without_recursion.cpp) [**java**](java/structures/SegmentTreeWithoutRecursion.java)
++ [x] 2d tree [**c++**](cpp/structures/tree_2d.cpp) [**java**](java/structures/Tree2d.java)
 + [x] Fenwick tree [**c++**](cpp/structures/fenwick_tree.cpp) [**java**](java/structures/FenwickTree.java) [**kotlin**](kotlin/FenwickTree.kt)
 + [x] Fenwick tree with extended operations [**c++**](cpp/structures/fenwick_tree_interval.cpp) [**java**](java/structures/FenwickTreeExtended.java)
 + [x] Persistent tree [**java**](java/structures/PersistentTree.java) [**kotlin**](kotlin/PersistentTree.kt)
@@ -27,6 +29,8 @@
 + [x] Mergeable heap [**java**](java/structures/MergeableHeap.java)
 + [x] Queue with minimum [**c++**](cpp/structures/queue_min.cpp) [**java**](java/structures/QueueMin.java)
 + [x] Sparse table for RMQ [**java**](java/structures/RmqSparseTable.java)
++ [x] Sparse segment tree [**c++**](cpp/structures/sparse-segment-tree.cpp)
++ [x] Wavelet tree [**c++**](cpp/structures/wavelet_tree.cpp) [**java**](java/structures/WaveletTree.java)
 
 #### Graph algorithms
 + [x] Shortest paths [**c++**](cpp/graphs/shortestpaths) [**java**](java/graphs/shortestpaths)
