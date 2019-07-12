@@ -31,6 +31,7 @@
 + [x] Sparse table for RMQ [**java**](java/structures/RmqSparseTable.java)
 + [x] Sparse segment tree [**c++**](cpp/structures/sparse-segment-tree.cpp)
 + [x] Wavelet tree [**c++**](cpp/structures/wavelet_tree.cpp) [**java**](java/structures/WaveletTree.java)
++ [x] Mo's algorithm [**java**](java/structures/MosAlgorithm.java)
 
 #### Graph algorithms
 + [x] Shortest paths [**c++**](cpp/graphs/shortestpaths) [**java**](java/graphs/shortestpaths)
