@@ -115,6 +115,6 @@
 + [x] Prufer code [**java**](java/combinatorics/PruferCode.java)
 
 #### Linear algebra
-+ [x] Gaussian elimination [**c++**](cpp/linearalgebra/gauss.cpp) [**java**](java/linearalgebra/Gauss.java)
++ [x] Gaussian elimination [**c++**](cpp/linearalgebra/gauss.cpp) [**java**](java/linearalgebra/Gauss.java) [**kotlin**](kotlin/Gauss.kt)
 + [x] Determinant calculation [**java**](java/linearalgebra/Determinant.java)
 + [x] Matrix operations [**c++**](cpp/linearalgebra/matrix.h) [**java**](java/linearalgebra/Matrix.java)
