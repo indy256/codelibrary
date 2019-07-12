@@ -83,6 +83,7 @@
 + [x] Simplex algorithm [**java**](java/optimization/Simplex.java)
 
 #### Numerical algorithms
++ [x] Fast Fourier transform (FFT) [**c++**](cpp/numeric/fft.h) [**java**](java/numeric/FFT.java)
 + [x] Long arithmetics [**c++**](cpp/numeric/bigint.cpp)
 + [x] Fast subset convolution [**java**](java/numeric/SubsetConvolution.java)
 + [x] Fast Walsh-Hadamar transform [**java**](java/numeric/WalshHadamarTransform.java)
@@ -99,17 +100,21 @@
 + [x] Discrete root [**c++**](cpp/numbertheory/discrete_root.cpp)
 + [x] Multiplicative function [**java**](java/numbertheory/MultiplicativeFunction.java)
 + [x] Rational numbers [**java**](java/numbertheory/Rational.java)
-+ [x] Fast Fourier transform (FFT) [**c++**](cpp/numbertheory/fft.h) [**java**](java/numeric/FFT.java)
 + [x] Polynom class [**c++**](cpp/numbertheory/polynom.h)
++ [x] Linear recurrence and Berlekamp-Massey algorithm [**c++**](cpp/numbertheory/linear_recurrence.cpp)
++ [x] Modular operations [**c++**](cpp/numbertheory/modint.cpp)
 
 #### Combinatorics
 + [x] Permutations [**java**](java/combinatorics/Permutations.java)
 + [x] Combinations [**java**](java/combinatorics/Combinations.java)
 + [x] Arrangements [**java**](java/combinatorics/Arrangements.java)
 + [x] Partitions [**java**](java/combinatorics/Partitions.java)
++ [x] Set Partitions [**java**](java/combinatorics/SetPartitions.java)
++ [x] Bracket sequences [**java**](java/combinatorics/BracketSequences.java)
 + [x] Binomial coefficients [**java**](java/combinatorics/BinomialCoefficients.java)
++ [x] Prufer code [**java**](java/combinatorics/PruferCode.java)
 
 #### Linear algebra
 + [x] Gaussian elimination [**c++**](cpp/linearalgebra/gauss.cpp) [**java**](java/linearalgebra/Gauss.java)
 + [x] Determinant calculation [**java**](java/linearalgebra/Determinant.java)
-+ [x] Matrix operations [**c++**](cpp/linearalgebra/matrix.cpp) [**java**](java/linearalgebra/Matrix.java)
++ [x] Matrix operations [**c++**](cpp/linearalgebra/matrix.h) [**java**](java/linearalgebra/Matrix.java)
