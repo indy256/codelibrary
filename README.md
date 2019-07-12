@@ -102,7 +102,7 @@
 + [x] Rational numbers [**java**](java/numbertheory/Rational.java)
 + [x] Polynom class [**c++**](cpp/numbertheory/polynom.h)
 + [x] Linear recurrence and Berlekamp-Massey algorithm [**c++**](cpp/numbertheory/linear_recurrence.cpp)
-+ [x] Modular operations [**c++**](cpp/numbertheory/modint.cpp)
++ [x] Modular operations [**c++**](cpp/numbertheory/modint.h)
 
 #### Combinatorics
 + [x] Permutations [**java**](java/combinatorics/Permutations.java)
