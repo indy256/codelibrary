@@ -14,8 +14,7 @@ struct max_flow_dinic {
 
     max_flow_dinic(int nodes) : g(nodes), dist(nodes), q(nodes), work(nodes) {}
 
-    // Adds bidirectional edge
-    void add_edge(int s, int t, int cap) {
+    void add_bidi_edge(int s, int t, int cap) {
         Edge a = {t, (int) g[t].size(), 0, cap};
         Edge b = {s, (int) g[s].size(), 0, cap};
         g[s].emplace_back(a);

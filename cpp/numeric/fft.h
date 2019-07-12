@@ -21,21 +21,15 @@ void ensure_capacity(int min_capacity) {
     }
 }
 
-unsigned reverse_bits(unsigned i) {
-    i = (i & 0x55555555) << 1 | ((i >> 1) & 0x55555555);
-    i = (i & 0x33333333) << 2 | ((i >> 2) & 0x33333333);
-    i = (i & 0x0f0f0f0f) << 4 | ((i >> 4) & 0x0f0f0f0f);
-    i = (i << 24) | ((i & 0xff00) << 8) | ((i >> 8) & 0xff00) | (i >> 24);
-    return i;
-}
-
 void fft(vector<cpx> &z, bool inverse) {
     int n = z.size();
     assert((n & (n - 1)) == 0);
     ensure_capacity(n);
-    int shift = 32 - __builtin_ctz(n);
-    for (unsigned i = 1; i < n; i++) {
-        unsigned j = reverse_bits(i << shift);
+    for (unsigned i = 1, j = 0; i < n; i++) {
+        int bit = n >> 1;
+        for (; j >= bit; bit >>= 1)
+            j -= bit;
+        j += bit;
         if (i < j)
             swap(z[i], z[j]);
     }
@@ -55,8 +49,7 @@ void fft(vector<cpx> &z, bool inverse) {
             z[i] /= n;
 }
 
-// biginteger multiplication
-vector<int> operator*(const vector<int> &a, const vector<int> &b) {
+vector<int> multiply_bigint(const vector<int> &a, const vector<int> &b, int base) {
     int need = a.size() + b.size();
     int n = 1;
     while (n < need) n <<= 1;
@@ -75,17 +68,13 @@ vector<int> operator*(const vector<int> &a, const vector<int> &b) {
     }
     fft(ab, true);
     vector<int> result(need);
-    for (int i = 0, carry = 0; i < need; i++) {
-        result[i] = (int) (ab[i].real() + 0.5) + carry;
-        carry = result[i] / 10;
-        result[i] %= 10;
+    long long carry = 0;
+    for (int i = 0; i < need; i++) {
+        long long d = (long long) (ab[i].real() + 0.5) + carry;
+        carry = d / base;
+        result[i] = d % base;
     }
     return result;
-}
-
-vector<int> &operator*=(vector<int> &a, const vector<int> &b) {
-    a = a * b;
-    return a;
 }
 
 vector<int> multiply_mod(const vector<int> &a, const vector<int> &b, int m) {

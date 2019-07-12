@@ -16,7 +16,7 @@ public class MaxFlowDinic {
         }
     }
 
-    public static void addEdge(List<Edge>[] graph, int s, int t, int cap) {
+    public static void addBidiEdge(List<Edge>[] graph, int s, int t, int cap) {
         graph[s].add(new Edge(t, graph[t].size(), cap));
         graph[t].add(new Edge(s, graph[s].size() - 1, 0));
     }
@@ -74,9 +74,9 @@ public class MaxFlowDinic {
     // Usage example
     public static void main(String[] args) {
         List<Edge>[] graph = Stream.generate(ArrayList::new).limit(3).toArray(List[]::new);
-        addEdge(graph, 0, 1, 3);
-        addEdge(graph, 0, 2, 2);
-        addEdge(graph, 1, 2, 2);
+        addBidiEdge(graph, 0, 1, 3);
+        addBidiEdge(graph, 0, 2, 2);
+        addBidiEdge(graph, 1, 2, 2);
         System.out.println(4 == maxFlow(graph, 0, 2));
     }
 }

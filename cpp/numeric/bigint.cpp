@@ -1,4 +1,5 @@
 #include <bits/stdc++.h>
+#include "fft.h"
 
 using namespace std;
 
@@ -8,6 +9,9 @@ constexpr int digits(int base) noexcept {
 
 constexpr int base = 1000'000'000;
 constexpr int base_digits = digits(base);
+
+constexpr int fft_base = 10'000; // fft_base^2 * n / fft_base_digits <= 10^15 for double
+constexpr int fft_base_digits = digits(fft_base);
 
 struct bigint {
     // value == 0 is represented by empty z
@@ -339,67 +343,29 @@ struct bigint {
         return res;
     }
 
-    using vll = vector<long long>;
-
-    static vll karatsubaMultiply(const vll &a, const vll &b) {
-        int n = a.size();
-        vll res(n + n);
-        if (n <= 32) {
-            for (int i = 0; i < n; i++)
-                for (int j = 0; j < n; j++)
-                    res[i + j] += a[i] * b[j];
-            return res;
-        }
-
-        int k = n >> 1;
-        vll a1(a.begin(), a.begin() + k);
-        vll a2(a.begin() + k, a.end());
-        vll b1(b.begin(), b.begin() + k);
-        vll b2(b.begin() + k, b.end());
-
-        vll a1b1 = karatsubaMultiply(a1, b1);
-        vll a2b2 = karatsubaMultiply(a2, b2);
-
-        for (int i = 0; i < k; i++)
-            a2[i] += a1[i];
-        for (int i = 0; i < k; i++)
-            b2[i] += b1[i];
-
-        vll r = karatsubaMultiply(a2, b2);
-        for (int i = 0; i < a1b1.size(); i++)
-            r[i] -= a1b1[i];
-        for (int i = 0; i < a2b2.size(); i++)
-            r[i] -= a2b2[i];
-
-        for (int i = 0; i < r.size(); i++)
-            res[i + k] += r[i];
-        for (int i = 0; i < a1b1.size(); i++)
-            res[i] += a1b1[i];
-        for (int i = 0; i < a2b2.size(); i++)
-            res[i + n] += a2b2[i];
+    bigint operator*(const bigint &v) const {
+        if (min(z.size(), v.z.size()) < 150)
+            return mul_simple(v);
+        bigint res;
+        res.sign = sign * v.sign;
+        res.z = multiply_bigint(convert_base(z, base_digits, fft_base_digits),
+                                convert_base(v.z, base_digits, fft_base_digits), fft_base);
+        res.z = convert_base(res.z, fft_base_digits, base_digits);
+        res.trim();
         return res;
     }
 
-    bigint operator*(const bigint &v) const {
-        vector<int> a6 = convert_base(this->z, base_digits, 6);
-        vector<int> b6 = convert_base(v.z, base_digits, 6);
-        vll a(a6.begin(), a6.end());
-        vll b(b6.begin(), b6.end());
-        while (a.size() < b.size())
-            a.push_back(0);
-        while (b.size() < a.size())
-            b.push_back(0);
-        while (a.size() & (a.size() - 1))
-            a.push_back(0), b.push_back(0);
-        vll c = karatsubaMultiply(a, b);
+    bigint mul_simple(const bigint &v) const {
         bigint res;
         res.sign = sign * v.sign;
-        for (int i = 0, carry = 0; i < c.size(); i++) {
-            long long cur = c[i] + carry;
-            res.z.push_back((int) (cur % 1000'000));
-            carry = (int) (cur / 1000'000);
-        }
-        res.z = convert_base(res.z, 6, base_digits);
+        res.z.resize(z.size() + v.z.size());
+        for (int i = 0; i < z.size(); ++i)
+            if (z[i])
+                for (int j = 0, carry = 0; j < v.z.size() || carry; ++j) {
+                    long long cur = res.z[i + j] + (long long) z[i] * (j < v.z.size() ? v.z[j] : 0) + carry;
+                    carry = (int) (cur / base);
+                    res.z[i + j] = (int) (cur % base);
+                }
         res.trim();
         return res;
     }
@@ -447,11 +413,33 @@ int main() {
         }
     }
 
-    bigint a = random_bigint(10'000);
-    bigint b = random_bigint(2000);
-    auto t1 = chrono::high_resolution_clock::now();
-    bigint c = a / b;
-    auto t2 = chrono::high_resolution_clock::now();
-    chrono::duration<double, milli> duration = t2 - t1;
-    cout << duration.count() << " ms" << endl;
+    {
+        bigint a = random_bigint(10'000);
+        bigint b = random_bigint(2000);
+        auto t1 = chrono::high_resolution_clock::now();
+        bigint c = a / b;
+        auto t2 = chrono::high_resolution_clock::now();
+        chrono::duration<double, milli> duration = t2 - t1;
+        cout << duration.count() << " ms" << endl;
+        cout << endl;
+    }
+
+    bigint a = random_bigint(200'000);
+    bigint b = random_bigint(200'000);
+    bigint c1, c2;
+    {
+        auto t1 = chrono::high_resolution_clock::now();
+        c1 = a * b;
+        auto t2 = chrono::high_resolution_clock::now();
+        chrono::duration<double, milli> duration = t2 - t1;
+        cout << duration.count() << " ms" << endl;
+    }
+    {
+        auto t1 = chrono::high_resolution_clock::now();
+        c2 = a.mul_simple(b);
+        auto t2 = chrono::high_resolution_clock::now();
+        chrono::duration<double, milli> duration = t2 - t1;
+        cout << duration.count() << " ms" << endl;
+    }
+    cout << (c1 == c2) << endl;
 }

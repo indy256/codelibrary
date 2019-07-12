@@ -1,5 +1,5 @@
 #include <bits/stdc++.h>
-#include "fft.h"
+#include "../numeric/fft.h"
 #include "modint.h"
 
 using namespace std;
