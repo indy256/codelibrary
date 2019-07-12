@@ -63,6 +63,16 @@ void erase(pNode &t, int key) {
     }
 }
 
+pNode unite(pNode l, pNode r) {
+    if (!l || !r) return l ? l : r;
+    if (l->prio < r->prio) swap(l, r);
+    pNode lt, rt;
+    split(r, l->key, lt, rt);
+    l->l = unite(l->l, lt);
+    l->r = unite(l->r, rt);
+    return l;
+}
+
 int kth(pNode t, int k) {
     if (k < Node::get_size(t->l))
         return kth(t->l, k);
