@@ -3,7 +3,7 @@ package structures;
 import java.util.*;
 import java.util.function.Predicate;
 
-// https://en.wikipedia.org/wiki/Treap
+// https://cp-algorithms.com/data_structures/treap.html
 public class TreapIndexed {
 
     static Random random = new Random();

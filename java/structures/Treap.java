@@ -2,7 +2,7 @@ package structures;
 
 import java.util.Random;
 
-// https://en.wikipedia.org/wiki/Treap
+// https://cp-algorithms.com/data_structures/treap.html
 public class Treap {
 
     static Random random = new Random();
