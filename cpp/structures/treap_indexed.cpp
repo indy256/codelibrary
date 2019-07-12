@@ -111,7 +111,8 @@ void modify(pNode &t, int ll, int rr, long long delta) {
     pNode left1, right1, left2, right2;
     split(t, rr + 1, left1, right1);
     split(left1, ll, left2, right2);
-    right2->apply(delta);
+    if (right2 != nullptr)
+        right2->apply(delta);
     merge(t, left2, right2);
     merge(t, t, right1);
 }
