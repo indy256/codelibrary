@@ -18,8 +18,8 @@ struct Node {
     Node *l, *r;
 
 
-    Node(long long key, long long value) : key(key), node_value(value), mx(value), sum(value), add(0),
-                                           size(1), prio(rng()), l(nullptr), r(nullptr) {}
+    Node(long long key, long long value) : node_value(value), mx(value), sum(value), add(0),
+                                           key(key), size(1), prio(rng()), l(nullptr), r(nullptr) {}
 
     void apply(long long v) {
         node_value += v;
