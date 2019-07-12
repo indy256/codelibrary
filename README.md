@@ -7,7 +7,7 @@
 #### Data structures
 + [x] Segment tree [**c++**](cpp/structures/segment_tree.h) [**java**](java/structures/SegmentTree.java) [**kotlin**](kotlin/SegmentTree.kt)
 + [x] Fenwick tree [**c++**](cpp/structures/fenwick_tree.cpp) [**java**](java/structures/FenwickTree.java) [**kotlin**](kotlin/FenwickTree.kt)
-+ [x] Fenwick tree with extended operations [**c++**](cpp/structures/fenwick_tree_on_interval.cpp) [**java**](java/structures/FenwickTreeExtended.java)
++ [x] Fenwick tree with extended operations [**c++**](cpp/structures/fenwick_tree_interval.cpp) [**java**](java/structures/FenwickTreeExtended.java)
 + [x] Persistent tree [**java**](java/structures/PersistentTree.java) [**kotlin**](kotlin/PersistentTree.kt)
 + [x] Centroid decomposition [**c++**](cpp/structures/centroid_decomposition.cpp) [**java**](java/structures/CentroidDecomposition.java)
 + [x] Heavy/light decomposition [**c++**](cpp/structures/heavy_light_decomposition.cpp) [**java**](java/structures/HeavyLight.java)
@@ -17,7 +17,7 @@
 + [x] Binary heap [**java**](java/structures/BinaryHeap.java)
 + [x] Binary heap with change priority [**java**](java/structures/BinaryHeapExtended.java)
 + [x] Disjoint sets [**c++**](cpp/structures/disjoint_sets.cpp) [**java**](java/structures/DisjointSets.java)
-+ [x] Treap [**c++**](cpp/structures/treap.cpp) [**java**](java/structures/Treap.java) [**kotlin**](kotlin/Treap.kt)
++ [x] Treap [**c++**](cpp/structures/treap.h) [**java**](java/structures/Treap.java) [**kotlin**](kotlin/Treap.kt)
 + [x] Treap with indexed key [**c++**](cpp/structures/treap_indexed.cpp) [**java**](java/structures/TreapIndexed.java)
 + [x] k-d tree for point query [**c++**](cpp/structures/kd_tree.cpp) [**java**](java/structures/KdTreePointQuery.java)
 + [x] k-d tree for rectangular query [**java**](java/structures/KdTreeRectQuery.java)
