@@ -34,9 +34,10 @@ void fft(vector<cpx> &z, bool inverse) {
     }
 }
 
-vector<int> multiply(const vector<int> &a, const vector<int> &b) {
+vector<int> multiply_bigint(const vector<int> &a, const vector<int> &b) {
     int need = a.size() + b.size();
-    int n = 1 << (__builtin_clz(1) + 1 - __builtin_clz(need - 1));
+    int n = 1;
+    while (n < need) n <<= 1;
     vector<cpx> fa(a.begin(), a.end());
     vector<cpx> fb(b.begin(), b.end());
     fa.resize(n);
@@ -60,7 +61,7 @@ vector<int> multiply(const vector<int> &a, const vector<int> &b) {
 int main() {
     vector<int> a{5, 1};
     vector<int> b{2, 1};
-    vector<int> res = multiply(a, b);
+    vector<int> res = multiply_bigint(a, b);
 
     for (int x:res) cout << x << " ";
     cout << endl;
