@@ -5,8 +5,7 @@ import java.util.*;
 
 // Fast Fourier transform
 // https://cp-algorithms.com/algebra/fft.html
-// https://github.com/indy256/olymp-docs/blob/master/adamant/fft_eng.pdf
-
+// https://drive.google.com/file/d/1B9BIfATnI_qL6rYiE5hY9bh20SMVmHZ7/view
 public class FFT {
 
     // precondition: a.length is a power of 2 and a.length == b.length
@@ -54,7 +53,7 @@ public class FFT {
         }
     }
 
-    public static int[] multiply(int[] a, int[] b) {
+    public static int[] multiplyBigint(int[] a, int[] b) {
         int need = a.length + b.length;
         int n = Integer.highestOneBit(need - 1) << 1;
         double[] pReal = new double[n];
@@ -86,42 +85,14 @@ public class FFT {
         return result;
     }
 
-    public static int[] multiplySlow(int[] a, int[] b) {
-        int need = a.length + b.length;
-        int n = Integer.highestOneBit(need - 1) << 1;
-        double[] aReal = new double[n];
-        double[] aImag = new double[n];
-        double[] bReal = new double[n];
-        double[] bImag = new double[n];
-        for (int i = 0; i < a.length; i++)
-            aReal[i] = a[i];
-        for (int i = 0; i < b.length; i++)
-            bReal[i] = b[i];
-        fft(aReal, aImag, false);
-        fft(bReal, bImag, false);
-        for (int i = 0; i < n; i++) {
-            double real = aReal[i] * bReal[i] - aImag[i] * bImag[i];
-            aImag[i] = aImag[i] * bReal[i] + bImag[i] * aReal[i];
-            aReal[i] = real;
-        }
-        fft(aReal, aImag, true);
-        int[] result = new int[need];
-        for (int i = 0, carry = 0; i < need; i++) {
-            result[i] = (int) (aReal[i] + 0.5) + carry;
-            carry = result[i] / 10;
-            result[i] %= 10;
-        }
-        return result;
-    }
-
-    static int[] multiplyMod(int[] a, int[] b, int mod) {
+    static int[] multiplyMod(int[] a, int[] b, int m) {
         int need = a.length + b.length - 1;
-        int n = Math.max(2, Integer.highestOneBit(need - 1) << 1);
+        int n = Math.max(1, Integer.highestOneBit(need - 1) << 1);
 
         double[] aReal = new double[n];
         double[] aImag = new double[n];
         for (int i = 0; i < a.length; i++) {
-            int x = (a[i] % mod + mod) % mod;
+            int x = (a[i] % m + m) % m;
             aReal[i] = x & ((1 << 15) - 1);
             aImag[i] = x >> 15;
         }
@@ -130,7 +101,7 @@ public class FFT {
         double[] bReal = new double[n];
         double[] bImag = new double[n];
         for (int i = 0; i < b.length; i++) {
-            int x = (b[i] % mod + mod) % mod;
+            int x = (b[i] % m + m) % m;
             bReal[i] = x & ((1 << 15) - 1);
             bImag[i] = x >> 15;
         }
@@ -168,7 +139,7 @@ public class FFT {
             long aa = (long) (faReal[i] + 0.5);
             long bb = (long) (fbReal[i] + 0.5);
             long cc = (long) (faImag[i] + 0.5);
-            res[i] = (int) ((aa + ((bb % mod) << 15) + ((cc % mod) << 30)) % mod);
+            res[i] = (int) ((aa % m + (bb % m << 15) + (cc % m << 30)) % m);
         }
         return res;
     }
@@ -194,8 +165,8 @@ public class FFT {
                 b[i] = x;
             }
 
-            int[] res1 = multiply(a, b);
-            int[] res2 = multiplySlow(a, b);
+            int[] res1 = multiplyBigint(a, b);
+            int[] res2 = FFT_slow.multiplyBigint(a, b);
             String s = "";
             for (int v : res1) {
                 s = v + s;
