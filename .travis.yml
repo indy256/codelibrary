@@ -2,9 +2,13 @@ matrix:
   include:
 
   - language: java
-    jdk: oraclejdk9
+    jdk: oraclejdk12
     before_script: cd java
-
+    addons:
+      apt:
+        packages:
+        - ant
+                   
   - language: cpp
     before_script: cd cpp
     script: find . -type f -iname *.cpp -execdir g++-9 -std=c++2a {} \;
