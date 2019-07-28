@@ -2,15 +2,16 @@ matrix:
   include:
 
   - language: java
+    install: ant deps
     jdk: oraclejdk12
     before_script: cd java
 
   - language: cpp
     before_script: cd cpp
-    script: find . -type f -iname *.cpp -execdir g++-9 -std=c++2a {} \;
+    script: find . -type f -iname *.cpp -execdir g++-9.1 -std=c++2a {} \;
     addons:
       apt:
         sources:
         - ubuntu-toolchain-r-test
         packages:
-        - g++-9
+        - g++-9.1
