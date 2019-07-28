@@ -2,15 +2,15 @@ matrix:
   include:
 
   - language: java
-    jdk: oraclejdk8
+    jdk: oraclejdk12
     before_script: cd java
 
   - language: cpp
     before_script: cd cpp
-    script: find . -type f -iname *.cpp -execdir g++-8 -std=c++2a {} \;
+    script: find . -type f -iname *.cpp -execdir g++-9 -std=c++2a {} \;
     addons:
       apt:
         sources:
         - ubuntu-toolchain-r-test
         packages:
-        - g++-8
+        - g++-9
