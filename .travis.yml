@@ -2,7 +2,7 @@ matrix:
   include:
 
   - language: java
-    jdk: oraclejdk13
+    jdk: oraclejdk14
     before_script: cd java
     addons:
       apt:
@@ -15,7 +15,7 @@ matrix:
     script: find . -name *.cpp -print0 | xargs -n1 -0 g++-9 -std=c++2a
     addons:
       apt:
-        #sources:
-        #- ubuntu-toolchain-r-test
+        sources:
+        - ubuntu-toolchain-r-test
         packages:
         - g++-9
