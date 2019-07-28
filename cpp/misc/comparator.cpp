@@ -10,6 +10,8 @@ struct point2 {
     int x, y;
 
     bool operator<(const point2 &b) const { return x == b.x ? y < b.y : x < b.x; }
+
+    bool operator<(int qx) const { return x < qx; }
 };
 
 int main() {
@@ -26,10 +28,11 @@ int main() {
 
     point2 b[] = {{2, 3},
                   {1, 2}};
-    set<point2> s2(b, b + 2);
+    set<point2, less<>> s2(b, b + 2);
     for (auto &it : s2) {
         cout << it.x << " " << it.y << endl;
     }
+    cout << s2.lower_bound(1)->y << endl;
 
     map<point, int, decltype(cmp)> m({{point{2, 3}, 1}}, cmp);
     for (auto &entry : m) {
