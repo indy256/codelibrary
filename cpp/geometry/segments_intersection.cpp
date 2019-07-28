@@ -36,7 +36,7 @@ optional<pair<double, double>> get_lines_intersection(ll x1, ll y1, ll x2, ll y2
         return {};
     double x = -(c1 * b2 - c2 * b1) / (double) det;
     double y = -(a1 * c2 - a2 * c1) / (double) det;
-    return {x, y};
+    return optional{make_pair(x, y)};
 }
 
 // usage example
