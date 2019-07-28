@@ -12,8 +12,8 @@ vector<vector<T>> matrix_unit(int n) {
 
 template<class T>
 vector<vector<T>> &operator+=(vector<vector<T>> &a, const vector<vector<T>> &b) {
-    for (int i = 0; i < a.size(); i++)
-        for (int j = 0; j < a[0].size(); j++)
+    for (size_t i = 0; i < a.size(); i++)
+        for (size_t j = 0; j < a[0].size(); j++)
             a[i][j] += b[i][j];
     return a;
 }
@@ -46,7 +46,8 @@ vector<vector<T>> &operator*=(vector<vector<T>> &a, const vector<vector<T>> &b) 
 template<class T>
 vector<vector<T>> operator^(const vector<vector<T>> &a, long long p) {
     vector<vector<T>> res = matrix_unit<T>(a.size());
-    int highest_one_bit = p ? __builtin_clzll(1) - __builtin_clzll(p) : -1;
+    int highest_one_bit = -1;
+    while (1LL << (highest_one_bit + 1) <= p) ++highest_one_bit;
     for (int i = highest_one_bit; i >= 0; i--) {
         res *= res;
         if (p >> i & 1) {
@@ -75,7 +76,8 @@ vector<vector<T>> matrix_pow_sum(const vector<vector<T>> &a, long long p) {
     int n = a.size();
     vector<vector<T>> res = vector<vector<T>>(n, vector<T>(n));
     vector<vector<T>> b = matrix_unit<T>(n);
-    int highest_one_bit = p ? __builtin_clzll(1) - __builtin_clzll(p) : -1;
+    int highest_one_bit = -1;
+    while (1LL << (highest_one_bit + 1) <= p) ++highest_one_bit;
     for (int i = highest_one_bit; i >= 0; i--) {
         res = res * (matrix_unit<T>(n) + b);
         b *= b;

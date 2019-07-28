@@ -164,7 +164,8 @@ template<class T>
 vector<T> power(const vector<T> &a, long long b, const vector<T> &mod) {
     assert(b >= 0);
     vector<T> res = vector<T>{1} % mod;
-    int highest_one_bit = b ? __builtin_clzll(1) - __builtin_clzll(b) : -1;
+    int highest_one_bit = -1;
+    while (1LL << (highest_one_bit + 1) <= b) ++highest_one_bit;
     for (int i = highest_one_bit; i >= 0; i--) {
         res = res * res % mod;
         if (b >> i & 1) {
