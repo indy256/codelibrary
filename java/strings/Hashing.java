@@ -5,7 +5,7 @@ import java.util.Random;
 
 public class Hashing {
 
-    static final int multiplier = 43;
+    static final int multiplier = 131;
     static final Random rnd = new Random();
     static final int mod1 = BigInteger.valueOf((int) (1e9 + rnd.nextInt((int) 1e9))).nextProbablePrime().intValue();
     static final int mod2 = BigInteger.valueOf((int) (1e9 + rnd.nextInt((int) 1e9))).nextProbablePrime().intValue();
