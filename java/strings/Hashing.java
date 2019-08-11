@@ -10,10 +10,9 @@ public class Hashing {
     static final int mod1 = BigInteger.valueOf((int) (1e9 + rnd.nextInt((int) 1e9))).nextProbablePrime().intValue();
     static final int mod2 = BigInteger.valueOf((int) (1e9 + rnd.nextInt((int) 1e9))).nextProbablePrime().intValue();
     int[] hash1, hash2, p1, p2;
-    int n;
 
     public Hashing(CharSequence s) {
-        n = s.length();
+        int n = s.length();
         hash1 = new int[n + 1];
         hash2 = new int[n + 1];
         p1 = new int[n + 1];
