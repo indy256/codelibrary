@@ -5,41 +5,33 @@ import java.util.Random;
 
 public class Hashing {
 
-    static final int multiplier = 131;
+    static final long multiplier = 131;
     static final Random rnd = new Random();
     static final int mod1 = BigInteger.valueOf((int) (1e9 + rnd.nextInt((int) 1e9))).nextProbablePrime().intValue();
     static final int mod2 = BigInteger.valueOf((int) (1e9 + rnd.nextInt((int) 1e9))).nextProbablePrime().intValue();
-    static final int invMultiplier1 = BigInteger.valueOf(multiplier).modInverse(BigInteger.valueOf(mod1)).intValue();
-    static final int invMultiplier2 = BigInteger.valueOf(multiplier).modInverse(BigInteger.valueOf(mod2)).intValue();
-
-    long[] hash1, hash2;
-    long[] inv1, inv2;
+    int[] hash1, hash2, p1, p2;
     int n;
 
-    public Hashing(String s) {
+    public Hashing(CharSequence s) {
         n = s.length();
-        hash1 = new long[n + 1];
-        hash2 = new long[n + 1];
-        inv1 = new long[n + 1];
-        inv2 = new long[n + 1];
-        inv1[0] = 1;
-        inv2[0] = 1;
+        hash1 = new int[n + 1];
+        hash2 = new int[n + 1];
+        p1 = new int[n + 1];
+        p2 = new int[n + 1];
+        p1[0] = 1;
+        p2[0] = 1;
 
-        long p1 = 1;
-        long p2 = 1;
         for (int i = 0; i < n; i++) {
-            hash1[i + 1] = (hash1[i] + s.charAt(i) * p1) % mod1;
-            p1 = p1 * multiplier % mod1;
-            inv1[i + 1] = inv1[i] * invMultiplier1 % mod1;
-            hash2[i + 1] = (hash2[i] + s.charAt(i) * p2) % mod2;
-            p2 = p2 * multiplier % mod2;
-            inv2[i + 1] = inv2[i] * invMultiplier2 % mod2;
+            hash1[i + 1] = (int) ((hash1[i] * multiplier + s.charAt(i)) % mod1);
+            hash2[i + 1] = (int) ((hash2[i] * multiplier + s.charAt(i)) % mod2);
+            p1[i + 1] = (int) (p1[i] * multiplier % mod1);
+            p2[i + 1] = (int) (p2[i] * multiplier % mod2);
         }
     }
 
     public long getHash(int i, int len) {
-        return (((hash1[i + len] - hash1[i] + mod1) * inv1[i] % mod1) << 32)
-                + (hash2[i + len] - hash2[i] + mod2) * inv2[i] % mod2;
+        return (((hash1[i + len] + (long) hash1[i] * (mod1 - p1[len])) % mod1) << 32)
+                + (hash2[i + len] + (long) hash2[i] * (mod2 - p2[len])) % mod2;
     }
 
     // random test
