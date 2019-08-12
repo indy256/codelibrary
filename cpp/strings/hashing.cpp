@@ -19,8 +19,9 @@ struct hashing {
     }
 
     long long get_hash(int i, int len) {
-        return (((hash1[i + len] + (long long) hash1[i] * (mod1 - p1[len])) % mod1) << 32)
-               + (hash2[i + len] + (long long) hash2[i] * (mod2 - p2[len])) % mod2;
+        long long h1 = (hash1[i + len] + (long long) hash1[i] * (mod1 - p1[len])) % mod1;
+        long long h2 = (hash2[i + len] + (long long) hash2[i] * (mod2 - p2[len])) % mod2;
+        return (h1 << 32) + h2;
     }
 };
 
