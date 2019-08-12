@@ -4,7 +4,6 @@ import java.math.BigInteger;
 import java.util.Random;
 
 public class Hashing {
-
     static final long multiplier = 131;
     static final Random rnd = new Random();
     static final int mod1 = BigInteger.valueOf((int) (1e9 + rnd.nextInt((int) 1e9))).nextProbablePrime().intValue();
@@ -29,8 +28,9 @@ public class Hashing {
     }
 
     public long getHash(int i, int len) {
-        return (((hash1[i + len] + (long) hash1[i] * (mod1 - p1[len])) % mod1) << 32)
-                + (hash2[i + len] + (long) hash2[i] * (mod2 - p2[len])) % mod2;
+        long h1 = (hash1[i + len] + (long) hash1[i] * (mod1 - p1[len])) % mod1;
+        long h2 = (hash2[i + len] + (long) hash2[i] * (mod2 - p2[len])) % mod2;
+        return (h1 << 32) + h2;
     }
 
     // random test
