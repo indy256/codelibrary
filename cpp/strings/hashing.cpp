@@ -13,7 +13,7 @@ struct hashing {
         static mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
         static vector<int> bases;
         while (bases.size() < dimensions) {
-            bases.emplace_back(uniform_int_distribution<int>((int) 1e9, (int) 2e9)(rng));
+            bases.emplace_back(uniform_int_distribution<int>((int) 1e9, mod - 1)(rng));
         }
         return bases;
     }
@@ -45,11 +45,13 @@ struct hashing {
 
 // usage example
 int main() {
-    string s = "abc123abc";
-    auto h = hashing(s);
-    vector<int> h1 = h.get_hash(0, 3);
-    vector<int> h2 = h.get_hash(3, 3);
-    vector<int> h3 = h.get_hash(6, 3);
-    cout << (h1 == h3) << " " << (h1 == h2) << endl;
+    string a = "abc123";
+    string b = "abc";
+    auto ha = hashing(a);
+    auto hb = hashing(b);
+    vector<int> ha1 = ha.get_hash(0, 3);
+    vector<int> ha2 = ha.get_hash(3, 3);
+    vector<int> hb1 = ha.get_hash(0, 3);
+    cout << (ha1 == hb1) << " " << (ha1 == ha2) << endl;
     cout << hashing::mod << endl;
 }
