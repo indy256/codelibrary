@@ -47,9 +47,9 @@ struct hashing {
 int main() {
     string s = "abc123abc";
     auto h = hashing(s);
-    const vector<int> &h1 = h.get_hash(0, 3);
-    const vector<int> &h2 = h.get_hash(3, 3);
-    const vector<int> &h3 = h.get_hash(6, 3);
+    vector<int> h1 = h.get_hash(0, 3);
+    vector<int> h2 = h.get_hash(3, 3);
+    vector<int> h3 = h.get_hash(6, 3);
     cout << (h1 == h3) << " " << (h1 == h2) << endl;
     cout << hashing::mod << endl;
 }
