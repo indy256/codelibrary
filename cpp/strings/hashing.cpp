@@ -2,45 +2,54 @@
 
 using namespace std;
 
-struct hashing {
-    static const long long multiplier = 131;
-    static int mod1, mod2;
-    vector<int> hash1, hash2, p1, p2;
+// see https://codeforces.com/blog/entry/60442 for analysis
 
-    hashing(const string &s) : hash1(s.size() + 1), hash2(s.size() + 1), p1(s.size() + 1), p2(s.size() + 1) {
-        p1[0] = 1;
-        p2[0] = 1;
-        for (size_t i = 0; i < s.size(); i++) {
-            hash1[i + 1] = (hash1[i] * multiplier + s[i]) % mod1;
-            hash2[i + 1] = (hash2[i] * multiplier + s[i]) % mod2;
-            p1[i + 1] = p1[i] * multiplier % mod1;
-            p2[i + 1] = p2[i] * multiplier % mod2;
+struct hashing {
+    static constexpr int dimensions = 4;
+    static constexpr int mod = (1u << 31) - 1;
+    vector<vector<int>> hashes, p;
+
+    static const vector<int> &get_bases() {
+        static mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
+        static vector<int> bases;
+        while (bases.size() < dimensions) {
+            bases.emplace_back(uniform_int_distribution<int>((int) 1e9, (int) 2e9)(rng));
+        }
+        return bases;
+    }
+
+    hashing(const string &s) : hashes(dimensions), p(dimensions) {
+        int n = s.size();
+        const vector<int> &bases = get_bases();
+        for (int d = 0; d < dimensions; ++d) {
+            hashes[d].resize(n + 1);
+            p[d].resize(n + 1);
+            p[d][0] = 1;
+            long long base = bases[d];
+            for (int i = 0; i < n; i++) {
+                hashes[d][i + 1] = (hashes[d][i] * base + s[i]) % mod;
+                p[d][i + 1] = p[d][i] * base % mod;
+            }
         }
     }
 
-    long long get_hash(int i, int len) {
-        long long h1 = (hash1[i + len] + (long long) hash1[i] * (mod1 - p1[len])) % mod1;
-        long long h2 = (hash2[i + len] + (long long) hash2[i] * (mod2 - p2[len])) % mod2;
-        return (h1 << 32) + h2;
+    vector<int> get_hash(int i, int len) {
+        vector<int> res;
+        for (int d = 0; d < dimensions; ++d) {
+            int hash = (int) ((hashes[d][i + len] + (long long) hashes[d][i] * (mod - p[d][len])) % mod);
+            res.emplace_back(hash);
+        }
+        return res;
     }
 };
-
-int next_prime(int x) {
-    for (int i;; x++) {
-        for (i = 2; i * i <= x && x % i != 0; i++);
-        if (i * i > x)
-            return x;
-    }
-}
-
-mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
-int hashing::mod1 = next_prime(uniform_int_distribution<int>((int) 1e9, (int) 2e9)(rng));
-int hashing::mod2 = next_prime(uniform_int_distribution<int>((int) 1e9, (int) 2e9)(rng));
 
 // usage example
 int main() {
     string s = "abc123abc";
     auto h = hashing(s);
-    cout << hashing::mod1 << " " << hashing::mod2 << endl;
-    cout << h.get_hash(0, 3) << " " << h.get_hash(6, 3) << " " << h.get_hash(3, 3) << endl;
+    const vector<int> &h1 = h.get_hash(0, 3);
+    const vector<int> &h2 = h.get_hash(3, 3);
+    const vector<int> &h3 = h.get_hash(6, 3);
+    cout << (h1 == h3) << " " << (h1 == h2) << endl;
+    cout << hashing::mod << endl;
 }

@@ -47,7 +47,7 @@ void bellman_ford(int s, int *dist) {
 }
 
 tuple<int, int> min_cost_flow(int s, int t, int maxf) {
-    // bellman_ford can be safely commented if edges costs are non-negative
+    // bellman_ford can be commented out if edges costs are non-negative
     bellman_ford(s, pot);
     int flow = 0;
     int flow_cost = 0;

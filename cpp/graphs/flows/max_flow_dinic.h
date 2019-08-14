@@ -70,7 +70,7 @@ struct max_flow_dinic {
 
     vector<bool> min_cut() {
         vector<bool> cut(g.size());
-        for (int i = 0; i < cut.size(); ++i) {
+        for (size_t i = 0; i < cut.size(); ++i) {
             cut[i] = dist[i] != -1;
         }
         return cut;
