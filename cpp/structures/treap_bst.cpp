@@ -6,26 +6,26 @@ using namespace std;
 
 mt19937_64 rng(chrono::steady_clock::now().time_since_epoch().count());
 
-struct Node {
+struct Treap {
     int key;
     int size;
     long long prio;
-    Node *l, *r;
+    Treap *l, *r;
 
-    Node(int key) : key(key), prio(rng()), size(1), l(nullptr), r(nullptr) {}
+    Treap(int key) : key(key), prio(rng()), size(1), l(nullptr), r(nullptr) {}
 
     void update() {
         size = 1 + get_size(l) + get_size(r);
     }
 
-    static int get_size(Node *node) {
+    static int get_size(Treap *node) {
         return node ? node->size : 0;
     }
 };
 
-using pNode = Node *;
+using pTreap = Treap *;
 
-void split(pNode t, int key, pNode &l, pNode &r) {
+void split(pTreap t, int key, pTreap &l, pTreap &r) {
     if (!t)
         l = r = nullptr;
     else if (key < t->key)
@@ -34,7 +34,7 @@ void split(pNode t, int key, pNode &l, pNode &r) {
         split(t->r, key, t->r, r), l = t, t->update();
 }
 
-void merge(pNode &t, pNode l, pNode r) {
+void merge(pTreap &t, pTreap l, pTreap r) {
     if (!l || !r)
         t = l ? l : r;
     else if (l->prio > r->prio)
@@ -43,7 +43,7 @@ void merge(pNode &t, pNode l, pNode r) {
         merge(r->l, l, r->l), t = r, t->update();
 }
 
-void insert(pNode &t, pNode it) {
+void insert(pTreap &t, pTreap it) {
     if (!t)
         t = it;
     else if (it->prio > t->prio)
@@ -52,10 +52,10 @@ void insert(pNode &t, pNode it) {
         insert(it->key < t->key ? t->l : t->r, it), t->update();
 }
 
-void erase(pNode &t, int key) {
+void erase(pTreap &t, int key) {
     if (t->key == key) {
-        pNode l = t->l;
-        pNode r = t->r;
+        pTreap l = t->l;
+        pTreap r = t->r;
         delete t;
         merge(t, l, r);
     } else {
@@ -63,25 +63,25 @@ void erase(pNode &t, int key) {
     }
 }
 
-pNode unite(pNode l, pNode r) {
+pTreap unite(pTreap l, pTreap r) {
     if (!l || !r) return l ? l : r;
     if (l->prio < r->prio) swap(l, r);
-    pNode lt, rt;
+    pTreap lt, rt;
     split(r, l->key, lt, rt);
     l->l = unite(l->l, lt);
     l->r = unite(l->r, rt);
     return l;
 }
 
-int kth(pNode t, int k) {
-    if (k < Node::get_size(t->l))
+int kth(pTreap t, int k) {
+    if (k < Treap::get_size(t->l))
         return kth(t->l, k);
-    else if (k > Node::get_size(t->l))
-        return kth(t->r, k - Node::get_size(t->l) - 1);
+    else if (k > Treap::get_size(t->l))
+        return kth(t->r, k - Treap::get_size(t->l) - 1);
     return t->key;
 }
 
-void print(pNode t) {
+void print(pTreap t) {
     if (!t)
         return;
     print(t->l);
@@ -89,7 +89,7 @@ void print(pNode t) {
     print(t->r);
 }
 
-void clear(pNode &t) {
+void clear(pTreap &t) {
     if (!t)
         return;
     clear(t->l);
@@ -100,17 +100,17 @@ void clear(pNode &t) {
 
 // usage example
 int main() {
-    pNode t1 = nullptr;
+    pTreap t1 = nullptr;
     int a1[] = {1, 2};
     for (int x: a1)
-        insert(t1, new Node(x));
+        insert(t1, new Treap(x));
 
-    pNode t2 = nullptr;
+    pTreap t2 = nullptr;
     int a2[] = {7, 4, 5};
     for (int x: a2)
-        insert(t2, new Node(x));
+        insert(t2, new Treap(x));
 
-    pNode t = nullptr;
+    pTreap t = nullptr;
     merge(t, t1, t2);
 
     for (int i = 0; i < t->size; ++i) {

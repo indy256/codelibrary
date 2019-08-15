@@ -4,7 +4,7 @@
 using namespace std;
 
 struct tree_2d {
-    vector<pNode> t;
+    vector<pTreap> t;
 
     tree_2d(int n) : t(2 * n) {}
 

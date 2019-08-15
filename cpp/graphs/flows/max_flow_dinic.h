@@ -10,9 +10,9 @@ struct Edge {
 
 struct max_flow_dinic {
     vector<vector<Edge>> g;
-    vector<int> dist, q, work;
+    vector<int> dist;
 
-    max_flow_dinic(int nodes) : g(nodes), dist(nodes), q(nodes), work(nodes) {}
+    max_flow_dinic(int nodes) : g(nodes), dist(nodes) {}
 
     void add_bidi_edge(int s, int t, int cap) {
         Edge a = {t, (int) g[t].size(), 0, cap};
@@ -24,6 +24,7 @@ struct max_flow_dinic {
     bool dinic_bfs(int src, int dest) {
         fill(dist.begin(), dist.end(), -1);
         dist[src] = 0;
+        vector<int> q(g.size());
         int qt = 0;
         q[qt++] = src;
         for (int qh = 0; qh < qt; qh++) {
@@ -39,15 +40,15 @@ struct max_flow_dinic {
         return dist[dest] >= 0;
     }
 
-    int dinic_dfs(int u, int dest, int f) {
+    int dinic_dfs(vector<int> &ptr, int u, int dest, int f) {
         if (u == dest)
             return f;
-        for (int &i = work[u]; i < g[u].size(); i++) {
+        for (int &i = ptr[u]; i < (int) g[u].size(); i++) {
             Edge &e = g[u][i];
             if (e.cap <= e.f) continue;
             int v = e.to;
             if (dist[v] == dist[u] + 1) {
-                int df = dinic_dfs(v, dest, min(f, e.cap - e.f));
+                int df = dinic_dfs(ptr, v, dest, min(f, e.cap - e.f));
                 if (df > 0) {
                     e.f += df;
                     g[v][e.rev].f -= df;
@@ -59,15 +60,16 @@ struct max_flow_dinic {
     }
 
     int max_flow(int src, int dest) {
-        int result = 0;
+        int flow = 0;
         while (dinic_bfs(src, dest)) {
-            fill(work.begin(), work.end(), 0);
-            while (int delta = dinic_dfs(src, dest, numeric_limits<int>::max()))
-                result += delta;
+            vector<int> ptr(g.size());
+            while (int delta = dinic_dfs(ptr, src, dest, numeric_limits<int>::max()))
+                flow += delta;
         }
-        return result;
+        return flow;
     }
 
+    // invoke after max_flow()
     vector<bool> min_cut() {
         vector<bool> cut(g.size());
         for (size_t i = 0; i < cut.size(); ++i) {

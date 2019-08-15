@@ -6,7 +6,7 @@ using namespace std;
 
 mt19937_64 rng(chrono::steady_clock::now().time_since_epoch().count());
 
-struct Node {
+struct Treap {
     long long node_value;
     long long mx;
     long long sum;
@@ -15,11 +15,11 @@ struct Node {
     long long key; // keys should be unique
     int size;
     long long prio;
-    Node *l, *r;
+    Treap *l, *r;
 
 
-    Node(long long key, long long value) : node_value(value), mx(value), sum(value), add(0),
-                                           key(key), size(1), prio(rng()), l(nullptr), r(nullptr) {}
+    Treap(long long key, long long value) : node_value(value), mx(value), sum(value), add(0),
+                                            key(key), size(1), prio(rng()), l(nullptr), r(nullptr) {}
 
     void apply(long long v) {
         node_value += v;
@@ -44,22 +44,22 @@ struct Node {
         size = 1 + get_size(l) + get_size(r);
     }
 
-    static long long get_mx(Node *root) {
+    static long long get_mx(Treap *root) {
         return root == nullptr ? numeric_limits<long long>::min() : root->mx;
     }
 
-    static long long get_sum(Node *root) {
+    static long long get_sum(Treap *root) {
         return root == nullptr ? 0 : root->sum;
     }
 
-    static int get_size(Node *root) {
+    static int get_size(Treap *root) {
         return root == nullptr ? 0 : root->size;
     }
 };
 
-using pNode = Node *;
+using pTreap = Treap *;
 
-void split(pNode t, long long min_right, pNode &l, pNode &r) {
+void split(pTreap t, long long min_right, pTreap &l, pTreap &r) {
     if (!t) {
         l = r = nullptr;
     } else {
@@ -75,7 +75,7 @@ void split(pNode t, long long min_right, pNode &l, pNode &r) {
     }
 }
 
-void merge(pNode &t, pNode &l, pNode &r) {
+void merge(pTreap &t, pTreap &l, pTreap &r) {
     if (!l || !r) {
         t = l ? l : r;
     } else {
@@ -92,24 +92,24 @@ void merge(pNode &t, pNode &l, pNode &r) {
     }
 }
 
-void insert(pNode &t, long long key, long long value) {
-    pNode l, r;
+void insert(pTreap &t, long long key, long long value) {
+    pTreap l, r;
     split(t, key, l, r);
-    auto node = new Node(key, value);
+    auto node = new Treap(key, value);
     merge(t, l, node);
     merge(t, t, r);
 }
 
-void remove(pNode &t, long long key) {
-    pNode left1, right1, left2, right2;
+void remove(pTreap &t, long long key) {
+    pTreap left1, right1, left2, right2;
     split(t, key, left1, right1);
     split(right1, key + 1, left2, right2);
     delete left2;
     merge(t, left1, right2);
 }
 
-void modify(pNode &t, long long ll, long long rr, long long delta) {
-    pNode left1, right1, left2, right2;
+void modify(pTreap &t, long long ll, long long rr, long long delta) {
+    pTreap left1, right1, left2, right2;
     split(t, rr + 1, left1, right1);
     split(left1, ll, left2, right2);
     if (right2 != nullptr)
@@ -118,18 +118,18 @@ void modify(pNode &t, long long ll, long long rr, long long delta) {
     merge(t, t, right1);
 }
 
-Node query(pNode &t, long long ll, long long rr) {
-    pNode left1, right1, left2, right2;
+Treap query(pTreap &t, long long ll, long long rr) {
+    pTreap left1, right1, left2, right2;
     split(t, rr + 1, left1, right1);
     split(left1, ll, left2, right2);
-    Node res(0, 0);
+    Treap res(0, 0);
     if (right2) res = *right2;
     merge(t, left2, right2);
     merge(t, t, right1);
     return res;
 }
 
-void clear(pNode &t) {
+void clear(pTreap &t) {
     if (!t)
         return;
     clear(t->l);
@@ -138,7 +138,7 @@ void clear(pNode &t) {
     t = nullptr;
 }
 
-void print(pNode t) {
+void print(pTreap t) {
     if (!t)
         return;
     print(t->l);
