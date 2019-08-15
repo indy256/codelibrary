@@ -24,15 +24,15 @@ public class MaxFlowDinic {
     static boolean dinicBfs(List<Edge>[] graph, int src, int dest, int[] dist) {
         Arrays.fill(dist, -1);
         dist[src] = 0;
-        int[] Q = new int[graph.length];
+        int[] q = new int[graph.length];
         int sizeQ = 0;
-        Q[sizeQ++] = src;
+        q[sizeQ++] = src;
         for (int i = 0; i < sizeQ; i++) {
-            int u = Q[i];
+            int u = q[i];
             for (Edge e : graph[u]) {
                 if (dist[e.t] < 0 && e.f < e.cap) {
                     dist[e.t] = dist[u] + 1;
-                    Q[sizeQ++] = e.t;
+                    q[sizeQ++] = e.t;
                 }
             }
         }
