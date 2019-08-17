@@ -2,7 +2,7 @@
 
 using namespace std;
 
-// https://en.wikipedia.org/wiki/Minimum-cost_flow_problem in O(min(E^2*V^2, E*V*FLOW))
+// https://cp-algorithms.com/graph/min_cost_flow.html in O(min(E^2*V*logV, E*logV*FLOW))
 // negative-cost edges are allowed
 // negative-cost cycles are not allowed
 
@@ -22,28 +22,23 @@ struct min_cost_flow {
         graph[t].emplace_back(b);
     }
 
-    void bellman_ford(int s, vector<int> &curflow, vector<int> &dist, vector<int> &prevnode, vector<int> &prevedge) {
+    void bellman_ford(int s, vector<int> &dist) {
         int n = graph.size();
         vector<int> q(n);
         vector<bool> inqueue(n);
         fill(dist.begin(), dist.end(), numeric_limits<int>::max());
         dist[s] = 0;
-        curflow[s] = numeric_limits<int>::max();
         int qt = 0;
         q[qt++] = s;
         for (int qh = 0; qh != qt; qh++) {
             int u = q[qh % n];
             inqueue[u] = false;
-            for (size_t i = 0; i < graph[u].size(); i++) {
-                Edge &e = graph[u][i];
+            for (auto &e : graph[u]) {
                 if (e.cap <= e.f) continue;
                 int v = e.to;
                 int ndist = dist[u] + e.cost;
                 if (dist[v] > ndist) {
                     dist[v] = ndist;
-                    prevnode[v] = u;
-                    prevedge[v] = i;
-                    curflow[v] = min(curflow[u], e.cap - e.f);
                     if (!inqueue[v]) {
                         inqueue[v] = true;
                         q[qt++ % n] = v;
@@ -53,15 +48,46 @@ struct min_cost_flow {
         }
     }
 
-    tuple<int, int> calc_min_cost_flow(int s, int t, int maxf) {
+    void dijkstra(int s, vector<int> &pot, vector<int> &dist, vector<int> &curflow, vector<int> &prevnode,
+                  vector<int> &prevedge) {
+        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<>> q;
+        q.emplace(0, s);
+        fill(dist.begin(), dist.end(), numeric_limits<int>::max());
+        dist[s] = 0;
+        curflow[s] = numeric_limits<int>::max();
+        while (!q.empty()) {
+            auto[d, u] = q.top();
+            q.pop();
+            if (d != dist[u])
+                continue;
+            for (size_t i = 0; i < graph[u].size(); i++) {
+                Edge &e = graph[u][i];
+                int v = e.to;
+                if (e.cap <= e.f) continue;
+                int nprio = dist[u] + e.cost + pot[u] - pot[v];
+                if (dist[v] > nprio) {
+                    dist[v] = nprio;
+                    q.emplace(nprio, v);
+                    prevnode[v] = u;
+                    prevedge[v] = i;
+                    curflow[v] = min(curflow[u], e.cap - e.f);
+                }
+            }
+        }
+    }
+
+    tuple<int, int> cal_min_cost_flow(int s, int t, int maxf) {
+        size_t n = graph.size();
+        vector<int> pot(n), curflow(n), dist(n), prevnode(n), prevedge(n);
+        bellman_ford(s, pot); // this can be commented out if edges costs are non-negative
         int flow = 0;
         int flow_cost = 0;
-        size_t n = graph.size();
-        vector<int> curflow(n), dist(n), prevnode(n), prevedge(n);
         while (flow < maxf) {
-            bellman_ford(s, curflow, dist, prevnode, prevedge);
+            dijkstra(s, pot, dist, curflow, prevnode, prevedge);
             if (dist[t] == numeric_limits<int>::max())
                 break;
+            for (size_t i = 0; i < n; i++)
+                pot[i] += dist[i];
             int df = min(curflow[t], maxf - flow);
             flow += df;
             for (int v = t; v != s; v = prevnode[v]) {
@@ -89,7 +115,7 @@ int main() {
 
     int s = 0;
     int t = 2;
-    auto[flow, flow_cost] = mcf.calc_min_cost_flow(s, t, numeric_limits<int>::max());
+    auto[flow, flow_cost] = mcf.cal_min_cost_flow(s, t, numeric_limits<int>::max());
 
     cout << (4 == flow) << endl;
     cout << (6 == flow_cost) << endl;
