@@ -4,7 +4,7 @@
 using namespace std;
 
 vector<vector<pair<int, int>>> gomory_hu_tree(max_flow_dinic &flow) {
-    int n = flow.g.size();
+    int n = flow.graph.size();
     vector<vector<pair<int, int>>> t(n, vector<pair<int, int>>());
     vector<int> p(n);
     for (int i = 1; i < n; i++) {
