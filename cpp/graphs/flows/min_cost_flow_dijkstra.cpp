@@ -2,7 +2,7 @@
 
 using namespace std;
 
-// https://cp-algorithms.com/graph/min_cost_flow.html in O(min(E^2*V*logV, E*logV*FLOW))
+// https://cp-algorithms.com/graph/min_cost_flow.html in O(min(E^2 * V * logV, E * logV * FLOW))
 // negative-cost edges are allowed
 // negative-cost cycles are not allowed
 
@@ -10,10 +10,10 @@ struct Edge {
     int to, rev, f, cap, cost;
 };
 
-struct min_cost_flow {
+struct min_cost_circulation {
     vector<vector<Edge>> graph;
 
-    min_cost_flow(int nodes) : graph(nodes) {}
+    min_cost_circulation(int nodes) : graph(nodes) {}
 
     void add_bidi_edge(int s, int t, int cap, int cost) {
         Edge a = {t, (int) graph[t].size(), 0, cap, cost};
@@ -107,7 +107,7 @@ int main() {
                          {0, 0, 2},
                          {0, 0, 0}};
     int nodes = 3;
-    min_cost_flow mcf(nodes);
+    min_cost_circulation mcf(nodes);
     for (int i = 0; i < nodes; i++)
         for (int j = 0; j < nodes; j++)
             if (capacity[i][j] != 0)
