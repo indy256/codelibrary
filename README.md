@@ -62,7 +62,7 @@
 + [x] Z-function [**c++**](cpp/strings/z-function.cpp) [**java**](java/strings/ZFunction.java)
 + [x] Hashing [**c++**](cpp/strings/hashing.cpp) [**java**](java/strings/Hashing.java)
 + [x] Parsing [**java**](java/parsing) [**cpp**](cpp/parsing)
-+ [ ] Implement palindrome tree ([contribute a link or implementation](https://github.com/indy256/codelibrary/issues/34))
++ [ ] Palindrome tree ([contribute a link or implementation](https://github.com/indy256/codelibrary/issues/34))
 + [ ] Sorting strings in linear time ([contribute a link or implementation](https://github.com/indy256/codelibrary/issues/31))
 
 #### Sorting algorithms
