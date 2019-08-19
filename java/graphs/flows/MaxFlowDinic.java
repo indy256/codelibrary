@@ -6,7 +6,15 @@ import java.util.stream.Stream;
 // https://en.wikipedia.org/wiki/Dinic%27s_algorithm in O(V^2 * E)
 public class MaxFlowDinic {
 
-    static class Edge {
+    List<Edge>[] graph;
+    int[] dist;
+
+    public MaxFlowDinic(int nodes) {
+        graph = Stream.generate(ArrayList::new).limit(nodes).toArray(List[]::new);
+        dist = new int[nodes];
+    }
+
+    class Edge {
         int t, rev, cap, f;
 
         public Edge(int t, int rev, int cap) {
@@ -16,12 +24,12 @@ public class MaxFlowDinic {
         }
     }
 
-    public static void addBidiEdge(List<Edge>[] graph, int s, int t, int cap) {
+    public void addBidiEdge(int s, int t, int cap) {
         graph[s].add(new Edge(t, graph[t].size(), cap));
         graph[t].add(new Edge(s, graph[s].size() - 1, 0));
     }
 
-    static boolean dinicBfs(List<Edge>[] graph, int src, int dest, int[] dist) {
+    boolean dinicBfs(List<Edge>[] graph, int src, int dest, int[] dist) {
         Arrays.fill(dist, -1);
         dist[src] = 0;
         int[] q = new int[graph.length];
@@ -39,7 +47,7 @@ public class MaxFlowDinic {
         return dist[dest] >= 0;
     }
 
-    static int dinicDfs(List<Edge>[] graph, int[] ptr, int[] dist, int dest, int u, int f) {
+    int dinicDfs(List<Edge>[] graph, int[] ptr, int[] dist, int dest, int u, int f) {
         if (u == dest)
             return f;
         for (; ptr[u] < graph[u].size(); ++ptr[u]) {
@@ -56,7 +64,7 @@ public class MaxFlowDinic {
         return 0;
     }
 
-    public static int maxFlow(List<Edge>[] graph, int src, int dest) {
+    public int maxFlow(int src, int dest) {
         int flow = 0;
         int[] dist = new int[graph.length];
         while (dinicBfs(graph, src, dest, dist)) {
@@ -71,12 +79,26 @@ public class MaxFlowDinic {
         return flow;
     }
 
+    // invoke after maxFlow()
+    public boolean[] minCut() {
+        boolean[] cut = new boolean[graph.length];
+        for (int i = 0; i < cut.length; ++i)
+            cut[i] = dist[i] != -1;
+        return cut;
+    }
+
+    void clearFlow() {
+        for (List<Edge> edges : graph)
+            for (Edge edge : edges)
+                edge.f = 0;
+    }
+
     // Usage example
     public static void main(String[] args) {
-        List<Edge>[] graph = Stream.generate(ArrayList::new).limit(3).toArray(List[]::new);
-        addBidiEdge(graph, 0, 1, 3);
-        addBidiEdge(graph, 0, 2, 2);
-        addBidiEdge(graph, 1, 2, 2);
-        System.out.println(4 == maxFlow(graph, 0, 2));
+        MaxFlowDinic flow = new MaxFlowDinic(3);
+        flow.addBidiEdge(0, 1, 3);
+        flow.addBidiEdge(0, 2, 2);
+        flow.addBidiEdge(1, 2, 2);
+        System.out.println(4 == flow.maxFlow(0, 2));
     }
 }

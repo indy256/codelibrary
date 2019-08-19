@@ -7,7 +7,7 @@ using namespace std;
 // negative-cost cycles are not allowed
 
 struct Edge {
-    int to, rev, f, cap, cost;
+    int to, rev, cap, f, cost;
 };
 
 struct min_cost_circulation {
@@ -16,7 +16,7 @@ struct min_cost_circulation {
     min_cost_circulation(int nodes) : graph(nodes) {}
 
     void add_bidi_edge(int s, int t, int cap, int cost) {
-        Edge a = {t, (int) graph[t].size(), 0, cap, cost};
+        Edge a = {t, (int) graph[t].size(), cap, 0, cost};
         Edge b = {s, (int) graph[s].size(), 0, 0, -cost};
         graph[s].emplace_back(a);
         graph[t].emplace_back(b);

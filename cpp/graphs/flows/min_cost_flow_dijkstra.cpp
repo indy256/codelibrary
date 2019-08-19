@@ -7,7 +7,7 @@ using namespace std;
 // negative-cost cycles are not allowed
 
 struct Edge {
-    int to, rev, f, cap, cost;
+    int to, rev, cap, f, cost;
 };
 
 struct min_cost_circulation {
@@ -16,7 +16,7 @@ struct min_cost_circulation {
     min_cost_circulation(int nodes) : graph(nodes) {}
 
     void add_bidi_edge(int s, int t, int cap, int cost) {
-        Edge a = {t, (int) graph[t].size(), 0, cap, cost};
+        Edge a = {t, (int) graph[t].size(), cap, 0, cost};
         Edge b = {s, (int) graph[s].size(), 0, 0, -cost};
         graph[s].emplace_back(a);
         graph[t].emplace_back(b);
@@ -48,8 +48,8 @@ struct min_cost_circulation {
         }
     }
 
-    void dijkstra(int s, vector<int> &pot, vector<int> &dist, vector<int> &curflow, vector<int> &prevnode,
-                  vector<int> &prevedge) {
+    void dijkstra(int s, vector<int> &pot, vector<int> &dist, vector<int> &curflow,
+                  vector<int> &prevnode, vector<int> &prevedge) {
         priority_queue<pair<int, int>, vector<pair<int, int>>, greater<>> q;
         q.emplace(0, s);
         fill(dist.begin(), dist.end(), numeric_limits<int>::max());

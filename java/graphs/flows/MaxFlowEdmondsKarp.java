@@ -3,10 +3,16 @@ package graphs.flows;
 import java.util.*;
 import java.util.stream.Stream;
 
-// https://en.wikipedia.org/wiki/Edmonds%E2%80%93Karp_algorithm in O(V*E^2)
+// https://en.wikipedia.org/wiki/Edmonds%E2%80%93Karp_algorithm in O(V * E^2)
 public class MaxFlowEdmondsKarp {
 
-    static class Edge {
+    List<Edge>[] graph;
+
+    public MaxFlowEdmondsKarp(int nodes) {
+        graph = Stream.generate(ArrayList::new).limit(nodes).toArray(List[]::new);
+    }
+
+    class Edge {
         int s, t, rev, cap, f;
 
         public Edge(int s, int t, int rev, int cap) {
@@ -17,12 +23,12 @@ public class MaxFlowEdmondsKarp {
         }
     }
 
-    public static void addBidiEdge(List<Edge>[] graph, int s, int t, int cap) {
+    public void addBidiEdge(int s, int t, int cap) {
         graph[s].add(new Edge(s, t, graph[t].size(), cap));
         graph[t].add(new Edge(t, s, graph[s].size() - 1, 0));
     }
 
-    public static int maxFlow(List<Edge>[] graph, int s, int t) {
+    public int maxFlow(int s, int t) {
         int flow = 0;
         int[] q = new int[graph.length];
         while (true) {
@@ -54,10 +60,10 @@ public class MaxFlowEdmondsKarp {
 
     // Usage example
     public static void main(String[] args) {
-        List<Edge>[] graph = Stream.generate(ArrayList::new).limit(3).toArray(List[]::new);
-        addBidiEdge(graph, 0, 1, 3);
-        addBidiEdge(graph, 0, 2, 2);
-        addBidiEdge(graph, 1, 2, 2);
-        System.out.println(4 == maxFlow(graph, 0, 2));
+        MaxFlowEdmondsKarp flow = new MaxFlowEdmondsKarp(3);
+        flow.addBidiEdge(0, 1, 3);
+        flow.addBidiEdge(0, 2, 2);
+        flow.addBidiEdge(1, 2, 2);
+        System.out.println(4 == flow.maxFlow(0, 2));
     }
 }

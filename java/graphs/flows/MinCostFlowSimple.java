@@ -2,7 +2,7 @@ package graphs.flows;
 
 import java.util.Arrays;
 
-public class MaxFlowOfMinCostSimple {
+public class MinCostFlowSimple {
 
     public static int[] minCostFlow(int[][] cap, int[][] cost, int s, int t) {
         int n = cap.length;
