@@ -16,7 +16,7 @@ struct fenwick {
     }
 
     // sum[0..i]
-    int sum(int i) {
+    T sum(int i) {
         T res{};
         for (; i >= 0; i = (i & (i + 1)) - 1)
             res += t[i];
