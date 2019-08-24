@@ -11,7 +11,7 @@ vector<T> &operator+=(vector<T> &a, const vector<T> &b) {
     if (a.size() < b.size()) {
         a.resize(b.size());
     }
-    for (int i = 0; i < b.size(); i++) {
+    for (size_t i = 0; i < b.size(); i++) {
         a[i] += b[i];
     }
     return a;
@@ -56,24 +56,24 @@ vector<modint<mod>> operator*(const vector<modint<mod>> &a, const vector<modint<
     }
     if (min(a.size(), b.size()) < 150) {
         vector<modint<mod>> c(a.size() + b.size() - 1, 0);
-        for (int i = 0; i < a.size(); i++) {
-            for (int j = 0; j < b.size(); j++) {
+        for (size_t i = 0; i < a.size(); i++) {
+            for (size_t j = 0; j < b.size(); j++) {
                 c[i + j] += a[i] * b[j];
             }
         }
         return c;
     }
     vector<int> a_int(a.size());
-    for (int i = 0; i < a.size(); i++) {
+    for (size_t i = 0; i < a.size(); i++) {
         a_int[i] = static_cast<int>(a[i]);
     }
     vector<int> b_int(b.size());
-    for (int i = 0; i < b.size(); i++) {
+    for (size_t i = 0; i < b.size(); i++) {
         b_int[i] = static_cast<int>(b[i]);
     }
     vector<int> c_int = multiply_mod(a_int, b_int, mod);
     vector<modint<mod>> c(c_int.size());
-    for (int i = 0; i < c.size(); i++) {
+    for (size_t i = 0; i < c.size(); i++) {
         c[i] = c_int[i];
     }
     return c;
@@ -109,7 +109,7 @@ vector<T> inverse(const vector<T> &a) {
         vector<T> a_cut(a.begin(), a.begin() + min(a.size(), b.size() << 1));
         vector<T> x = b * b * a_cut;
         b.resize(b.size() << 1);
-        for (int i = b.size() >> 1; i < min(x.size(), b.size()); i++) {
+        for (size_t i = b.size() >> 1; i < min(x.size(), b.size()); i++) {
             b[i] = -x[i];
         }
     }
@@ -177,7 +177,7 @@ vector<T> power(const vector<T> &a, long long b, const vector<T> &mod) {
 
 template<class T>
 vector<T> derivative(vector<T> a) {
-    for (int i = 0; i < a.size(); i++) {
+    for (size_t i = 0; i < a.size(); i++) {
         a[i] *= i;
     }
     if (!a.empty()) {
@@ -436,7 +436,7 @@ T factorial(long long n) {
     int m = min((long long) (sqrt(n) * 2), n);
     vector<T> a = sequence<T>(m);
     vector<T> x(n / m);
-    for (int i = 0; i < x.size(); ++i) {
+    for (size_t i = 0; i < x.size(); ++i) {
         x[i] = i;
         x[i] *= m;
     }

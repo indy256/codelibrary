@@ -54,7 +54,7 @@ vector<int> multiply_bigint(const vector<int> &a, const vector<int> &b, int base
     int n = 1;
     while (n < need) n <<= 1;
     vector<cpx> p(n);
-    for (int i = 0; i < n; i++) {
+    for (size_t i = 0; i < n; i++) {
         p[i] = cpx(i < a.size() ? a[i] : 0, i < b.size() ? b[i] : 0);
     }
     fft(p, false);
@@ -82,14 +82,14 @@ vector<int> multiply_mod(const vector<int> &a, const vector<int> &b, int m) {
     int n = 1;
     while (n < need) n <<= 1;
     vector<cpx> A(n);
-    for (int i = 0; i < a.size(); i++) {
+    for (size_t i = 0; i < a.size(); i++) {
         int x = (a[i] % m + m) % m;
         A[i] = cpx(x & ((1 << 15) - 1), x >> 15);
     }
     fft(A, false);
 
     vector<cpx> B(n);
-    for (int i = 0; i < b.size(); i++) {
+    for (size_t i = 0; i < b.size(); i++) {
         int x = (b[i] % m + m) % m;
         B[i] = cpx(x & ((1 << 15) - 1), x >> 15);
     }
