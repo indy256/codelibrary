@@ -10,7 +10,7 @@ int sufflink[MAX_STATES];
 int escape[MAX_STATES];
 int states = 1;
 
-int addString(string s) {
+int addString(const string &s) {
     int v = 0;
     for (char c : s) {
         c -= 'a';
@@ -51,7 +51,7 @@ int main() {
     string s = "abaa";
 
     int state = 0;
-    for (int i = 0; i < s.length(); i++) {
+    for (size_t i = 0; i < s.length(); i++) {
         state = transitions[state][s[i] - 'a'];
         if (escape[state] != 0)
             cout << i << endl;

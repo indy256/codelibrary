@@ -3,8 +3,7 @@
 using namespace std;
 
 template<int mod>
-class modint {
-public:
+struct modint {
     int value;
 
     modint(long long x = 0) {
