@@ -5,13 +5,10 @@ using namespace std;
 // https://en.wikipedia.org/wiki/Exponentiation_by_squaring
 // https://cp-algorithms.com/algebra/binary-exp.html
 int pow_mod(int x, int n, int mod) {
-    int y = x;
     int res = 1;
-    for (; n > 0; n >>= 1) {
-        if (n & 1)
-            res = (long long) res * y % mod;
-        y = (long long) y * y % mod;
-    }
+    for (long long p = x; n > 0; n >>= 1, p = (p * p) % mod)
+        if ((n & 1) != 0)
+            res = (int) (res * p % mod);
     return res;
 }
 

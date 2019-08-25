@@ -3,6 +3,7 @@
 using namespace std;
 
 // returns any x such that a^x = b (mod m)
+// O(m^0.5) complexity
 int discrete_log(int a, int b, int m) {
     assert(gcd(a, m) == 1);
 

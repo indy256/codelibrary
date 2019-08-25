@@ -7,19 +7,14 @@ public class NTT {
 
     static int pow(int x, int n, int mod) {
         int res = 1;
-        for (long p = x; n > 0; n >>= 1, p = (p * p) % mod) {
-            if ((n & 1) != 0) {
+        for (long p = x; n > 0; n >>= 1, p = (p * p) % mod)
+            if ((n & 1) != 0)
                 res = (int) (res * p % mod);
-            }
-        }
         return res;
     }
 
     // a.length == b.length == 2^x
     public static void ntt(int[] a, boolean invert, int mod, int root) {
-        final int root_inv = pow(root, mod - 2, mod);
-        final int root_pw = 1 << 20;
-
         int n = a.length;
         int shift = 32 - Integer.numberOfTrailingZeros(n);
         for (int i = 1; i < n; i++) {
@@ -30,20 +25,19 @@ public class NTT {
                 a[j] = temp;
             }
         }
-        for (int len = 2; len <= n; len *= 2) {
-            int wlen = invert ? root_inv : root;
-            for (int i = len; i < root_pw; i *= 2)
-                wlen = (int) ((long) wlen * wlen % mod);
-            for (int i = 0; i < n; i += len) {
-                int w = 1;
-                for (int j = 0; j < len / 2; ++j) {
+
+        int root_inv = pow(root, mod - 2, mod);
+
+        for (int len = 1; len < n; len <<= 1) {
+            int wlen = pow(invert ? root_inv : root, (mod - 1) / (2 * len), mod);
+            for (int i = 0; i < n; i += 2 * len)
+                for (int j = 0, w = 1; j < len; ++j) {
                     int u = a[i + j];
-                    int v = (int) ((long) a[i + j + len / 2] * w % mod);
+                    int v = (int) ((long) a[i + j + len] * w % mod);
                     a[i + j] = (u + v) % mod;
-                    a[i + j + len / 2] = (u - v + mod) % mod;
+                    a[i + j + len] = (u - v + mod) % mod;
                     w = (int) ((long) w * wlen % mod);
                 }
-            }
         }
         if (invert) {
             int nrev = pow(n, mod - 2, mod);
@@ -53,42 +47,37 @@ public class NTT {
     }
 
     public static int[] multiply(int[] a, int[] b) {
-        int resultSize = Integer.highestOneBit(Math.max(a.length, b.length) - 1) << 2;
-        resultSize = Math.max(resultSize, 2);
-        int[] aReal = new int[resultSize];
-        int[] bReal = new int[resultSize];
+        int need = a.length + b.length;
+        int n = Integer.highestOneBit(need - 1) << 1;
+        int[] A = new int[n];
+        int[] B = new int[n];
         for (int i = 0; i < a.length; i++)
-            aReal[i] = a[i];
+            A[i] = a[i];
         for (int i = 0; i < b.length; i++)
-            bReal[i] = b[i];
+            B[i] = b[i];
 
-        final int mod = 913 * (1 << 20) + 1;
-        final int root = 23;
-//		final int mod = 918 * (1 << 20) + 1;
-//		final int root = 106;
-//		final int mod = 997 * (1 << 20) + 1;
-//		final int root = 363;
+        int mod = 998244353; // 2^23 * 119 + 1
+        int root = 3;
 
-        ntt(aReal, false, mod, root);
-        ntt(bReal, false, mod, root);
-        for (int i = 0; i < resultSize; i++) {
-            aReal[i] = (int) (((long) aReal[i] * bReal[i]) % mod);
-        }
-        ntt(aReal, true, mod, root);
+        ntt(A, false, mod, root);
+        ntt(B, false, mod, root);
+        for (int i = 0; i < n; i++)
+            A[i] = (int) (((long) A[i] * B[i]) % mod);
+        ntt(A, true, mod, root);
         int carry = 0;
-        for (int i = 0; i < resultSize; i++) {
-            aReal[i] += carry;
-            carry = aReal[i] / 10;
-            aReal[i] %= 10;
+        for (int i = 0; i < need; i++) {
+            A[i] += carry;
+            carry = A[i] / 10;
+            A[i] %= 10;
         }
-        return aReal;
+        return A;
     }
 
     // random test
     public static void main(String[] args) {
         Random rnd = new Random(1);
         for (int step = 0; step < 1000; step++) {
-            int n1 = rnd.nextInt(10) + 1;
+            int n1 = rnd.nextInt(50) + 1;
             String s1 = "";
             int[] a = new int[n1];
             for (int i = 0; i < n1; i++) {
@@ -96,7 +85,7 @@ public class NTT {
                 s1 = x + s1;
                 a[i] = x;
             }
-            int n2 = rnd.nextInt(10) + 1;
+            int n2 = rnd.nextInt(50) + 1;
             String s2 = "";
             int[] b = new int[n2];
             for (int i = 0; i < n2; i++) {
@@ -114,14 +103,14 @@ public class NTT {
                 throw new RuntimeException();
         }
 
-        generatePrimitiveRoots(1 << 20);
+//        generatePrimitiveRootsOfUnity(1 << 20);
     }
 
-    static void generatePrimitiveRoots(int N) {
+    static void generatePrimitiveRootsOfUnity(int N) {
         for (int i = 900; i < 1000; i++) {
             int mod = N * i + 1;
             if (!BigInteger.valueOf(mod).isProbablePrime(100)) continue;
-            for (int root = 2; root < 10_00; root++) {
+            for (int root = 2; root < 1000; root++) {
                 if (pow(root, N, mod) == 1 && pow(root, N / 2, mod) != 1) {
                     System.out.println(i + " " + mod + " " + root);
                     break;

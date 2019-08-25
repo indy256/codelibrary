@@ -5,13 +5,10 @@ using namespace std;
 // https://cp-algorithms.com/algebra/discrete-root.html
 
 int pow_mod(int x, int n, int mod) {
-    int y = x;
     int res = 1;
-    for (; n > 0; n >>= 1) {
-        if (n & 1)
-            res = (long long) res * y % mod;
-        y = (long long) y * y % mod;
-    }
+    for (long long p = x; n > 0; n >>= 1, p = (p * p) % mod)
+        if ((n & 1) != 0)
+            res = (int) (res * p % mod);
     return res;
 }
 
@@ -22,12 +19,12 @@ int generator(int m) {
     int n = phi;
     for (int i = 2; i * i <= n; ++i)
         if (n % i == 0) {
-            factors.push_back(i);
+            factors.emplace_back(i);
             while (n % i == 0)
                 n /= i;
         }
     if (n > 1)
-        factors.push_back(n);
+        factors.emplace_back(n);
     for (int res = 2; res <= m; ++res) {
         if (gcd(res, m) != 1) continue;
         bool ok = true;
