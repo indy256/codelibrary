@@ -25,8 +25,7 @@ public class LcaSparseTable {
 
     public LcaSparseTable(List<Integer>[] tree, int root) {
         int n = tree.length;
-        len = 1;
-        while ((1 << len) <= n) ++len;
+        len = 32 - Integer.numberOfLeadingZeros(n);
         up = new int[len][n];
         tin = new int[n];
         tout = new int[n];
