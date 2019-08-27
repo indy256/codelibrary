@@ -13,14 +13,12 @@ struct SparseTable {
     vector<vector<T>> t;
     F func;
 
-    SparseTable(const vector<T> &a, F f) : n(a.size()), func(std::move(f)) {
-        t.resize(32 - _lzcnt_u32(n));
+    SparseTable(const vector<T> &a, F f) : n(a.size()), t(32 - _lzcnt_u32(n)), func(std::move(f)) {
         t[0] = a;
-        for (size_t j = 1; j < t.size(); j++) {
-            t[j].resize(n - (1 << j) + 1);
-            for (int i = 0; i <= n - (1 << j); i++) {
-                t[j][i] = func(t[j - 1][i], t[j - 1][i + (1 << (j - 1))]);
-            }
+        for (size_t i = 1; i < t.size(); i++) {
+            t[i].resize(n - (1 << i) + 1);
+            for (size_t j = 0; j < t[i].size(); j++)
+                t[i][j] = func(t[i - 1][j], t[i - 1][j + (1 << (i - 1))]);
         }
     }
 
