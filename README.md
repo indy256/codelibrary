@@ -28,7 +28,7 @@
 + [x] Quadtree [**java**](java/structures/QuadTree.java)
 + [x] Mergeable heap [**java**](java/structures/MergeableHeap.java)
 + [x] Queue with minimum [**c++**](cpp/structures/queue_min.cpp) [**java**](java/structures/QueueMin.java)
-+ [x] Sparse table for RMQ [**java**](java/structures/RmqSparseTable.java)
++ [x] Sparse table [**c++**](cpp/structures/sparse-table.cpp) [**java**](java/structures/RmqSparseTable.java) [**java**](java/graphs/lca/LcaSparseTable.java)
 + [x] Sparse segment tree [**c++**](cpp/structures/sparse-segment-tree.cpp)
 + [x] Wavelet tree [**c++**](cpp/structures/wavelet_tree.cpp) [**java**](java/structures/WaveletTree.java)
 + [x] Mo's algorithm [**java**](java/structures/MosAlgorithm.java)
