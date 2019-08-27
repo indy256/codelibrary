@@ -1,3 +1,6 @@
+#pragma GCC target("lzcnt")
+
+#include <immintrin.h>
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -27,7 +30,7 @@ struct fenwick {
     // requires non-negative tree values
     int lower_bound(T sum) {
         int pos = 0;
-        for (int blockSize = 1 << (__builtin_clz(1) - __builtin_clz(t.size())); blockSize != 0; blockSize >>= 1) {
+        for (size_t blockSize = 1 << (31 - _lzcnt_u32(t.size())); blockSize != 0; blockSize >>= 1) {
             int p = pos + blockSize - 1;
             if (p < t.size() && t[p] < sum) {
                 sum -= t[p];

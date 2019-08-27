@@ -1,3 +1,6 @@
+#pragma GCC target("lzcnt")
+
+#include <immintrin.h>
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -15,7 +18,7 @@ unsigned lowest_one_bit(unsigned x) {
 }
 
 unsigned highest_one_bit(unsigned x) {
-    return x ? 1u << (__builtin_clz(1) - __builtin_clz(x)) : 0;
+    return x ? 1u << (31 - _lzcnt_u32(x)) : 0;
 }
 
 void dfs1(const vector<vector<int>> &tree, int u, int p) {
@@ -105,7 +108,7 @@ int main() {
         if (a > b) swap(a, b);
         init_rmq(v);
         int res1 = v[lca(a, b)];
-        int res2 = *min_element(&v[a], &v[b + 1]);
+        int res2 = *min_element(v.begin() + a, v.begin() + b + 1);
         if (res1 != res2) {
             for (int i = 0; i < n; ++i) cout << v[i] << " ";
             cout << endl;

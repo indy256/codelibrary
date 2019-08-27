@@ -3,8 +3,6 @@
 #include <immintrin.h>
 #include <bits/stdc++.h>
 
-#include <utility>
-
 using namespace std;
 
 template<class T, class F = function<T(const T &, const T &)>>
