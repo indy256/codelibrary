@@ -17,7 +17,7 @@ environment:
 
 build_script:
   - mkdir bits
-  - (
+  - '(
     echo #include ^<vector^>
     echo #include ^<set^>
     echo #include ^<map^>
@@ -36,7 +36,7 @@ build_script:
     echo #include ^<array^>
     echo #include ^<bitset^>
     echo #include ^<numeric^>
-    ) > bits/stdc++.h
+    ) > bits/stdc++.h'
   - call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars32.bat"
   - cl
   - dir
