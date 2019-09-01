@@ -64,4 +64,6 @@ int main() {
     cout << t.query(3, 5, 6) << endl;
 }
 
+#else
+int main() {}
 #endif
