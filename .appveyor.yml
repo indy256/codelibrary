@@ -16,6 +16,7 @@ environment:
     - id: compile
 
 build_script:
+  - cd cpp
   - mkdir bits
   - echo #include ^<vector^> > bits/stdc++.h
   - echo #include ^<set^> >> bits/stdc++.h
@@ -36,7 +37,6 @@ build_script:
   - echo #include ^<bitset^> >> bits/stdc++.h
   - echo #include ^<numeric^> >> bits/stdc++.h
   - call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars32.bat"
-  - cl
   - dir
-  - xargs
+  - C:\msys64\usr\bin\find.exe . -name *.cpp -print0 | C:\msys64\usr\bin\xargs.exe -n1 -0 cl /I "."
 
