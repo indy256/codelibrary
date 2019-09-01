@@ -16,8 +16,6 @@ public:
     HeavyLight(const vector<vector<int>> &t, bool valuesOnVertices) :
             tree(t), valuesOnVertices(valuesOnVertices), segment_tree(t.size()),
             parent(t.size()), depth(t.size()), pathRoot(t.size()), in(t.size()) {
-        int n = t.size();
-
         int time = 0;
         parent[0] = -1;
 
