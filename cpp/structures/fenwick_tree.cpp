@@ -1,4 +1,5 @@
 #pragma GCC target("lzcnt")
+#pragma clang attribute lzcnt
 
 #include <immintrin.h>
 #include <bits/stdc++.h>
