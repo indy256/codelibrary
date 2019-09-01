@@ -38,23 +38,20 @@ matrix:
 
   - language: cpp
     dist: bionic
-#    os: linux
     compiler: clang
     before_script:
     - uname -a 
     - clang --version
-    - sudo ls .
-    - sudo ls /usr/local/include
-    - sudo mkdir /usr/local/include/bits
-    - sudo ls /usr/local/include
-    - echo $'#include <vector>\n#include <set>\n#include <map>\n#include <unordered_set>\n#include <unordered_map>\n#include <queue>\n#include <deque>\n#include <stack>\n#include <iostream>\n#include <iomanip>\n#include <complex>\n#include <cassert>\n#include <random>\n#include <chrono>\n#include <functional>\n#include <array>\n#include <bitset>\n#include <numeric>\n' > stdc++.h
-    - ls .
     - cd cpp
-    script: find . -name *.cpp -print0 | xargs -n1 -0 clang
+    - sudo mkdir bits
+    - echo $'#include <vector>\n#include <set>\n#include <map>\n#include <unordered_set>\n#include <unordered_map>\n#include <queue>\n#include <deque>\n#include <stack>\n#include <iostream>\n#include <iomanip>\n#include <complex>\n#include <cassert>\n#include <random>\n#include <chrono>\n#include <functional>\n#include <array>\n#include <bitset>\n#include <numeric>\n' > bits/stdc++.h
+    - ls bits/
+    script: find . -name *.cpp -print0 | xargs -n1 -0 clang++ -isystem .
 
   - language: cpp
     os: osx
     compiler: clang
+    sudo: required
     before_script:
     - uname -a 
     - clang --version
@@ -62,11 +59,13 @@ matrix:
     - sudo ls /usr/local/include
     - sudo mkdir /usr/local/include/bits
     - sudo ls /usr/local/include
-    - sudo echo $'#include <vector>\n#include <set>\n#include <map>\n#include <unordered_set>\n#include <unordered_map>\n#include <queue>\n#include <deque>\n#include <stack>\n#include <iostream>\n#include <iomanip>\n#include <complex>\n#include <cassert>\n#include <random>\n#include <chrono>\n#include <functional>\n#include <array>\n#include <bitset>\n#include <numeric>\n' > /usr/local/include/bits/stdc++.h
+#/usr/local/include/bits/
+    - sudo echo $'#include <vector>\n#include <set>\n#include <map>\n#include <unordered_set>\n#include <unordered_map>\n#include <queue>\n#include <deque>\n#include <stack>\n#include <iostream>\n#include <iomanip>\n#include <complex>\n#include <cassert>\n#include <random>\n#include <chrono>\n#include <functional>\n#include <array>\n#include <bitset>\n#include <numeric>\n' > stdc++.h
     - cd cpp
     script: find . -name *.cpp -print0 | xargs -n1 -0 clang
 
-  - os: windows
+  - language: cpp
+    os: windows
     before_script:
     - ver 
     - dir
