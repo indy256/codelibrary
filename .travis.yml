@@ -67,6 +67,6 @@ matrix:
     os: windows
     before_script:
       - dir
-      - dir "c:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Tools\MSVC"
-      - dir "c:\Program Files (x86)\Microsoft Visual Studio 14.0\VC"
+      - dir "c:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Tools\MSVC\14.16.27023\bin\Hostx64\x64"
+      - dir "c:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin"
     script:

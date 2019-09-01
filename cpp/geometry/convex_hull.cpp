@@ -15,7 +15,7 @@ bool isNotRightTurn(const point &a, const point &b, const point &c) {
 }
 
 vector<point> convex_hull(vector<point> points) {
-    sort(points.begin(), points.end(), [](auto a, auto b) { return a.x < b.x || a.x == b.x && a.y < b.y; });
+    sort(points.begin(), points.end(), [](auto a, auto b) { return a.x < b.x || (a.x == b.x && a.y < b.y); });
     int n = points.size();
     vector<point> hull;
     for (int i = 0; i < 2 * n - 1; i++) {

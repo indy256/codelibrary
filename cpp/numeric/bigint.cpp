@@ -61,7 +61,7 @@ struct bigint {
 
     bigint &operator-=(const bigint &other) {
         if (sign == other.sign) {
-            if (sign == 1 && *this >= other || sign == -1 && *this <= other) {
+            if ((sign == 1 && *this >= other) || (sign == -1 && *this <= other)) {
                 for (int i = 0, carry = 0; i < other.z.size() || carry; ++i) {
                     z[i] -= carry + (i < other.z.size() ? other.z[i] : 0);
                     carry = z[i] < 0;
