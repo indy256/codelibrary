@@ -17,26 +17,26 @@ environment:
 
 build_script:
   - mkdir bits
-  - |
+  - ps: |
     (
-    echo #include <vector>
-    echo #include <set>
-    echo #include <map>
-    echo #include <unordered_set>
-    echo #include <unordered_map>
-    echo #include <queue>
-    echo #include <deque>
-    echo #include <stack>
-    echo #include <iostream>
-    echo #include <iomanip>
-    echo #include <complex>
-    echo #include <cassert>
-    echo #include <random>
-    echo #include <chrono>
-    echo #include <functional>
-    echo #include <array>
-    echo #include <bitset>
-    echo #include <numeric>
+    echo #include ^<vector^>
+    echo #include ^<set^>
+    echo #include ^<map^>
+    echo #include ^<unordered_set^>
+    echo #include ^<unordered_map^>
+    echo #include ^<queue^>
+    echo #include ^<deque^>
+    echo #include ^<stack^>
+    echo #include ^<iostream^>
+    echo #include ^<iomanip^>
+    echo #include ^<complex^>
+    echo #include ^<cassert^>
+    echo #include ^<random^>
+    echo #include ^<chrono^>
+    echo #include ^<functional^>
+    echo #include ^<array^>
+    echo #include ^<bitset^>
+    echo #include ^<numeric^>
     ) > bits/stdc++.h
   - call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars32.bat"
   - cl
