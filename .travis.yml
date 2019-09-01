@@ -39,10 +39,10 @@ matrix:
     dist: bionic
     #compiler: clang
     before_script:
-    - uname -a 
-    - clang++ --version
-    - cd cpp
-    script: find . -name *.cpp -print0 | xargs -n1 -0 clang++ -std=c++2a
+      - uname -a 
+      - clang-8 --version
+      - cd cpp
+    script: find . -name *.cpp -print0 | xargs -n1 -0 clang++ -Wall -std=c++2a
     addons:
       apt:
         packages:
@@ -55,18 +55,18 @@ matrix:
     osx_image: xcode11
     compiler: clang
     before_script:
-    - uname -a 
-    - clang++ --version
-    - cd cpp
-    - mkdir bits
-    - echo $'#include <vector>\n#include <set>\n#include <map>\n#include <unordered_set>\n#include <unordered_map>\n#include <queue>\n#include <deque>\n#include <stack>\n#include <iostream>\n#include <iomanip>\n#include <complex>\n#include <cassert>\n#include <random>\n#include <chrono>\n#include <functional>\n#include <array>\n#include <bitset>\n#include <numeric>\n' > bits/stdc++.h
-    script: find . -name *.cpp -print0 | xargs -n1 -0 clang++ -std=c++2a -isystem .
+      - uname -a 
+      - clang++ --version
+      - cd cpp
+      - mkdir bits
+      - echo $'#include <vector>\n#include <set>\n#include <map>\n#include <unordered_set>\n#include <unordered_map>\n#include <queue>\n#include <deque>\n#include <stack>\n#include <iostream>\n#include <iomanip>\n#include <complex>\n#include <cassert>\n#include <random>\n#include <chrono>\n#include <functional>\n#include <array>\n#include <bitset>\n#include <numeric>\n' > bits/stdc++.h
+    script: find . -name *.cpp -print0 | xargs -n1 -0 clang++ -Wall -std=c++2a -isystem .
 
   - language: cpp
     os: windows
     before_script:
-    - dir
-    - dir "c:\Program Files (x86)"
-    - dir "c:\Program Files (x86)\Microsoft Visual Studio"
-    - dir "c:\Program Files (x86)\Microsoft Visual Studio 14.0"
+      - dir
+      - dir "c:\Program Files (x86)"
+      - dir "c:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC"
+      - dir "c:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\Tools\MSVC"
     script:
