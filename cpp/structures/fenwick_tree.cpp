@@ -1,5 +1,5 @@
 #pragma GCC target("lzcnt")
-#pragma clang attribute lzcnt
+#pragma clang attribute push (__attribute__((target("lzcnt"))), apply_to=function)
 
 #include <immintrin.h>
 #include <bits/stdc++.h>
@@ -57,3 +57,5 @@ int main() {
     cout << (2 == f.lower_bound(19)) << endl;
     cout << (3 == f.lower_bound(20)) << endl;
 }
+
+#pragma clang attribute pop
