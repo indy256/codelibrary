@@ -12,7 +12,9 @@ matrix:
         - ant
                    
   - language: cpp
-    before_script: cd cpp ; g++ --version
+    before_script: 
+    - g++ --version
+    - cd cpp
     script: find . -name *.cpp -print0 | xargs -n1 -0 g++-9 -std=c++2a
     addons:
       apt:
@@ -22,7 +24,9 @@ matrix:
         - g++-9
 
   - language: cpp
-    before_script: cd cpp ; g++ --version
+    before_script: 
+    - g++ --version
+    - cd cpp
     script: find . -name *.cpp -print0 | xargs -n1 -0 g++-7 -std=c++17
     addons:
       apt:
@@ -32,11 +36,8 @@ matrix:
         - g++-7
 
   - language: cpp
-    before_script: cd cpp ; g++ --version
-    script: find . -name *.cpp -print0 | xargs -n1 -0 g++-7 -std=c++17
-    addons:
-      apt:
-        sources:
-        - ubuntu-toolchain-r-test
-        packages:
-        - g++-7
+    compiler: clang
+    before_script: 
+    - clang --version
+    - cd cpp
+    script: find . -name *.cpp -print0 | xargs -n1 -0 clang
