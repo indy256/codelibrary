@@ -1,5 +1,3 @@
-import java.util.*
-
 object Dijkstra {
     data class Edge(val target: Int, val cost: Int)
 
@@ -46,7 +44,7 @@ object Dijkstra {
                 }
             }
         }
-        println(Arrays.toString(graph))
+        println(graph.contentToString())
         val (dist, pred) = shortestPaths(graph, 0)
         println(0 == dist[0])
         println(3 == dist[1])

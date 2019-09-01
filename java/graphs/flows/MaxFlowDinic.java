@@ -29,7 +29,7 @@ public class MaxFlowDinic {
         graph[t].add(new Edge(s, graph[s].size() - 1, 0));
     }
 
-    boolean dinicBfs(List<Edge>[] graph, int src, int dest, int[] dist) {
+    boolean dinicBfs(int src, int dest) {
         Arrays.fill(dist, -1);
         dist[src] = 0;
         int[] q = new int[graph.length];
@@ -47,13 +47,13 @@ public class MaxFlowDinic {
         return dist[dest] >= 0;
     }
 
-    int dinicDfs(List<Edge>[] graph, int[] ptr, int[] dist, int dest, int u, int f) {
+    int dinicDfs(int[] ptr, int dest, int u, int f) {
         if (u == dest)
             return f;
         for (; ptr[u] < graph[u].size(); ++ptr[u]) {
             Edge e = graph[u].get(ptr[u]);
             if (dist[e.t] == dist[u] + 1 && e.f < e.cap) {
-                int df = dinicDfs(graph, ptr, dist, dest, e.t, Math.min(f, e.cap - e.f));
+                int df = dinicDfs(ptr, dest, e.t, Math.min(f, e.cap - e.f));
                 if (df > 0) {
                     e.f += df;
                     graph[e.t].get(e.rev).f -= df;
@@ -66,15 +66,9 @@ public class MaxFlowDinic {
 
     public int maxFlow(int src, int dest) {
         int flow = 0;
-        int[] dist = new int[graph.length];
-        while (dinicBfs(graph, src, dest, dist)) {
+        while (dinicBfs(src, dest)) {
             int[] ptr = new int[graph.length];
-            while (true) {
-                int df = dinicDfs(graph, ptr, dist, dest, src, Integer.MAX_VALUE);
-                if (df == 0)
-                    break;
-                flow += df;
-            }
+            for (int df; (df = dinicDfs(ptr, dest, src, Integer.MAX_VALUE)) != 0; flow += df) ;
         }
         return flow;
     }
