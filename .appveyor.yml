@@ -17,25 +17,24 @@ environment:
 
 build_script:
   - mkdir bits
-  - ps: |
-    echo #include ^<vector^> > bits/stdc++.h
-    echo #include ^<set^> >> bits/stdc++.h
-    echo #include ^<map^> >> bits/stdc++.h
-    echo #include ^<unordered_set^> >> bits/stdc++.h
-    echo #include ^<unordered_map^> >> bits/stdc++.h
-    echo #include ^<queue^> >> bits/stdc++.h
-    echo #include ^<deque^> >> bits/stdc++.h
-    echo #include ^<stack^> >> bits/stdc++.h
-    echo #include ^<iostream^> >> bits/stdc++.h
-    echo #include ^<iomanip^> >> bits/stdc++.h
-    echo #include ^<complex^> >> bits/stdc++.h
-    echo #include ^<cassert^> >> bits/stdc++.h
-    echo #include ^<random^> >> bits/stdc++.h
-    echo #include ^<chrono^> >> bits/stdc++.h
-    echo #include ^<functional^> >> bits/stdc++.h
-    echo #include ^<array^> >> bits/stdc++.h
-    echo #include ^<bitset^> >> bits/stdc++.h
-    echo #include ^<numeric^> >> bits/stdc++.h
+  - echo #include ^<vector^> > bits/stdc++.h
+  - echo #include ^<set^> >> bits/stdc++.h
+  - echo #include ^<map^> >> bits/stdc++.h
+  - echo #include ^<unordered_set^> >> bits/stdc++.h
+  - echo #include ^<unordered_map^> >> bits/stdc++.h
+  - echo #include ^<queue^> >> bits/stdc++.h
+  - echo #include ^<deque^> >> bits/stdc++.h
+  - echo #include ^<stack^> >> bits/stdc++.h
+  - echo #include ^<iostream^> >> bits/stdc++.h
+  - echo #include ^<iomanip^> >> bits/stdc++.h
+  - echo #include ^<complex^> >> bits/stdc++.h
+  - echo #include ^<cassert^> >> bits/stdc++.h
+  - echo #include ^<random^> >> bits/stdc++.h
+  - echo #include ^<chrono^> >> bits/stdc++.h
+  - echo #include ^<functional^> >> bits/stdc++.h
+  - echo #include ^<array^> >> bits/stdc++.h
+  - echo #include ^<bitset^> >> bits/stdc++.h
+  - echo #include ^<numeric^> >> bits/stdc++.h
   - call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars32.bat"
   - cl
   - dir
