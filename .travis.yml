@@ -1,7 +1,8 @@
 matrix:
   include:
 
-  - jdk: oraclejdk14
+  - language: java
+    jdk: oraclejdk14
     before_script:
     - java -version
     - cd java
@@ -43,7 +44,7 @@ matrix:
     - cd cpp
     - mkdir bits
     - echo $'#include <vector>\n#include <set>\n#include <map>\n#include <unordered_set>\n#include <unordered_map>\n#include <queue>\n#include <deque>\n#include <stack>\n#include <iostream>\n#include <iomanip>\n#include <complex>\n#include <cassert>\n#include <random>\n#include <chrono>\n#include <functional>\n#include <array>\n#include <bitset>\n#include <numeric>\n' > stdc++.h
-    script: find . -name *.cpp -print0 | xargs -n1 -0 clang++ -std=c++17 -isystem .
+    script: find . -name *.cpp -print0 | xargs -n1 -0 clang++ -std=c++17 -target-feature +lzcnt -isystem .
 
   - language: cpp
     os: osx
@@ -55,10 +56,15 @@ matrix:
     - cd cpp
     - mkdir bits
     - echo $'#include <vector>\n#include <set>\n#include <map>\n#include <unordered_set>\n#include <unordered_map>\n#include <queue>\n#include <deque>\n#include <stack>\n#include <iostream>\n#include <iomanip>\n#include <complex>\n#include <cassert>\n#include <random>\n#include <chrono>\n#include <functional>\n#include <array>\n#include <bitset>\n#include <numeric>\n' > stdc++.h
-    script: find . -name *.cpp -print0 | xargs -n1 -0 clang++ -std=c++17 -isystem .
+    script: find . -name *.cpp -print0 | xargs -n1 -0 clang++ -std=c++17 -target-feature +lzcnt -isystem .
 
   - language: cpp
     os: windows
+    env:
+    - MSBUILD_PATH="c:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\MSBuild\15.0\Bin"
     before_script:
     - dir
+    script:
+    - export PATH=$MSBUILD_PATH:$PATH
+    - make
     - cl.exe
