@@ -11,22 +11,20 @@ matrix:
                    
   - language: cpp
     before_script: cd cpp
-    #script: find . -type f -iname *.cpp -execdir g++-9 -std=c++2a {} \;   
-    script: find . -name *.cpp -print0 | xargs -n1 -0 g++-9 -std=c++2a
+    script: find . -name *.cpp -print0 | xargs -n1 -0 g++-9.1.0 -std=c++2a
     addons:
       apt:
         sources:
         - ubuntu-toolchain-r-test
         packages:
-        - g++-9
+        - g++-9.1.0
 
   - language: cpp
     before_script: cd cpp
-    #script: find . -type f -iname *.cpp -execdir g++-9 -std=c++2a {} \;   
-    script: find . -name *.cpp -print0 | xargs -n1 -0 g++-7 -std=c++17
+    script: find . -name *.cpp -print0 | xargs -n1 -0 g++-7.3.0 -std=c++17
     addons:
       apt:
         sources:
         - ubuntu-toolchain-r-test
         packages:
-        - g++-7
+        - g++-7.3.0
