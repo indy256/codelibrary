@@ -64,6 +64,7 @@ matrix:
     - MSBUILD_PATH="c:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\MSBuild\15.0\Bin"
     before_script:
     - dir
+    - wmic logicaldisk get caption
     - dir "c:"
     - dir "c:\Program Files (x86)\Microsoft Visual Studio"
     - dir "c:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\MSBuild"

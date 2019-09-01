@@ -1,4 +1,5 @@
 #pragma GCC target("lzcnt")
+#pragma clang attribute push (__attribute__((target("lzcnt"))), apply_to=function)
 
 #include <immintrin.h>
 #include <bits/stdc++.h>
@@ -33,3 +34,5 @@ int main() {
     cout << st.get(0, 2) << endl;
     cout << st.get(0, 1) << endl;
 }
+
+#pragma clang attribute pop
