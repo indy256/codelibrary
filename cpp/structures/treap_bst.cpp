@@ -8,8 +8,8 @@ mt19937_64 rng(chrono::steady_clock::now().time_since_epoch().count());
 
 struct Treap {
     int key;
-    int size;
     long long prio;
+    int size;
     Treap *l, *r;
 
     Treap(int key) : key(key), size(1), prio(rng()), l(nullptr), r(nullptr) {}
