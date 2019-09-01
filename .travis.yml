@@ -4,8 +4,8 @@ matrix:
   - language: java
     jdk: oraclejdk14
     before_script:
-    - java -version
-    - cd java
+      - java -version
+      - cd java
     addons:
       apt:
         packages:
@@ -13,37 +13,35 @@ matrix:
                    
   - language: cpp
     before_script: 
-    - g++-9 --version
-    - cd cpp
+      - g++-9 --version
+      - cd cpp
     script: find . -name *.cpp -print0 | xargs -n1 -0 g++-9 -std=c++2a
     addons:
       apt:
-        sources:
-        - ubuntu-toolchain-r-test
         packages:
-        - g++-9
+          - g++-9
+        sources:
+          - ubuntu-toolchain-r-test
 
   - language: cpp
     before_script: 
-    - g++-7 --version
-    - cd cpp
+      - g++-7 --version
+      - cd cpp
     script: find . -name *.cpp -print0 | xargs -n1 -0 g++-7 -std=c++17
     addons:
       apt:
-        sources:
-        - ubuntu-toolchain-r-test
         packages:
-        - g++-7
+          - g++-7
+        sources:
+          - ubuntu-toolchain-r-test
 
   - language: cpp
     dist: bionic
-    compiler: clang
+    #compiler: clang
     before_script:
     - uname -a 
-    - clang --version
+    - clang++ --version
     - cd cpp
-    - mkdir bits
-    - echo $'#include <vector>\n#include <set>\n#include <map>\n#include <unordered_set>\n#include <unordered_map>\n#include <queue>\n#include <deque>\n#include <stack>\n#include <iostream>\n#include <iomanip>\n#include <complex>\n#include <cassert>\n#include <random>\n#include <chrono>\n#include <functional>\n#include <array>\n#include <bitset>\n#include <numeric>\n' > bits/stdc++.h
     script: find . -name *.cpp -print0 | xargs -n1 -0 clang++ -std=c++2a
     addons:
       apt:
@@ -58,7 +56,7 @@ matrix:
     compiler: clang
     before_script:
     - uname -a 
-    - clang --version
+    - clang++ --version
     - cd cpp
     - mkdir bits
     - echo $'#include <vector>\n#include <set>\n#include <map>\n#include <unordered_set>\n#include <unordered_map>\n#include <queue>\n#include <deque>\n#include <stack>\n#include <iostream>\n#include <iomanip>\n#include <complex>\n#include <cassert>\n#include <random>\n#include <chrono>\n#include <functional>\n#include <array>\n#include <bitset>\n#include <numeric>\n' > bits/stdc++.h
@@ -66,21 +64,9 @@ matrix:
 
   - language: cpp
     os: windows
-    env:
-    - MSBUILD_PATH="c:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\MSBuild\15.0\Bin"
     before_script:
     - dir
-    - dir "c:\Program Files"
     - dir "c:\Program Files (x86)"
-    - sudo dir "c:\Program Files (x86)"
-    - dir C:\
-    - dir c:\
-    - sudo dir C:\
     - dir "c:\Program Files (x86)\Microsoft Visual Studio"
-    - dir "c:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\MSBuild"
+    - dir "c:\Program Files (x86)\Microsoft Visual Studio 14.0"
     script:
-    - export PATH=$MSBUILD_PATH:$PATH
-    - dir $MSBUILD_PATH
-    - dir %MSBUILD_PATH%
-    - make
-    - cl.exe
