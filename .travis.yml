@@ -65,9 +65,8 @@ matrix:
     before_script:
     - dir
     - wmic logicaldisk get caption
-    - dir "C:"
-    - sudo dir "C:"
-    - dir "C:\"
+    - dir "C:\""
+    - sudo dir "C:\""
     - dir "c:\Program Files (x86)\Microsoft Visual Studio"
     - dir "c:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\MSBuild"
     script:
