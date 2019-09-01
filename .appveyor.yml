@@ -1,0 +1,20 @@
+shallow_clone: true
+
+platform:
+  - x86
+#  - x64
+
+configuration:
+  - Release
+#  - Debug
+
+image:
+  - Visual Studio 2019
+
+environment:
+  VCVAR2019: 'C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvarsall.bat'
+  matrix:
+    - id: compile
+
+build_script:
+  - cl
