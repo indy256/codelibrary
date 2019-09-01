@@ -4,7 +4,6 @@ matrix:
   - language: java
     jdk: oraclejdk14
     before_script:
-    - uname -a 
     - java -version
     - cd java
     addons:
@@ -43,30 +42,23 @@ matrix:
     - uname -a 
     - clang --version
     - cd cpp
-    - sudo mkdir bits
+    - mkdir bits
     - echo $'#include <vector>\n#include <set>\n#include <map>\n#include <unordered_set>\n#include <unordered_map>\n#include <queue>\n#include <deque>\n#include <stack>\n#include <iostream>\n#include <iomanip>\n#include <complex>\n#include <cassert>\n#include <random>\n#include <chrono>\n#include <functional>\n#include <array>\n#include <bitset>\n#include <numeric>\n' > stdc++.h
-    - ls .
-    script: find . -name *.cpp -print0 | xargs -n1 -0 clang++ -isystem .
+    script: find . -name *.cpp -print0 | xargs -n1 -0 clang++ -std=c++17 -isystem .
 
   - language: cpp
     os: osx
     compiler: clang
-    sudo: required
     before_script:
     - uname -a 
     - clang --version
-    - sudo ls .
-    - sudo ls /usr/local/include
-    - sudo mkdir /usr/local/include/bits
-    - sudo ls /usr/local/include
-#/usr/local/include/bits/
-    - sudo echo $'#include <vector>\n#include <set>\n#include <map>\n#include <unordered_set>\n#include <unordered_map>\n#include <queue>\n#include <deque>\n#include <stack>\n#include <iostream>\n#include <iomanip>\n#include <complex>\n#include <cassert>\n#include <random>\n#include <chrono>\n#include <functional>\n#include <array>\n#include <bitset>\n#include <numeric>\n' > /usr/local/include/bits/stdc++.h
     - cd cpp
-    script: find . -name *.cpp -print0 | xargs -n1 -0 clang++
+    - mkdir bits
+    - echo $'#include <vector>\n#include <set>\n#include <map>\n#include <unordered_set>\n#include <unordered_map>\n#include <queue>\n#include <deque>\n#include <stack>\n#include <iostream>\n#include <iomanip>\n#include <complex>\n#include <cassert>\n#include <random>\n#include <chrono>\n#include <functional>\n#include <array>\n#include <bitset>\n#include <numeric>\n' > stdc++.h
+    script: find . -name *.cpp -print0 | xargs -n1 -0 clang++ -std=c++17 -isystem .
 
   - language: cpp
     os: windows
     before_script:
     - dir
-    - curl 
     - cl.exe
