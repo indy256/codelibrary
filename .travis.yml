@@ -39,14 +39,17 @@ matrix:
     before_script:
       - uname -a 
       - clang++-8 --version
+      - g++-9 --version
       - cd cpp
     script: find . -name *.cpp -print0 | xargs -n1 -0 clang++-8 -Wall -std=c++2a
     addons:
       apt:
         packages:
           - clang-8
+          - g++-9
         sources:
           - llvm-toolchain-trusty-8
+          - ubuntu-toolchain-r-test
 
   - language: cpp
     os: osx
@@ -67,8 +70,8 @@ matrix:
       - dir "c:\Program Files (x86)"
       - dir "c:\Program Files (x86)\Microsoft Visual Studio"
       - dir "c:\Program Files (x86)\Microsoft Visual Studio\2017"
-      - dir "c:\Program Files (x86)\Microsoft Visual Studio\2017\Community"
-      - dir "c:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC"
-      - dir "c:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools"
+      - dir "c:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools"
+      - dir "c:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC"
+      - dir "c:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Tools"
       - dir "c:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\Tools\MSVC"
     script:

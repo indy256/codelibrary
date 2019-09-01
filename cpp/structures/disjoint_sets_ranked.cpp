@@ -8,7 +8,7 @@ tuple<vector<int>, vector<int>> create_sets(int n) {
     vector<int> res(n);
     iota(res.begin(), res.end(), 0);
     vector<int> rank(n);
-    return {res, rank};
+    return tuple{res, rank};
 }
 
 int root(vector<int> &p, int x) {
