@@ -3,14 +3,14 @@ matrix:
 
   - language: java
     jdk: oraclejdk14
-    before_script: cd java
+    before_script: cd java ; java -version
     addons:
       apt:
         packages:
         - ant
                    
   - language: cpp
-    before_script: cd cpp
+    before_script: cd cpp ; g++ --version
     script: find . -name *.cpp -print0 | xargs -n1 -0 g++-9.1.0 -std=c++2a
     addons:
       apt:
@@ -20,7 +20,7 @@ matrix:
         - g++-9.1.0
 
   - language: cpp
-    before_script: cd cpp
+    before_script: cd cpp ; g++ --version
     script: find . -name *.cpp -print0 | xargs -n1 -0 g++-7.3.0 -std=c++17
     addons:
       apt:
