@@ -3,7 +3,9 @@ matrix:
 
   - language: java
     jdk: oraclejdk14
-    before_script: cd java ; java -version
+    before_script: 
+    - java -version
+    - cd java
     addons:
       apt:
         packages:
@@ -18,6 +20,16 @@ matrix:
         - ubuntu-toolchain-r-test
         packages:
         - g++-9
+
+  - language: cpp
+    before_script: cd cpp ; g++ --version
+    script: find . -name *.cpp -print0 | xargs -n1 -0 g++-7 -std=c++17
+    addons:
+      apt:
+        sources:
+        - ubuntu-toolchain-r-test
+        packages:
+        - g++-7
 
   - language: cpp
     before_script: cd cpp ; g++ --version
