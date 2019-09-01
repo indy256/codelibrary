@@ -41,7 +41,7 @@ matrix:
       - clang++-8 --version
       - g++-9 --version
       - cd cpp
-    script: find . -name *.cpp -print0 | xargs -n1 -0 clang++-8 -Wall -std=c++2a
+    script: find . -name *.cpp -print0 | xargs -n1 -0 clang++-8 -Wall -Wextra -std=c++2a
     addons:
       apt:
         packages:
@@ -61,12 +61,11 @@ matrix:
       - cd cpp
       - mkdir bits
       - echo $'#include <vector>\n#include <set>\n#include <map>\n#include <unordered_set>\n#include <unordered_map>\n#include <queue>\n#include <deque>\n#include <stack>\n#include <iostream>\n#include <iomanip>\n#include <complex>\n#include <cassert>\n#include <random>\n#include <chrono>\n#include <functional>\n#include <array>\n#include <bitset>\n#include <numeric>\n' > bits/stdc++.h
-    script: find . -name *.cpp -print0 | xargs -n1 -0 clang++ -Wall -std=c++2a -isystem .
+    script: find . -name *.cpp -print0 | xargs -n1 -0 clang++ -Wall -Wextra -std=c++2a -isystem .
 
   - language: cpp
     os: windows
     before_script:
-      - dir
-      - dir "c:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Tools\MSVC\14.16.27023\bin\Hostx64\x64"
-      - dir "c:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin"
+      - "c:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Tools\MSVC\14.16.27023\bin\Hostx64\x64\cl.exe"
+      - "c:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\cl.exe"
     script:

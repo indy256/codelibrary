@@ -18,7 +18,7 @@ int main() {
     point a[] = {{2, 3},
                  {1, 2}};
 
-    auto cmp = [](auto &a, auto &b) { return a.x < b.x || a.x == b.x && a.y < b.y; };
+    auto cmp = [](auto &a, auto &b) { return a.x < b.x || (a.x == b.x && a.y < b.y); };
     sort(a, a + 2, cmp);
 
     set<point, decltype(cmp)> s(a, a + 2, cmp);
