@@ -3,7 +3,8 @@ matrix:
 
   - language: java
     jdk: oraclejdk14
-    before_script: 
+    before_script:
+    - uname -a 
     - java -version
     - cd java
     addons:
@@ -13,7 +14,7 @@ matrix:
                    
   - language: cpp
     before_script: 
-    - g++ --version
+    - g++-9 --version
     - cd cpp
     script: find . -name *.cpp -print0 | xargs -n1 -0 g++-9 -std=c++2a
     addons:
@@ -25,7 +26,7 @@ matrix:
 
   - language: cpp
     before_script: 
-    - g++ --version
+    - g++-7 --version
     - cd cpp
     script: find . -name *.cpp -print0 | xargs -n1 -0 g++-7 -std=c++17
     addons:
@@ -36,8 +37,13 @@ matrix:
         - g++-7
 
   - language: cpp
+    os: linux
     compiler: clang
-    before_script: 
+    before_script:
+    - uname -a 
     - clang --version
+    - ls /usr/local/include
+    - sudo mkdir /usr/local/include/bits
+    - sudo echo $'#include <vector>\n#include <set>\n#include <map>\n#include <unordered_set>\n#include <unordered_map>\n#include <queue>\n#include <deque>\n#include <stack>\n#include <iostream>\n#include <iomanip>\n#include <complex>\n#include <cassert>\n#include <random>\n#include <chrono>\n#include <functional>\n#include <array>\n#include <bitset>\n#include <numeric>\n' > /usr/local/include/bits/stdc++.h
     - cd cpp
     script: find . -name *.cpp -print0 | xargs -n1 -0 clang
