@@ -12,9 +12,9 @@ image:
   - Visual Studio 2019
 
 environment:
-  VCVAR2019: 'C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvarsall.bat'
   matrix:
     - id: compile
 
 build_script:
+  - call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars32.bat"
   - cl
