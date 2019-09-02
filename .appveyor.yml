@@ -18,7 +18,7 @@ environment:
 build_script:
   - cd cpp
   - mkdir bits
-  - "echo #include <vector> > bits\stdc++.h"
+  - 'echo #include <vector> > bits\stdc++.h'
   - echo #include ^<set^> >> bits\stdc++.h
   - echo #include ^<map^> >> bits\stdc++.h
   - echo #include ^<unordered_set^> >> bits\stdc++.h
