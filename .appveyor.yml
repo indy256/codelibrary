@@ -1,19 +1,19 @@
 shallow_clone: true
 
 platform:
-  - x86
+#  - x86
   - x64
 
 configuration:
-  - Release
-#  - Debug
+#  - Release
+  - Debug
 
 image:
   - Visual Studio 2019
 
-environment:
-  matrix:
-    - id: compile
+#environment:
+#  matrix:
+#    - id: compile
 
 build_script:
   - cmd: |-
