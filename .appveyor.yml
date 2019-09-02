@@ -23,7 +23,7 @@ build_script:
 #  - type bits\stdc++.h
 #  - 'echo abc >> bits\stdc++.h'
 #  - type bits\stdc++.h
-  - cmd: |
+  - cmd: |-
       cd cpp
       mkdir bits
       dir bits\
