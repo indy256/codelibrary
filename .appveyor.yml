@@ -27,7 +27,7 @@ build_script:
       cd cpp
       mkdir bits
       dir bits\
-      C:\msys64\usr\bin\echo $'#include <vector>\n' > bits\stdc++.h
+      C:\msys64\usr\bin\echo -e '#include ^<vector^>\n' > bits\stdc++.h
       type bits\stdc++.h
   #  - 'echo #include ^<vector^> >> bits\stdc++.h'
 #  - echo #include ^<set^> >> bits\stdc++.h
