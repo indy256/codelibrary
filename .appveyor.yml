@@ -18,7 +18,12 @@ environment:
 build_script:
   - cd cpp
   - mkdir bits
-  - 'echo #include ^<vector^> > bits\stdc++.h'
+  - dir bits\
+  - echo "abc" > bits\stdc++.h
+  - type bits\stdc++.h
+  - 'echo abc >> bits\stdc++.h'
+  - type bits\stdc++.h
+  - 'echo #include ^<vector^> >> bits\stdc++.h'
   - echo #include ^<set^> >> bits\stdc++.h
   - echo #include ^<map^> >> bits\stdc++.h
   - echo #include ^<unordered_set^> >> bits\stdc++.h
@@ -37,6 +42,5 @@ build_script:
   - echo #include ^<bitset^> >> bits\stdc++.h
   - echo #include ^<numeric^> >> bits\stdc++.h
   - call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars32.bat"
-  - dir bits\
   - type bits\stdc++.h
   - C:\msys64\usr\bin\find.exe . -name "*.cpp" -print0 | C:\msys64\usr\bin\xargs.exe -n1 -0 cl //I .
