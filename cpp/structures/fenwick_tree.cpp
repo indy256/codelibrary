@@ -1,5 +1,5 @@
 #pragma GCC target("lzcnt")
-#pragma clang attribute push (__attribute__((target("lzcnt"))))
+#pragma clang attribute push (__attribute__((target("lzcnt"))), apply_to=function)
 
 #include <immintrin.h>
 #include <bits/stdc++.h>

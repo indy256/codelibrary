@@ -82,7 +82,7 @@ int main() {
     mt19937 rng(1);
     s.clear();
     for (int i = 0; i < 1000'000; ++i) {
-        char c = uniform_int_distribution<char>('a', 'd')(rng);
+        char c = uniform_int_distribution<int>('a', 'd')(rng);
         s.push_back(c);
     }
     auto t1 = chrono::high_resolution_clock::now();
