@@ -26,8 +26,8 @@ void build_tree(int left, int right, pii *points) {
         maxy = max(maxy, points[i].second);
     }
     divX[mid] = (maxx - minx) >= (maxy - miny);
-    bool (*cmpX)(pii, pii) = [](pii a, pii b) { return a.first < b.first; };
-    bool (*cmpY)(pii, pii) = [](pii a, pii b) { return a.second < b.second; };
+    auto cmpX = [](pii a, pii b) { return a.first < b.first; };
+    auto cmpY = [](pii a, pii b) { return a.second < b.second; };
     nth_element(points + left, points + mid, points + right, divX[mid] ? cmpX : cmpY);
 
     tx[mid] = points[mid].first;
