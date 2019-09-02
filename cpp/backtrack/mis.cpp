@@ -1,3 +1,4 @@
+#if defined(__GNUC__) && !defined(__clang__)
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -31,3 +32,7 @@ int main() {
     }
     cout << mis(g, (1LL << g.size()) - 1) << endl;
 }
+
+#else
+int main() {}
+#endif

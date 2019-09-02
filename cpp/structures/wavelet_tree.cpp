@@ -19,7 +19,7 @@ struct wavelet_tree {
     wavelet_tree(int *from, int *to, int x, int y) {
         lo = x;
         hi = y;
-        if (lo == hi or from >= to)
+        if (lo == hi || from >= to)
             return;
         int mid = (lo + hi) / 2;
         auto f = [mid](int x) {
@@ -50,7 +50,7 @@ struct wavelet_tree {
 
     //count of nos in [l, r] Less than or equal to k
     int LTE(int l, int r, int k) {
-        if (l > r or k < lo)
+        if (l > r || k < lo)
             return 0;
         if (hi <= k)
             return r - l + 1;
@@ -61,7 +61,7 @@ struct wavelet_tree {
 
     //count of nos in [l, r] equal to k
     int count(int l, int r, int k) {
-        if (l > r or k < lo or k > hi) return 0;
+        if (l > r || k < lo || k > hi) return 0;
         if (lo == hi) return r - l + 1;
         int lb = b[l - 1];
         int rb = b[r];
