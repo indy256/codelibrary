@@ -63,13 +63,13 @@ matrix:
       - echo $'#include <vector>\n#include <set>\n#include <map>\n#include <unordered_set>\n#include <unordered_map>\n#include <queue>\n#include <deque>\n#include <stack>\n#include <iostream>\n#include <iomanip>\n#include <complex>\n#include <cassert>\n#include <random>\n#include <chrono>\n#include <functional>\n#include <array>\n#include <bitset>\n#include <numeric>\n' > bits/stdc++.h
     script: find . -name *.cpp -print0 | xargs -n1 -0 clang++ -Wall -Wextra -std=c++2a -isystem .
 
-  - language: cpp
-    os: windows
-    before_script:
-      - dir "C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Auxiliary\Build"
-      - dir "C:\mingw-w64"
+#  - language: cpp
+#    os: windows
+#    before_script:
+#      - dir "C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Auxiliary\Build"
+#      - dir "C:\mingw-w64"
 #      - "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\BuildTools\\VC\\Auxiliary\\Build\\vcvars64.bat"
 #      - "c:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Tools\MSVC\14.16.27023\bin\Hostx64\x64\cl.exe"
 #      - "c:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\cl.exe"
-    script:
-      - cl
+#    script:
+#      - cl
