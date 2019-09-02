@@ -10,9 +10,9 @@ matrix:
       apt:
         packages:
         - ant
-                   
+
   - language: cpp
-    before_script: 
+    before_script:
       - g++-9 --version
       - cd cpp
     script: find . -name *.cpp -print0 | xargs -n1 -0 g++-9 -Wall -Wextra -std=c++2a
@@ -24,7 +24,7 @@ matrix:
           - ubuntu-toolchain-r-test
 
   - language: cpp
-    before_script: 
+    before_script:
       - g++-7 --version
       - cd cpp
     script: find . -name *.cpp -print0 | xargs -n1 -0 g++-7 -Wall -Wextra -std=c++17
@@ -37,7 +37,7 @@ matrix:
 
   - language: cpp
     before_script:
-      - uname -a 
+      - uname -a
       - clang++-8 --version
       - g++-9 --version
       - cd cpp
@@ -56,7 +56,7 @@ matrix:
     osx_image: xcode11
     compiler: clang
     before_script:
-      - uname -a 
+      - uname -a
       - clang++ --version
       - cd cpp
       - mkdir bits
@@ -67,9 +67,8 @@ matrix:
     os: windows
     before_script:
       - dir "C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Auxiliary\Build"
-      - "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\BuildTools\\VC\\Auxiliary\\Build\\vcvars64.bat"
-#      - "C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Auxiliary\Build\vcvars64.bat"
       - dir "C:\mingw-w64"
+#      - "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\BuildTools\\VC\\Auxiliary\\Build\\vcvars64.bat"
 #      - "c:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Tools\MSVC\14.16.27023\bin\Hostx64\x64\cl.exe"
 #      - "c:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\cl.exe"
     script:
