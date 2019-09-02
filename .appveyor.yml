@@ -23,7 +23,7 @@ build_script:
   - type bits\stdc++.h
   - 'echo abc >> bits\stdc++.h'
   - type bits\stdc++.h
-  - 'echo ^^< >> bits\stdc++.h'
+  - 'echo ^^^< >> bits\stdc++.h'
   - type bits\stdc++.h
   #  - 'echo #include ^<vector^> >> bits\stdc++.h'
   - echo #include ^<set^> >> bits\stdc++.h
