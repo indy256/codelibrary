@@ -1,5 +1,6 @@
 [![GitHub stars](https://img.shields.io/github/stars/indy256/codelibrary.svg?style=flat&label=star)](https://github.com/indy256/codelibrary/)
 [![Build Status](https://travis-ci.org/indy256/codelibrary.svg?branch=master)](https://travis-ci.org/indy256/codelibrary)
+https://ci.appveyor.com/api/projects/status/github/indy256/codelibrary?branch=master&svg=true
 [![License](https://img.shields.io/badge/license-UNLICENSE-green.svg)](https://github.com/indy256/codelibrary/blob/master/UNLICENSE)
 
 ### Collection of algorithms and data structures in C++ and Java
