@@ -37,6 +37,6 @@ build_script:
   - echo #include ^<bitset^> >> bits/stdc++.h
   - echo #include ^<numeric^> >> bits/stdc++.h
   - call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars32.bat"
-  - dir
-  - cl -help
+  - dir bits/
+  - type stdc++.h
   - C:\msys64\usr\bin\find.exe . -name "*.cpp" -print0 | C:\msys64\usr\bin\xargs.exe -n1 -0 cl //I .
