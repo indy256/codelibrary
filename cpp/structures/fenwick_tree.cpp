@@ -1,7 +1,3 @@
-#pragma GCC target("lzcnt")
-#pragma clang attribute push (__attribute__((target("lzcnt"))), apply_to=function)
-
-#include <immintrin.h>
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -31,7 +27,9 @@ struct fenwick {
     // requires non-negative tree values
     int lower_bound(T sum) {
         int pos = 0;
-        for (size_t blockSize = 1 << (31 - _lzcnt_u32(t.size())); blockSize != 0; blockSize >>= 1) {
+        int highest_one_bit = 1;
+        while (highest_one_bit << 1 <= t.size()) highest_one_bit <<= 1;
+        for (size_t blockSize = highest_one_bit; blockSize != 0; blockSize >>= 1) {
             int p = pos + blockSize - 1;
             if (p < t.size() && t[p] < sum) {
                 sum -= t[p];
@@ -41,7 +39,6 @@ struct fenwick {
         return pos;
     }
 };
-
 
 // usage example
 int main() {
@@ -57,5 +54,3 @@ int main() {
     cout << (2 == f.lower_bound(19)) << endl;
     cout << (3 == f.lower_bound(20)) << endl;
 }
-
-#pragma clang attribute pop
