@@ -1,10 +1,13 @@
-#pragma GCC target("lzcnt")
-#pragma clang attribute push (__attribute__((target("lzcnt"))), apply_to=function)
-
-#include <immintrin.h>
 #include <bits/stdc++.h>
 
 using namespace std;
+#ifdef _MSC_VER
+int __builtin_clz(unsigned x) {
+    int bit = 31;
+    while (bit >= 0 && (x & (1 << bit)) == 0) --bit;
+    return 31 - bit;
+}
+#endif
 
 const int MAX_NODES = 200'000;
 int parent[MAX_NODES];
@@ -19,7 +22,7 @@ unsigned lowest_one_bit(unsigned x) {
 }
 
 unsigned highest_one_bit(unsigned x) {
-    return x ? 1u << (31 - _lzcnt_u32(x)) : 0;
+    return x ? 1u << (31 - __builtin_clz(x)) : 0;
 }
 
 void dfs1(const vector<vector<int>> &tree, int u, int p) {
@@ -118,5 +121,3 @@ int main() {
         }
     }
 }
-
-#pragma clang attribute pop
