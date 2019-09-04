@@ -1,7 +1,18 @@
-#if defined(__GNUC__) && !defined(__clang__)
 #include <bits/stdc++.h>
 
 using namespace std;
+#ifdef _MSC_VER
+int __builtin_ctzll(unsigned long long x) {
+    int bit = 0;
+    while (bit < 64 && (x & (1LL << bit)) == 0) ++bit;
+    return bit;
+}
+int __builtin_popcountll(unsigned long long x) {
+    int bits = 0;
+    for (; x; x &= x - 1, ++bits);
+    return bits;
+}
+#endif
 
 using ll = long long;
 
@@ -32,7 +43,3 @@ int main() {
     }
     cout << mis(g, (1LL << g.size()) - 1) << endl;
 }
-
-#else
-int main() {}
-#endif
