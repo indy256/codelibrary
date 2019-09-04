@@ -1,6 +1,13 @@
 #include <bits/stdc++.h>
 
 using namespace std;
+#ifdef _MSC_VER
+int __builtin_clz(unsigned x) {
+    int bit = 31;
+    while (bit >= 0 && (x & (1 << bit)) == 0) --bit;
+    return 31 - bit;
+}
+#endif
 
 template<class T, class F = function<T(const T &, const T &)>>
 struct SparseTable {
