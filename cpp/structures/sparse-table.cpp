@@ -1,7 +1,3 @@
-#pragma GCC target("lzcnt")
-#pragma clang attribute push (__attribute__((target("lzcnt"))), apply_to=function)
-
-#include <immintrin.h>
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -11,7 +7,7 @@ struct SparseTable {
     vector<vector<T>> t;
     F func;
 
-    SparseTable(const vector<T> &a, F f) : t(32 - _lzcnt_u32(a.size())), func(std::move(f)) {
+    SparseTable(const vector<T> &a, F f) : t(32 - __builtin_clz(a.size())), func(std::move(f)) {
         t[0] = a;
         for (size_t i = 1; i < t.size(); i++) {
             t[i].resize(a.size() - (1 << i) + 1);
@@ -22,7 +18,7 @@ struct SparseTable {
 
     T get(int from, int to) const {
         assert(0 <= from && from <= to && to <= (int) t[0].size() - 1);
-        int k = 31 - _lzcnt_u32(to - from + 1);
+        int k = 31 - __builtin_clz(to - from + 1);
         return func(t[k][from], t[k][to - (1 << k) + 1]);
     }
 };
@@ -34,5 +30,3 @@ int main() {
     cout << st.get(0, 2) << endl;
     cout << st.get(0, 1) << endl;
 }
-
-#pragma clang attribute pop
