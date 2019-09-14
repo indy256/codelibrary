@@ -28,7 +28,13 @@ public class Quicksort {
         quickSort(a, low, j);
         quickSort(a, i, high);
     }
+    public static void sort (int[] a) {
+    	if (null == a || a.length < 2) {
+            return;
+        }
 
+    	quickSort(a, 0, a.length - 1);
+    }
     // test
     public static void main(String[] args) {
         int n = 10_000_000;
