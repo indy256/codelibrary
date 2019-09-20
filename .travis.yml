@@ -36,19 +36,20 @@ matrix:
           - ubuntu-toolchain-r-test
 
   - language: cpp
+    dist: bionic
     before_script:
       - uname -a
-      - clang++-8 --version
+      - clang++-9 --version
       - g++-9 --version
       - cd cpp
-    script: find . -name *.cpp -print0 | xargs -n1 -0 clang++-8 -Wall -Wextra -std=c++2a
+    script: find . -name *.cpp -print0 | xargs -n1 -0 clang++-9 -Wall -Wextra -std=c++2a
     addons:
       apt:
         packages:
-          - clang-8
+          - clang-9
           - g++-9
         sources:
-          - llvm-toolchain-trusty-8
+          - llvm-toolchain-bionic-9
           - ubuntu-toolchain-r-test
 
   - language: cpp
