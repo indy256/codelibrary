@@ -52,7 +52,8 @@ matrix:
 #          - llvm-toolchain-bionic-9
           - sourceline: 'ppa:ubuntu-toolchain-r/test'
           - sourceline: 'deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-9 main'
-          - ubuntu-toolchain-r-test
+            key_url: 'https://apt.llvm.org/llvm-snapshot.gpg.key'
+#          - ubuntu-toolchain-r-test
 
   - language: cpp
     os: osx
