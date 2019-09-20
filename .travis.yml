@@ -50,10 +50,10 @@ matrix:
           - g++-9
         sources:
 #          - llvm-toolchain-bionic-9
-          - sourceline: 'ppa:ubuntu-toolchain-r/test'
+#          - sourceline: 'ppa:ubuntu-toolchain-r/test'
+          - ubuntu-toolchain-r-test
           - sourceline: 'deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-9 main'
             key_url: 'https://apt.llvm.org/llvm-snapshot.gpg.key'
-#          - ubuntu-toolchain-r-test
 
   - language: cpp
     os: osx
