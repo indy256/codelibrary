@@ -16,4 +16,4 @@ add_executable(dummy-aggregate ${SOURCE_FILES})
 
 add_executable(java8-quicksort-anti-test misc/java8-anti-quicksort-test.cpp)
 
-add_executable(test structures/ordered_set.cpp)
+add_executable(test structures/fenwick_tree.cpp)
