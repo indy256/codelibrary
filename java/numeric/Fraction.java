@@ -1,5 +1,9 @@
 package numeric;
 
+import org.junit.Test;
+
+import static org.junit.Assert.*;
+
 public class Fraction implements Comparable<Fraction> {
     public long a, b;
 
@@ -15,6 +19,46 @@ public class Fraction implements Comparable<Fraction> {
         }
         this.a = a;
         this.b = b;
+    }
+
+    @Test
+    // Test case: b < 0
+    public void Test1() {
+        Fraction fraction1 = new Fraction(2, -3);
+        Fraction fraction2 = new Fraction(-2, 3);
+        assertEquals(fraction1, fraction2);
+    }
+
+    @Test
+    // Test case: b > 0
+    public void Test2() {
+        Fraction fraction1 = new Fraction(2, 4);
+        Fraction fraction2 = new Fraction(1, 2);
+        assertEquals(fraction1, fraction2);
+    }
+
+    @Test
+    // Test case: g = 0
+    public void Test3() {
+        Fraction fraction1 = new Fraction(2, 0);
+        Fraction fraction2 = new Fraction(1, 0);
+        assertEquals(fraction1, fraction2);
+    }
+
+    @Test
+    // Test case: g # 0
+    public void Test4() {
+        Fraction fraction1 = new Fraction(6, 3);
+        Fraction fraction2 = new Fraction(2, 1);
+        assertEquals(fraction1, fraction2);
+    }
+
+    @Test
+    // Test case false
+    public void Test5() {
+        Fraction fraction1 = new Fraction(3, 4);
+        Fraction fraction2 = new Fraction(1, 2);
+        assertEquals(fraction1, fraction2);
     }
 
     static long gcd(long a, long b) {
