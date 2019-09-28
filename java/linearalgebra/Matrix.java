@@ -55,7 +55,7 @@ public class Matrix {
     @Test
     public void matrixPowTest2() {
         int p = 1;
-        int[][] a = {{1, 2, 3}, {2, 3, 1}, {3, 1, 2}};
+        int[][] a = {{1, 2}, {2, 3}};
         assertArrayEquals(a, Matrix.matrixPow(a, p));
     }
 
