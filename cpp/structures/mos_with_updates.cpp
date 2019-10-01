@@ -100,3 +100,7 @@ void solve(istream &in, ostream &out) {
     for (size_t i = 0; i < queries.size(); i++)
         out << ans[i] << endl;
 }
+
+// usage example
+int main() {
+}
