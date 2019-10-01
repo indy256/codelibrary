@@ -33,6 +33,7 @@
 + [x] Sparse segment tree [**c++**](cpp/structures/sparse-segment-tree.cpp)
 + [x] Wavelet tree [**c++**](cpp/structures/wavelet_tree.cpp) [**java**](java/structures/WaveletTree.java)
 + [x] Mo's algorithm [**java**](java/structures/MosAlgorithm.java)
++ [x] Mo's algorithm with point updates [**c++**](cpp/structures/mos_with_updates.cpp)
 
 #### Graph algorithms
 + [x] Shortest paths [**c++**](cpp/graphs/shortestpaths) [**java**](java/graphs/shortestpaths)
