@@ -47,13 +47,11 @@ void solve(istream &in, ostream &out) {
     for (int i = 0; i < n; ++i) a[i] = s[i] - 'a';
     vector<int> prev = a;
 
-    int block = (int) pow(n, 2 / 3.);
+    vector<query> queries;
+    vector<update_query> update_queries;
 
     int m;
     in >> m;
-
-    vector<query> queries;
-    vector<update_query> update_queries;
 
     for (int i = 0; i < m; ++i) {
         int type;
@@ -73,6 +71,7 @@ void solve(istream &in, ostream &out) {
         }
     }
 
+    int block = (int) pow(n, 2 / 3.);
     sort(queries.begin(), queries.end(), [block](auto &q1, auto &q2) {
         if (q1.l / block != q2.l / block) return q1.l < q2.l;
         if (q1.r / block != q2.r / block) return q1.r < q2.r;
