@@ -39,7 +39,6 @@
 + [x] Shortest paths [**c++**](cpp/graphs/shortestpaths) [**java**](java/graphs/shortestpaths)
 + [x] Maximum flow [**c++**](cpp/graphs/flows) [**java**](java/graphs/flows)
 + [x] Maximum matching [**c++**](cpp/graphs/matchings) [**java**](java/graphs/matchings)
-+ [ ] Maximum weighted matching in general graph ([contribute a link or implementation](https://github.com/indy256/codelibrary/issues/38))
 + [x] Spanning tree [**c++**](cpp/graphs/spanningtree) [**java**](java/graphs/spanningtree)
 + [x] Connectivity [**c++**](cpp/graphs/dfs) [**java**](java/graphs/dfs)
 + [x] Biconnectivity [**java**](java/graphs/dfs/Biconnectivity.java)
