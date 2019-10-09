@@ -3,7 +3,7 @@ package graphs.matchings;
 import java.util.Arrays;
 
 // https://en.wikipedia.org/wiki/Matching_(graph_theory)#In_unweighted_bipartite_graphs in O(V^3)
-public class MaxMatching2 {
+public class MaxBipartiteMatchingV3 {
 
     public static int maxMatching(boolean[][] graph) {
         int n1 = graph.length;

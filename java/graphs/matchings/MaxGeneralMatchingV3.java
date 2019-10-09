@@ -5,7 +5,7 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 // https://en.wikipedia.org/wiki/Blossom_algorithm in O(V^3)
-public class MaxMatchingEdmonds {
+public class MaxGeneralMatchingV3 {
 
     public static int maxMatching(List<Integer>[] graph) {
         int n = graph.length;

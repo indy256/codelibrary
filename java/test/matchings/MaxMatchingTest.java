@@ -1,6 +1,6 @@
 package test.matchings;
 
-import graphs.matchings.MaxMatching;
+import graphs.matchings.MaxBipartiteMatchingEV;
 
 import java.util.*;
 import java.util.stream.Stream;
@@ -17,7 +17,7 @@ public class MaxMatchingTest {
             for (int i = 0; i < n1; i++)
                 for (int j = 0; j < n2; j++)
                     g[i].add(j);
-            int res1 = MaxMatching.maxMatching(g);
+            int res1 = MaxBipartiteMatchingEV.maxMatching(g);
             int res2 = slowMinVertexCover(g, n2);
             if (res1 != res2)
                 throw new RuntimeException();

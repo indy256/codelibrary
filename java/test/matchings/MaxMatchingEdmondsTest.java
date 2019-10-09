@@ -1,6 +1,6 @@
 package test.matchings;
 
-import graphs.matchings.MaxMatchingEdmonds;
+import graphs.matchings.MaxGeneralMatchingV3;
 
 import java.util.*;
 import java.util.stream.Stream;
@@ -23,7 +23,7 @@ public class MaxMatchingEdmondsTest {
                     }
                 }
             }
-            int res1 = MaxMatchingEdmonds.maxMatching(graph);
+            int res1 = MaxGeneralMatchingV3.maxMatching(graph);
             int res2 = maxMatchingSlow(g);
             if (res1 != res2) {
                 System.err.println(res1 + " " + res2);

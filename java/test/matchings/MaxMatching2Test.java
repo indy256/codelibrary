@@ -1,6 +1,6 @@
 package test.matchings;
 
-import graphs.matchings.MaxMatching2;
+import graphs.matchings.MaxBipartiteMatchingV3;
 
 import java.util.Random;
 
@@ -16,7 +16,7 @@ public class MaxMatching2Test {
             for (int i = 0; i < n1; i++)
                 for (int j = 0; j < n2; j++)
                     g[i][j] = rnd.nextBoolean();
-            int res1 = MaxMatching2.maxMatching(g);
+            int res1 = MaxBipartiteMatchingV3.maxMatching(g);
             int res2 = slowMinVertexCover(g);
             if (res1 != res2)
                 throw new RuntimeException();

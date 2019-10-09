@@ -2,7 +2,7 @@ package graphs.matchings;
 
 import java.util.Random;
 
-public class MaxMatchingRandomized {
+public class MaxGeneralMatchingRandomized {
 
     static final int MOD = 29989;
 
