@@ -4,7 +4,7 @@ import java.util.*;
 import java.util.stream.Stream;
 
 // https://en.wikipedia.org/wiki/Matching_(graph_theory)#In_unweighted_bipartite_graphs in O(V * E)
-public class MaxMatching {
+public class MaxBipartiteMatchingEV {
 
     public static int maxMatching(List<Integer>[] graph) {
         int n1 = graph.length;
