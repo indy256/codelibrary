@@ -3,7 +3,7 @@ package graphs.matchings;
 import java.util.Arrays;
 
 // https://en.wikipedia.org/wiki/Hungarian_algorithm in O(n^2 * m)
-public class MaxBipartiteWeightedMatchingHungarian {
+public class MinBipartiteWeightedMatchingHungarian {
 
     // a[n][m], n <= m, sum(a[i][p[i]]) -> min
     public static int minWeightPerfectMatching(int[][] a) {

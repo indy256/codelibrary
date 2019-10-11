@@ -2,6 +2,7 @@ package graphs.matchings;
 
 import java.util.*;
 
+// Taken from http://uoj.ac/submission/187480
 public class MaxGeneralWeightedMatchingV3 {
     // N^3 (but fast in practice)
     static final int INF = Integer.MAX_VALUE;
@@ -114,7 +115,12 @@ public class MaxGeneralWeightedMatchingV3 {
 
     int get_lca(int u, int v) {
         for (++t; u != 0 || v != 0; ) {
-            if (u == 0) continue;
+            if (u == 0) {
+                int tmp = u;
+                u = v;
+                v = tmp;
+                continue;
+            }
             if (vis[u] == t) return u;
             vis[u] = t;
             u = st[match[u]];

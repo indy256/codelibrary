@@ -2,6 +2,9 @@ package graphs.matchings;
 
 import java.util.Arrays;
 
+// Taken from https://gist.github.com/min-25/aed29a23b004505d2094a5cddaf56ff9
+// Tested: https://codeforces.com/contest/1198/submission/62218577
+
 /*
   Maximum Cardinality Matching in General Graphs.
   - O(\sqrt{n} m \log_{\max\{2, 1 + m/n\}} n) time
@@ -14,7 +17,6 @@ import java.util.Arrays;
     "The Weighted Matching Approach to Maximum Cardinality Matching" (2017)
     (https://arxiv.org/abs/1703.03998)
 */
-// Tested: https://codeforces.com/contest/1198/submission/62218577
 public class MaxGeneralMatchingEsqrtV {
 
     public static class Edge {

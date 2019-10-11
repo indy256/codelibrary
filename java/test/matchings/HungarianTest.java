@@ -1,6 +1,6 @@
 package test.matchings;
 
-import graphs.matchings.MaxBipartiteWeightedMatchingHungarian;
+import graphs.matchings.MinBipartiteWeightedMatchingHungarian;
 
 import java.util.*;
 
@@ -18,7 +18,7 @@ public class HungarianTest {
                     a[i][j] = rnd.nextInt(100_000) - 50_000;
                 }
             }
-            int res1 = MaxBipartiteWeightedMatchingHungarian.minWeightPerfectMatching(a);
+            int res1 = MinBipartiteWeightedMatchingHungarian.minWeightPerfectMatching(a);
             int res2 = minWeightPerfectMatchingSlow(a);
             if (res1 != res2) {
                 System.err.println(res1 + " " + res2);
