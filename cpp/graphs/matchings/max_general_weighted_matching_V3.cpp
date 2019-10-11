@@ -2,6 +2,8 @@
 
 using namespace std;
 
+// Taken from http://uoj.ac/submission/187480
+
 // N^3 (but fast in practice)
 const int INF = INT_MAX;
 const int N = 514;
