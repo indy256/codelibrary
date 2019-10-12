@@ -14,7 +14,14 @@ public class BinaryHeapExtended {
         id2Pos = new int[n];
     }
 
-    public int remove() {
+    public void add(int id, long value) {
+        heap[size] = value;
+        pos2Id[size] = id;
+        id2Pos[id] = size;
+        up(size++);
+    }
+
+    public int removeMin() {
         int removedId = pos2Id[0];
         heap[0] = heap[--size];
         pos2Id[0] = pos2Id[size];
@@ -23,11 +30,11 @@ public class BinaryHeapExtended {
         return removedId;
     }
 
-    public void add(int id, long value) {
-        heap[size] = value;
-        pos2Id[size] = id;
-        id2Pos[id] = size;
-        up(size++);
+    public void removeMin(int id) {
+        int pos = id2Pos[id];
+        pos2Id[pos] = pos2Id[--size];
+        id2Pos[pos2Id[pos]] = pos;
+        changePriority(pos2Id[pos], heap[size]);
     }
 
     public void changePriority(int id, long value) {
@@ -39,13 +46,6 @@ public class BinaryHeapExtended {
             heap[pos] = value;
             up(pos);
         }
-    }
-
-    public void remove(int id) {
-        int pos = id2Pos[id];
-        pos2Id[pos] = pos2Id[--size];
-        id2Pos[pos2Id[pos]] = pos;
-        changePriority(pos2Id[pos], heap[size]);
     }
 
     void up(int pos) {
@@ -92,11 +92,11 @@ public class BinaryHeapExtended {
 
         heap.changePriority(1, 3);
         heap.changePriority(2, 6);
-        heap.remove(0);
+        heap.removeMin(0);
 
         // print elements in sorted order
         while (heap.size != 0) {
-            System.out.println(heap.heap[0] + " " + heap.remove());
+            System.out.println(heap.heap[0] + " " + heap.removeMin());
         }
     }
 }
