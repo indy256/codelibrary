@@ -18,7 +18,7 @@
 + [x] Link/cut tree for connectivity query [**java**](java/structures/LinkCutTreeConnectivity.java)
 + [x] Link/cut tree for LCA query [**java**](java/structures/LinkCutTreeLca.java)
 + [x] Binary heap [**java**](java/structures/BinaryHeap.java)
-+ [x] Binary heap with change priority [**java**](java/structures/BinaryHeapExtended.java)
++ [x] Binary heap with change priority [**c++**](cpp/structures/binary_heap.cpp) [**java**](java/structures/BinaryHeapExtended.java)
 + [x] Disjoint sets [**c++**](cpp/structures/disjoint_sets.cpp) [**java**](java/structures/DisjointSets.java)
 + [x] Treap [**c++**](cpp/structures/treap.h) [**java**](java/structures/Treap.java) [**kotlin**](kotlin/Treap.kt)
 + [x] Treap with indexed key [**c++**](cpp/structures/treap_indexed.cpp) [**java**](java/structures/TreapIndexed.java)
