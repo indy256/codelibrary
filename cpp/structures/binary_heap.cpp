@@ -13,7 +13,7 @@ struct binary_heap {
 
     binary_heap(int n) : heap(n), pos2Id(n), id2Pos(n), size(0) {}
 
-    void add(int id, int value) {
+    void add(int id, T value) {
         heap[size] = value;
         pos2Id[size] = id;
         id2Pos[id] = size;
@@ -36,7 +36,7 @@ struct binary_heap {
         changePriority(pos2Id[pos], heap[size]);
     }
 
-    void changePriority(int id, int value) {
+    void changePriority(int id, T value) {
         int pos = id2Pos[id];
         if (heap[pos] < value) {
             heap[pos] = value;
