@@ -33,6 +33,7 @@ tuple<int, vector<int>> max_matching(const vector<vector<int>> &graph) {
     return {matches, matching};
 }
 
+// usage example
 int main() {
     vector<vector<int>> g(2);
     g[0].push_back(0);
