@@ -25,7 +25,7 @@ struct queue_min {
                 T x = s1.top().first;
                 s1.pop();
                 T min_value = s2.empty() ? x : std::min(x, s2.top().second);
-                s2.push({x, min_value});
+                s2.emplace(x, min_value);
             }
         }
         T x = s2.top().first;;
