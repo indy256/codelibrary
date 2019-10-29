@@ -2,7 +2,7 @@
 
 using namespace std;
 
-// https://cp-algorithms.com/graph/min_cost_flow.html in O(min(E^2 * V * logV, E * logV * FLOW))
+// https://cp-algorithms.com/graph/min_cost_flow.html in O(E * V + E * logV * FLOW)
 // negative-cost edges are allowed
 // negative-cost cycles are not allowed
 

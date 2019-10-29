@@ -3,7 +3,7 @@ package graphs.flows;
 import java.util.*;
 import java.util.stream.Stream;
 
-// https://cp-algorithms.com/graph/min_cost_flow.html in O(min(E^2 * V * logV, E * V^3, E * logV * FLOW))
+// https://cp-algorithms.com/graph/min_cost_flow.html in O(E * V + min(E * logV * FLOW, V^2 * FLOW))
 // negative-cost edges are allowed
 // negative-cost cycles are not allowed
 public class MinCostFlowDijkstra {

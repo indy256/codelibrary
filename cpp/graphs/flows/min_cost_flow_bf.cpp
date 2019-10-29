@@ -2,7 +2,7 @@
 
 using namespace std;
 
-// https://en.wikipedia.org/wiki/Minimum-cost_flow_problem in O(min(E^2 * V^2, E * V * FLOW))
+// https://en.wikipedia.org/wiki/Minimum-cost_flow_problem in O(E * V * FLOW)
 // negative-cost edges are allowed
 // negative-cost cycles are not allowed
 
