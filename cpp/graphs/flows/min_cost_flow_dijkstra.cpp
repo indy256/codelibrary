@@ -10,10 +10,10 @@ struct Edge {
     int to, rev, cap, f, cost;
 };
 
-struct min_cost_circulation {
+struct min_cost_flow {
     vector<vector<Edge>> graph;
 
-    min_cost_circulation(int nodes) : graph(nodes) {}
+    min_cost_flow(int nodes) : graph(nodes) {}
 
     void add_bidi_edge(int s, int t, int cap, int cost) {
         Edge a = {t, (int) graph[t].size(), cap, 0, cost};
@@ -107,7 +107,7 @@ int main() {
                          {0, 0, 2},
                          {0, 0, 0}};
     int nodes = 3;
-    min_cost_circulation mcf(nodes);
+    min_cost_flow mcf(nodes);
     for (int i = 0; i < nodes; i++)
         for (int j = 0; j < nodes; j++)
             if (capacity[i][j] != 0)
