@@ -21,7 +21,7 @@ public class MisWeighted {
 
     // maximum weighted clique with Bron-Kerbosch pruning
     public static int maxClique(long[] g, long allowed, long forbidden, int[] weights) {
-        if (allowed == 0 && forbidden == 0)
+        if (allowed == 0)
             return 0;
         int v = -1;
         long all = allowed | forbidden;
