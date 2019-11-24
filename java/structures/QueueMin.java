@@ -4,29 +4,26 @@ import java.util.*;
 
 // https://cp-algorithms.com/data_structures/stack_queue_modification.html
 public class QueueMin {
-    List<int[]> s1 = new ArrayList<>();
-    List<int[]> s2 = new ArrayList<>();
+    List<Integer> s1 = new ArrayList<>();
+    List<Integer> s2 = new ArrayList<>();
+    int min1 = Integer.MAX_VALUE;
 
     public int min() {
-        return Math.min(
-                s1.isEmpty() ? Integer.MAX_VALUE : s1.get(s1.size() - 1)[1],
-                s2.isEmpty() ? Integer.MAX_VALUE : s2.get(s2.size() - 1)[1]);
+        return Math.min(s2.isEmpty() ? Integer.MAX_VALUE : s2.get(s2.size() - 1), min1);
     }
 
     public void addLast(int x) {
-        int minima = s1.isEmpty() ? x : Math.min(x, s1.get(s1.size() - 1)[1]);
-        s1.add(new int[]{x, minima});
+        s1.add(x);
+        min1 = Math.min(min1, x);
     }
 
-    public int removeFirst() {
-        if (s2.isEmpty()) {
-            while (!s1.isEmpty()) {
-                int x = s1.remove(s1.size() - 1)[0];
-                int min = s2.isEmpty() ? x : Math.min(x, s2.get(s2.size() - 1)[1]);
-                s2.add(new int[]{x, min});
-            }
+    public void removeFirst() {
+        while (!s1.isEmpty()) {
+            int x = s1.remove(s1.size() - 1);
+            s2.add(s2.isEmpty() ? x : Math.min(x, s2.get(s2.size() - 1)));
         }
-        return s2.remove(s2.size() - 1)[0];
+        min1 = Integer.MAX_VALUE;
+        s2.remove(s2.size() - 1);
     }
 
     // Usage example
