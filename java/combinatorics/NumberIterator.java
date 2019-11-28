@@ -6,14 +6,10 @@ import java.util.stream.IntStream;
 
 public class NumberIterator {
 
-    public static long count(long to, int base, BiFunction<int[], Integer, Long> countWithPrefix) {
-        List<Integer> revDigits = new ArrayList<>();
-        do {
-            revDigits.add((int) (to % base));
-            to /= base;
-        } while (to > 0);
-        int n = revDigits.size();
-        int[] digits = IntStream.range(0, n).map(i -> revDigits.get(revDigits.size() - 1 - i)).toArray();
+    public static long count(long to, BiFunction<int[], Integer, Long> countWithPrefix) {
+        char[] s = String.valueOf(to).toCharArray();
+        int n = s.length;
+        int[] digits = IntStream.range(0, n).map(i -> s[i] - '0').toArray();
         long res = 0;
         for (int i = 0; i < n; i++) {
             int[] prefix = Arrays.copyOf(digits, i + 1);
@@ -28,7 +24,7 @@ public class NumberIterator {
     public static void main(String[] args) {
 
         // count numbers consisting only of digits 2 and 5
-        long num_2_5 = count(222, 10,
+        long num_2_5 = count(222,
                 (prefix, remainingDigits) -> {
                     if (Arrays.equals(prefix, new int[]{0})) return (1L << (remainingDigits + 1)) - 2;
 
