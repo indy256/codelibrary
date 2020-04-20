@@ -32,7 +32,7 @@ struct modint {
     }
 
     modint &operator*=(modint rhs) {
-        value = normalize(static_cast<long long>(value) * rhs.value % mod);
+        value = normalize(static_cast<long long>(value) * rhs.value);
         return *this;
     }
 
