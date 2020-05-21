@@ -2,7 +2,7 @@ matrix:
   include:
 
   - language: java
-    jdk: oraclejdk14
+    jdk: oraclejdk15
     before_script:
       - java -version
       - cd java
@@ -13,13 +13,13 @@ matrix:
 
   - language: cpp
     before_script:
-      - g++-9 --version
+      - g++-10 --version
       - cd cpp
-    script: find . -name *.cpp -print0 | xargs -n1 -0 g++-9 -Wall -Wextra -std=c++2a
+    script: find . -name *.cpp -print0 | xargs -n1 -0 g++-10 -Wall -Wextra -fanalyzer-std=c++20
     addons:
       apt:
         packages:
-          - g++-9
+          - g++-10
         sources:
           - ubuntu-toolchain-r-test
 
@@ -42,20 +42,20 @@ matrix:
       - clang++-9 --version
       - g++-9 --version
       - cd cpp
-    script: find . -name *.cpp -print0 | xargs -n1 -0 clang++-9 -Wall -Wextra -std=c++2a
+    script: find . -name *.cpp -print0 | xargs -n1 -0 clang++-10 -Wall -Wextra -std=c++20
     addons:
       apt:
         packages:
-          - clang-9
-          - g++-9
+          - clang-10
+          - g++-10
         sources:
           - sourceline: 'ppa:ubuntu-toolchain-r/test'
-          - sourceline: 'deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-9 main'
+          - sourceline: 'deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-10 main'
             key_url: 'https://apt.llvm.org/llvm-snapshot.gpg.key'
 
   - language: cpp
     os: osx
-    osx_image: xcode11
+    osx_image: xcode11.4
     compiler: clang
     before_script:
       - uname -a

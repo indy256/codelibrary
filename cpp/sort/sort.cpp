@@ -39,7 +39,7 @@ void counting_sort(vector<int> &a) {
 
 // usage example
 int main() {
-    vector a{4, 1, 2, 3};
+    vector<int> a{4, 1, 2, 3};
     merge_sort(a, 0, a.size());
     for (int x:a) cout << x << " ";
     cout << endl;
