@@ -12,10 +12,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
-    - name: ver
-      run: g++ --version
-    - name: ver1
-      run: uname -a
+    - uses: actions/checkout@v1
     - name: compile
-      run: cd cpp && find . -name *.cpp -print0 | xargs -n1 -0 g++ -std=c++17
+      run: |
+         g++ --version
+         cd cpp
+         find . -name *.cpp -print0 | xargs -n1 -0 g++ -std=c++17
