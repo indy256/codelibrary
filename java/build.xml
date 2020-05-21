@@ -3,7 +3,4 @@
         <mkdir dir="bin"/>
         <javac srcdir="." destdir="bin"/>
     </target>
-
-    <target name="test" depends="compile">
-    </target>
 </project>
