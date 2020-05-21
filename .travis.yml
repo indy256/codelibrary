@@ -19,9 +19,9 @@ matrix:
     addons:
       apt:
         packages:
-          - gcc-10
+          - g++-10
         sources:
-          - ubuntu-toolchain-r-test
+          - ubuntu-toolchain-r/test
 
   - language: cpp
     before_script:
