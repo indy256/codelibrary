@@ -2,6 +2,7 @@ matrix:
   include:
 
   - language: java
+    dist: bionic
     jdk: oraclejdk15
     before_script:
       - java -version
@@ -39,7 +40,6 @@ matrix:
 
   - language: cpp
     before_script:
-      - uname -a
       - g++-7 --version
       - cd cpp
     script: find . -name *.cpp -print0 | xargs -n1 -0 g++-7 -Wall -Wextra -std=c++17
@@ -53,7 +53,6 @@ matrix:
   - language: cpp
     dist: bionic
     before_script:
-      - uname -a
       - clang++-10 --version
       - g++-10 --version
       - cd cpp
