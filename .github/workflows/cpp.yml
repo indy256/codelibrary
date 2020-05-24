@@ -21,4 +21,4 @@ jobs:
     - name: compile
       run: |
         cd cpp
-        find . -name *.cpp -print0 | xargs -n1 -0 g++-10 -fanalyzer -std=c++20
+        find . -name *.cpp -print0 | xargs -n1 -0 g++-10 -fanalyzer -Wno-analyzer-null-dereference -std=c++20
