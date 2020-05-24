@@ -3,10 +3,8 @@ name: Java CI
 on: [push]
 
 jobs:
-  build:
- 
+  build-ubuntu-java:
     runs-on: ubuntu-latest
-    
     steps:
     - uses: actions/checkout@v2
     - name: Set up JDK
