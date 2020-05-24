@@ -60,9 +60,19 @@ jobs:
         sudo add-apt-repository "deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-10 main"
         sudo apt-get update
         sudo apt-get install clang-10
-        sudo apt-get install g++-10
+        #sudo apt-get install g++-10
     - name: compile
       run: |
         cd cpp
         find . -name *.cpp -print0 | xargs -n1 -0 clang++-10 -Wall -Wextra -std=c++20
   
+  build-macos-clang:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: compile
+      run: |
+        cd cpp
+        mkdir bits
+        echo $'#include <vector>\n#include <set>\n#include <map>\n#include <unordered_set>\n#include <unordered_map>\n#include <queue>\n#include <deque>\n#include <stack>\n#include <iostream>\n#include <iomanip>\n#include <complex>\n#include <cassert>\n#include <random>\n#include <chrono>\n#include <functional>\n#include <array>\n#include <bitset>\n#include <numeric>\n' > bits/stdc++.h
+        find . -name *.cpp -print0 | xargs -n1 -0 clang++ -Wall -Wextra -std=c++2a -isystem .
