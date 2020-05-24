@@ -1,16 +1,16 @@
 matrix:
   include:
 
-  - language: java
-    dist: bionic
-    jdk: oraclejdk15
-    before_script:
-      - java -version
-      - cd java
-    addons:
-      apt:
-        packages:
-        - ant
+#  - language: java
+#    dist: bionic
+#    jdk: oraclejdk15
+#    before_script:
+#      - java -version
+#      - cd java
+#    addons:
+#      apt:
+#        packages:
+#        - ant
 
   - language: cpp
     dist: bionic
