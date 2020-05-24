@@ -1,6 +1,6 @@
 [![GitHub stars](https://img.shields.io/github/stars/indy256/codelibrary.svg?style=flat&label=star)](https://github.com/indy256/codelibrary/)
 [![Java CI](https://github.com/indy256/codelibrary/workflows/Java%20CI/badge.svg)](https://github.com/indy256/codelibrary/actions?query=workflow%3A%22Java+CI%22)
-![C++ CI](https://github.com/indy256/codelibrary/workflows/C++%20CI/badge.svg)
+[![C++ CI](https://github.com/indy256/codelibrary/workflows/C++%20CI/badge.svg)](https://github.com/indy256/codelibrary/actions?query=workflow%3A%22C%2B%2B+CI%22)
 [![License](https://img.shields.io/badge/license-UNLICENSE-green.svg)](https://github.com/indy256/codelibrary/blob/master/UNLICENSE)
 
 ### Collection of algorithms and data structures in C++ and Java
