@@ -1,5 +1,5 @@
 [![GitHub stars](https://img.shields.io/github/stars/indy256/codelibrary.svg?style=flat&label=star)](https://github.com/indy256/codelibrary/)
-![Java CI](https://github.com/indy256/codelibrary/workflows/Java%20CI/badge.svg)
+[![Java CI](https://github.com/indy256/codelibrary/workflows/Java%20CI/badge.svg)](https://github.com/indy256/codelibrary/actions?query=workflow%3A%22Java+CI%22)
 ![C++ CI](https://github.com/indy256/codelibrary/workflows/C++%20CI/badge.svg)
 [![License](https://img.shields.io/badge/license-UNLICENSE-green.svg)](https://github.com/indy256/codelibrary/blob/master/UNLICENSE)
 
