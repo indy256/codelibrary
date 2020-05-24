@@ -101,7 +101,7 @@ jobs:
         find . -name *.cpp -print0 | xargs -n1 -0 clang++ -Wall -Wextra -Wno-sign-compare -std=c++2a -isystem .
 
   build-windows-visual-cpp:
-    runs-on: windows-2019
+    runs-on: windows-2016
     steps:
     - uses: actions/checkout@v2
     - name: compile
@@ -125,47 +125,133 @@ jobs:
         Invoke-Environment "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsamd64_x86.bat"
         cl /std:c++17 /EHsc /I . graphs/matchings/max_bipartite_matching_EV.cpp                  
         ls
+        del *.exe
+        del *.obj
         cl /std:c++17 /EHsc /I . graphs/matchings/max_bipartite_matching_hopcroft_karp_EsqrtV.cpp
+        del *.exe
+        del *.obj
         cl /std:c++17 /EHsc /I . graphs/matchings/max_general_matching_EsqrtV.cpp                
+        del *.exe
+        del *.obj
         cl /std:c++17 /EHsc /I . graphs/matchings/max_general_weighted_matching_EVlogV.cpp       
+        del *.exe
+        del *.obj
         cl /std:c++17 /EHsc /I . graphs/matchings/max_general_weighted_matching_V3.cpp           
+        del *.exe
+        del *.obj
         cl /std:c++17 /EHsc /I . graphs/matchings/ min_bipartite_weighted_matching_hungarian.cpp  
+        del *.exe
+        del *.obj
         cl /std:c++17 /EHsc /I . graphs/matchings/stable_matching.cpp                            
+        del *.exe
+        del *.obj
         cl /std:c++17 /EHsc /I . graphs/flows/global_min_cut_stoer_wagner.cpp 
+        del *.exe
+        del *.obj
         cl /std:c++17 /EHsc /I . graphs/flows/gomory_hu_tree.cpp              
+        del *.exe
+        del *.obj
         cl /std:c++17 /EHsc /I . graphs/flows/max_flow_dinic.cpp              
+        del *.exe
+        del *.obj
         cl /std:c++17 /EHsc /I . graphs/flows/max_flow_simple.cpp             
+        del *.exe
+        del *.obj
         cl /std:c++17 /EHsc /I . graphs/flows/min_cost_circulation.cpp        
+        del *.exe
+        del *.obj
         cl /std:c++17 /EHsc /I . graphs/flows/min_cost_flow_bf.cpp            
+        del *.exe
+        del *.obj
         cl /std:c++17 /EHsc /I . graphs/flows/min_cost_flow_dijkstra.cpp      
+        del *.exe
+        del *.obj
         cl /std:c++17 /EHsc /I . graphs/flows/max_flow_dinic.h                
+        del *.exe
+        del *.obj
         cl /std:c++17 /EHsc /I . graphs/cycle_detection.cpp       
+        del *.exe
+        del *.obj
         cl /std:c++17 /EHsc /I . graphs/dynamic_connectivity.cpp  
+        del *.exe
+        del *.obj
         cl /std:c++17 /EHsc /I . graphs/dynamic_connectivity2.cpp 
+        del *.exe
+        del *.obj
         cl /std:c++17 /EHsc /I . graphs/min_mean_cycle.cpp        
+        del *.exe
+        del *.obj
         cl /std:c++17 /EHsc /I . graphs/minimum_steiner_tree.cpp  
+        del *.exe
+        del *.obj
         cl /std:c++17 /EHsc /I . graphs/tree_centers.cpp          
+        del *.exe
+        del *.obj
         cl /std:c++17 /EHsc /I . graphs/structures/binary_heap.cpp                   
+        del *.exe
+        del *.obj
         cl /std:c++17 /EHsc /I . graphs/structures/centroid_decomposition.cpp        
+        del *.exe
+        del *.obj
         cl /std:c++17 /EHsc /I . graphs/structures/disjoint_sets.cpp                 
+        del *.exe
+        del *.obj
         cl /std:c++17 /EHsc /I . graphs/structures/disjoint_sets_ranked.cpp          
+        del *.exe
+        del *.obj
         cl /std:c++17 /EHsc /I . graphs/structures/fenwick_tree.cpp                  
+        del *.exe
+        del *.obj
         cl /std:c++17 /EHsc /I . graphs/structures/fenwick_tree_interval.cpp         
+        del *.exe
+        del *.obj
         cl /std:c++17 /EHsc /I . graphs/structures/fenwick_tree_on_map.cpp           
+        del *.exe
+        del *.obj
         cl /std:c++17 /EHsc /I . graphs/structures/heavy_light_decomposition.cpp     
+        del *.exe
+        del *.obj
         cl /std:c++17 /EHsc /I . graphs/structures/kd_tree.cpp                       
+        del *.exe
+        del *.obj
         cl /std:c++17 /EHsc /I . graphs/structures/link_cut_tree.cpp                 
+        del *.exe
+        del *.obj
         cl /std:c++17 /EHsc /I . graphs/structures/mos_with_updates.cpp              
+        del *.exe
+        del *.obj
         cl /std:c++17 /EHsc /I . graphs/structures/ordered_set.cpp                   
+        del *.exe
+        del *.obj
         cl /std:c++17 /EHsc /I . graphs/structures/queue_min.cpp                     
+        del *.exe
+        del *.obj
         cl /std:c++17 /EHsc /I . graphs/structures/segment_tree.cpp                  
+        del *.exe
+        del *.obj
         cl /std:c++17 /EHsc /I . graphs/structures/segment_tree_without_recursion.cpp
+        del *.exe
+        del *.obj
         cl /std:c++17 /EHsc /I . graphs/structures/sparse-segment-tree.cpp           
+        del *.exe
+        del *.obj
         cl /std:c++17 /EHsc /I . graphs/structures/sparse-table.cpp                  
+        del *.exe
+        del *.obj
         cl /std:c++17 /EHsc /I . graphs/structures/treap.cpp                         
+        del *.exe
+        del *.obj
         cl /std:c++17 /EHsc /I . graphs/structures/treap_bst.cpp                     
+        del *.exe
+        del *.obj
         cl /std:c++17 /EHsc /I . graphs/structures/treap_bst_shared_ptr.cpp          
+        del *.exe
+        del *.obj
         cl /std:c++17 /EHsc /I . graphs/structures/treap_indexed.cpp                 
+        del *.exe
+        del *.obj
         cl /std:c++17 /EHsc /I . graphs/structures/tree2d.cpp                        
+        del *.exe
+        del *.obj
         cl /std:c++17 /EHsc /I . graphs/structures/wavelet_tree.cpp                  
         #ls -r -inc "*.cpp" | % { cl /std:c++17 /EHsc /I . $_.fullname } 
