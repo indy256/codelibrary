@@ -127,4 +127,19 @@ jobs:
         Get-PSDrive C | Select-Object Used,Free
         cl /std:c++17 /EHsc /I . graphs\matchings\min_bipartite_weighted_matching_hungarian.cpp
         cl /std:c++17 /EHsc /I . graphs\matchings\max_general_weighted_matching_EVlogV.cpp
+        cl /std:c++17 /EHsc /I . graphs/matchings/max_bipartite_matching_EV.cpp                  
+        cl /std:c++17 /EHsc /I . graphs/matchings/max_bipartite_matching_hopcroft_karp_EsqrtV.cpp
+        cl /std:c++17 /EHsc /I . graphs/matchings/max_general_matching_EsqrtV.cpp                
+        cl /std:c++17 /EHsc /I . graphs/matchings/max_general_weighted_matching_EVlogV.cpp       
+        cl /std:c++17 /EHsc /I . graphs/matchings/max_general_weighted_matching_V3.cpp           
+        cl /std:c++17 /EHsc /I . graphs/matchings/ min_bipartite_weighted_matching_hungarian.cpp  
+        cl /std:c++17 /EHsc /I . graphs/matchings/stable_matching.cpp                            
+        cl /std:c++17 /EHsc /I . graphs/flows/global_min_cut_stoer_wagner.cpp 
+        cl /std:c++17 /EHsc /I . graphs/flows/gomory_hu_tree.cpp              
+        cl /std:c++17 /EHsc /I . graphs/flows/max_flow_dinic.cpp              
+        cl /std:c++17 /EHsc /I . graphs/flows/max_flow_simple.cpp             
+        cl /std:c++17 /EHsc /I . graphs/flows/min_cost_circulation.cpp        
+        cl /std:c++17 /EHsc /I . graphs/flows/min_cost_flow_bf.cpp            
+        cl /std:c++17 /EHsc /I . graphs/flows/min_cost_flow_dijkstra.cpp      
+        cl /std:c++17 /EHsc /I . graphs/flows/max_flow_dinic.h                
         ls -r -inc "*.cpp" | % { cl /std:c++17 /EHsc /I . $_.fullname } 
