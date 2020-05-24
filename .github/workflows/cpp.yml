@@ -7,13 +7,25 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
-
+  build-ubuntu-gcc-10-warnings:
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
-    - name: install g++
+    - name: install g++10
+      run: |
+        sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+        sudo apt-get update
+        sudo apt-get install g++-10
+    - name: compile
+      run: |
+        cd cpp
+        find . -name *.cpp -print0 | xargs -n1 -0 g++-10 -Wall -Wextra -std=c++20
+
+  build-ubuntu-gcc-10-analyzer:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: install g++10
       run: |
         sudo add-apt-repository ppa:ubuntu-toolchain-r/test
         sudo apt-get update
@@ -22,3 +34,17 @@ jobs:
       run: |
         cd cpp
         find . -name *.cpp -print0 | xargs -n1 -0 g++-10 -fanalyzer -Wno-analyzer-null-dereference -std=c++20
+
+  build-ubuntu-gcc-7-warnings:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: install g++7
+      run: |
+        sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+        sudo apt-get update
+        sudo apt-get install g++-7
+    - name: compile
+      run: |
+        cd cpp
+        find . -name *.cpp -print0 | xargs -n1 -0 g++-7 -Wall -Wextra -std=c++17
