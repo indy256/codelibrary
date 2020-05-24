@@ -122,7 +122,7 @@ jobs:
         cd cpp
         mkdir bits
         & C:\msys64\usr\bin\echo.exe -e '#include \74vector\76\n#include \74set\76\n#include \74map\76\n#include \74unordered_set\76\n#include \74unordered_map\76\n#include \74queue\76\n#include \74deque\76\n#include \74stack\76\n#include \74iostream\76\n#include \74iomanip\76\n#include \74complex\76\n#include \74cassert\76\n#include \74random\76\n#include \74chrono\76\n#include \74functional\76\n#include \74array\76\n#include \74bitset\76\n#include \74numeric\76\n' > bits\stdc++.h
-        Invoke-Environment "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
+        Invoke-Environment "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsamd64_x86.bat"
         cl /std:c++17 /EHsc /I . graphs/matchings/max_bipartite_matching_EV.cpp                  
         cl /std:c++17 /EHsc /I . graphs/matchings/max_bipartite_matching_hopcroft_karp_EsqrtV.cpp
         cl /std:c++17 /EHsc /I . graphs/matchings/max_general_matching_EsqrtV.cpp                
@@ -167,4 +167,4 @@ jobs:
         cl /std:c++17 /EHsc /I . graphs/structures/treap_indexed.cpp                 
         cl /std:c++17 /EHsc /I . graphs/structures/tree2d.cpp                        
         cl /std:c++17 /EHsc /I . graphs/structures/wavelet_tree.cpp                  
-        ls -r -inc "*.cpp" | % { cl /std:c++17 /EHsc /I . $_.fullname } 
+        #ls -r -inc "*.cpp" | % { cl /std:c++17 /EHsc /I . $_.fullname } 
