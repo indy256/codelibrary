@@ -28,7 +28,7 @@ jobs:
     - name: install g++
       run: |
         sudo add-apt-repository ppa:ubuntu-toolchain-r/test
-        sudo apt-get update
+        #sudo apt-get update
         sudo apt-get install g++-10
     - name: compile
       run: |
@@ -56,7 +56,7 @@ jobs:
     - name: install g++-7
       run: |
         sudo add-apt-repository ppa:ubuntu-toolchain-r/test
-        sudo apt-get update
+        #sudo apt-get update
         sudo apt-get install g++-7
     - name: compile
       run: |
@@ -71,7 +71,6 @@ jobs:
       run: |
         sudo apt-key adv --fetch-keys https://apt.llvm.org/llvm-snapshot.gpg.key
         sudo add-apt-repository "deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-10 main"
-        #sudo apt-get update
         sudo apt-get install clang-10
     - name: compile
       run: |
