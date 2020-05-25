@@ -7,18 +7,114 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
-
+  build-ubuntu-gcc:
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
     - name: install g++
       run: |
         sudo add-apt-repository ppa:ubuntu-toolchain-r/test
-        sudo apt-get update
+        sudo apt-get install g++-10
+    - name: compile
+      run: |
+        cd cpp
+        find . -name *.cpp -print0 | xargs -n1 -0 g++-10 -Wall -Wextra -std=c++20
+
+  build-ubuntu-gcc-no-sign:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: install g++
+      run: |
+        sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+        sudo apt-get install g++-10
+    - name: compile
+      run: |
+        cd cpp
+        find . -name *.cpp -print0 | xargs -n1 -0 g++-10 -Wall -Wextra -Wno-sign-compare -std=c++20
+
+  build-ubuntu-gcc-analyzer:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: install g++
+      run: |
+        sudo add-apt-repository ppa:ubuntu-toolchain-r/test
         sudo apt-get install g++-10
     - name: compile
       run: |
         cd cpp
         find . -name *.cpp -print0 | xargs -n1 -0 g++-10 -fanalyzer -Wno-analyzer-null-dereference -std=c++20
+
+  build-ubuntu-gcc-7-warnings:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: install g++-7
+      run: |
+        sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+        sudo apt-get install g++-7
+    - name: compile
+      run: |
+        cd cpp
+        find . -name *.cpp -print0 | xargs -n1 -0 g++-7 -Wall -Wextra -std=c++17
+
+  build-ubuntu-clang:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: install clang
+      run: |
+        sudo apt-key adv --fetch-keys https://apt.llvm.org/llvm-snapshot.gpg.key
+        sudo add-apt-repository "deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-10 main"
+        sudo apt-get install clang-10
+    - name: compile
+      run: |
+        cd cpp
+        find . -name *.cpp -print0 | xargs -n1 -0 clang++-10 -Wall -Wextra -std=c++20
+  
+  build-macos-clang:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: compile
+      run: |
+        cd cpp
+        mkdir bits
+        echo $'#include <vector>\n#include <set>\n#include <map>\n#include <unordered_set>\n#include <unordered_map>\n#include <queue>\n#include <deque>\n#include <stack>\n#include <iostream>\n#include <iomanip>\n#include <complex>\n#include <cassert>\n#include <random>\n#include <chrono>\n#include <functional>\n#include <array>\n#include <bitset>\n#include <numeric>\n' > bits/stdc++.h
+        find . -name *.cpp -print0 | xargs -n1 -0 clang++ -Wall -Wextra -std=c++2a -isystem .
+
+  build-macos-clang-no-sign:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: compile
+      run: |
+        cd cpp
+        mkdir bits
+        echo $'#include <vector>\n#include <set>\n#include <map>\n#include <unordered_set>\n#include <unordered_map>\n#include <queue>\n#include <deque>\n#include <stack>\n#include <iostream>\n#include <iomanip>\n#include <complex>\n#include <cassert>\n#include <random>\n#include <chrono>\n#include <functional>\n#include <array>\n#include <bitset>\n#include <numeric>\n' > bits/stdc++.h
+        find . -name *.cpp -print0 | xargs -n1 -0 clang++ -Wall -Wextra -Wno-sign-compare -std=c++2a -isystem .
+
+  build-windows-visual-cpp:
+    runs-on: windows-2019
+    steps:
+    - uses: actions/checkout@v2
+    - name: compile
+      run: |
+        function Invoke-Environment {
+            param
+            (
+                [Parameter(Mandatory=$true)]
+                [string] $Command
+            )
+            $Command = "`"" + $Command + "`""
+            cmd /c "$Command > nul 2>&1 && set" | . { process {
+                if ($_ -match '^([^=]+)=(.*)') {
+                    [System.Environment]::SetEnvironmentVariable($matches[1], $matches[2])
+                }
+            }}
+        }
+        mkdir bits
+        & C:\msys64\usr\bin\echo.exe -e '#include \74vector\76\n#include \74set\76\n#include \74map\76\n#include \74unordered_set\76\n#include \74unordered_map\76\n#include \74queue\76\n#include \74deque\76\n#include \74stack\76\n#include \74iostream\76\n#include \74iomanip\76\n#include \74complex\76\n#include \74cassert\76\n#include \74random\76\n#include \74chrono\76\n#include \74functional\76\n#include \74array\76\n#include \74bitset\76\n#include \74numeric\76\n' > bits\stdc++.h
+        Invoke-Environment "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsamd64_x86.bat"
+        & C:\msys64\usr\bin\find . -name \*.cpp -exec C:\msys64\usr\bin\sh.exe -c 'for n; do cl //std:c++17 //EHsc //I . "$n" || exit 1; done' C:\msys64\usr\bin\sh.exe '{}' +
