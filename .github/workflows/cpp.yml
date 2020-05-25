@@ -14,7 +14,6 @@ jobs:
     - name: install g++
       run: |
         sudo add-apt-repository ppa:ubuntu-toolchain-r/test
-        sudo apt-get update
         sudo apt-get install g++-10
     - name: compile
       run: |
@@ -28,7 +27,6 @@ jobs:
     - name: install g++
       run: |
         sudo add-apt-repository ppa:ubuntu-toolchain-r/test
-        #sudo apt-get update
         sudo apt-get install g++-10
     - name: compile
       run: |
@@ -42,7 +40,6 @@ jobs:
     - name: install g++
       run: |
         sudo add-apt-repository ppa:ubuntu-toolchain-r/test
-        sudo apt-get update
         sudo apt-get install g++-10
     - name: compile
       run: |
@@ -56,7 +53,6 @@ jobs:
     - name: install g++-7
       run: |
         sudo add-apt-repository ppa:ubuntu-toolchain-r/test
-        #sudo apt-get update
         sudo apt-get install g++-7
     - name: compile
       run: |
