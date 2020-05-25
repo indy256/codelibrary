@@ -4,7 +4,7 @@
 using namespace std;
 
 // precondition: mod > 1 && gcd(a, mod) = 1
-i nt mod_inverse(int a, int mod) {
+int mod_inverse(int a, int mod) {
     int u = 0, v = 1, m = mod;
     while (a != 0) {
         int t = m / a;
