@@ -3,7 +3,7 @@ name: Java CI
 on: [push]
 
 jobs:
-  build-ubuntu-java:
+  build-ubuntu-java-latest:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -11,6 +11,19 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 15-ea
+    - name: Build with Ant
+      run: |
+        cd java
+        ant -noinput -buildfile build.xml
+
+  build-ubuntu-java-8:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up JDK
+      uses: actions/setup-java@v1
+      with:
+        java-version: 1.8
     - name: Build with Ant
       run: |
         cd java
