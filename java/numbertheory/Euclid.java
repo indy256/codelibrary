@@ -75,7 +75,7 @@ public class Euclid {
         int[] res = new int[p];
         res[1] = 1;
         for (int i = 2; i < p; ++i)
-            res[i] = (p - (p / i) * res[p % i] % p) % p;
+            res[i] = (int) ((long) (p - p / i) * res[p % i] % p);
         return res;
     }
 

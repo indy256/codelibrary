@@ -47,12 +47,13 @@ public class BinomialCoefficients {
         return res % p;
     }
 
-    public static int binomial(int n, int m, int mod) {
-        m = Math.min(m, n - m);
-        long res = 1;
-        for (int i = n - m + 1; i <= n; i++)
-            res = res * i % mod;
-        return (int) (res * BigInteger.valueOf(factorial(m, mod)).modInverse(BigInteger.valueOf(mod)).intValue() % mod);
+    // fact[0] = ifact[0] = fact[1] = ifact[1] = inv[1] = 1;
+    // for (int i = 2; i < fact.length; i++)
+    //   fact[i] = (int)c((long) fact[i - 1] * i % mod);
+    //   inv[i] = (int) ((long) (p - p / i) * inv[p % i] % p);
+    //   ifact[i] = (int)c((long) ifact[i - 1] * inv[i] % mod);
+    public static int binomial(int n, int m, int[] fact, int[] ifact, int mod) {
+        return (int) ((long) fact[n] * ifact[m] % mod * ifact[n - m] % mod);
     }
 
     // Usage example
