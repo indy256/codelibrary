@@ -51,9 +51,9 @@ struct modint {
         return u;
     }
 
-    bool operator==(modint rhs) { return value == rhs.value; }
+    bool operator==(modint rhs) const { return value == rhs.value; }
 
-    bool operator!=(modint rhs) { return !(*this == rhs); }
+    bool operator!=(modint rhs) const { return !(*this == rhs); }
 
     friend modint operator+(modint lhs, modint rhs) { return lhs += rhs; }
 
