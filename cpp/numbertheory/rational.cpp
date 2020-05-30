@@ -1,13 +1,15 @@
 #include <bits/stdc++.h>
-#include "frac.h"
+#include "rational.h"
 
 using namespace std;
-using fracll = frac<long long>;
+using rt = rational<long long/*__int128*/>;
 
 // usage example
 int main() {
-    fracll x{1, 2};
-    fracll y{2, 3};
+    rt x{1, 2};
+    rt y{2, 3};
+    if (y > x)
+        cout << "y > x" << endl;
     x -= y;
     x = x.abs();
     cout << x.a << "/" << x.b << endl;
