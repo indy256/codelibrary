@@ -17,4 +17,6 @@ struct custom_hash {
     }
 };
 
-int main() { unordered_map<long long, int, custom_hash> safe_map; }
+int main() {
+    unordered_map<long long, int, custom_hash> safe_map;
+}

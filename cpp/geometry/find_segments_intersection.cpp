@@ -6,9 +6,13 @@ using namespace std;
 
 typedef pair<int, int> pii;
 
-int cross(int ax, int ay, int bx, int by, int cx, int cy) { return (bx - ax) * (cy - ay) - (by - ay) * (cx - ax); }
+int cross(int ax, int ay, int bx, int by, int cx, int cy) {
+    return (bx - ax) * (cy - ay) - (by - ay) * (cx - ax);
+}
 
-int cross(pii a, pii b, pii c) { return cross(a.first, a.second, b.first, b.second, c.first, c.second); }
+int cross(pii a, pii b, pii c) {
+    return cross(a.first, a.second, b.first, b.second, c.first, c.second);
+}
 
 struct segment {
     pii a, b;

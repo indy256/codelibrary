@@ -36,7 +36,9 @@ int orientation(ll ax, ll ay, ll bx, ll by, ll cx, ll cy) {
     return (det > 0) - (det < 0);
 }
 
-bool is_middle(ll a, ll m, ll b) { return min(a, b) <= m && m <= max(a, b); }
+bool is_middle(ll a, ll m, ll b) {
+    return min(a, b) <= m && m <= max(a, b);
+}
 
 bool is_middle(ll ax, ll ay, ll mx, ll my, ll bx, ll by) {
     return orientation(ax, ay, mx, my, bx, by) == 0 && is_middle(ax, mx, bx) && is_middle(ay, my, by);
@@ -66,7 +68,9 @@ struct Line {
     ll a, b, c;
 };
 
-Line perpendicular(Line line, ll x, ll y) { return {-line.b, line.a, line.b * x - line.a * y}; }
+Line perpendicular(Line line, ll x, ll y) {
+    return {-line.b, line.a, line.b * x - line.a * y};
+}
 
 // usage example
 int main() {}

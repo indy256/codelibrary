@@ -4,7 +4,9 @@
 
 using namespace std;
 
-constexpr int digits(int base) noexcept { return base <= 1 ? 0 : 1 + digits(base / 10); }
+constexpr int digits(int base) noexcept {
+    return base <= 1 ? 0 : 1 + digits(base / 10);
+}
 
 constexpr int base = 1000'000'000;
 constexpr int base_digits = digits(base);

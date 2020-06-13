@@ -2,7 +2,9 @@
 
 using namespace std;
 
-int get(const vector<int> &t, int i) { return t[i + t.size() / 2]; }
+int get(const vector<int> &t, int i) {
+    return t[i + t.size() / 2];
+}
 
 void add(vector<int> &t, int i, int value) {
     i += t.size() / 2;

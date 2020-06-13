@@ -20,7 +20,9 @@ int flower_from[N * 2][N + 1], S[N * 2], vis[N * 2];
 vector<int> flower[N * 2];
 queue<int> q;
 
-int e_delta(const edge &e) { return lab[e.u] + lab[e.v] - g[e.u][e.v].w * 2; }
+int e_delta(const edge &e) {
+    return lab[e.u] + lab[e.v] - g[e.u][e.v].w * 2;
+}
 
 void update_slack(int u, int x) {
     if (!slack[x] || e_delta(g[u][x]) < e_delta(g[slack[x]][x]))
@@ -262,7 +264,9 @@ tuple<long long, int> solve() {
     return {tot_weight, n_matches};
 }
 
-void add_edge(int u, int v, int w) { g[u][v].w = g[v][u].w = w; }
+void add_edge(int u, int v, int w) {
+    g[u][v].w = g[v][u].w = w;
+}
 
 void init(int _n) {
     n = _n;
