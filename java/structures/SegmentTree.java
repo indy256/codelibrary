@@ -43,14 +43,16 @@ public class SegmentTree {
     SegmentTree(int n) {
         this.n = n;
         tree = new Node[2 * n - 1];
-        for (int i = 0; i < tree.length; i++) tree[i] = new Node();
+        for (int i = 0; i < tree.length; i++)
+            tree[i] = new Node();
         build(0, 0, n - 1);
     }
 
     SegmentTree(long[] v) {
         n = v.length;
         tree = new Node[2 * n - 1];
-        for (int i = 0; i < tree.length; i++) tree[i] = new Node();
+        for (int i = 0; i < tree.length; i++)
+            tree[i] = new Node();
         build(0, 0, n - 1, v);
     }
 
@@ -153,7 +155,8 @@ public class SegmentTree {
     static int sumLowerBound(SegmentTree t, int ll, int rr, long sum) {
         long[] sumSoFar = new long[1];
         return t.findFirst(ll, rr, node -> {
-            if (sumSoFar[0] + node.sum >= sum) return true;
+            if (sumSoFar[0] + node.sum >= sum)
+                return true;
             sumSoFar[0] += node.sum;
             return false;
         });
@@ -167,7 +170,7 @@ public class SegmentTree {
         System.out.println(30 == t.get(1, 3).mx);
         System.out.println(60 == t.get(1, 3).sum);
 
-        SegmentTree tt = new SegmentTree(new long[]{2, 1, 10, 20});
+        SegmentTree tt = new SegmentTree(new long[] {2, 1, 10, 20});
         System.out.println(2 == sumLowerBound(tt, 0, tt.n - 1, 12));
     }
 }

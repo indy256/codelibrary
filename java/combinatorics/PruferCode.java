@@ -5,11 +5,10 @@ import java.util.stream.Stream;
 
 // https://en.wikipedia.org/wiki/Pr%C3%BCfer_sequence
 public class PruferCode {
-
     // O(n) complexity
     public static List<Integer>[] pruferCode2Tree(int[] pruferCode) {
         int n = pruferCode.length + 2;
-        List<Integer>[] tree = Stream.generate(ArrayList::new).limit(n).toArray(List[]::new);
+        List<Integer>[] tree = Stream.generate(ArrayList::new).limit(n).toArray(List[] ::new);
         int[] degree = new int[n];
         Arrays.fill(degree, 1);
         for (int v : pruferCode)
@@ -26,7 +25,8 @@ public class PruferCode {
             if (degree[v] == 1 && v < ptr) {
                 leaf = v;
             } else {
-                while (degree[++ptr] != 1) ;
+                while (degree[++ptr] != 1)
+                    ;
                 leaf = ptr;
             }
         }
@@ -61,7 +61,8 @@ public class PruferCode {
             if (degree[next] == 1 && next < ptr) {
                 leaf = next;
             } else {
-                while (degree[++ptr] != 1) ;
+                while (degree[++ptr] != 1)
+                    ;
                 leaf = ptr;
             }
         }

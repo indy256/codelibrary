@@ -1,11 +1,9 @@
 package test.strings;
 
+import java.util.Random;
 import strings.SuffixTree;
 
-import java.util.Random;
-
 public class SuffixTreeTest {
-
     // random test
     public static void main(String[] args) {
         Random rnd = new Random(1);
@@ -23,7 +21,8 @@ public class SuffixTreeTest {
             SuffixTree.lcs(tree, s1.length(), s1.length() + s2.length() + 1);
             int res2 = slowLcs(s1, s2);
             if (SuffixTree.lcsLength != res2) {
-                System.err.println(s.substring(SuffixTree.lcsBeginIndex - 1, SuffixTree.lcsBeginIndex + SuffixTree.lcsLength - 1));
+                System.err.println(
+                    s.substring(SuffixTree.lcsBeginIndex - 1, SuffixTree.lcsBeginIndex + SuffixTree.lcsLength - 1));
                 System.err.println(s1);
                 System.err.println(s2);
                 System.err.println(SuffixTree.lcsLength + " " + res2);

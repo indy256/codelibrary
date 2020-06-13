@@ -1,7 +1,6 @@
 package test.geometry;
 
 import geometry.PolygonCircleIntersection;
-
 import java.util.Random;
 
 public class PolygonCircleIntersectionTest {
@@ -73,7 +72,7 @@ public class PolygonCircleIntersectionTest {
                 y[i] = rnd.nextInt(maxHeight);
                 p[i] = i;
             }
-            for (boolean improved = true; improved; ) {
+            for (boolean improved = true; improved;) {
                 improved = false;
                 for (int i = 0; i < n; i++) {
                     for (int j = 0; j < n; j++) {
@@ -103,9 +102,9 @@ public class PolygonCircleIntersectionTest {
             for (int i2 = 0, i1 = p.length - 1; i2 < p.length; i1 = i2++)
                 for (int j2 = 0, j1 = p.length - 1; j2 < p.length; j1 = j2++)
                     ok &= i1 == j1 || i1 == j2 || i2 == j1
-                            || !isCrossOrTouchIntersect(x[i1], y[i1], x[i2], y[i2], x[j1], y[j1], x[j2], y[j2]);
+                        || !isCrossOrTouchIntersect(x[i1], y[i1], x[i2], y[i2], x[j1], y[j1], x[j2], y[j2]);
             if (ok)
-                return new int[][]{x, y};
+                return new int[][] {x, y};
         }
     }
 
@@ -118,7 +117,8 @@ public class PolygonCircleIntersectionTest {
             p[j] = p[i];
             p[i] = t;
             i = (i + 1) % n;
-            if (i == j) break;
+            if (i == j)
+                break;
             j = (j - 1 + n) % n;
         }
     }
@@ -135,7 +135,7 @@ public class PolygonCircleIntersectionTest {
 
     static boolean isCrossOrTouchIntersect(long x1, long y1, long x2, long y2, long x3, long y3, long x4, long y4) {
         if (Math.max(x1, x2) < Math.min(x3, x4) || Math.max(x3, x4) < Math.min(x1, x2)
-                || Math.max(y1, y2) < Math.min(y3, y4) || Math.max(y3, y4) < Math.min(y1, y2))
+            || Math.max(y1, y2) < Math.min(y3, y4) || Math.max(y3, y4) < Math.min(y1, y2))
             return false;
         long z1 = (x2 - x1) * (y3 - y1) - (y2 - y1) * (x3 - x1);
         long z2 = (x2 - x1) * (y4 - y1) - (y2 - y1) * (x4 - x1);

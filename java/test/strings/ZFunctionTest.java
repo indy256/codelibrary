@@ -1,11 +1,9 @@
 package test.strings;
 
+import java.util.Random;
 import strings.ZFunction;
 
-import java.util.Random;
-
 public class ZFunctionTest {
-
     // random tests
     public static void main(String[] args) {
         Random rnd = new Random(1);

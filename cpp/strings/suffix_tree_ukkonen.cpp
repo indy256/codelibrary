@@ -65,6 +65,6 @@ int main() {
     for (int i = 0; i < s.size(); i++)
         add_letter(s[i]);
     for (int i = 1; i < sz; i++)
-        ans += min((int) s.size() - f_pos[i], len[i]);
+        ans += min((int)s.size() - f_pos[i], len[i]);
     cout << ans << "\n";
 }

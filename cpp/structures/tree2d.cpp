@@ -1,4 +1,5 @@
 #include <bits/stdc++.h>
+
 #include "treap.h"
 
 using namespace std;
@@ -6,7 +7,8 @@ using namespace std;
 struct tree_2d {
     vector<pTreap> t;
 
-    tree_2d(int n) : t(2 * n) {}
+    tree_2d(int n) : t(2 * n) {
+    }
 
     long long query(int x1, int x2, int y1, int y2) {
         long long res = 0;

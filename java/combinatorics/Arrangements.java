@@ -4,7 +4,6 @@ import java.util.Arrays;
 
 // https://en.wikipedia.org/wiki/Partial_permutation
 public class Arrangements {
-
     public static boolean nextArrangement(int[] a, int n) {
         boolean[] used = new boolean[n];
         for (int x : a)
@@ -88,8 +87,8 @@ public class Arrangements {
         int n = 4;
         do {
             System.out.println(Arrays.toString(a));
-            if (!Arrays.equals(a, arrangementByNumber(n, a.length, numberByArrangement(a, n))) ||
-                    cnt != numberByArrangement(arrangementByNumber(n, a.length, cnt), n))
+            if (!Arrays.equals(a, arrangementByNumber(n, a.length, numberByArrangement(a, n)))
+                || cnt != numberByArrangement(arrangementByNumber(n, a.length, cnt), n))
                 throw new RuntimeException();
             ++cnt;
         } while (nextArrangement(a, n));
@@ -100,7 +99,7 @@ public class Arrangements {
             System.out.println(Arrays.toString(a));
         } while (nextArrangementWithRepeats(a, 2));
 
-        a = new int[]{2, 3, 4};
+        a = new int[] {2, 3, 4};
         System.out.println(32 == numberByArrangement(a, 5));
         System.out.println(Arrays.equals(a, arrangementByNumber(5, a.length, 32)));
     }

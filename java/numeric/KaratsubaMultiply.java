@@ -4,10 +4,11 @@ import java.util.Arrays;
 
 // https://en.wikipedia.org/wiki/Karatsuba_algorithm
 public class KaratsubaMultiply {
-
     public static int[] karatsubaMultiply(int[] a, int[] b) {
-        if (a.length < b.length) a = Arrays.copyOf(a, b.length);
-        if (a.length > b.length) b = Arrays.copyOf(b, a.length);
+        if (a.length < b.length)
+            a = Arrays.copyOf(a, b.length);
+        if (a.length > b.length)
+            b = Arrays.copyOf(b, a.length);
         int n = a.length;
         int[] res = new int[n + n];
         if (n <= 10) {
@@ -48,6 +49,7 @@ public class KaratsubaMultiply {
     // Usage example
     public static void main(String[] args) {
         // (3*x^2+2*x+1) * (4*x+3) = 12*x^3 + 17*x^2 + 10*x + 3
-        System.out.println(Arrays.equals(new int[]{3, 10, 17, 12, 0, 0}, karatsubaMultiply(new int[]{1, 2, 3}, new int[]{3, 4})));
+        System.out.println(
+            Arrays.equals(new int[] {3, 10, 17, 12, 0, 0}, karatsubaMultiply(new int[] {1, 2, 3}, new int[] {3, 4})));
     }
 }

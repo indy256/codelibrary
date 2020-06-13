@@ -6,13 +6,13 @@ import java.util.List;
 import java.util.stream.Stream;
 
 public class GraphCycleDetection {
-
     public static int[] findCycle(List<Integer>[] graph) {
         int n = graph.length;
         int[] color = new int[n];
         int[] next = new int[n];
         for (int u = 0; u < n; u++) {
-            if (color[u] != 0) continue;
+            if (color[u] != 0)
+                continue;
             int cycleStart = dfs(graph, u, color, next);
             if (cycleStart != -1) {
                 List<Integer> cycle = new ArrayList<>();
@@ -46,7 +46,7 @@ public class GraphCycleDetection {
 
     // Usage example
     public static void main(String[] args) {
-        List<Integer>[] graph = Stream.generate(ArrayList::new).limit(3).toArray(List[]::new);
+        List<Integer>[] graph = Stream.generate(ArrayList::new).limit(3).toArray(List[] ::new);
         graph[0].add(1);
         graph[1].add(2);
         graph[2].add(0);

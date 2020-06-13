@@ -8,7 +8,7 @@ int pow_mod(int x, int n, int mod) {
     int res = 1;
     for (long long p = x; n > 0; n >>= 1, p = (p * p) % mod)
         if ((n & 1) != 0)
-            res = (int) (res * p % mod);
+            res = (int)(res * p % mod);
     return res;
 }
 

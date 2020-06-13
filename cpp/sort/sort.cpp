@@ -36,16 +36,17 @@ void counting_sort(vector<int> &a) {
     a = b;
 }
 
-
 // usage example
 int main() {
     vector<int> a{4, 1, 2, 3};
     merge_sort(a, 0, a.size());
-    for (int x:a) cout << x << " ";
+    for (int x : a)
+        cout << x << " ";
     cout << endl;
 
     a = {4, 1, 2, 3};
     counting_sort(a);
-    for (int x:a) cout << x << " ";
+    for (int x : a)
+        cout << x << " ";
     cout << endl;
 }

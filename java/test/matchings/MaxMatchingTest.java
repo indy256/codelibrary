@@ -1,19 +1,17 @@
 package test.matchings;
 
 import graphs.matchings.MaxBipartiteMatchingEV;
-
 import java.util.*;
 import java.util.stream.Stream;
 
 public class MaxMatchingTest {
-
     // random tests
     public static void main(String[] args) {
         Random rnd = new Random(1);
         for (int step = 0; step < 1000; step++) {
             int n1 = rnd.nextInt(20) + 1;
             int n2 = rnd.nextInt(20) + 1;
-            List<Integer>[] g = Stream.generate(ArrayList::new).limit(n1).toArray(List[]::new);
+            List<Integer>[] g = Stream.generate(ArrayList::new).limit(n1).toArray(List[] ::new);
             for (int i = 0; i < n1; i++)
                 for (int j = 0; j < n2; j++)
                     g[i].add(j);

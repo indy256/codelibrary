@@ -1,7 +1,6 @@
 package test.geometry;
 
 import geometry.ConvexHull;
-
 import java.util.*;
 
 public class ConvexHullTest {
@@ -63,10 +62,14 @@ public class ConvexHullTest {
         int n = points.length;
         int cnt = 0;
         for (int i = 0, j = n - 1; i < n; j = i++) {
-            if (points[i].y == qy && (points[i].x == qx || points[j].y == qy && (points[i].x <= qx || points[j].x <= qx) && (points[i].x >= qx || points[j].x >= qx)))
+            if (points[i].y == qy
+                && (points[i].x == qx
+                    || points[j].y == qy && (points[i].x <= qx || points[j].x <= qx)
+                        && (points[i].x >= qx || points[j].x >= qx)))
                 return 0; // boundary
             if ((points[i].y > qy) != (points[j].y > qy)) {
-                long det = (long) (points[i].x - qx) * (points[j].y - qy) - (long) (points[j].x - qx) * (points[i].y - qy);
+                long det =
+                    (long) (points[i].x - qx) * (points[j].y - qy) - (long) (points[j].x - qx) * (points[i].y - qy);
                 if (det == 0)
                     return 0; // boundary
                 if ((det > 0) != (points[j].y - points[i].y > 0))

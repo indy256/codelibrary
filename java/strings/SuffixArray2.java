@@ -5,11 +5,10 @@ import java.util.stream.IntStream;
 
 // https://en.wikipedia.org/wiki/Suffix_array
 public class SuffixArray2 {
-
     // suffix array in O(n*log^2(n))
     public static int[] suffixArray(CharSequence s) {
         int n = s.length();
-        Integer[] sa = IntStream.range(0, n).boxed().toArray(Integer[]::new);
+        Integer[] sa = IntStream.range(0, n).boxed().toArray(Integer[] ::new);
         int[] rank = s.chars().toArray();
 
         for (int len = 1; len < n; len *= 2) {
@@ -30,7 +29,8 @@ public class SuffixArray2 {
         Random rnd = new Random(1);
         for (int step = 0; step < 100000; step++) {
             int n = rnd.nextInt(100);
-            StringBuilder s = rnd.ints(n, 0, 10).collect(StringBuilder::new, (sb, i) -> sb.append((char) ('a' + i)), StringBuilder::append);
+            StringBuilder s = rnd.ints(n, 0, 10).collect(
+                StringBuilder::new, (sb, i) -> sb.append((char) ('a' + i)), StringBuilder::append);
             int[] sa = suffixArray(s);
             for (int i = 0; i + 1 < n; i++)
                 if (s.substring(sa[i]).compareTo(s.substring(sa[i + 1])) >= 0)

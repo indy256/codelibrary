@@ -3,7 +3,6 @@ package graphs.matchings;
 import java.util.Random;
 
 public class MaxGeneralMatchingRandomized {
-
     static final int MOD = 29989;
 
     static int pow(int a, int b) {
@@ -59,7 +58,7 @@ public class MaxGeneralMatchingRandomized {
 
     // Usage example
     public static void main(String[] args) {
-        int res = maxMatching(new boolean[][]{{false, true}, {true, false}});
+        int res = maxMatching(new boolean[][] {{false, true}, {true, false}});
         System.out.println(1 == res);
     }
 }

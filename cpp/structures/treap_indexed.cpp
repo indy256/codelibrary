@@ -16,9 +16,9 @@ struct Treap {
     long long prio;
     Treap *l, *r;
 
-
-    Treap(long long value) : node_value(value), mx(value), sum(value), add(0), size(1), prio(rng()),
-                             l(nullptr), r(nullptr) {}
+    Treap(long long value)
+        : node_value(value), mx(value), sum(value), add(0), size(1), prio(rng()), l(nullptr), r(nullptr) {
+    }
 
     void apply(long long v) {
         node_value += v;
@@ -162,12 +162,12 @@ int find_first(pTreap t, int ll, int rr, const function<bool(const Treap &)> &f)
 // Returns min(p | p<=rr && sum[ll..p]>=sum). If no such p exists, returns -1
 int sum_lower_bound(pTreap t, int ll, int rr, long long sum) {
     long long sumSoFar = 0;
-    return find_first(t, ll, rr,
-                      [&](const Treap &node) {
-                          if (sumSoFar + node.sum >= sum) return true;
-                          sumSoFar += node.sum;
-                          return false;
-                      });
+    return find_first(t, ll, rr, [&](const Treap &node) {
+        if (sumSoFar + node.sum >= sum)
+            return true;
+        sumSoFar += node.sum;
+        return false;
+    });
 }
 
 void clear(pTreap &t) {
@@ -191,7 +191,7 @@ void print(pTreap t) {
 int main() {
     pTreap t = nullptr;
     int pos = 0;
-    for (int a: {1, 2, 7, 4, 5})
+    for (int a : {1, 2, 7, 4, 5})
         insert(t, pos++, a);
     int n = t->size;
     for (int i = 0; i < n; ++i)

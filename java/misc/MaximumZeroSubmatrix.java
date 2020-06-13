@@ -3,7 +3,6 @@ package misc;
 import java.util.*;
 
 public class MaximumZeroSubmatrix {
-
     public static int maximumZeroSubmatrix(int[][] a) {
         int R = a.length;
         int C = a[0].length;
@@ -20,13 +19,15 @@ public class MaximumZeroSubmatrix {
                     d[c] = r;
             int size = 0;
             for (int c = 0; c < C; ++c) {
-                while (size > 0 && d[st[size - 1]] <= d[c]) --size;
+                while (size > 0 && d[st[size - 1]] <= d[c])
+                    --size;
                 d1[c] = size == 0 ? -1 : st[size - 1];
                 st[size++] = c;
             }
             size = 0;
             for (int c = C - 1; c >= 0; --c) {
-                while (size > 0 && d[st[size - 1]] <= d[c]) --size;
+                while (size > 0 && d[st[size - 1]] <= d[c])
+                    --size;
                 d2[c] = size == 0 ? C : st[size - 1];
                 st[size++] = c;
             }
@@ -60,7 +61,8 @@ public class MaximumZeroSubmatrix {
         for (int r2 = 0; r2 < R; r2++)
             for (int c2 = 0; c2 < C; c2++)
                 for (int r1 = 0; r1 <= r2; r1++)
-                    m1:for (int c1 = 0; c1 <= c2; c1++) {
+                m1:
+                    for (int c1 = 0; c1 <= c2; c1++) {
                         for (int r = r1; r <= r2; r++)
                             for (int c = c1; c <= c2; c++)
                                 if (a[r][c] != 0)

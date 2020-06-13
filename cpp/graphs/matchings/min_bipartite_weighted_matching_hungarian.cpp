@@ -55,10 +55,7 @@ pair<int, vector<int>> min_weight_perfect_matching(const vector<vector<int>> &a)
 // usage example
 int main() {
     // row1 and col1 should contain 0
-    vector<vector<int>> a{
-            {0, 0, 0},
-            {0, 1, 2},
-            {0, 1, 2}};
-    auto[cost, matching] = min_weight_perfect_matching(a);
+    vector<vector<int>> a{{0, 0, 0}, {0, 1, 2}, {0, 1, 2}};
+    auto [cost, matching] = min_weight_perfect_matching(a);
     cout << boolalpha << (cost == 3) << endl;
 }

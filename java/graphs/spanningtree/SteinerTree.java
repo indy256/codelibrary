@@ -1,7 +1,6 @@
 package graphs.spanningtree;
 
 public class SteinerTree {
-
     public static int minLengthSteinerTree(int[][] g, int[] verticesToConnect) {
         int n = g.length;
         int m = verticesToConnect.length;

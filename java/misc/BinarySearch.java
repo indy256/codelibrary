@@ -4,7 +4,6 @@ import java.util.*;
 import java.util.function.*;
 
 public class BinarySearch {
-
     // 000[1]11
     // warning: overflows in lines 1-4
     // invariant: f[lo] == false, f[hi] == true

@@ -2,7 +2,6 @@ package structures;
 
 // https://en.wikipedia.org/wiki/Persistent_data_structure
 public class PersistentTree {
-
     public static class Node {
         Node left, right;
         int sum;
@@ -41,9 +40,8 @@ public class PersistentTree {
         if (left == right)
             return new Node(value);
         int mid = (left + right) >> 1;
-        return pos <= mid ?
-                new Node(set(pos, value, root.left, left, mid), root.right) :
-                new Node(root.left, set(pos, value, root.right, mid + 1, right));
+        return pos <= mid ? new Node(set(pos, value, root.left, left, mid), root.right)
+                          : new Node(root.left, set(pos, value, root.right, mid + 1, right));
     }
 
     // Usage example

@@ -2,7 +2,6 @@ package structures;
 
 // https://en.wikipedia.org/wiki/Quadtree
 public class QuadTree {
-
     static class Node {
         int count;
         Node topLeft, topRight, bottomLeft, bottomRight;

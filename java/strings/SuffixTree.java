@@ -24,7 +24,8 @@ public class SuffixTree {
     public static Node buildSuffixTree(CharSequence s) {
         int n = s.length();
         byte[] a = new byte[n];
-        for (int i = 0; i < n; i++) a[i] = (byte) ALPHABET.indexOf(s.charAt(i));
+        for (int i = 0; i < n; i++)
+            a[i] = (byte) ALPHABET.indexOf(s.charAt(i));
         Node root = new Node(0, 0, 0, null);
         Node node = root;
         for (int i = 0, tail = 0; i < n; i++, tail++) {
@@ -38,12 +39,14 @@ public class SuffixTree {
                 }
                 if (ch == null) {
                     node.children[a[i]] = new Node(i, n, node.depth + node.end - node.begin, node);
-                    if (last != null) last.suffixLink = node;
+                    if (last != null)
+                        last.suffixLink = node;
                     last = null;
                 } else {
                     byte afterTail = a[ch.begin + tail];
                     if (afterTail == a[i]) {
-                        if (last != null) last.suffixLink = node;
+                        if (last != null)
+                            last.suffixLink = node;
                         break;
                     } else {
                         Node splitNode = new Node(ch.begin, ch.begin + tail, node.depth + node.end - node.begin, node);
@@ -53,7 +56,8 @@ public class SuffixTree {
                         ch.depth += tail;
                         ch.parent = splitNode;
                         node.children[a[i - tail]] = splitNode;
-                        if (last != null) last.suffixLink = splitNode;
+                        if (last != null)
+                            last.suffixLink = splitNode;
                         last = splitNode;
                     }
                 }

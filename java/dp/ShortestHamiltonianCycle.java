@@ -3,7 +3,6 @@ package dp;
 import java.util.Arrays;
 
 public class ShortestHamiltonianCycle {
-
     public static int getShortestHamiltonianCycle(int[][] dist) {
         int n = dist.length;
         int[][] dp = new int[1 << n][n];
@@ -47,8 +46,7 @@ public class ShortestHamiltonianCycle {
 
     // Usage example
     public static void main(String[] args) {
-        int[][] dist = {{0, 1, 10, 1, 10}, {1, 0, 10, 10, 1}, {10, 10, 0, 1, 1}, {1, 10, 1, 0, 10},
-                {10, 1, 1, 10, 0}};
+        int[][] dist = {{0, 1, 10, 1, 10}, {1, 0, 10, 10, 1}, {10, 10, 0, 1, 1}, {1, 10, 1, 0, 10}, {10, 1, 1, 10, 0}};
         System.out.println(5 == getShortestHamiltonianCycle(dist));
     }
 }

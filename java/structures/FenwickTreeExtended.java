@@ -1,7 +1,6 @@
 package structures;
 
 public class FenwickTreeExtended {
-
     // T[i] += value
     public static void add(int[] t, int i, int value) {
         for (; i < t.length; i |= i + 1)
@@ -91,11 +90,11 @@ public class FenwickTreeExtended {
         add(t, 9, -2);
         System.out.println(-1 == sum(t, 0, 9));
 
-        t = createFromArray(new int[]{1, 2, 3, 4, 5, 6});
+        t = createFromArray(new int[] {1, 2, 3, 4, 5, 6});
         for (int i = 0; i < t.length; i++)
             System.out.print(get(t, i) + " ");
         System.out.println();
-        t = createFromArray(new int[]{0, 0, 1, 0, 0, 1, 0, 0});
+        t = createFromArray(new int[] {0, 0, 1, 0, 0, 1, 0, 0});
         System.out.println(5 == lower_bound(t, 2));
 
         int[] t1 = new int[10];

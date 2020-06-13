@@ -1,11 +1,9 @@
 package test.strings;
 
+import java.util.*;
 import strings.SuffixAutomaton;
 
-import java.util.*;
-
 public class SuffixAutomatonTest {
-
     // random tests
     public static void main(String[] args) {
         Random rnd = new Random(1);

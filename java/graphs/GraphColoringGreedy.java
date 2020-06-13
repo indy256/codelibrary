@@ -4,7 +4,6 @@ import java.util.*;
 import java.util.stream.Stream;
 
 public class GraphColoringGreedy {
-
     // similar to DSatur coloring
     public static int[] color(List<Integer>[] graph) {
         int n = graph.length;
@@ -39,7 +38,7 @@ public class GraphColoringGreedy {
     // Usage example
     public static void main(String[] args) {
         int n = 5;
-        List<Integer>[] g = Stream.generate(ArrayList::new).limit(n).toArray(List[]::new);
+        List<Integer>[] g = Stream.generate(ArrayList::new).limit(n).toArray(List[] ::new);
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 g[i].add((i + 1) % n);

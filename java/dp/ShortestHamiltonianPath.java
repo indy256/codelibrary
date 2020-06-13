@@ -3,7 +3,6 @@ package dp;
 import java.util.Arrays;
 
 public class ShortestHamiltonianPath {
-
     public static int getShortestHamiltonianPath(int[][] dist) {
         int n = dist.length;
         int[][] dp = new int[1 << n][n];
@@ -35,8 +34,9 @@ public class ShortestHamiltonianPath {
             int bj = -1;
             for (int j = 0; j < n; j++) {
                 if ((cur & 1 << j) != 0
-                        && (bj == -1
-                        || dp[cur][bj] + (last == -1 ? 0 : dist[bj][last]) > dp[cur][j] + (last == -1 ? 0 : dist[j][last]))) {
+                    && (bj == -1
+                        || dp[cur][bj] + (last == -1 ? 0 : dist[bj][last])
+                            > dp[cur][j] + (last == -1 ? 0 : dist[j][last]))) {
                     bj = j;
                 }
             }

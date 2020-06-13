@@ -14,7 +14,8 @@ struct Treap {
     int size;
     pTreap l, r;
 
-    Treap(int key) : key(key), prio(rng()), size(1), l(nullptr), r(nullptr) {}
+    Treap(int key) : key(key), prio(rng()), size(1), l(nullptr), r(nullptr) {
+    }
 
     void update() {
         size = 1 + get_size(l) + get_size(r);
@@ -24,9 +25,9 @@ struct Treap {
         return node ? node->size : 0;
     }
 
-//    ~item() {
-//        cout << "item " << key << " disposed" << endl;
-//    }
+    //    ~item() {
+    //        cout << "item " << key << " disposed" << endl;
+    //    }
 };
 
 void split(pTreap t, int key, pTreap &l, pTreap &r) {
@@ -83,12 +84,12 @@ void print(pTreap &t) {
 int main() {
     pTreap t1 = nullptr;
     int a1[] = {1, 2};
-    for (int x: a1)
+    for (int x : a1)
         insert(t1, make_shared<Treap>(x));
 
     pTreap t2 = nullptr;
     int a2[] = {7, 4, 5};
-    for (int x: a2)
+    for (int x : a2)
         insert(t2, make_shared<Treap>(x));
 
     pTreap t = nullptr;

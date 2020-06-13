@@ -3,7 +3,6 @@ package misc;
 import java.util.*;
 
 public class ArrayRotate {
-
     public static void rotate1(int[] a, int first, int middle, int last) {
         int next = middle;
         while (first != next) {

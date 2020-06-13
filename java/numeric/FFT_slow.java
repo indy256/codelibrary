@@ -3,7 +3,6 @@ package numeric;
 // Fast Fourier transform
 // https://cp-algorithms.com/algebra/fft.html
 public class FFT_slow {
-
     public static int[] multiplyBigint(int[] a, int[] b) {
         int need = a.length + b.length;
         int n = Integer.highestOneBit(need - 1) << 1;

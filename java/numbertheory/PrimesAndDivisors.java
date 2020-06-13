@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.stream.IntStream;
 
 public class PrimesAndDivisors {
-
     // Generates prime numbers up to n in O(n*log(log(n))) time
     public static int[] generatePrimes(int n) {
         boolean[] prime = new boolean[n + 1];

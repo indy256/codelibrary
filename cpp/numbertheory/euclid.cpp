@@ -1,4 +1,5 @@
 #include <bits/stdc++.h>
+
 #include <optional>
 
 using namespace std;
@@ -18,7 +19,7 @@ int mod_inverse(int a, int mod) {
 }
 
 // returns { gcd(a,b), x, y } such that gcd(a,b) = a*x + b*y
-template<class T>
+template <class T>
 tuple<T, T, T> euclid(T a, T b) {
     T x = 1, y = 0, x1 = 0, y1 = 1;
     // invariant: a=a_orig*x+b_orig*y, b=a_orig*x1+b_orig*y1
@@ -41,11 +42,12 @@ tuple<T, T, T> euclid(T a, T b) {
 // solves a * x = b (mod m)
 int solve1(int a, int b, int m) {
     int g = gcd(a, m);
-    if (b % g) return -1;
+    if (b % g)
+        return -1;
     a /= g;
     b /= g;
     m /= g;
-    int x = (long long) b * mod_inverse(a, m) % m;
+    int x = (long long)b * mod_inverse(a, m) % m;
     return x;
     // all solutions: x[i]=x+i*m, i=0..g-1
 }
@@ -53,8 +55,9 @@ int solve1(int a, int b, int m) {
 // https://cp-algorithms.com/algebra/linear-diophantine-equation.html
 // solves a * x + b * y = c (mod m)
 optional<tuple<int, int>> solve2(int a, int b, int c) {
-    auto[g, x0, y0] = euclid(abs(a), abs(b));
-    if (c % g != 0) return {};
+    auto [g, x0, y0] = euclid(abs(a), abs(b));
+    if (c % g != 0)
+        return {};
     x0 *= c / g;
     y0 *= c / g;
     return make_optional(tuple{a > 0 ? x0 : -x0, b > 0 ? y0 : -y0});
@@ -63,14 +66,14 @@ optional<tuple<int, int>> solve2(int a, int b, int c) {
 
 // usage example
 int main() {
-    auto[gcd, x, y] = euclid(6, 9);
+    auto [gcd, x, y] = euclid(6, 9);
     cout << gcd << " = 6 * " << x << " + 9 * " << y << endl;
 
     cout << "x=" << solve1(2, 3, 5) << endl;
 
     auto res = solve2(4, 6, 2);
     if (res) {
-        auto[xx, yy] = *res;
+        auto [xx, yy] = *res;
         cout << "x=" << xx << " y=" << yy << endl;
     }
 

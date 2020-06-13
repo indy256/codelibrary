@@ -16,13 +16,13 @@ tuple<vector<int>, vector<int>> dijkstra_heap(const vector<vector<edge>> &g, int
     q.emplace(prio[s] = 0, s);
 
     while (!q.empty()) {
-        auto[d, u] = q.top();
+        auto [d, u] = q.top();
         q.pop();
 
         if (d != prio[u])
             continue;
 
-        for (auto[v, len] : g[u]) {
+        for (auto [v, len] : g[u]) {
             int nprio = prio[u] + len;
             if (prio[v] > nprio) {
                 prio[v] = nprio;
@@ -47,7 +47,7 @@ tuple<vector<int>, vector<int>> dijkstra_set(const vector<vector<edge>> &g, int 
         int u = q.begin()->second;
         q.erase(q.begin());
 
-        for (auto[v, len] : g[u]) {
+        for (auto [v, len] : g[u]) {
             int nprio = prio[u] + len;
             if (prio[v] > nprio) {
                 q.erase({prio[v], v});
@@ -67,12 +67,14 @@ int main() {
     g[1].emplace_back(2, -5);
     g[0].emplace_back(2, 8);
 
-    auto[prio1, pred1] = dijkstra_heap(g, 0);
-    auto[prio2, pred2] = dijkstra_set(g, 0);
+    auto [prio1, pred1] = dijkstra_heap(g, 0);
+    auto [prio2, pred2] = dijkstra_set(g, 0);
 
-    for (int x:prio1) cout << x << " ";
+    for (int x : prio1)
+        cout << x << " ";
     cout << endl;
 
-    for (int x:prio2) cout << x << " ";
+    for (int x : prio2)
+        cout << x << " ";
     cout << endl;
 }

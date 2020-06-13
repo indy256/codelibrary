@@ -2,7 +2,6 @@ package strings;
 
 // https://en.wikipedia.org/wiki/Aho–Corasick_algorithm
 public class AhoCorasick {
-
     final int ALPHABET_SIZE = 26;
     final int MAX_STATES = 200_000;
 
@@ -26,7 +25,7 @@ public class AhoCorasick {
 
     public void buildLinks() {
         int[] q = new int[MAX_STATES];
-        for (int s = 0, t = 1; s < t; ) {
+        for (int s = 0, t = 1; s < t;) {
             int v = q[s++];
             int u = sufflink[v];
             if (escape[v] == 0) {

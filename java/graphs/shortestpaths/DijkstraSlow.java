@@ -5,7 +5,6 @@ import java.util.stream.Stream;
 
 // https://en.wikipedia.org/wiki/Dijkstra's_algorithm
 public class DijkstraSlow {
-
     // calculate shortest paths in O(V^2)
     public static void shortestPaths(List<Edge>[] graph, int s, int[] prio, int[] pred) {
         int n = graph.length;
@@ -47,7 +46,7 @@ public class DijkstraSlow {
     public static void main(String[] args) {
         int[][] cost = {{0, 3, 2}, {0, 0, -2}, {0, 0, 0}};
         int n = cost.length;
-        List<Edge>[] graph = Stream.generate(ArrayList::new).limit(n).toArray(List[]::new);
+        List<Edge>[] graph = Stream.generate(ArrayList::new).limit(n).toArray(List[] ::new);
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 if (cost[i][j] != 0) {

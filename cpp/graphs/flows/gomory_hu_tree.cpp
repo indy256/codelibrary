@@ -1,4 +1,5 @@
 #include <bits/stdc++.h>
+
 #include "max_flow_dinic.h"
 
 using namespace std;
@@ -21,9 +22,7 @@ vector<vector<pair<int, int>>> gomory_hu_tree(max_flow_dinic &flow) {
 
 // usage example
 int main() {
-    int capacity[][3] = {{0, 3, 2},
-                         {0, 0, 2},
-                         {0, 0, 0}};
+    int capacity[][3] = {{0, 3, 2}, {0, 0, 2}, {0, 0, 0}};
     int n = 3;
     max_flow_dinic flow(n);
     for (int i = 0; i < n; i++)
@@ -33,6 +32,6 @@ int main() {
 
     vector<vector<pair<int, int>>> t = gomory_hu_tree(flow);
     for (int u = 0; u < n; ++u)
-        for (auto[v, f]:t[u])
+        for (auto [v, f] : t[u])
             cout << u << " " << v << " " << f << endl;
 }

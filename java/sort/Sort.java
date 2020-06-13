@@ -4,7 +4,6 @@ import java.util.*;
 import java.util.function.IntPredicate;
 
 public class Sort {
-
     static Random rnd = new Random(1);
 
     public static void qSort(int[] a, int low, int high) {
@@ -77,7 +76,8 @@ public class Sort {
 
     // O(n*log(n)) complexity
     static void inPlaceMerge(int[] a, int from, int mid, int to) {
-        if (from >= mid || mid >= to) return;
+        if (from >= mid || mid >= to)
+            return;
         if (to - from == 2) {
             if (a[from] > a[mid])
                 swap(a, from, mid);

@@ -3,8 +3,7 @@ package numeric;
 import java.util.Arrays;
 
 public class WalshHadamarTransform {
-
-    enum Operation {XOR, OR, AND}
+    enum Operation { XOR, OR, AND }
 
     // calculates c[k] = sum(a[i]*b[j] | i op j == k), where op = XOR | OR | AND
     // complexity: O(n*log(n))

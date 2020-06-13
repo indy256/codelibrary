@@ -27,15 +27,12 @@ vector<int> stable_matching(vector<vector<int>> prefer_m, vector<vector<int>> pr
 
 // usage example
 int main() {
-    vector<vector<int>> prefer_m{{0, 1, 2},
-                                 {0, 2, 1},
-                                 {1, 0, 2}};
+    vector<vector<int>> prefer_m{{0, 1, 2}, {0, 2, 1}, {1, 0, 2}};
 
-    vector<vector<int>> prefer_w{{0, 1, 2},
-                                 {2, 0, 1},
-                                 {2, 1, 0}};
+    vector<vector<int>> prefer_w{{0, 1, 2}, {2, 0, 1}, {2, 1, 0}};
 
     vector<int> matching = stable_matching(prefer_m, prefer_w);
-    for (int x:matching) cout << x << " ";
+    for (int x : matching)
+        cout << x << " ";
     cout << endl;
 }

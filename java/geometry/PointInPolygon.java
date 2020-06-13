@@ -1,7 +1,6 @@
 package geometry;
 
 public class PointInPolygon {
-
     public static int pointInPolygon(int qx, int qy, int[] x, int[] y) {
         int n = x.length;
         int cnt = 0;

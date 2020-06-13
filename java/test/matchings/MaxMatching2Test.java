@@ -1,11 +1,9 @@
 package test.matchings;
 
 import graphs.matchings.MaxBipartiteMatchingV3;
-
 import java.util.Random;
 
 public class MaxMatching2Test {
-
     // random tests
     public static void main(String[] args) {
         Random rnd = new Random(1);

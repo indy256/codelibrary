@@ -1,7 +1,6 @@
 package test.matchings;
 
 import graphs.matchings.MinBipartiteWeightedMatchingHungarian;
-
 import java.util.*;
 
 public class HungarianTest {
@@ -38,7 +37,8 @@ public class HungarianTest {
                 if ((mask & (1 << i)) == 0) {
                     for (int j = 0; j < m; j++) {
                         if ((mask & (1 << (j + n))) == 0) {
-                            dp[mask | (1 << i) | (1 << (j + n))] = Math.min(dp[mask | (1 << i) | (1 << (j + n))], dp[mask] + a[i + 1][j + 1]);
+                            dp[mask | (1 << i) | (1 << (j + n))] =
+                                Math.min(dp[mask | (1 << i) | (1 << (j + n))], dp[mask] + a[i + 1][j + 1]);
                             if (Integer.bitCount(mask & ((1 << n) - 1)) == n - 1)
                                 res = Math.min(res, dp[mask | (1 << i) | (1 << (j + n))]);
                         }

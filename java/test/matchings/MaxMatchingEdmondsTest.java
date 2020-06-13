@@ -1,19 +1,17 @@
 package test.matchings;
 
 import graphs.matchings.MaxGeneralMatchingV3;
-
 import java.util.*;
 import java.util.stream.Stream;
 
 public class MaxMatchingEdmondsTest {
-
     // random test
     public static void main(String[] args) {
         Random rnd = new Random(1);
         for (int step = 0; step < 1000; step++) {
             int n = rnd.nextInt(10) + 1;
             boolean[][] g = new boolean[n][n];
-            List<Integer>[] graph = Stream.generate(ArrayList::new).limit(n).toArray(List[]::new);
+            List<Integer>[] graph = Stream.generate(ArrayList::new).limit(n).toArray(List[] ::new);
             for (int i = 0; i < n; i++) {
                 for (int j = i + 1; j < n; j++) {
                     g[i][j] = g[j][i] = rnd.nextBoolean();

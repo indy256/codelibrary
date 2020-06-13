@@ -4,7 +4,6 @@ import java.math.BigInteger;
 import java.util.Arrays;
 
 public class NewtonInterpolation {
-
     // https://en.wikipedia.org/wiki/Divided_differences#Example
     public static int[] getDividedDifferences(int[] x, int[] y, int mod) {
         BigInteger MOD = BigInteger.valueOf(mod);

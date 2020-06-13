@@ -5,11 +5,11 @@ import java.util.stream.Stream;
 
 // https://sai16vicky.wordpress.com/2014/11/01/divide-and-conquer-on-trees-centroid-decomposition/
 public class CentroidDecomposition {
-
     static void calcSizes(List<Integer>[] tree, int[] size, boolean[] deleted, int u, int p) {
         size[u] = 1;
         for (int v : tree[u]) {
-            if (v == p || deleted[v]) continue;
+            if (v == p || deleted[v])
+                continue;
             calcSizes(tree, size, deleted, v, u);
             size[u] += size[v];
         }
@@ -17,7 +17,8 @@ public class CentroidDecomposition {
 
     static int findTreeCentroid(List<Integer>[] tree, int[] size, boolean[] deleted, int u, int p, int vertices) {
         for (int v : tree[u]) {
-            if (v == p || deleted[v]) continue;
+            if (v == p || deleted[v])
+                continue;
             if (size[v] > vertices / 2) {
                 return findTreeCentroid(tree, size, deleted, v, u, vertices);
             }
@@ -25,12 +26,12 @@ public class CentroidDecomposition {
         return u;
     }
 
-//    static void dfs(List<Integer>[] tree, boolean[] deleted, int u, int p) {
-//        for (int v : tree[u]) {
-//            if (v == p || deleted[v]) continue;
-//            dfs(tree, deleted, v, u);
-//        }
-//    }
+    //    static void dfs(List<Integer>[] tree, boolean[] deleted, int u, int p) {
+    //        for (int v : tree[u]) {
+    //            if (v == p || deleted[v]) continue;
+    //            dfs(tree, deleted, v, u);
+    //        }
+    //    }
 
     static void decompose(List<Integer>[] tree, int[] size, boolean[] deleted, int u, int total) {
         calcSizes(tree, size, deleted, u, -1);
@@ -42,7 +43,8 @@ public class CentroidDecomposition {
         System.out.println(centroid);
 
         for (int v : tree[centroid]) {
-            if (deleted[v]) continue;
+            if (deleted[v])
+                continue;
             decompose(tree, size, deleted, v, size[v]);
         }
     }
@@ -55,7 +57,7 @@ public class CentroidDecomposition {
     // Usage example
     public static void main(String[] args) {
         int n = 4;
-        List<Integer>[] tree = Stream.generate(ArrayList::new).limit(n).toArray(List[]::new);
+        List<Integer>[] tree = Stream.generate(ArrayList::new).limit(n).toArray(List[] ::new);
         tree[3].add(0);
         tree[0].add(3);
         tree[3].add(1);

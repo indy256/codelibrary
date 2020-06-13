@@ -1,4 +1,5 @@
 #include <bits/stdc++.h>
+
 #include "fft.h"
 
 using namespace std;
@@ -10,12 +11,12 @@ constexpr int digits(int base) noexcept {
 constexpr int base = 1000'000'000;
 constexpr int base_digits = digits(base);
 
-constexpr int fft_base = 10'000; // fft_base^2 * n / fft_base_digits <= 10^15 for double
+constexpr int fft_base = 10'000;  // fft_base^2 * n / fft_base_digits <= 10^15 for double
 constexpr int fft_base_digits = digits(fft_base);
 
 struct bigint {
     // value == 0 is represented by empty z
-    vector<int> z; // digits
+    vector<int> z;  // digits
 
     // sign == 1 <==> value >= 0
     // sign == -1 <==> value < 0
@@ -30,7 +31,7 @@ struct bigint {
         v *= sign;
         z.clear();
         for (; v > 0; v = v / base)
-            z.push_back((int) (v % base));
+            z.push_back((int)(v % base));
         return *this;
     }
 
@@ -90,9 +91,9 @@ struct bigint {
         for (int i = 0, carry = 0; i < z.size() || carry; ++i) {
             if (i == z.size())
                 z.push_back(0);
-            long long cur = (long long) z[i] * v + carry;
-            carry = (int) (cur / base);
-            z[i] = (int) (cur % base);
+            long long cur = (long long)z[i] * v + carry;
+            carry = (int)(cur / base);
+            z[i] = (int)(cur % base);
         }
         trim();
         return *this;
@@ -109,12 +110,12 @@ struct bigint {
         bigint q, r;
         q.z.resize(a.z.size());
 
-        for (int i = (int) a.z.size() - 1; i >= 0; i--) {
+        for (int i = (int)a.z.size() - 1; i >= 0; i--) {
             r *= base;
             r += a.z[i];
             int s1 = b.z.size() < r.z.size() ? r.z[b.z.size()] : 0;
             int s2 = b.z.size() - 1 < r.z.size() ? r.z[b.z.size() - 1] : 0;
-            int d = (int) (((long long) s1 * base + s2) / b.z.back());
+            int d = (int)(((long long)s1 * base + s2) / b.z.back());
             r -= b * d;
             while (r < 0)
                 r += b, --d;
@@ -135,22 +136,22 @@ struct bigint {
 
         int n = a.z.size();
 
-        int firstDigit = (int) ::sqrt((double) a.z[n - 1] * base + a.z[n - 2]);
+        int firstDigit = (int)::sqrt((double)a.z[n - 1] * base + a.z[n - 2]);
         int norm = base / (firstDigit + 1);
         a *= norm;
         a *= norm;
         while (a.z.empty() || a.z.size() % 2 == 1)
             a.z.push_back(0);
 
-        bigint r = (long long) a.z[n - 1] * base + a.z[n - 2];
-        firstDigit = (int) ::sqrt((double) a.z[n - 1] * base + a.z[n - 2]);
+        bigint r = (long long)a.z[n - 1] * base + a.z[n - 2];
+        firstDigit = (int)::sqrt((double)a.z[n - 1] * base + a.z[n - 2]);
         int q = firstDigit;
         bigint res;
 
         for (int j = n / 2 - 1; j >= 0; j--) {
             for (;; --q) {
                 bigint r1 = (r - (res * 2 * base + q) * q) * base * base +
-                            (j > 0 ? (long long) a.z[2 * j - 1] * base + a.z[2 * j - 2] : 0);
+                            (j > 0 ? (long long)a.z[2 * j - 1] * base + a.z[2 * j - 2] : 0);
                 if (r1 >= 0) {
                     r = r1;
                     break;
@@ -163,7 +164,7 @@ struct bigint {
                 int d1 = res.z.size() + 2 < r.z.size() ? r.z[res.z.size() + 2] : 0;
                 int d2 = res.z.size() + 1 < r.z.size() ? r.z[res.z.size() + 1] : 0;
                 int d3 = res.z.size() < r.z.size() ? r.z[res.z.size()] : 0;
-                q = (int) (((long long) d1 * base * base + (long long) d2 * base + d3) / (firstDigit * 2));
+                q = (int)(((long long)d1 * base * base + (long long)d2 * base + d3) / (firstDigit * 2));
             }
         }
 
@@ -182,10 +183,10 @@ struct bigint {
     bigint &operator/=(int v) {
         if (v < 0)
             sign = -sign, v = -v;
-        for (int i = (int) z.size() - 1, rem = 0; i >= 0; --i) {
-            long long cur = z[i] + rem * (long long) base;
-            z[i] = (int) (cur / v);
-            rem = (int) (cur % v);
+        for (int i = (int)z.size() - 1, rem = 0; i >= 0; --i) {
+            long long cur = z[i] + rem * (long long)base;
+            z[i] = (int)(cur / v);
+            rem = (int)(cur % v);
         }
         trim();
         return *this;
@@ -199,8 +200,8 @@ struct bigint {
         if (v < 0)
             v = -v;
         int m = 0;
-        for (int i = (int) z.size() - 1; i >= 0; --i)
-            m = (int) ((z[i] + m * (long long) base) % v);
+        for (int i = (int)z.size() - 1; i >= 0; --i)
+            m = (int)((z[i] + m * (long long)base) % v);
         return m * sign;
     }
 
@@ -224,7 +225,7 @@ struct bigint {
             return sign < v.sign;
         if (z.size() != v.z.size())
             return z.size() * sign < v.z.size() * v.sign;
-        for (int i = (int) z.size() - 1; i >= 0; i--)
+        for (int i = (int)z.size() - 1; i >= 0; i--)
             if (z[i] != v.z[i])
                 return z[i] * sign < v.z[i] * sign;
         return false;
@@ -273,7 +274,7 @@ struct bigint {
 
     long long longValue() const {
         long long res = 0;
-        for (int i = (int) z.size() - 1; i >= 0; i--)
+        for (int i = (int)z.size() - 1; i >= 0; i--)
             res = res * base + z[i];
         return res * sign;
     }
@@ -295,7 +296,7 @@ struct bigint {
                 sign = -sign;
             ++pos;
         }
-        for (int i = (int) s.size() - 1; i >= pos; i -= base_digits) {
+        for (int i = (int)s.size() - 1; i >= pos; i -= base_digits) {
             int x = 0;
             for (int j = max(pos, i - base_digits + 1); j <= i; j++)
                 x = x * 10 + s[j] - '0';
@@ -315,7 +316,7 @@ struct bigint {
         if (v.sign == -1)
             stream << '-';
         stream << (v.z.empty() ? 0 : v.z.back());
-        for (int i = (int) v.z.size() - 2; i >= 0; --i)
+        for (int i = (int)v.z.size() - 2; i >= 0; --i)
             stream << setw(base_digits) << setfill('0') << v.z[i];
         return stream;
     }
@@ -337,7 +338,7 @@ struct bigint {
                 cur_digits -= new_digits;
             }
         }
-        res.push_back((int) cur);
+        res.push_back((int)cur);
         while (!res.empty() && res.back() == 0)
             res.pop_back();
         return res;
@@ -362,9 +363,9 @@ struct bigint {
         for (int i = 0; i < z.size(); ++i)
             if (z[i])
                 for (int j = 0, carry = 0; j < v.z.size() || carry; ++j) {
-                    long long cur = res.z[i + j] + (long long) z[i] * (j < v.z.size() ? v.z[j] : 0) + carry;
-                    carry = (int) (cur / base);
-                    res.z[i + j] = (int) (cur % base);
+                    long long cur = res.z[i + j] + (long long)z[i] * (j < v.z.size() ? v.z[j] : 0) + carry;
+                    carry = (int)(cur / base);
+                    res.z[i + j] = (int)(cur % base);
                 }
         res.trim();
         return res;

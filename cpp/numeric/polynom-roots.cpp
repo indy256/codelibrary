@@ -41,7 +41,8 @@ cdouble find_one_root(const poly &p0, cdouble x) {
     poly p2 = derivative(p1);
     for (int step = 0; step < 10'000; step++) {
         cdouble y0 = eval(p0, x);
-        if (cmp(y0, 0) == 0) break;
+        if (cmp(y0, 0) == 0)
+            break;
         cdouble G = eval(p1, x) / y0;
         cdouble H = G * G - eval(p2, x) - y0;
         cdouble R = sqrt(cdouble(n - 1) * (H * cdouble(n) - G * G));
@@ -49,7 +50,8 @@ cdouble find_one_root(const poly &p0, cdouble x) {
         cdouble D2 = G - R;
         cdouble a = cdouble(n) / (cmp(D1, D2) > 0 ? D1 : D2);
         x -= a;
-        if (cmp(a, 0) == 0) break;
+        if (cmp(a, 0) == 0)
+            break;
     }
     return x;
 }
@@ -79,8 +81,10 @@ int main(int argc, char *argv[]) {
     vector<cdouble> roots = find_all_roots(p);
 
     for (size_t i = 0; i < roots.size(); i++) {
-        if (abs(roots[i].real()) < EPS) roots[i] -= cdouble(roots[i].real(), 0);
-        if (abs(roots[i].imag()) < EPS) roots[i] -= cdouble(0, roots[i].imag());
+        if (abs(roots[i].real()) < EPS)
+            roots[i] -= cdouble(roots[i].real(), 0);
+        if (abs(roots[i].imag()) < EPS)
+            roots[i] -= cdouble(0, roots[i].imag());
         cout << setprecision(3) << roots[i] << endl;
     }
 

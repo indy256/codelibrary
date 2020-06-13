@@ -2,7 +2,7 @@
 
 using namespace std;
 
-template<int mod>
+template <int mod>
 struct modint {
     int value;
 
@@ -13,21 +13,28 @@ struct modint {
     int normalize(long long x) {
         if (x < -mod || x >= mod)
             x %= mod;
-        if (x < 0) x += mod;
+        if (x < 0)
+            x += mod;
         return static_cast<int>(x);
     }
 
-    explicit operator int() const { return value; }
+    explicit operator int() const {
+        return value;
+    }
 
-    modint operator-() const { return modint(-value); }
+    modint operator-() const {
+        return modint(-value);
+    }
 
     modint &operator+=(modint rhs) {
-        if ((value += rhs.value) >= mod) value -= mod;
+        if ((value += rhs.value) >= mod)
+            value -= mod;
         return *this;
     }
 
     modint &operator-=(modint rhs) {
-        if ((value -= rhs.value) < 0) value += mod;
+        if ((value -= rhs.value) < 0)
+            value += mod;
         return *this;
     }
 
@@ -36,7 +43,9 @@ struct modint {
         return *this;
     }
 
-    modint &operator/=(modint rhs) { return *this *= modint(inverse(rhs.value, mod)); }
+    modint &operator/=(modint rhs) {
+        return *this *= modint(inverse(rhs.value, mod));
+    }
 
     int inverse(int a, int m) {
         int u = 0, v = 1;
@@ -51,15 +60,27 @@ struct modint {
         return u;
     }
 
-    bool operator==(modint rhs) const { return value == rhs.value; }
+    bool operator==(modint rhs) const {
+        return value == rhs.value;
+    }
 
-    bool operator!=(modint rhs) const { return !(*this == rhs); }
+    bool operator!=(modint rhs) const {
+        return !(*this == rhs);
+    }
 
-    friend modint operator+(modint lhs, modint rhs) { return lhs += rhs; }
+    friend modint operator+(modint lhs, modint rhs) {
+        return lhs += rhs;
+    }
 
-    friend modint operator-(modint lhs, modint rhs) { return lhs -= rhs; }
+    friend modint operator-(modint lhs, modint rhs) {
+        return lhs -= rhs;
+    }
 
-    friend modint operator*(modint lhs, modint rhs) { return lhs *= rhs; }
+    friend modint operator*(modint lhs, modint rhs) {
+        return lhs *= rhs;
+    }
 
-    friend modint operator/(modint lhs, modint rhs) { return lhs /= rhs; }
+    friend modint operator/(modint lhs, modint rhs) {
+        return lhs /= rhs;
+    }
 };

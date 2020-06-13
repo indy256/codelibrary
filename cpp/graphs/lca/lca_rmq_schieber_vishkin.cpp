@@ -4,7 +4,8 @@ using namespace std;
 #ifdef _MSC_VER
 int __builtin_clz(unsigned x) {
     int bit = 31;
-    while (bit >= 0 && (x & (1 << bit)) == 0) --bit;
+    while (bit >= 0 && (x & (1 << bit)) == 0)
+        --bit;
     return 31 - bit;
 }
 #endif
@@ -29,7 +30,8 @@ void dfs1(const vector<vector<int>> &tree, int u, int p) {
     parent[u] = p;
     I[u] = pre_order[u] = Time++;
     for (int v : tree[u]) {
-        if (v == p) continue;
+        if (v == p)
+            continue;
         dfs1(tree, v, u);
         if (lowest_one_bit(I[u]) < lowest_one_bit(I[v])) {
             I[u] = I[v];
@@ -41,7 +43,8 @@ void dfs1(const vector<vector<int>> &tree, int u, int p) {
 void dfs2(const vector<vector<int>> &tree, int u, int p, unsigned up) {
     A[u] = up | lowest_one_bit(I[u]);
     for (int v : tree[u]) {
-        if (v == p) continue;
+        if (v == p)
+            continue;
         dfs2(tree, v, u, A[u]);
     }
 }
@@ -109,12 +112,14 @@ int main() {
         }
         int a = uniform_int_distribution<int>(0, n - 1)(rng);
         int b = uniform_int_distribution<int>(0, n - 1)(rng);
-        if (a > b) swap(a, b);
+        if (a > b)
+            swap(a, b);
         init_rmq(v);
         int res1 = v[lca(a, b)];
         int res2 = *min_element(v.begin() + a, v.begin() + b + 1);
         if (res1 != res2) {
-            for (int i = 0; i < n; ++i) cout << v[i] << " ";
+            for (int i = 0; i < n; ++i)
+                cout << v[i] << " ";
             cout << endl;
             cout << a << " " << b << " - " << res1 << " " << res2 << endl;
             assert(res1 != res2);

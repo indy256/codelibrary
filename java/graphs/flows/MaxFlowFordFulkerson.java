@@ -2,9 +2,8 @@ package graphs.flows;
 
 // https://en.wikipedia.org/wiki/Ford–Fulkerson_algorithm in O(V^2 * flow)
 public class MaxFlowFordFulkerson {
-
     public static int maxFlow(int[][] cap, int s, int t) {
-        for (int flow = 0; ; ) {
+        for (int flow = 0;;) {
             int df = findPath(cap, new boolean[cap.length], s, t, Integer.MAX_VALUE);
             if (df == 0)
                 return flow;

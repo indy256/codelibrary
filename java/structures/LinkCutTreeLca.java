@@ -4,7 +4,6 @@ import java.util.*;
 
 // Based on Daniel Sleator's implementation http://www.codeforces.com/contest/117/submission/860934
 public class LinkCutTreeLca {
-
     public static class Node {
         Node left;
         Node right;
@@ -71,7 +70,7 @@ public class LinkCutTreeLca {
             Node p = x.parent;
             Node g = p.parent;
             if (!p.isRoot())
-                rotate((x == p.left) == (p == g.left) ? p/*zig-zig*/ : x/*zig-zag*/);
+                rotate((x == p.left) == (p == g.left) ? p /*zig-zig*/ : x /*zig-zag*/);
             rotate(x);
         }
     }
@@ -154,7 +153,8 @@ public class LinkCutTreeLca {
                         for (; cur != -1; cur = p[cur])
                             path.add(cur);
                         cur = v;
-                        for (; cur != -1 && !path.contains(cur); cur = p[cur]) ;
+                        for (; cur != -1 && !path.contains(cur); cur = p[cur])
+                            ;
                         if (lca != nodes[cur])
                             throw new RuntimeException();
                     }

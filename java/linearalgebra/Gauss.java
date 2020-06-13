@@ -3,10 +3,9 @@ package linearalgebra;
 import java.util.stream.IntStream;
 
 public class Gauss {
-
     public static double[] gauss(double[][] A, double[] B) {
         int n = A.length;
-        double[][] a = IntStream.range(0, n).mapToObj(i -> A[i].clone()).toArray(double[][]::new); // make a copy
+        double[][] a = IntStream.range(0, n).mapToObj(i -> A[i].clone()).toArray(double[][] ::new); // make a copy
         double[] b = B.clone();
         for (int row = 0; row < n; row++) {
             int best = row;

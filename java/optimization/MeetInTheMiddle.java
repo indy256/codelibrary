@@ -3,7 +3,6 @@ package optimization;
 import java.util.Arrays;
 
 public class MeetInTheMiddle {
-
     public static long sumsLowerBound(long[] a, long b) {
         int n = a.length;
         int sizeL = 1 << (n / 2);

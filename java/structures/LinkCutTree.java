@@ -5,7 +5,6 @@ import java.util.*;
 // LinkCut tree with path queries. Query complexity is O(log(n)) amortized.
 // Based on Daniel Sleator's implementation http://www.codeforces.com/contest/117/submission/860934
 public class LinkCutTree {
-
     public static class Node {
         long nodeValue;
         long subTreeSum;
@@ -129,7 +128,7 @@ public class LinkCutTree {
             p.push();
             x.push();
             if (!p.isRoot())
-                rotate((x == p.left) == (p == g.left) ? p/*zig-zig*/ : x/*zig-zag*/);
+                rotate((x == p.left) == (p == g.left) ? p /*zig-zig*/ : x /*zig-zag*/);
             rotate(x);
         }
         x.push();

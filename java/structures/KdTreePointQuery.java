@@ -3,7 +3,6 @@ package structures;
 import java.util.Random;
 
 public class KdTreePointQuery {
-
     int[] x;
     int[] y;
 
@@ -41,7 +40,8 @@ public class KdTreePointQuery {
     int partition(int fromInclusive, int toExclusive, int separatorIndex, boolean divX) {
         int i = fromInclusive;
         int j = toExclusive - 1;
-        if (i >= j) return j;
+        if (i >= j)
+            return j;
         int separator = divX ? x[separatorIndex] : y[separatorIndex];
         swap(i++, separatorIndex);
         while (i <= j) {
@@ -116,7 +116,8 @@ public class KdTreePointQuery {
             }
             KdTreePointQuery kdTree = new KdTreePointQuery(x, y);
             int index = kdTree.findNearestNeighbour(qx, qy);
-            if (minDist != kdTree.bestDist || (long) (x[index] - qx) * (x[index] - qx) + (long) (y[index] - qy) * (y[index] - qy) != minDist)
+            if (minDist != kdTree.bestDist
+                || (long) (x[index] - qx) * (x[index] - qx) + (long) (y[index] - qy) * (y[index] - qy) != minDist)
                 throw new RuntimeException();
         }
     }

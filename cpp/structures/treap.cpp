@@ -1,5 +1,6 @@
-#include <bits/stdc++.h>
 #include "treap.h"
+
+#include <bits/stdc++.h>
 
 using namespace std;
 
@@ -7,7 +8,7 @@ using namespace std;
 int main() {
     pTreap t = nullptr;
     int pos = 0;
-    for (int a: {1, 2, 7, 4, 5})
+    for (int a : {1, 2, 7, 4, 5})
         insert(t, pos++, a);
     int n = t->size;
     for (int i = 0; i < n; ++i)

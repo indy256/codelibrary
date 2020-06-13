@@ -3,7 +3,6 @@ package combinatorics;
 import java.util.Arrays;
 
 public class BracketSequences {
-
     public static boolean nextBracketSequence(char[] s) {
         int n = s.length;
         for (int i = n - 1, balance = 0; i >= 0; i--) {

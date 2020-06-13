@@ -4,7 +4,6 @@ import java.util.*;
 import java.util.function.IntFunction;
 
 public class FunctionCycleDetection {
-
     public static int[] floyd(IntFunction<Integer> f, int x0) {
         int tortoise = f.apply(x0);
         int hare = f.apply(f.apply(x0));
@@ -29,7 +28,7 @@ public class FunctionCycleDetection {
             ++length;
         }
 
-        return new int[]{startPos, length};
+        return new int[] {startPos, length};
     }
 
     public static int[] brent(IntFunction<Integer> f, int x0) {
@@ -61,7 +60,7 @@ public class FunctionCycleDetection {
             ++startPos;
         }
 
-        return new int[]{startPos, length};
+        return new int[] {startPos, length};
     }
 
     // random test

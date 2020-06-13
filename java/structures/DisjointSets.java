@@ -3,7 +3,6 @@ package structures;
 // https://en.wikipedia.org/wiki/Disjoint-set_data_structure with path compression heuristic
 // Complexity of operations is O(log(n)) on average
 public class DisjointSets {
-
     public static int[] createSets(int size) {
         int[] p = new int[size];
         for (int i = 0; i < size; i++)

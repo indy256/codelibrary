@@ -3,7 +3,6 @@ package geometry;
 import java.util.*;
 
 public class Closest2Points {
-
     public static class Point {
         final int x, y;
 

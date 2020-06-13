@@ -4,7 +4,7 @@ using namespace std;
 
 // https://cp-algorithms.com/data_structures/fenwick.html
 
-template<class T>
+template <class T>
 class fenwick_interval {
     vector<T> t1, t2;
 
@@ -20,8 +20,9 @@ class fenwick_interval {
         return res;
     }
 
-public:
-    fenwick_interval(int n) : t1(n), t2(n) {}
+   public:
+    fenwick_interval(int n) : t1(n), t2(n) {
+    }
 
     void add(int a, int b, T value) {
         add(t1, a, value);

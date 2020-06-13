@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.function.Predicate;
 
 public class WaveletTree {
-
     static class Node {
         int lo;
         int hi;
@@ -19,23 +18,27 @@ public class WaveletTree {
             if (lo == hi)
                 return lo;
             int inLeft = b[to] - b[from - 1];
-            int lb = b[from - 1]; //amt of nos in first (from-1) nos that go in left
-            int rb = b[to]; //amt of nos in first (to) nos that go in left
+            int lb = b[from - 1]; // amt of nos in first (from-1) nos that go in left
+            int rb = b[to]; // amt of nos in first (to) nos that go in left
             return k <= inLeft ? left.kth(lb + 1, rb, k) : right.kth(from - lb, to - rb, k - inLeft);
         }
 
         // number of elements in [from, to] less than or equal to k
         public int countLessOrEq(int from, int to, int k) {
-            if (from > to || k < lo) return 0;
-            if (hi <= k) return to - from + 1;
+            if (from > to || k < lo)
+                return 0;
+            if (hi <= k)
+                return to - from + 1;
             int lb = b[from - 1], rb = b[to];
             return left.countLessOrEq(lb + 1, rb, k) + right.countLessOrEq(from - lb, to - rb, k);
         }
 
         // number of elements in [from, to] equal to k
         public int countEq(int from, int to, int k) {
-            if (from > to || k < lo || k > hi) return 0;
-            if (lo == hi) return to - from + 1;
+            if (from > to || k < lo || k > hi)
+                return 0;
+            if (lo == hi)
+                return to - from + 1;
             int lb = b[from - 1];
             int rb = b[to];
             int mid = (lo + hi) >>> 1;

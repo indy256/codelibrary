@@ -37,7 +37,9 @@ public class SuffixArrayDC3 {
         // generate positions of mod 1 and mod 2 suffixes
         // the "+(n0-n1)" adds a dummy mod 1 suffix if n%3 == 1
         int[] R = new int[n02 + 3];
-        for (int i = 0, j = 0; i < n + (n0 - n1); i++) if (i % 3 != 0) R[j++] = i;
+        for (int i = 0, j = 0; i < n + (n0 - n1); i++)
+            if (i % 3 != 0)
+                R[j++] = i;
 
         //******* Step 1: Sort sample suffixes ********
         // lsb radix sort the mod 1 and mod 2 triples
@@ -50,7 +52,8 @@ public class SuffixArrayDC3 {
         // write them to correct places in R
         int name = 0;
         for (int i = 0; i < n02; i++) {
-            if (i == 0 || T[SA12[i]] != T[SA12[i - 1]] || T[SA12[i] + 1] != T[SA12[i - 1] + 1] || T[SA12[i] + 2] != T[SA12[i - 1] + 2]) {
+            if (i == 0 || T[SA12[i]] != T[SA12[i - 1]] || T[SA12[i] + 1] != T[SA12[i - 1] + 1]
+                || T[SA12[i] + 2] != T[SA12[i - 1] + 2]) {
                 ++name;
             }
             R[SA12[i] / 3 + (SA12[i] % 3 == 1 ? 0 : n0)] = name;
@@ -72,7 +75,8 @@ public class SuffixArrayDC3 {
         // stably sort the mod 0 suffixes from SA12 by their first character
         int[] R0 = new int[n0];
         for (int i = 0, j = 0; i < n02; i++)
-            if (SA12[i] < n0) R0[j++] = 3 * SA12[i];
+            if (SA12[i] < n0)
+                R0[j++] = 3 * SA12[i];
         int[] SA0 = new int[n0];
         radixPass(R0, SA0, T, 0, n0, K);
 
@@ -82,8 +86,9 @@ public class SuffixArrayDC3 {
             int i = SA12[t] < n0 ? SA12[t] * 3 + 1 : (SA12[t] - n0) * 3 + 2; // pos of current offset 12 suffix
             int j = SA0[p]; // pos of current offset 0 suffix
             if (SA12[t] < n0 ? // different compares for mod 1 and mod 2 suffixes
-                    leq(T[i], R[SA12[t] + n0], T[j], R[j / 3]) :
-                    leq(T[i], T[i + 1], R[SA12[t] - n0 + 1], T[j], T[j + 1], R[j / 3 + n0])) { // suffix from SA12 is smaller
+                    leq(T[i], R[SA12[t] + n0], T[j], R[j / 3])
+                             : leq(T[i], T[i + 1], R[SA12[t] - n0 + 1], T[j], T[j + 1],
+                                 R[j / 3 + n0])) { // suffix from SA12 is smaller
                 SA[k] = i;
                 if (++t == n02) // done --- only SA0 suffixes left
                     for (k++; p < n0; p++, k++)
@@ -116,7 +121,8 @@ public class SuffixArrayDC3 {
         int[] lcp = new int[n - 1];
         for (int i = 0, h = 0; i < n; i++) {
             if (rank[i] < n - 1) {
-                for (int j = sa[rank[i] + 1]; Math.max(i, j) + h < s.length() && s.charAt(i + h) == s.charAt(j + h); ++h)
+                for (int j = sa[rank[i] + 1]; Math.max(i, j) + h < s.length() && s.charAt(i + h) == s.charAt(j + h);
+                     ++h)
                     ;
                 lcp[rank[i]] = h;
                 if (h > 0)
@@ -130,11 +136,11 @@ public class SuffixArrayDC3 {
     public static void main(String[] args) {
         Random rnd1 = new Random(1);
         int n2 = 5_000_000;
-        StringBuilder ss = rnd1.ints(n2, 0, 26).collect(StringBuilder::new, (sb, i) -> sb.append((char) ('a' + i)), StringBuilder::append);
+        StringBuilder ss = rnd1.ints(n2, 0, 26).collect(
+            StringBuilder::new, (sb, i) -> sb.append((char) ('a' + i)), StringBuilder::append);
         long time = System.currentTimeMillis();
         int[] sa2 = suffixArray(ss);
         System.out.println(System.currentTimeMillis() - time);
-
 
         String s1 = "abcab";
         int[] sa1 = suffixArray(s1);
@@ -149,15 +155,15 @@ public class SuffixArrayDC3 {
         Random rnd = new Random(1);
         for (int step = 0; step < 100000; step++) {
             int n = rnd.nextInt(100) + 1;
-            StringBuilder s = rnd.ints(n, 0, 10).collect(StringBuilder::new, (sb, i) -> sb.append((char) ('a' + i)), StringBuilder::append);
+            StringBuilder s = rnd.ints(n, 0, 10).collect(
+                StringBuilder::new, (sb, i) -> sb.append((char) ('a' + i)), StringBuilder::append);
             int[] sa = suffixArray(s);
             int[] lcp = lcp(sa, s);
             for (int i = 0; i + 1 < n; i++) {
                 String a = s.substring(sa[i]);
                 String b = s.substring(sa[i + 1]);
-                if (a.compareTo(b) >= 0
-                        || !a.substring(0, lcp[i]).equals(b.substring(0, lcp[i]))
-                        || (a + " ").charAt(lcp[i]) == (b + " ").charAt(lcp[i]))
+                if (a.compareTo(b) >= 0 || !a.substring(0, lcp[i]).equals(b.substring(0, lcp[i]))
+                    || (a + " ").charAt(lcp[i]) == (b + " ").charAt(lcp[i]))
                     throw new RuntimeException();
             }
         }

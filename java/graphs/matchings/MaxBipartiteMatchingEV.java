@@ -5,7 +5,6 @@ import java.util.stream.Stream;
 
 // https://en.wikipedia.org/wiki/Matching_(graph_theory)#In_unweighted_bipartite_graphs in O(V * E)
 public class MaxBipartiteMatchingEV {
-
     public static int maxMatching(List<Integer>[] graph) {
         int n1 = graph.length;
         int n2 = Arrays.stream(graph).flatMap(Collection::stream).mapToInt(Integer::intValue).max().orElse(-1) + 1;
@@ -33,7 +32,7 @@ public class MaxBipartiteMatchingEV {
 
     // Usage example
     public static void main(String[] args) {
-        List<Integer>[] g = Stream.generate(ArrayList::new).limit(2).toArray(List[]::new);
+        List<Integer>[] g = Stream.generate(ArrayList::new).limit(2).toArray(List[] ::new);
         g[0].add(0);
         g[0].add(1);
         g[1].add(1);

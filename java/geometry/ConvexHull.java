@@ -3,7 +3,6 @@ package geometry;
 import java.util.*;
 
 public class ConvexHull {
-
     public static Point[] convexHull(Point[] points) {
         Arrays.sort(points, Comparator.<Point>comparingInt(p -> p.x).thenComparingInt(p -> p.y));
         int n = points.length;
@@ -34,7 +33,8 @@ public class ConvexHull {
 
         @Override
         public String toString() {
-            return "Point{" + "x=" + x + ", y=" + y + '}';
+            return "Point{"
+                + "x=" + x + ", y=" + y + '}';
         }
     }
 

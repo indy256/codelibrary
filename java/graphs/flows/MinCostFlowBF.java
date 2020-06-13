@@ -7,11 +7,10 @@ import java.util.stream.Stream;
 // negative-cost edges are allowed
 // negative-cost cycles are not allowed
 public class MinCostFlowBF {
-
     List<Edge>[] graph;
 
     public MinCostFlowBF(int nodes) {
-        graph = Stream.generate(ArrayList::new).limit(nodes).toArray(List[]::new);
+        graph = Stream.generate(ArrayList::new).limit(nodes).toArray(List[] ::new);
     }
 
     class Edge {
@@ -84,7 +83,7 @@ public class MinCostFlowBF {
                 flowCost += df * e.cost;
             }
         }
-        return new int[]{flow, flowCost};
+        return new int[] {flow, flowCost};
     }
 
     // Usage example

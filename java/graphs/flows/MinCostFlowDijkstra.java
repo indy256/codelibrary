@@ -7,11 +7,10 @@ import java.util.stream.Stream;
 // negative-cost edges are allowed
 // negative-cost cycles are not allowed
 public class MinCostFlowDijkstra {
-
     List<Edge>[] graph;
 
     public MinCostFlowDijkstra(int nodes) {
-        graph = Stream.generate(ArrayList::new).limit(nodes).toArray(List[]::new);
+        graph = Stream.generate(ArrayList::new).limit(nodes).toArray(List[] ::new);
     }
 
     class Edge {
@@ -58,7 +57,8 @@ public class MinCostFlowDijkstra {
         }
     }
 
-    void dijkstra(int s, int t, int[] pot, int[] dist, boolean[] finished, int[] curflow, int[] prevnode, int[] prevedge) {
+    void dijkstra(
+        int s, int t, int[] pot, int[] dist, boolean[] finished, int[] curflow, int[] prevnode, int[] prevedge) {
         PriorityQueue<Long> q = new PriorityQueue<>();
         q.add((long) s);
         Arrays.fill(dist, Integer.MAX_VALUE);
@@ -89,7 +89,8 @@ public class MinCostFlowDijkstra {
         }
     }
 
-    void dijkstra2(int s, int t, int[] pot, int[] dist, boolean[] finished, int[] curflow, int[] prevnode, int[] prevedge) {
+    void dijkstra2(
+        int s, int t, int[] pot, int[] dist, boolean[] finished, int[] curflow, int[] prevnode, int[] prevedge) {
         Arrays.fill(dist, Integer.MAX_VALUE);
         dist[s] = 0;
         int n = graph.length;
@@ -133,7 +134,7 @@ public class MinCostFlowDijkstra {
         int flowCost = 0;
         while (flow < maxf) {
             dijkstra(s, t, pot, dist, finished, curflow, prevnode, prevedge); // E*logV
-//            dijkstra2(s, t, pot, dist, finished, curflow, prevnode, prevedge); // V^2
+            //            dijkstra2(s, t, pot, dist, finished, curflow, prevnode, prevedge); // V^2
             if (dist[t] == Integer.MAX_VALUE)
                 break;
             for (int i = 0; i < n; i++)
@@ -148,7 +149,7 @@ public class MinCostFlowDijkstra {
                 flowCost += df * e.cost;
             }
         }
-        return new int[]{flow, flowCost};
+        return new int[] {flow, flowCost};
     }
 
     // Usage example

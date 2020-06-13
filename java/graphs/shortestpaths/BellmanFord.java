@@ -4,7 +4,6 @@ import java.util.*;
 import java.util.stream.Stream;
 
 public class BellmanFord {
-
     static final int INF = Integer.MAX_VALUE / 2;
 
     public static class Edge {
@@ -24,7 +23,8 @@ public class BellmanFord {
         for (int step = 0; step < n; step++) {
             boolean updated = false;
             for (int u = 0; u < n; u++) {
-                if (dist[u] == INF) continue;
+                if (dist[u] == INF)
+                    continue;
                 for (Edge e : graph[u]) {
                     if (dist[e.v] > dist[u] + e.cost) {
                         dist[e.v] = dist[u] + e.cost;
@@ -50,7 +50,8 @@ public class BellmanFord {
         for (int step = 0; step < n; step++) {
             last = -1;
             for (int u = 0; u < n; u++) {
-                if (dist[u] == INF) continue;
+                if (dist[u] == INF)
+                    continue;
                 for (Edge e : graph[u]) {
                     if (dist[e.v] > dist[u] + e.cost) {
                         dist[e.v] = dist[u] + e.cost;
@@ -80,7 +81,7 @@ public class BellmanFord {
 
     // Usage example
     public static void main(String[] args) {
-        List<Edge>[] graph = Stream.generate(ArrayList::new).limit(4).toArray(List[]::new);
+        List<Edge>[] graph = Stream.generate(ArrayList::new).limit(4).toArray(List[] ::new);
         graph[0].add(new Edge(1, 1));
         graph[1].add(new Edge(0, 1));
         graph[1].add(new Edge(2, 1));

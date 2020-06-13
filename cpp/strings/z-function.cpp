@@ -21,6 +21,7 @@ vector<int> z_function(const string &s) {
 // usage example
 int main() {
     vector<int> z = z_function("abcababc");
-    for (int x:z) cout << x << " ";
+    for (int x : z)
+        cout << x << " ";
     cout << endl;
 }

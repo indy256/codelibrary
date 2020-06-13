@@ -3,7 +3,6 @@ package geometry;
 import java.util.*;
 
 public class SegmentsIntersectionScanline {
-
     public static Segment[] findIntersection(Segment[] s) {
         int n = s.length;
         Event[] events = new Event[n * 2];
@@ -19,16 +18,16 @@ public class SegmentsIntersectionScanline {
             if (event.type == 1) {
                 Segment floor = set.floor(cur);
                 if (floor != null && isCrossOrTouchIntersect(cur, floor))
-                    return new Segment[]{cur, floor};
+                    return new Segment[] {cur, floor};
                 Segment ceiling = set.ceiling(cur);
                 if (ceiling != null && isCrossOrTouchIntersect(cur, ceiling))
-                    return new Segment[]{cur, ceiling};
+                    return new Segment[] {cur, ceiling};
                 set.add(cur);
             } else {
                 Segment lower = set.lower(cur);
                 Segment higher = set.higher(cur);
                 if (lower != null && higher != null && isCrossOrTouchIntersect(lower, higher))
-                    return new Segment[]{lower, higher};
+                    return new Segment[] {lower, higher};
                 set.remove(cur);
             }
         }
@@ -80,7 +79,7 @@ public class SegmentsIntersectionScanline {
     }
 
     static final Comparator<Event> eventComparator =
-            Comparator.<Event>comparingInt(e -> e.x).thenComparingInt(e -> -e.type).thenComparingInt(e -> e.y);
+        Comparator.<Event>comparingInt(e -> e.x).thenComparingInt(e -> - e.type).thenComparingInt(e -> e.y);
 
     static long cross(long ax, long ay, long bx, long by, long cx, long cy) {
         return (bx - ax) * (cy - ay) - (by - ay) * (cx - ax);
@@ -96,7 +95,7 @@ public class SegmentsIntersectionScanline {
         long x4 = s2.x2;
         long y4 = s2.y2;
         if (Math.max(x1, x2) < Math.min(x3, x4) || Math.max(x3, x4) < Math.min(x1, x2)
-                || Math.max(y1, y2) < Math.min(y3, y4) || Math.max(y3, y4) < Math.min(y1, y2))
+            || Math.max(y1, y2) < Math.min(y3, y4) || Math.max(y3, y4) < Math.min(y1, y2))
             return false;
         long z1 = (x2 - x1) * (y3 - y1) - (y2 - y1) * (x3 - x1);
         long z2 = (x2 - x1) * (y4 - y1) - (y2 - y1) * (x4 - x1);

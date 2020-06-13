@@ -9,18 +9,17 @@ int pointInPolygon(int qx, int qy, const vector<int> &x, const vector<int> &y) {
     int cnt = 0;
     for (int i = 0, j = n - 1; i < n; j = i++) {
         if (y[i] == qy && (x[i] == qx || (y[j] == qy && (x[i] <= qx || x[j] <= qx) && (x[i] >= qx || x[j] >= qx))))
-            return 0; // boundary
+            return 0;  // boundary
         if ((y[i] > qy) != (y[j] > qy)) {
-            ll det = ((ll) x[i] - qx) * ((ll) y[j] - qy) - ((ll) x[j] - qx) * ((ll) y[i] - qy);
+            ll det = ((ll)x[i] - qx) * ((ll)y[j] - qy) - ((ll)x[j] - qx) * ((ll)y[i] - qy);
             if (det == 0)
-                return 0; // boundary
+                return 0;  // boundary
             if ((det > 0) != (y[j] > y[i]))
                 ++cnt;
         }
     }
     return cnt % 2 == 0 ? -1 /* exterior */ : 1 /* interior */;
 }
-
 
 // usage example
 int main() {

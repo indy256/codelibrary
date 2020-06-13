@@ -41,10 +41,11 @@ int main() {
     g[1].push_back(1);
     g[2].push_back(1);
 
-    auto[max_matching_cardinality, mapping] = max_matching(g);
+    auto [max_matching_cardinality, mapping] = max_matching(g);
 
     cout << (2 == max_matching_cardinality) << endl;
 
-    for (int x:mapping) cout << x << " ";
+    for (int x : mapping)
+        cout << x << " ";
     cout << endl;
 }

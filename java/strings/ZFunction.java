@@ -3,7 +3,6 @@ package strings;
 import java.util.Arrays;
 
 public class ZFunction {
-
     // z[i] = lcp(s[0..], s[i..])
     public static int[] zFunction(String s) {
         int[] z = new int[s.length()];

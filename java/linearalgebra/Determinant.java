@@ -3,11 +3,10 @@ package linearalgebra;
 import java.util.stream.IntStream;
 
 public class Determinant {
-
     public static double det(double[][] matrix) {
         final double EPS = 1e-10;
         int n = matrix.length;
-        double[][] a = IntStream.range(0, n).mapToObj(i -> matrix[i].clone()).toArray(double[][]::new); // make a copy
+        double[][] a = IntStream.range(0, n).mapToObj(i -> matrix[i].clone()).toArray(double[][] ::new); // make a copy
         double res = 1;
         for (int i = 0; i < n; i++) {
             int p = i;
@@ -35,7 +34,7 @@ public class Determinant {
 
     // Usage example
     public static void main(String[] args) {
-        double d = det(new double[][]{{0, 1}, {-1, 0}});
+        double d = det(new double[][] {{0, 1}, {-1, 0}});
         System.out.println(Math.abs(d - 1) < 1e-10);
     }
 }

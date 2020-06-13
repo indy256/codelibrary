@@ -21,14 +21,14 @@ public class RmqSparseTable {
 
     public static void main(String[] args) {
         {
-            RmqSparseTable st = new RmqSparseTable(new int[]{1, 5, -2, 3});
+            RmqSparseTable st = new RmqSparseTable(new int[] {1, 5, -2, 3});
             System.out.println(1 == st.min(0, 0));
             System.out.println(-2 == st.min(1, 2));
             System.out.println(-2 == st.min(0, 2));
             System.out.println(-2 == st.min(0, 3));
         }
         {
-            RmqSparseTable st = new RmqSparseTable(new int[]{1, 5, -2});
+            RmqSparseTable st = new RmqSparseTable(new int[] {1, 5, -2});
             System.out.println(1 == st.min(0, 0));
             System.out.println(-2 == st.min(1, 2));
             System.out.println(-2 == st.min(0, 2));

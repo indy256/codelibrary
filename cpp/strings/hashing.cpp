@@ -13,7 +13,7 @@ struct hashing {
         static mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
         static vector<int> bases;
         while (bases.size() < dimensions) {
-            bases.emplace_back(uniform_int_distribution<int>((int) 1e9, mod - 1)(rng));
+            bases.emplace_back(uniform_int_distribution<int>((int)1e9, mod - 1)(rng));
         }
         return bases;
     }
@@ -36,7 +36,7 @@ struct hashing {
     vector<int> get_hash(int i, int len) {
         vector<int> res;
         for (int d = 0; d < dimensions; ++d) {
-            int hash = (int) ((hashes[d][i + len] + (long long) hashes[d][i] * (mod - p[d][len])) % mod);
+            int hash = (int)((hashes[d][i + len] + (long long)hashes[d][i] * (mod - p[d][len])) % mod);
             res.emplace_back(hash);
         }
         return res;

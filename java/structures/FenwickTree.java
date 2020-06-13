@@ -1,7 +1,6 @@
 package structures;
 
 public class FenwickTree {
-
     // T[i] += value
     public static void add(int[] t, int i, int value) {
         for (; i < t.length; i |= i + 1)

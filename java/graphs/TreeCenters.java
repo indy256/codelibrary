@@ -4,7 +4,6 @@ import java.util.*;
 import java.util.stream.Stream;
 
 public class TreeCenters {
-
     // returns 1 or 2 tree centers
     // http://en.wikipedia.org/wiki/Graph_center
     public static List<Integer> findTreeCenters(List<Integer>[] tree) {
@@ -39,7 +38,8 @@ public class TreeCenters {
         int cnt = 1;
         boolean goodCenter = true;
         for (int v : tree[u]) {
-            if (v == p) continue;
+            if (v == p)
+                continue;
             int res = findTreeCentroid(tree, v, u);
             if (res >= 0)
                 return res;
@@ -67,7 +67,7 @@ public class TreeCenters {
     // Usage example
     public static void main(String[] args) {
         int n = 4;
-        List<Integer>[] tree = Stream.generate(ArrayList::new).limit(n).toArray(List[]::new);
+        List<Integer>[] tree = Stream.generate(ArrayList::new).limit(n).toArray(List[] ::new);
         tree[3].add(0);
         tree[0].add(3);
         tree[3].add(1);

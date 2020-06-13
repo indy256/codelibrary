@@ -3,11 +3,10 @@ package combinatorics;
 import java.util.*;
 
 public class Permutations {
-
     public static boolean nextPermutation(int[] p) {
         for (int a = p.length - 2; a >= 0; --a)
             if (p[a] < p[a + 1])
-                for (int b = p.length - 1; ; --b)
+                for (int b = p.length - 1;; --b)
                     if (p[b] > p[a]) {
                         int t = p[a];
                         p[a] = p[b];
@@ -114,16 +113,16 @@ public class Permutations {
         int cnt = 0;
         do {
             System.out.println(Arrays.toString(p));
-            if (!Arrays.equals(p, permutationByNumber(p.length, numberByPermutation(p))) ||
-                    cnt != numberByPermutation(permutationByNumber(p.length, cnt)))
+            if (!Arrays.equals(p, permutationByNumber(p.length, numberByPermutation(p)))
+                || cnt != numberByPermutation(permutationByNumber(p.length, cnt)))
                 throw new RuntimeException();
             ++cnt;
         } while (nextPermutation(p));
 
         System.out.println(5 == numberByPermutation(p));
-        System.out.println(Arrays.equals(new int[]{1, 0, 2}, permutationByNumber(3, 2)));
+        System.out.println(Arrays.equals(new int[] {1, 0, 2}, permutationByNumber(3, 2)));
 
         System.out.println(0b1101 == nextPermutation(0b1011));
-        System.out.println(decomposeIntoCycles(new int[]{0, 2, 1, 3}));
+        System.out.println(decomposeIntoCycles(new int[] {0, 2, 1, 3}));
     }
 }

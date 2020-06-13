@@ -1,7 +1,6 @@
 package structures;
 
 public class FenwickTree3D {
-
     public static void add(int[][][] t, int x, int y, int z, int value) {
         for (int i = x; i < t.length; i |= i + 1)
             for (int j = y; j < t[0].length; j |= j + 1)

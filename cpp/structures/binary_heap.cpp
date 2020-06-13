@@ -2,16 +2,18 @@
 
 using namespace std;
 
-template<class T>
+template <class T>
 struct binary_heap {
     vector<T> heap;
     vector<int> pos2Id;
     vector<int> id2Pos;
     int size;
 
-    binary_heap() : size(0) {}
+    binary_heap() : size(0) {
+    }
 
-    binary_heap(int n) : heap(n), pos2Id(n), id2Pos(n), size(0) {}
+    binary_heap(int n) : heap(n), pos2Id(n), id2Pos(n), size(0) {
+    }
 
     void add(int id, T value) {
         heap[size] = value;

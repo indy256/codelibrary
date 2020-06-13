@@ -4,7 +4,6 @@ import java.util.Random;
 
 // Based on Daniel Sleator's implementation http://www.codeforces.com/contest/117/submission/860934
 public class LinkCutTreeConnectivity {
-
     public static class Node {
         Node left;
         Node right;
@@ -89,7 +88,7 @@ public class LinkCutTreeConnectivity {
             p.push();
             x.push();
             if (!p.isRoot())
-                rotate((x == p.left) == (p == g.left) ? p/*zig-zig*/ : x/*zig-zag*/);
+                rotate((x == p.left) == (p == g.left) ? p /*zig-zig*/ : x /*zig-zag*/);
             rotate(x);
         }
         x.push();

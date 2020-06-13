@@ -1,7 +1,6 @@
 package structures;
 
 public class BinarySearchTree {
-
     Node root;
 
     static class Node {

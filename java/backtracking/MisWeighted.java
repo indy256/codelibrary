@@ -3,14 +3,14 @@ package backtracking;
 import java.util.Random;
 
 public class MisWeighted {
-
     // maximum independent weighted set in O(3^(n/3))
     // prerequisite: g[i] has i'th bit set
     public static int mis(long[] g, long unused, int[] weights) {
         if (unused == 0)
             return 0;
         int v = -1;
-        for (int u = Long.numberOfTrailingZeros(unused); u < g.length; u += Long.numberOfTrailingZeros(unused >> (u + 1)) + 1)
+        for (int u = Long.numberOfTrailingZeros(unused); u < g.length;
+             u += Long.numberOfTrailingZeros(unused >> (u + 1)) + 1)
             if (v == -1 || Long.bitCount(g[v] & unused) > Long.bitCount(g[u] & unused))
                 v = u;
         int res = 0;

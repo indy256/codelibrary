@@ -4,13 +4,12 @@ import java.util.*;
 import java.util.stream.Stream;
 
 public class DfsNoRecursion {
-
     public static void dfs(List<Integer>[] graph, int root) {
         int n = graph.length;
         int[] curEdge = new int[n];
         int[] stack = new int[n];
         stack[0] = root;
-        for (int top = 0; top >= 0; ) {
+        for (int top = 0; top >= 0;) {
             int u = stack[top];
             if (curEdge[u] == 0) {
                 System.out.println(u);
@@ -28,7 +27,7 @@ public class DfsNoRecursion {
 
     // Usage example
     public static void main(String[] args) {
-        List<Integer>[] g = Stream.generate(ArrayList::new).limit(3).toArray(List[]::new);
+        List<Integer>[] g = Stream.generate(ArrayList::new).limit(3).toArray(List[] ::new);
 
         g[0].add(1);
         g[1].add(0);

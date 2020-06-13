@@ -18,8 +18,7 @@ struct segment {
     pii a, b;
     int id;
 
-    segment(pii a, pii b, int id) :
-            a(std::move(a)), b(std::move(b)), id(id) {
+    segment(pii a, pii b, int id) : a(std::move(a)), b(std::move(b)), id(id) {
     }
 
     bool operator<(const segment &o) const {
@@ -39,7 +38,8 @@ struct event {
     int id;
     int type;
 
-    event(pii p, int id, int type) : p(std::move(p)), id(id), type(type) {}
+    event(pii p, int id, int type) : p(std::move(p)), id(id), type(type) {
+    }
 
     bool operator<(const event &o) const {
         return p.first < o.p.first ||
@@ -103,4 +103,5 @@ pii findIntersection(vector<segment> s) {
 }
 
 // usage example
-int main() {}
+int main() {
+}

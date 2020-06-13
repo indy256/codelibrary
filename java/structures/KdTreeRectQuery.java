@@ -3,7 +3,6 @@ package structures;
 import java.util.Random;
 
 public class KdTreeRectQuery {
-
     public static class Point {
         int x, y;
 
@@ -73,7 +72,8 @@ public class KdTreeRectQuery {
     static int partition(Point[] a, int fromInclusive, int toExclusive, int separatorIndex, boolean divX) {
         int i = fromInclusive;
         int j = toExclusive - 1;
-        if (i >= j) return j;
+        if (i >= j)
+            return j;
         double separator = divX ? a[separatorIndex].x : a[separatorIndex].y;
         swap(a, i++, separatorIndex);
         while (i <= j) {

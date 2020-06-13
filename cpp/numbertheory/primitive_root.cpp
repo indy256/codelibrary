@@ -8,7 +8,7 @@ int pow_mod(int x, int n, int mod) {
     int res = 1;
     for (long long p = x; n > 0; n >>= 1, p = (p * p) % mod)
         if ((n & 1) != 0)
-            res = (int) (res * p % mod);
+            res = (int)(res * p % mod);
     return res;
 }
 
@@ -29,7 +29,8 @@ int totient_function(int n) {
 // g exists for m = 2,4,p^a,2*p^a, where p > 2 is a prime number
 // O(m^0.5) complexity
 int generator(int m) {
-    if (m == 2) return 1;
+    if (m == 2)
+        return 1;
     vector<int> factors;
     int phi = totient_function(m);
     int n = phi;
@@ -42,11 +43,13 @@ int generator(int m) {
     if (n > 1)
         factors.emplace_back(n);
     for (int res = 2; res <= m; ++res) {
-        if (gcd(res, m) != 1) continue;
+        if (gcd(res, m) != 1)
+            continue;
         bool ok = true;
         for (size_t i = 0; i < factors.size() && ok; ++i)
             ok &= pow_mod(res, phi / factors[i], m) != 1;
-        if (ok) return res;
+        if (ok)
+            return res;
     }
     return -1;
 }

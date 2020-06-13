@@ -4,7 +4,6 @@ import java.util.Random;
 
 // https://cp-algorithms.com/data_structures/treap.html
 public class Treap {
-
     static Random random = new Random();
 
     public static class Node {

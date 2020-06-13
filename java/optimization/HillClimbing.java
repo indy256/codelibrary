@@ -3,12 +3,11 @@ package optimization;
 import java.util.function.BiFunction;
 
 public class HillClimbing {
-
     public static double findMinimum(BiFunction<Double, Double, Double> f) {
         double curX = 0;
         double curY = 0;
         double curF = f.apply(curX, curY);
-        for (double step = 1e6; step > 1e-7; ) {
+        for (double step = 1e6; step > 1e-7;) {
             double bestF = curF;
             double bestX = curX;
             double bestY = curY;

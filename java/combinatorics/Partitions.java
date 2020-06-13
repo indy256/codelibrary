@@ -4,7 +4,6 @@ import java.util.*;
 
 // https://en.wikipedia.org/wiki/Partition_(number_theory)
 public class Partitions {
-
     public static boolean nextPartition(List<Integer> p) {
         int n = p.size();
         if (n <= 1)
@@ -24,7 +23,7 @@ public class Partitions {
 
     public static List<Integer> partitionByNumber(int n, long number) {
         List<Integer> p = new ArrayList<>();
-        for (int x = n; x > 0; ) {
+        for (int x = n; x > 0;) {
             int j = 1;
             while (true) {
                 long cnt = partitionFunction(x)[x][j];

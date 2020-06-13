@@ -3,7 +3,6 @@ package geometry;
 import java.util.*;
 
 public class PolygonsIntersection {
-
     public static double overlap(Point[] polygon1, Point[] polygon2) {
         Point[][] polygons = {polygon1, polygon2};
         Set<Double> xs = new TreeSet<>();

@@ -3,7 +3,6 @@ package geometry;
 import java.util.Arrays;
 
 public class SegmentsUnion {
-
     public static double segmentsUnionLength(double[] x1, double[] x2) {
         int n = x1.length;
         Point[] points = new Point[n * 2];
@@ -37,13 +36,14 @@ public class SegmentsUnion {
         @Override
         public int compareTo(Point o) {
             int cmp = Double.compare(x, o.x);
-            if (cmp != 0) return cmp;
+            if (cmp != 0)
+                return cmp;
             return Integer.compare(type, o.type);
         }
     }
 
     // Usage example
     public static void main(String[] args) {
-        System.out.println(segmentsUnionLength(new double[]{5, 10}, new double[]{15, 20}));
+        System.out.println(segmentsUnionLength(new double[] {5, 10}, new double[] {15, 20}));
     }
 }

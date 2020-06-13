@@ -3,7 +3,6 @@ package sort;
 import java.util.*;
 
 public class Quicksort {
-
     static Random rnd = new Random();
 
     public static void quickSort(int[] a, int low, int high) {

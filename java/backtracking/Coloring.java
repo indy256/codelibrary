@@ -3,7 +3,6 @@ package backtracking;
 import java.util.Random;
 
 public class Coloring {
-
     int minColors;
     int[] bestColoring;
 
@@ -81,11 +80,11 @@ public class Coloring {
 
     static int colorSlow(boolean[][] g) {
         int n = g.length;
-        for (int allowedColors = 1; ; allowedColors++) {
+        for (int allowedColors = 1;; allowedColors++) {
             long colors = 1;
             for (int i = 0; i < n; i++)
                 colors *= allowedColors;
-            m1:
+        m1:
             for (long c = 0; c < colors; c++) {
                 int[] col = new int[n];
                 long cur = c;

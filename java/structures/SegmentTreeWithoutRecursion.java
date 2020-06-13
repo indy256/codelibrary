@@ -1,7 +1,6 @@
 package structures;
 
 public class SegmentTreeWithoutRecursion {
-
     public static int get(int[] t, int i) {
         return t[i + t.length / 2];
     }

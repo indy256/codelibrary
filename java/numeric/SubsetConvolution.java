@@ -3,7 +3,6 @@ package numeric;
 import java.util.Arrays;
 
 public class SubsetConvolution {
-
     // calculates c[k] = sum(a[i]*b[j] | i|j==k, i&j==0) in O(n * log^2(n))
     public static int[] subsetConvolution(int[] a, int[] b) {
         int n = a.length;
@@ -57,9 +56,10 @@ public class SubsetConvolution {
         int n = a.length;
         int[] result = new int[n];
         for (int i = n - 1; i >= 0; i--) {
-            for (int j = i; ; j = (j - 1) & i) {
+            for (int j = i;; j = (j - 1) & i) {
                 result[i] += a[j] * b[i ^ j];
-                if (j == 0) break;
+                if (j == 0)
+                    break;
             }
         }
         return result;

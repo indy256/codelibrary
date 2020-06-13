@@ -3,7 +3,7 @@
 using namespace std;
 
 // https://en.wikipedia.org/wiki/Tridiagonal_matrix_algorithm
-template<class T>
+template <class T>
 vector<T> tridiagonal_solve(vector<T> diag, const vector<T> &super, const vector<T> &sub, vector<T> b) {
     for (int i = 0; i < b.size() - 1; ++i) {
         diag[i + 1] -= super[i] * sub[i] / diag[i];
@@ -24,6 +24,7 @@ int main() {
     //  0  4 -1   x[2]   7
     vector<double> x = tridiagonal_solve<double>({-1, -1, -1}, {1, 2}, {3, 4}, {5, 6, 7});
 
-    for (double v : x) cout << fixed << setprecision(5) << v << " ";
+    for (double v : x)
+        cout << fixed << setprecision(5) << v << " ";
     cout << endl;
 }

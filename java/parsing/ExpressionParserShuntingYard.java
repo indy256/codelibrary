@@ -1,10 +1,9 @@
 package parsing;
 
-import javax.script.*;
 import java.util.LinkedList;
+import javax.script.*;
 
 public class ExpressionParserShuntingYard {
-
     static boolean isDelim(char c) {
         return c == ' ';
     }

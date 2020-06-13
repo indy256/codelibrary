@@ -5,7 +5,6 @@ import java.util.stream.IntStream;
 
 // f(a*b) = f(a)*f(b) | gcd(a,b)=1
 public interface MultiplicativeFunction {
-
     long apply(long prime, int exponent, long power);
 
     MultiplicativeFunction PHI = (p, exp, power) -> power - power / p;

@@ -4,7 +4,6 @@ import java.util.Arrays;
 
 // https://en.wikipedia.org/wiki/Longest_increasing_subsequence in O(n*log(n))
 public class Lis {
-
     public static int[] lis(int[] a) {
         int n = a.length;
         int[] tail = new int[n];
@@ -41,7 +40,7 @@ public class Lis {
 
     // Usage example
     public static void main(String[] args) {
-        int[] lis = lis(new int[]{1, 10, 2, 11, 3});
+        int[] lis = lis(new int[] {1, 10, 2, 11, 3});
         System.out.println(Arrays.toString(lis));
     }
 }

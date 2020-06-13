@@ -19,7 +19,8 @@ struct Node {
     Node *left = nullptr;
     Node *right = nullptr;
 
-    Node(Line line) : line(line) {}
+    Node(Line line) : line(line) {
+    }
 
     void add_line(Line nline, T l, T r) {
         T m = (l + r) / 2;

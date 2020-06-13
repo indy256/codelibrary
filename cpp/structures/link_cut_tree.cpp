@@ -15,8 +15,16 @@ struct Node {
     Node *right;
     Node *parent;
 
-    Node(long long value) : node_value(value), sub_tree_sum(value), add(0), revert(false), size(1),
-                            left(nullptr), right(nullptr), parent(nullptr) {}
+    Node(long long value)
+        : node_value(value),
+          sub_tree_sum(value),
+          add(0),
+          revert(false),
+          size(1),
+          left(nullptr),
+          right(nullptr),
+          parent(nullptr) {
+    }
 
     // tests whether x is a root of a splay tree
     bool isRoot() {
@@ -123,7 +131,7 @@ void splay(Node *x) {
         p->push();
         x->push();
         if (!p->isRoot())
-            rotate((x == p->left) == (p == g->left) ? p/*zig-zig*/ : x/*zig-zag*/);
+            rotate((x == p->left) == (p == g->left) ? p /*zig-zig*/ : x /*zig-zag*/);
         rotate(x);
     }
     x->push();
@@ -166,7 +174,7 @@ void cut(Node *x, Node *y) {
     make_root(x);
     expose(y);
     // check that exposed path consists of a single edge (y,x)
-    assert (y->right == x && x->left == nullptr);
+    assert(y->right == x && x->left == nullptr);
     y->right->parent = nullptr;
     y->right = nullptr;
 }

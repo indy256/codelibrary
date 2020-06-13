@@ -1,8 +1,9 @@
-#include <bits/stdc++.h>
 #include "rational.h"
 
+#include <bits/stdc++.h>
+
 using namespace std;
-using rt = rational<long long/*__int128*/>;
+using rt = rational<long long /*__int128*/>;
 
 // usage example
 int main() {

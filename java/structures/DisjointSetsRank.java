@@ -1,7 +1,6 @@
 package structures;
 
 public class DisjointSetsRank {
-
     int[] p;
     int[] rank;
 

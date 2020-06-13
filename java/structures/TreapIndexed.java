@@ -5,7 +5,6 @@ import java.util.function.Predicate;
 
 // https://cp-algorithms.com/data_structures/treap.html
 public class TreapIndexed {
-
     static Random random = new Random();
 
     public static class Node {
@@ -194,7 +193,8 @@ public class TreapIndexed {
     static int sumLowerBound(Node treap, int ll, int rr, long sum) {
         long[] sumSoFar = new long[1];
         return findFirst(treap, ll, rr, node -> {
-            if (sumSoFar[0] + node.sum >= sum) return true;
+            if (sumSoFar[0] + node.sum >= sum)
+                return true;
             sumSoFar[0] += node.sum;
             return false;
         });
@@ -246,7 +246,7 @@ public class TreapIndexed {
         System.out.println("Test passed");
 
         treap = null;
-        for (long v : new long[]{2, 1, 10, 20}) {
+        for (long v : new long[] {2, 1, 10, 20}) {
             treap = insert(treap, Node.getSize(treap), v);
         }
         System.out.println(2 == sumLowerBound(treap, 0, treap.size - 1, 12));

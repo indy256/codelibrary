@@ -3,7 +3,6 @@ package dp;
 import java.util.*;
 
 public class MatrixChainMultiply {
-
     public static int solveIterative(int[] s) {
         int n = s.length - 1;
         int[][] p = new int[n][n];

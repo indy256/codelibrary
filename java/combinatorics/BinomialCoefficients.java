@@ -3,7 +3,6 @@ package combinatorics;
 import java.math.BigInteger;
 
 public class BinomialCoefficients {
-
     public static long[][] binomialTable(int n) {
         long[][] c = new long[n + 1][n + 1];
         for (int i = 0; i <= n; i++)
@@ -23,7 +22,8 @@ public class BinomialCoefficients {
 
     // for (int i = 1; i < f.length; i++) f[i] = f[i - 1] + Math.log(i);
     public static double binomial(int n, int m, double[] f) {
-        if (m < 0 || m > n) return 0;
+        if (m < 0 || m > n)
+            return 0;
         return Math.exp(f[n] - f[m] - f[n - m]);
     }
 

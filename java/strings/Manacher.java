@@ -11,7 +11,8 @@ public class Manacher {
         int l = 0, r = -1;
         for (int i = 0; i < n; ++i) {
             int k = (i > r ? 0 : Math.min(d1[l + r - i], r - i)) + 1;
-            while (i + k < n && i - k >= 0 && s.charAt(i + k) == s.charAt(i - k)) ++k;
+            while (i + k < n && i - k >= 0 && s.charAt(i + k) == s.charAt(i - k))
+                ++k;
             d1[i] = k--;
             if (i + k > r) {
                 l = i - k;
@@ -28,7 +29,8 @@ public class Manacher {
         int l = 0, r = -1;
         for (int i = 0; i < n; ++i) {
             int k = (i > r ? 0 : Math.min(d2[l + r - i + 1], r - i + 1)) + 1;
-            while (i + k - 1 < n && i - k >= 0 && s.charAt(i + k - 1) == s.charAt(i - k)) ++k;
+            while (i + k - 1 < n && i - k >= 0 && s.charAt(i + k - 1) == s.charAt(i - k))
+                ++k;
             d2[i] = --k;
             if (i + k - 1 > r) {
                 l = i - k;

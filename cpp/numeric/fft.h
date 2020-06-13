@@ -8,8 +8,7 @@ using namespace std;
 
 using cpx = complex<double>;
 const double PI = acos(-1);
-vector<cpx> roots = {{0, 0},
-                     {1, 0}};
+vector<cpx> roots = {{0, 0}, {1, 0}};
 
 void ensure_capacity(int min_capacity) {
     for (int len = roots.size(); len < min_capacity; len *= 2) {
@@ -52,7 +51,8 @@ void fft(vector<cpx> &z, bool inverse) {
 vector<int> multiply_bigint(const vector<int> &a, const vector<int> &b, int base) {
     int need = a.size() + b.size();
     int n = 1;
-    while (n < need) n <<= 1;
+    while (n < need)
+        n <<= 1;
     vector<cpx> p(n);
     for (size_t i = 0; i < n; i++) {
         p[i] = cpx(i < a.size() ? a[i] : 0, i < b.size() ? b[i] : 0);
@@ -70,7 +70,7 @@ vector<int> multiply_bigint(const vector<int> &a, const vector<int> &b, int base
     vector<int> result(need);
     long long carry = 0;
     for (int i = 0; i < need; i++) {
-        long long d = (long long) (ab[i].real() + 0.5) + carry;
+        long long d = (long long)(ab[i].real() + 0.5) + carry;
         carry = d / base;
         result[i] = d % base;
     }
@@ -80,7 +80,8 @@ vector<int> multiply_bigint(const vector<int> &a, const vector<int> &b, int base
 vector<int> multiply_mod(const vector<int> &a, const vector<int> &b, int m) {
     int need = a.size() + b.size() - 1;
     int n = 1;
-    while (n < need) n <<= 1;
+    while (n < need)
+        n <<= 1;
     vector<cpx> A(n);
     for (size_t i = 0; i < a.size(); i++) {
         int x = (a[i] % m + m) % m;
@@ -110,9 +111,9 @@ vector<int> multiply_mod(const vector<int> &a, const vector<int> &b, int m) {
     fft(fb, true);
     vector<int> res(need);
     for (int i = 0; i < need; i++) {
-        long long aa = (long long) (fa[i].real() + 0.5);
-        long long bb = (long long) (fb[i].real() + 0.5);
-        long long cc = (long long) (fa[i].imag() + 0.5);
+        long long aa = (long long)(fa[i].real() + 0.5);
+        long long bb = (long long)(fb[i].real() + 0.5);
+        long long cc = (long long)(fa[i].imag() + 0.5);
         res[i] = (aa % m + (bb % m << 15) + (cc % m << 30)) % m;
     }
     return res;

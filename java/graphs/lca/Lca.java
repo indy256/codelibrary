@@ -5,7 +5,6 @@ import java.util.stream.Stream;
 
 // Answering LCA queries in O(log(n)) with O(n) preprocessing
 public class Lca {
-
     int[] depth;
     int[] dfs_order;
     int cnt;
@@ -31,7 +30,8 @@ public class Lca {
         int mid = (left + right) >> 1;
         buildTree(2 * node + 1, left, mid);
         buildTree(2 * node + 2, mid + 1, right);
-        minPos[node] = depth[minPos[2 * node + 1]] < depth[minPos[2 * node + 2]] ? minPos[2 * node + 1] : minPos[2 * node + 2];
+        minPos[node] =
+            depth[minPos[2 * node + 1]] < depth[minPos[2 * node + 2]] ? minPos[2 * node + 1] : minPos[2 * node + 2];
     }
 
     public Lca(List<Integer>[] tree, int root) {
@@ -77,7 +77,7 @@ public class Lca {
 
     // Usage example
     public static void main(String[] args) {
-        List<Integer>[] tree = Stream.generate(ArrayList::new).limit(5).toArray(List[]::new);
+        List<Integer>[] tree = Stream.generate(ArrayList::new).limit(5).toArray(List[] ::new);
         tree[0].add(1);
         tree[0].add(2);
         tree[1].add(3);

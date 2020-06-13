@@ -78,7 +78,8 @@ vector<int> generate_divisors(int n) {
 // usage example
 int main() {
     auto print = [](const vector<int> &a) {
-        for (int x: a)cout << x << " ";
+        for (int x : a)
+            cout << x << " ";
         cout << endl;
     };
 

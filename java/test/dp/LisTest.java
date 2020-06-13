@@ -1,7 +1,6 @@
 package test.dp;
 
 import dp.Lis;
-
 import java.util.*;
 
 public class LisTest {
@@ -58,7 +57,7 @@ public class LisTest {
     static void checkLis(int[] a, int[] lis) {
         int n = a.length;
         boolean found = false;
-        m1:
+    m1:
         for (int mask = 0; mask < 1 << n; mask++) {
             int len = Integer.bitCount(mask);
             if (len < lis.length)

@@ -3,7 +3,6 @@ package misc;
 import java.util.*;
 
 public class MonotonicApproximation {
-
     // returns minimum sum |a[i]-b[i]| where b is non-strictly increasing array
     // see http://codeforces.com/blog/entry/47821
     public static long monotonicApproximation(int[] a) {

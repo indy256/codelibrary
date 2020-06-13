@@ -1,7 +1,6 @@
 package structures;
 
 public class Tree2d {
-
     Treap.Node[] t;
 
     public Tree2d(int n) {
