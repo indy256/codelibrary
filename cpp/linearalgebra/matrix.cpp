@@ -2,14 +2,14 @@
 
 #include <bits/stdc++.h>
 
-using namespace std;
-
-// usage example
 #include "../numbertheory/modint.h"
+
+using namespace std;
 
 constexpr int mod = (int)1e9 + 7;
 using mint = modint<mod>;
 
+// usage example
 int main() {
     // Fibonacci numbers
     vector<mint> f{1, 1};
