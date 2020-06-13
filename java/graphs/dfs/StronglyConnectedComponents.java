@@ -5,7 +5,6 @@ import java.util.stream.Stream;
 
 // https://en.wikipedia.org/wiki/Kosaraju%27s_algorithm
 public class StronglyConnectedComponents {
-
     public static List<List<Integer>> scc(List<Integer>[] graph) {
         int n = graph.length;
         boolean[] used = new boolean[n];
@@ -14,10 +13,9 @@ public class StronglyConnectedComponents {
             if (!used[i])
                 dfs(graph, used, order, i);
 
-        List<Integer>[] reverseGraph = Stream.generate(ArrayList::new).limit(n).toArray(List[]::new);
+        List<Integer>[] reverseGraph = Stream.generate(ArrayList::new).limit(n).toArray(List[] ::new);
         for (int i = 0; i < n; i++)
-            for (int j : graph[i])
-                reverseGraph[j].add(i);
+            for (int j : graph[i]) reverseGraph[j].add(i);
 
         List<List<Integer>> components = new ArrayList<>();
         Arrays.fill(used, false);
@@ -45,9 +43,8 @@ public class StronglyConnectedComponents {
     public static List<Integer>[] sccGraph(List<Integer>[] graph, List<List<Integer>> components) {
         int[] comp = new int[graph.length];
         for (int i = 0; i < components.size(); i++)
-            for (int u : components.get(i))
-                comp[u] = i;
-        List<Integer>[] g = Stream.generate(ArrayList::new).limit(components.size()).toArray(List[]::new);
+            for (int u : components.get(i)) comp[u] = i;
+        List<Integer>[] g = Stream.generate(ArrayList::new).limit(components.size()).toArray(List[] ::new);
         Set<Long> edges = new HashSet<>();
         for (int u = 0; u < graph.length; u++)
             for (int v : graph[u])
@@ -58,7 +55,7 @@ public class StronglyConnectedComponents {
 
     // Usage example
     public static void main(String[] args) {
-        List<Integer>[] g = Stream.generate(ArrayList::new).limit(3).toArray(List[]::new);
+        List<Integer>[] g = Stream.generate(ArrayList::new).limit(3).toArray(List[] ::new);
         g[2].add(0);
         g[2].add(1);
         g[0].add(1);

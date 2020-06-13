@@ -6,7 +6,6 @@ import java.util.*;
 import java.util.List;
 
 public class RectangleUnion {
-
     static class CoverageTree {
         int[] count;
         int[] len;
@@ -32,7 +31,8 @@ public class RectangleUnion {
                 if (to > mid)
                     update(Math.max(from, mid + 1), to, delta, 2 * root + 2, mid + 1, right);
             }
-            len[root] = count[root] != 0 ? y[right + 1] - y[left] : right > left ? len[2 * root + 1] + len[2 * root + 2] : 0;
+            len[root] =
+                count[root] != 0 ? y[right + 1] - y[left] : right > left ? len[2 * root + 1] + len[2 * root + 2] : 0;
         }
     }
 
@@ -95,8 +95,7 @@ public class RectangleUnion {
             long res1 = unionArea(rectangles);
 
             Area area = new Area();
-            for (Rectangle rectangle : rectangles)
-                area.add(new Area(rectangle));
+            for (Rectangle rectangle : rectangles) area.add(new Area(rectangle));
             List<Double> x = new ArrayList<>();
             List<Double> y = new ArrayList<>();
             double res2 = 0;

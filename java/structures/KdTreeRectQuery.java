@@ -3,7 +3,6 @@ package structures;
 import java.util.Random;
 
 public class KdTreeRectQuery {
-
     public static class Point {
         int x, y;
 
@@ -73,14 +72,13 @@ public class KdTreeRectQuery {
     static int partition(Point[] a, int fromInclusive, int toExclusive, int separatorIndex, boolean divX) {
         int i = fromInclusive;
         int j = toExclusive - 1;
-        if (i >= j) return j;
+        if (i >= j)
+            return j;
         double separator = divX ? a[separatorIndex].x : a[separatorIndex].y;
         swap(a, i++, separatorIndex);
         while (i <= j) {
-            while (i <= j && (divX ? a[i].x : a[i].y) < separator)
-                ++i;
-            while (i <= j && (divX ? a[j].x : a[j].y) > separator)
-                --j;
+            while (i <= j && (divX ? a[i].x : a[i].y) < separator) ++i;
+            while (i <= j && (divX ? a[j].x : a[j].y) > separator) --j;
             if (i >= j)
                 break;
             swap(a, i++, j--);
@@ -129,8 +127,7 @@ public class KdTreeRectQuery {
         int[] y = {0, 10, 10, 0};
 
         Point[] points = new Point[x.length];
-        for (int i = 0; i < points.length; i++)
-            points[i] = new Point(x[i], y[i]);
+        for (int i = 0; i < points.length; i++) points[i] = new Point(x[i], y[i]);
 
         KdTreeRectQuery kdTree = new KdTreeRectQuery(points);
         int count = kdTree.count(0, 0, 10, 10);

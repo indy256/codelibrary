@@ -21,7 +21,7 @@ ll double_signed_area(const vector<int> &x, const vector<int> &y) {
     int n = x.size();
     ll area = 0;
     for (int i = 0, j = n - 1; i < n; j = i++) {
-        area += (ll) (x[i] - x[j]) * (y[i] + y[j]); // area += (long) x[i] * y[j] - (long) x[j] * y[i];
+        area += (ll)(x[i] - x[j]) * (y[i] + y[j]);  // area += (long) x[i] * y[j] - (long) x[j] * y[i];
     }
     return area;
 }
@@ -50,10 +50,12 @@ struct Point {
     bool operator<(const Point &o) const {
         bool up1 = y > 0 || (y == 0 && x >= 0);
         bool up2 = o.y > 0 || (o.y == 0 && o.x >= 0);
-        if (up1 != up2) return up1;
-        ll cmp = (ll) o.x * y - (ll) o.y * x;
-        if (cmp != 0) return cmp < 0;
-        return (ll) x * x + (ll) y * y < (ll) o.x * o.x + (ll) o.y * o.y;
+        if (up1 != up2)
+            return up1;
+        ll cmp = (ll)o.x * y - (ll)o.y * x;
+        if (cmp != 0)
+            return cmp < 0;
+        return (ll)x * x + (ll)y * y < (ll)o.x * o.x + (ll)o.y * o.y;
         // return atan2(y, x) < atan2(o.y, o.x);
     }
 };
@@ -71,5 +73,4 @@ Line perpendicular(Line line, ll x, ll y) {
 }
 
 // usage example
-int main() {
-}
+int main() {}

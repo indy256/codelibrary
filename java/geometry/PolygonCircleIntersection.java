@@ -4,7 +4,6 @@ import java.awt.geom.Point2D;
 import java.util.*;
 
 public class PolygonCircleIntersection {
-
     static final double eps = 1e-9;
 
     public static double polygonCircleIntersection(int[] x, int[] y, int r) {
@@ -48,16 +47,15 @@ public class PolygonCircleIntersection {
         double x0 = -a * c / aabb;
         double y0 = -b * c / aabb;
         if (d > -eps)
-            return new Point2D.Double[]{new Point2D.Double(x0, y0)};
+            return new Point2D.Double[] {new Point2D.Double(x0, y0)};
         d /= -aabb;
         double k = Math.sqrt(d < 0 ? 0 : d);
-        return new Point2D.Double[]{
-                new Point2D.Double(x0 + k * b, y0 - k * a),
-                new Point2D.Double(x0 - k * b, y0 + k * a)};
+        return new Point2D.Double[] {
+            new Point2D.Double(x0 + k * b, y0 - k * a), new Point2D.Double(x0 - k * b, y0 + k * a)};
     }
 
     static boolean isMiddle(double x, double y, double x1, double y1, double x2, double y2) {
-        return (x < x1 + eps || x < x2 + eps) && (x > x1 - eps || x > x2 - eps)
-                && (y < y1 + eps || y < y2 + eps) && (y > y1 - eps || y > y2 - eps);
+        return (x < x1 + eps || x < x2 + eps) && (x > x1 - eps || x > x2 - eps) && (y < y1 + eps || y < y2 + eps)
+            && (y > y1 - eps || y > y2 - eps);
     }
 }

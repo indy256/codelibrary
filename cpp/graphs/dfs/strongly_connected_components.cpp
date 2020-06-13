@@ -50,26 +50,26 @@ vector<vector<int>> scc_graph(const vector<vector<int>> &graph, const vector<vec
     unordered_set<long long> edges;
     for (int u = 0; u < graph.size(); u++)
         for (int v : graph[u])
-            if (comp[u] != comp[v] && edges.insert(((long long) comp[u] << 32) + comp[v]).second)
+            if (comp[u] != comp[v] && edges.insert(((long long)comp[u] << 32) + comp[v]).second)
                 g[comp[u]].push_back(comp[v]);
     return g;
 }
 
 // usage example
 int main() {
-    vector<vector<int>> graph = {{1},
-                                 {0},
-                                 {0, 1}};
+    vector<vector<int>> graph = {{1}, {0}, {0, 1}};
 
     vector<vector<int>> components = scc(graph);
-    for (auto &component: components) {
-        for (int v:component) cout << v << " ";
+    for (auto &component : components) {
+        for (int v : component)
+            cout << v << " ";
         cout << endl;
     }
 
     vector<vector<int>> sg = scc_graph(graph, components);
-    for (auto &a: sg) {
-        for (int v : a) cout << v << " ";
+    for (auto &a : sg) {
+        for (int v : a)
+            cout << v << " ";
         cout << endl;
     }
 }

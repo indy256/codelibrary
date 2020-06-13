@@ -4,7 +4,6 @@ import java.util.Random;
 
 // https://en.wikipedia.org/wiki/Metric_tree
 public class MetricTree {
-
     int[] x;
     int[] y;
 
@@ -44,14 +43,13 @@ public class MetricTree {
     int partition(int center, int fromInclusive, int toExclusive, int separatorIndex) {
         int i = fromInclusive;
         int j = toExclusive - 1;
-        if (i >= j) return j;
+        if (i >= j)
+            return j;
         long separator = dist2(x[center], y[center], x[separatorIndex], y[separatorIndex]);
         swap(i++, separatorIndex);
         while (i <= j) {
-            while (i <= j && (dist2(x[center], y[center], x[i], y[i]) < separator))
-                ++i;
-            while (i <= j && (dist2(x[center], y[center], x[j], y[j]) > separator))
-                --j;
+            while (i <= j && (dist2(x[center], y[center], x[i], y[i]) < separator)) ++i;
+            while (i <= j && (dist2(x[center], y[center], x[j], y[j]) > separator)) --j;
             if (i >= j)
                 break;
             swap(i++, j--);

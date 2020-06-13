@@ -1,9 +1,16 @@
 package parsing;
 
 public class Calc2 {
-
     static enum TOKEN {
-        PLUS, MINUS, MUL, DIV, NUMBER, LP, RP, END, FUNCTION;
+        PLUS,
+        MINUS,
+        MUL,
+        DIV,
+        NUMBER,
+        LP,
+        RP,
+        END,
+        FUNCTION;
     }
 
     double expr() {

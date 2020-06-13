@@ -1,7 +1,6 @@
 package geometry;
 
 public class LineGeometry {
-
     static final double EPS = 1e-10;
 
     public static int sign(double a) {
@@ -86,7 +85,7 @@ public class LineGeometry {
 
     public static boolean isCrossOrTouchIntersect(Point a, Point b, Point c, Point d) {
         if (Math.max(a.x, b.x) < Math.min(c.x, d.x) - EPS || Math.max(c.x, d.x) < Math.min(a.x, b.x) - EPS
-                || Math.max(a.y, b.y) < Math.min(c.y, d.y) - EPS || Math.max(c.y, d.y) < Math.min(a.y, b.y) - EPS) {
+            || Math.max(a.y, b.y) < Math.min(c.y, d.y) - EPS || Math.max(c.y, d.y) < Math.min(a.y, b.y) - EPS) {
             return false;
         }
         return orientation(a, b, c) * orientation(a, b, d) <= 0 && orientation(c, d, a) * orientation(c, d, b) <= 0;
@@ -109,6 +108,5 @@ public class LineGeometry {
     }
 
     // Usage example
-    public static void main(String[] args) {
-    }
+    public static void main(String[] args) {}
 }

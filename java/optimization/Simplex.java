@@ -1,11 +1,9 @@
 package optimization;
 
+import java.util.Arrays;
 import numbertheory.Rational;
 
-import java.util.Arrays;
-
 public class Simplex {
-
     // returns max c*x such that A*x <= b, x >= 0
     public static Rational simplex(Rational[][] A, Rational[] b, Rational[] c, Rational[] x) {
         int m = A.length;
@@ -33,7 +31,7 @@ public class Simplex {
             a[m][j] = c[j];
         }
         a[m + 1][n - 1] = Rational.ONE.negate();
-        for (int E = n - 1; ; ) {
+        for (int E = n - 1;;) {
             if (L < m) {
                 int t = index[E];
                 index[E] = index[L + n];
@@ -70,8 +68,8 @@ public class Simplex {
             for (int i = 0; i < m; i++) {
                 if (a[i][E].signum() < 0) {
                     Rational d;
-                    if (L < 0 || (d = a[L][n].div(a[L][E]).sub(a[i][n].div(a[i][E]))).signum() < 0 || d.signum() == 0
-                            && index[L + n] > index[i + n]) {
+                    if (L < 0 || (d = a[L][n].div(a[L][E]).sub(a[i][n].div(a[i][E]))).signum() < 0
+                        || d.signum() == 0 && index[L + n] > index[i + n]) {
                         L = i;
                     }
                 }
@@ -102,39 +100,39 @@ public class Simplex {
         System.out.println(new Rational(8).equals(res));
         System.out.println(Arrays.toString(x));
 
-        a = new long[][]{{3, 4, -3}, {5, -4, -3}, {7, 4, 11}};
-        b = new long[]{23, 10, 30};
-        c = new long[]{-1, 1, 2};
+        a = new long[][] {{3, 4, -3}, {5, -4, -3}, {7, 4, 11}};
+        b = new long[] {23, 10, 30};
+        c = new long[] {-1, 1, 2};
         x = new Rational[c.length];
         res = simplex(cnv(a), cnv(b), cnv(c), x);
         System.out.println(new Rational(57, 8).equals(res));
         System.out.println(Arrays.toString(x));
 
         // no feasible non-negative solutions
-        a = new long[][]{{4, -1}, {2, 1}, {-5, 2}};
-        b = new long[]{8, -10, 2};
-        c = new long[]{1, 1};
+        a = new long[][] {{4, -1}, {2, 1}, {-5, 2}};
+        b = new long[] {8, -10, 2};
+        c = new long[] {1, 1};
         res = simplex(cnv(a), cnv(b), cnv(c), null);
         System.out.println(null == res);
 
         // unbounded problem
-        a = new long[][]{{-4, 1}, {-2, -1}, {-5, 2}};
-        b = new long[]{-8, -10, 2};
-        c = new long[]{1, 1};
+        a = new long[][] {{-4, 1}, {-2, -1}, {-5, 2}};
+        b = new long[] {-8, -10, 2};
+        c = new long[] {1, 1};
         res = simplex(cnv(a), cnv(b), cnv(c), null);
         System.out.println(Rational.POSITIVE_INFINITY == res);
 
         // no feasible solutions
-        a = new long[][]{{1}, {-1}};
-        b = new long[]{1, -2};
-        c = new long[]{0};
+        a = new long[][] {{1}, {-1}};
+        b = new long[] {1, -2};
+        c = new long[] {0};
         res = simplex(cnv(a), cnv(b), cnv(c), null);
         System.out.println(null == res);
 
         // infinite number of solutions, but only one is returned
-        a = new long[][]{{1, 1}};
-        b = new long[]{0};
-        c = new long[]{1, 1};
+        a = new long[][] {{1, 1}};
+        b = new long[] {0};
+        c = new long[] {1, 1};
         x = new Rational[c.length];
         res = simplex(cnv(a), cnv(b), cnv(c), x);
         System.out.println(Arrays.toString(x));

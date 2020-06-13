@@ -1,18 +1,15 @@
 package structures;
 
 public class FenwickTreeExtended {
-
     // T[i] += value
     public static void add(int[] t, int i, int value) {
-        for (; i < t.length; i |= i + 1)
-            t[i] += value;
+        for (; i < t.length; i |= i + 1) t[i] += value;
     }
 
     // sum[0..i]
     public static int sum(int[] t, int i) {
         int res = 0;
-        for (; i >= 0; i = (i & (i + 1)) - 1)
-            res += t[i];
+        for (; i >= 0; i = (i & (i + 1)) - 1) res += t[i];
         return res;
     }
 
@@ -34,8 +31,7 @@ public class FenwickTreeExtended {
     public static int get(int[] t, int i) {
         int res = t[i];
         int lca = (i & (i + 1)) - 1;
-        for (--i; i != lca; i = (i & (i + 1)) - 1)
-            res -= t[i];
+        for (--i; i != lca; i = (i & (i + 1)) - 1) res -= t[i];
         return res;
     }
 
@@ -91,11 +87,10 @@ public class FenwickTreeExtended {
         add(t, 9, -2);
         System.out.println(-1 == sum(t, 0, 9));
 
-        t = createFromArray(new int[]{1, 2, 3, 4, 5, 6});
-        for (int i = 0; i < t.length; i++)
-            System.out.print(get(t, i) + " ");
+        t = createFromArray(new int[] {1, 2, 3, 4, 5, 6});
+        for (int i = 0; i < t.length; i++) System.out.print(get(t, i) + " ");
         System.out.println();
-        t = createFromArray(new int[]{0, 0, 1, 0, 0, 1, 0, 0});
+        t = createFromArray(new int[] {0, 0, 1, 0, 0, 1, 0, 0});
         System.out.println(5 == lower_bound(t, 2));
 
         int[] t1 = new int[10];

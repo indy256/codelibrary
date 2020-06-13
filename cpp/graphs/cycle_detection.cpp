@@ -24,7 +24,8 @@ vector<int> find_cycle(const vector<vector<int>> &graph) {
     vector<int> color(n);
     vector<int> next(n);
     for (int u = 0; u < n; u++) {
-        if (color[u] != 0) continue;
+        if (color[u] != 0)
+            continue;
         int cycleStart = dfs(graph, u, color, next);
         if (cycleStart != -1) {
             vector<int> cycle;
@@ -41,17 +42,14 @@ vector<int> find_cycle(const vector<vector<int>> &graph) {
 
 // usage example
 int main() {
-    vector<vector<int>> graph{{1},
-                              {2},
-                              {0}};
+    vector<vector<int>> graph{{1}, {2}, {0}};
     auto cycle = find_cycle(graph);
     cout << cycle.size() << endl;
-    for (int x:cycle) cout << x << " ";
+    for (int x : cycle)
+        cout << x << " ";
     cout << endl;
 
-    graph = {{1},
-             {2},
-             {}};
+    graph = {{1}, {2}, {}};
     cycle = find_cycle(graph);
     cout << cycle.size() << endl;
 }

@@ -1,7 +1,6 @@
 package dp;
 
 public class DominoFill {
-
     /**
      * .....
      * ..234
@@ -22,7 +21,7 @@ public class DominoFill {
                             cur[mask | (1 << (c - 1))] += prev[mask]; // horizontal
                         }
                     } else {
-                        cur[mask | (1 << c)] += prev[mask];  // vertical
+                        cur[mask | (1 << c)] += prev[mask]; // vertical
                     }
                 }
                 prev = cur;
@@ -90,7 +89,7 @@ public class DominoFill {
                             dp[r][c][mask | (1 << (c - 1))] += prev[mask]; // horizontal
                         }
                     } else {
-                        dp[r][c][mask | (1 << c)] += prev[mask];  // vertical
+                        dp[r][c][mask | (1 << c)] += prev[mask]; // vertical
                     }
                 }
             }

@@ -1,5 +1,6 @@
-#include <bits/stdc++.h>
 #include "segment_tree.h"
+
+#include <bits/stdc++.h>
 
 using namespace std;
 

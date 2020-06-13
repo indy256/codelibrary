@@ -5,12 +5,11 @@ import java.util.stream.Stream;
 
 // https://en.wikipedia.org/wiki/Dinic%27s_algorithm in O(V^2 * E)
 public class MaxFlowDinic {
-
     List<Edge>[] graph;
     int[] dist;
 
     public MaxFlowDinic(int nodes) {
-        graph = Stream.generate(ArrayList::new).limit(nodes).toArray(List[]::new);
+        graph = Stream.generate(ArrayList::new).limit(nodes).toArray(List[] ::new);
         dist = new int[nodes];
     }
 
@@ -68,7 +67,8 @@ public class MaxFlowDinic {
         int flow = 0;
         while (dinicBfs(src, dest)) {
             int[] ptr = new int[graph.length];
-            for (int df; (df = dinicDfs(ptr, dest, src, Integer.MAX_VALUE)) != 0; flow += df) ;
+            for (int df; (df = dinicDfs(ptr, dest, src, Integer.MAX_VALUE)) != 0; flow += df)
+                ;
         }
         return flow;
     }
@@ -76,15 +76,13 @@ public class MaxFlowDinic {
     // invoke after maxFlow()
     public boolean[] minCut() {
         boolean[] cut = new boolean[graph.length];
-        for (int i = 0; i < cut.length; ++i)
-            cut[i] = dist[i] != -1;
+        for (int i = 0; i < cut.length; ++i) cut[i] = dist[i] != -1;
         return cut;
     }
 
     void clearFlow() {
         for (List<Edge> edges : graph)
-            for (Edge edge : edges)
-                edge.f = 0;
+            for (Edge edge : edges) edge.f = 0;
     }
 
     // Usage example

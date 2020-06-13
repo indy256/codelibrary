@@ -15,8 +15,8 @@ struct max_flow_dinic {
     max_flow_dinic(int nodes) : graph(nodes), dist(nodes) {}
 
     void add_bidi_edge(int s, int t, int cap) {
-        Edge a = {t, (int) graph[t].size(), cap, 0};
-        Edge b = {s, (int) graph[s].size(), cap, 0};
+        Edge a = {t, (int)graph[t].size(), cap, 0};
+        Edge b = {s, (int)graph[s].size(), cap, 0};
         graph[s].emplace_back(a);
         graph[t].emplace_back(b);
     }
@@ -43,9 +43,10 @@ struct max_flow_dinic {
     int dinic_dfs(vector<int> &ptr, int u, int dest, int f) {
         if (u == dest)
             return f;
-        for (int &i = ptr[u]; i < (int) graph[u].size(); i++) {
+        for (int &i = ptr[u]; i < (int)graph[u].size(); i++) {
             Edge &e = graph[u][i];
-            if (e.cap <= e.f) continue;
+            if (e.cap <= e.f)
+                continue;
             int v = e.to;
             if (dist[v] == dist[u] + 1) {
                 int df = dinic_dfs(ptr, v, dest, min(f, e.cap - e.f));

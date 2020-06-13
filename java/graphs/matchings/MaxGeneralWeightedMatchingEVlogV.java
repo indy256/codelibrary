@@ -19,7 +19,6 @@ import java.util.PriorityQueue;
     (https://arxiv.org/abs/1611.07541)
 */
 public class MaxGeneralWeightedMatchingEVlogV {
-
     static final int kSeparated = -2, kInner = -1, kFree = 0, kOuter = 1;
     static int Inf = 1 << 30;
 
@@ -43,8 +42,7 @@ public class MaxGeneralWeightedMatchingEVlogV {
         Node<T>[] node;
         int[] index;
 
-        BinaryHeap() {
-        }
+        BinaryHeap() {}
 
         BinaryHeap(int N) {
             size_ = 0;
@@ -77,11 +75,13 @@ public class MaxGeneralWeightedMatchingEVlogV {
         }
 
         void pop() {
-            if (size_ > 0) pop(1);
+            if (size_ > 0)
+                pop(1);
         }
 
         void erase(int id) {
-            if (index[id] != 0) pop(index[id]);
+            if (index[id] != 0)
+                pop(index[id]);
         }
 
         boolean has(int id) {
@@ -95,8 +95,10 @@ public class MaxGeneralWeightedMatchingEVlogV {
             }
             boolean up = v.compareTo(node[index[id]].value) < 0;
             node[index[id]].value = v;
-            if (up) up_heap(index[id]);
-            else down_heap(index[id]);
+            if (up)
+                up_heap(index[id]);
+            else
+                down_heap(index[id]);
         }
 
         void decrease_key(int id, T v) {
@@ -126,8 +128,10 @@ public class MaxGeneralWeightedMatchingEVlogV {
             boolean up = node[size_].value.compareTo(node[pos].value) < 0;
             node[pos] = node[size_--];
             index[node[pos].id] = pos;
-            if (up) up_heap(pos);
-            else down_heap(pos);
+            if (up)
+                up_heap(pos);
+            else
+                down_heap(pos);
         }
 
         void swap_node(int a, int b) {
@@ -138,9 +142,12 @@ public class MaxGeneralWeightedMatchingEVlogV {
 
         void down_heap(int pos) {
             for (int k = pos, nk = k; 2 * k <= size_; k = nk) {
-                if (node[2 * k].compareTo(node[nk]) < 0) nk = 2 * k;
-                if (2 * k + 1 <= size_ && node[2 * k + 1].compareTo(node[nk]) < 0) nk = 2 * k + 1;
-                if (nk == k) break;
+                if (node[2 * k].compareTo(node[nk]) < 0)
+                    nk = 2 * k;
+                if (2 * k + 1 <= size_ && node[2 * k + 1].compareTo(node[nk]) < 0)
+                    nk = 2 * k + 1;
+                if (nk == k)
+                    break;
                 swap_node(k, nk);
             }
         }
@@ -221,9 +228,11 @@ public class MaxGeneralWeightedMatchingEVlogV {
         }
 
         void erase(int h, int v) {
-            if (!used(v)) return;
+            if (!used(v))
+                return;
             int w = two_pass_pairing(node[v].child);
-            if (node[v].prev == 0) heap[h] = w;
+            if (node[v].prev == 0)
+                heap[h] = w;
             else {
                 cut(v);
                 heap[h] = merge(heap[h], w);
@@ -236,7 +245,8 @@ public class MaxGeneralWeightedMatchingEVlogV {
                 push(h, v, key);
                 return;
             }
-            if (node[v].prev == 0) node[v].key = key;
+            if (node[v].prev == 0)
+                node[v].key = key;
             else {
                 cut(v);
                 node[v].key = key;
@@ -246,7 +256,8 @@ public class MaxGeneralWeightedMatchingEVlogV {
 
         void clear_rec(int v) {
             for (; v != 0; v = node[v].next) {
-                if (node[v].child != 0) clear_rec(node[v].child);
+                if (node[v].child != 0)
+                    clear_rec(node[v].child);
                 node[v].prev = -1;
             }
         }
@@ -255,15 +266,19 @@ public class MaxGeneralWeightedMatchingEVlogV {
             Node n = node[v];
             int pv = n.prev, nv = n.next;
             Node pn = node[pv];
-            if (pn.child == v) pn.child = nv;
-            else pn.next = nv;
+            if (pn.child == v)
+                pn.child = nv;
+            else
+                pn.next = nv;
             node[nv].prev = pv;
             n.next = n.prev = 0;
         }
 
         int merge(int l, int r) {
-            if (l != 0) return r;
-            if (r != 0) return l;
+            if (l != 0)
+                return r;
+            if (r != 0)
+                return l;
             if (node[l].key.compareTo(node[r].key) > 0) {
                 int tmp = l;
                 l = r;
@@ -275,7 +290,8 @@ public class MaxGeneralWeightedMatchingEVlogV {
         }
 
         int two_pass_pairing(int root) {
-            if (root == 0) return 0;
+            if (root == 0)
+                return 0;
             int a = root;
             root = 0;
             while (a != 0) {
@@ -302,22 +318,21 @@ public class MaxGeneralWeightedMatchingEVlogV {
         }
     }
 
-//    static  PriorityQueue : public priority_queue<T, vector<T>, greater<T> > {
-//        PriorityQueue() {}
-//
-//        PriorityQueue(int N) { this->c.reserve(N); }
-//
-//        T min() const { return this->top(); }
-//
-//        void clear() { this->c.clear(); }
-//    };
+    //    static  PriorityQueue : public priority_queue<T, vector<T>, greater<T> > {
+    //        PriorityQueue() {}
+    //
+    //        PriorityQueue(int N) { this->c.reserve(N); }
+    //
+    //        T min() const { return this->top(); }
+    //
+    //        void clear() { this->c.clear(); }
+    //    };
 
     static class Queue {
         int qh, qt;
         int[] data;
 
-        Queue() {
-        }
+        Queue() {}
 
         Queue(int N) {
             qh = 0;
@@ -361,9 +376,9 @@ public class MaxGeneralWeightedMatchingEVlogV {
         }
     }
 
-//    template<typename T> using ModifiableHeap = BinaryHeap<T>;
-//    template<typename T> using ModifiableHeaps = PairingHeaps<T>;
-//    template<typename T> using FastHeap = PriorityQueue<T>;
+    //    template<typename T> using ModifiableHeap = BinaryHeap<T>;
+    //    template<typename T> using ModifiableHeaps = PairingHeaps<T>;
+    //    template<typename T> using FastHeap = PriorityQueue<T>;
 
     static class Edge {
         int to;
@@ -399,8 +414,7 @@ public class MaxGeneralWeightedMatchingEVlogV {
         int parent, size;
         NodeLink[] link = new NodeLink[2];
 
-        Node() {
-        }
+        Node() {}
 
         Node(int u) {
             parent = 0;
@@ -430,23 +444,21 @@ public class MaxGeneralWeightedMatchingEVlogV {
         int time;
         int id;
 
-        Event() {
-        }
+        Event() {}
 
         Event(int time, int id) {
             this.time = time;
             this.id = id;
         }
-//        bool operator<(const Event &rhs) const { return time < rhs.time; }
-//        bool operator>(const Event &rhs) const { return time > rhs.time; }
+        //        bool operator<(const Event &rhs) const { return time < rhs.time; }
+        //        bool operator>(const Event &rhs) const { return time > rhs.time; }
     }
 
     static class EdgeEvent implements Comparable<EdgeEvent> {
         int time;
         int from, to;
 
-        EdgeEvent() {
-        }
+        EdgeEvent() {}
 
         EdgeEvent(int time, int from, int to) {
             this.time = time;
@@ -459,8 +471,8 @@ public class MaxGeneralWeightedMatchingEVlogV {
             return Integer.compare(time, o.time);
         }
 
-//        bool operator>(const EdgeEvent &rhs) const { return time > rhs.time; }
-//        bool operator<(const EdgeEvent &rhs) const { return time < rhs.time; }
+        //        bool operator>(const EdgeEvent &rhs) const { return time > rhs.time; }
+        //        bool operator<(const EdgeEvent &rhs) const { return time < rhs.time; }
     }
 
     int N, B, S; // N = |V|, B = (|V| - 1) / 2, S = N + B + 1
@@ -489,7 +501,6 @@ public class MaxGeneralWeightedMatchingEVlogV {
     PriorityQueue<EdgeEvent> heap3;
     BinaryHeap<Integer> heap4;
 
-
     public MaxGeneralWeightedMatchingEVlogV(int N, InputEdge[] in) {
         this.N = N;
         this.B = (N - 1) / 2;
@@ -517,8 +528,11 @@ public class MaxGeneralWeightedMatchingEVlogV {
     public long maximum_weighted_matching(boolean init_matching /*= false*/) {
         initialize();
         set_potential();
-        if (init_matching) find_maximal_matching();
-        for (int u = 1; u <= N; ++u) if (mate[u] == 0) do_edmonds_search(u);
+        if (init_matching)
+            find_maximal_matching();
+        for (int u = 1; u <= N; ++u)
+            if (mate[u] == 0)
+                do_edmonds_search(u);
         long ret = compute_optimal_value();
         return ret;
     }
@@ -529,7 +543,8 @@ public class MaxGeneralWeightedMatchingEVlogV {
             if (mate[u] > u) {
                 int max_c = 0;
                 for (int eid = ofs[u]; eid < ofs[u + 1]; ++eid) {
-                    if (edges[eid].to == mate[u]) max_c = Math.max(max_c, edges[eid].cost);
+                    if (edges[eid].to == mate[u])
+                        max_c = Math.max(max_c, edges[eid].cost);
                 }
                 ret += max_c;
             }
@@ -543,7 +558,8 @@ public class MaxGeneralWeightedMatchingEVlogV {
     void rematch(int v, int w) {
         int t = mate[v];
         mate[v] = w;
-        if (mate[t] != v) return;
+        if (mate[t] != v)
+            return;
         if (link[v].to == surface[link[v].to]) {
             mate[t] = link[v].from;
             rematch(mate[t], t);
@@ -555,12 +571,14 @@ public class MaxGeneralWeightedMatchingEVlogV {
     }
 
     void fix_mate_and_base(int b) {
-        if (b <= N) return;
+        if (b <= N)
+            return;
         int bv = base[b], mv1 = node[bv].link[0].v, bmv1 = node[bv].link[0].b;
         int d = (node[bmv1].link[1].v == mate[mv1]) ? 0 : 1;
         while (true) {
             int mv = node[bv].link[d].v, bmv = node[bv].link[d].b;
-            if (node[bmv].link[1 ^ d].v != mate[mv]) break;
+            if (node[bmv].link[1 ^ d].v != mate[mv])
+                break;
             fix_mate_and_base(bv);
             fix_mate_and_base(bmv);
             bv = node[bmv].link[d].b;
@@ -585,11 +603,13 @@ public class MaxGeneralWeightedMatchingEVlogV {
         label[0] = kFree;
         link[0].from = 0;
         for (int v = 1; v <= N; ++v) { // should be optimized for sparse graphs.
-            if (label[v] == kOuter) potential[v] -= time_current_;
+            if (label[v] == kOuter)
+                potential[v] -= time_current_;
             else {
                 int bv = surface[v];
                 potential[v] += lazy[bv];
-                if (label[bv] == kInner) potential[v] += time_current_ - time_created[bv];
+                if (label[bv] == kInner)
+                    potential[v] += time_current_ - time_created[bv];
             }
             reset_blossom(v);
         }
@@ -597,9 +617,12 @@ public class MaxGeneralWeightedMatchingEVlogV {
             if (base[b] != b) {
                 if (surface[b] == b) {
                     fix_mate_and_base(b);
-                    if (label[b] == kOuter) potential[b] += (time_current_ - time_created[b]) << 1;
-                    else if (label[b] == kInner) fix_blossom_potential(b, kInner);
-                    else fix_blossom_potential(b, kFree);
+                    if (label[b] == kOuter)
+                        potential[b] += (time_current_ - time_created[b]) << 1;
+                    else if (label[b] == kInner)
+                        fix_blossom_potential(b, kInner);
+                    else
+                        fix_blossom_potential(b, kFree);
                 }
                 heap2s.clear(b);
                 reset_blossom(b);
@@ -614,12 +637,14 @@ public class MaxGeneralWeightedMatchingEVlogV {
     }
 
     void do_edmonds_search(int root) {
-        if (potential[root] == 0) return;
+        if (potential[root] == 0)
+            return;
         link_blossom(surface[root], new Link(0, 0));
         push_outer_and_fix_potentials(surface[root], 0);
-        for (boolean augmented = false; !augmented; ) {
+        for (boolean augmented = false; !augmented;) {
             augmented = augment(root);
-            if (augmented) break;
+            if (augmented)
+                break;
             augmented = adjust_dual_variables(root);
         }
         reset_all();
@@ -632,26 +657,31 @@ public class MaxGeneralWeightedMatchingEVlogV {
         lazy[b] = 0;
         if (Lab == kInner) {
             int dt = time_current_ - time_created[b];
-            if (b > N) potential[b] -= dt << 1;
+            if (b > N)
+                potential[b] -= dt << 1;
             d += dt;
         }
         return d;
     }
 
     void update_heap2(int x, int y, int by, int t, int Lab) {
-        if (t >= slack[y]) return;
+        if (t >= slack[y])
+            return;
         slack[y] = t;
         best_from[y] = x;
         if (y == by) {
-            if (Lab != kInner) heap2.decrease_key(y, new EdgeEvent(t + lazy[y], x, y));
+            if (Lab != kInner)
+                heap2.decrease_key(y, new EdgeEvent(t + lazy[y], x, y));
         } else {
             int gy = group[y];
             if (gy != y) {
-                if (t >= slack[gy]) return;
+                if (t >= slack[gy])
+                    return;
                 slack[gy] = t;
             }
             heap2s.decrease_key(by, gy, new EdgeEvent(t, x, y));
-            if (Lab == kInner) return;
+            if (Lab == kInner)
+                return;
             EdgeEvent m = heap2s.min(by);
             if (m != null)
                 heap2.decrease_key(by, new EdgeEvent(m.time + lazy[by], m.from, m.to));
@@ -660,9 +690,11 @@ public class MaxGeneralWeightedMatchingEVlogV {
 
     void activate_heap2_node(int b) {
         if (b <= N) {
-            if (slack[b] < Inf) heap2.push(b, new EdgeEvent(slack[b] + lazy[b], best_from[b], b));
+            if (slack[b] < Inf)
+                heap2.push(b, new EdgeEvent(slack[b] + lazy[b], best_from[b], b));
         } else {
-            if (heap2s.empty(b)) return;
+            if (heap2s.empty(b))
+                return;
             EdgeEvent m = heap2s.min(b);
             heap2.push(b, new EdgeEvent(m.time + lazy[b], m.from, m.to));
         }
@@ -671,9 +703,11 @@ public class MaxGeneralWeightedMatchingEVlogV {
     void swap_blossom(int a, int b) {
         // Assume that `b` is a maximal blossom.
         swap(base, a, b);
-        if (base[a] == a) base[a] = b;
+        if (base[a] == a)
+            base[a] = b;
         swap(heavy, a, b);
-        if (heavy[a] == a) heavy[a] = b;
+        if (heavy[a] == a)
+            heavy[a] = b;
         swap(link, a, b);
         swap(mate, a, b);
         swap(potential, a, b);
@@ -698,7 +732,8 @@ public class MaxGeneralWeightedMatchingEVlogV {
     void set_surface_and_group(int b, int sf, int g) {
         surface[b] = sf;
         group[b] = g;
-        if (b <= N) return;
+        if (b <= N)
+            return;
         for (int bb = base[b]; surface[bb] != sf; bb = node[bb].next_b()) {
             set_surface_and_group(bb, sf, g);
         }
@@ -706,22 +741,26 @@ public class MaxGeneralWeightedMatchingEVlogV {
 
     void merge_smaller_blossoms(int bid) {
         int lb = bid, largest_size = 1;
-        for (int beta = base[bid], b = beta; ; ) {
+        for (int beta = base[bid], b = beta;;) {
             if (node[b].size > largest_size) {
                 largest_size = node[b].size;
                 lb = b;
             }
-            if ((b = node[b].next_b()) == beta) break;
+            if ((b = node[b].next_b()) == beta)
+                break;
         }
-        for (int beta = base[bid], b = beta; ; ) {
-            if (b != lb) set_surface_and_group(b, lb, b);
-            if ((b = node[b].next_b()) == beta) break;
+        for (int beta = base[bid], b = beta;;) {
+            if (b != lb)
+                set_surface_and_group(b, lb, b);
+            if ((b = node[b].next_b()) == beta)
+                break;
         }
         group[lb] = lb;
         if (largest_size > 1) {
             surface[bid] = heavy[bid] = lb;
             swap_blossom(lb, bid);
-        } else heavy[bid] = 0;
+        } else
+            heavy[bid] = 0;
     }
 
     void contract(int x, int y, int eid) {
@@ -738,7 +777,8 @@ public class MaxGeneralWeightedMatchingEVlogV {
                 by = tmp;
             }
             bx = lca = surface[link[bx].from];
-            if (link[surface[mate[bx]]].from == h) break;
+            if (link[surface[mate[bx]]].from == h)
+                break;
             link[surface[mate[bx]]].from = h;
         }
 
@@ -746,14 +786,16 @@ public class MaxGeneralWeightedMatchingEVlogV {
         assert (unused_bid_idx_ >= 0);
         int tree_size = 0;
         for (int d = 0; d < 2; ++d) {
-            for (int bv = surface[x]; bv != lca; ) {
+            for (int bv = surface[x]; bv != lca;) {
                 int mv = mate[bv], bmv = surface[mv], v = mate[mv];
                 int f = link[v].from, t = link[v].to;
                 tree_size += node[bv].size + node[bmv].size;
                 link[mv] = new Link(x, y);
 
-                if (bv > N) potential[bv] += (time_current_ - time_created[bv]) << 1;
-                if (bmv > N) heap4.erase(bmv);
+                if (bv > N)
+                    potential[bv] += (time_current_ - time_created[bv]) << 1;
+                if (bmv > N)
+                    heap4.erase(bmv);
                 push_outer_and_fix_potentials(bmv, fix_blossom_potential(bmv, kInner));
 
                 node[bv].link[d] = new Node.NodeLink(bmv, mv);
@@ -766,7 +808,8 @@ public class MaxGeneralWeightedMatchingEVlogV {
             x = y;
             y = tmp;
         }
-        if (lca > N) potential[lca] += (time_current_ - time_created[lca]) << 1;
+        if (lca > N)
+            potential[lca] += (time_current_ - time_created[lca]) << 1;
         node[bid].size = tree_size + node[lca].size;
         base[bid] = lca;
         link[bid] = link[lca];
@@ -782,14 +825,16 @@ public class MaxGeneralWeightedMatchingEVlogV {
 
     void link_blossom(int v, Link l) {
         link[v] = new Link(l.from, l.to);
-        if (v <= N) return;
+        if (v <= N)
+            return;
         int b = base[v];
         link_blossom(b, l);
         int pb = node[b].prev_b();
         l = new Link(node[pb].next_v(), node[b].prev_v());
-        for (int bv = b; ; ) {
+        for (int bv = b;;) {
             int bw = node[bv].next_b();
-            if (bw == b) break;
+            if (bw == b)
+                break;
             link_blossom(bw, l);
             Link nl = new Link(node[bw].prev_v(), node[bv].next_v());
             bv = node[bw].next_b();
@@ -805,7 +850,8 @@ public class MaxGeneralWeightedMatchingEVlogV {
             }
         } else {
             potential[v] += time_current_ + d;
-            if (potential[v] < event1.time) event1 = new Event(potential[v], v);
+            if (potential[v] < event1.time)
+                event1 = new Event(potential[v], v);
             que.enqueue(v);
         }
     }
@@ -813,11 +859,13 @@ public class MaxGeneralWeightedMatchingEVlogV {
     boolean grow(int x, int y) {
         int by = surface[y];
         boolean visited = (label[by] != kFree);
-        if (!visited) link_blossom(by, new Link(0, 0));
+        if (!visited)
+            link_blossom(by, new Link(0, 0));
         label[by] = kInner;
         time_created[by] = time_current_;
         heap2.erase(by);
-        if (y != by) heap4.update(by, time_current_ + (potential[by] >> 1));
+        if (y != by)
+            heap4.update(by, time_current_ + (potential[by] >> 1));
         int z = mate[by];
         if (z == 0) {
             rematch(x, y);
@@ -825,8 +873,10 @@ public class MaxGeneralWeightedMatchingEVlogV {
             return true;
         }
         int bz = surface[z];
-        if (!visited) link_blossom(bz, new Link(x, y));
-        else link[bz] = link[z] = new Link(x, y);
+        if (!visited)
+            link_blossom(bz, new Link(x, y));
+        else
+            link[bz] = link[z] = new Link(x, y);
         push_outer_and_fix_potentials(bz, fix_blossom_potential(bz, kFree));
         time_created[bz] = time_current_;
         heap2.erase(bz);
@@ -841,16 +891,19 @@ public class MaxGeneralWeightedMatchingEVlogV {
     int recalculate_minimum_slack(int b, int g) {
         // Return the destination of the best edge of blossom `g`.
         if (b <= N) {
-            if (slack[b] >= slack[g]) return 0;
+            if (slack[b] >= slack[g])
+                return 0;
             slack[g] = slack[b];
             best_from[g] = best_from[b];
             return b;
         }
         int v = 0;
-        for (int beta = base[b], bb = beta; ; ) {
+        for (int beta = base[b], bb = beta;;) {
             int w = recalculate_minimum_slack(bb, g);
-            if (w != 0) v = w;
-            if ((bb = node[bb].next_b()) == beta) break;
+            if (w != 0)
+                v = w;
+            if ((bb = node[bb].next_b()) == beta)
+                break;
         }
         return v;
     }
@@ -858,7 +911,8 @@ public class MaxGeneralWeightedMatchingEVlogV {
     void construct_smaller_components(int b, int sf, int g) {
         surface[b] = sf;
         group[b] = g; // `group[b] = g` is unneeded.
-        if (b <= N) return;
+        if (b <= N)
+            return;
         for (int bb = base[b]; surface[bb] != sf; bb = node[bb].next_b()) {
             if (bb == heavy[b]) {
                 construct_smaller_components(bb, sf, g);
@@ -868,8 +922,10 @@ public class MaxGeneralWeightedMatchingEVlogV {
                 if (bb > N) {
                     slack[bb] = Inf;
                     to = recalculate_minimum_slack(bb, bb);
-                } else if (slack[bb] < Inf) to = bb;
-                if (to > 0) heap2s.push(sf, bb, new EdgeEvent(slack[bb], best_from[bb], to));
+                } else if (slack[bb] < Inf)
+                    to = bb;
+                if (to > 0)
+                    heap2s.push(sf, bb, new EdgeEvent(slack[bb], best_from[bb], to));
             }
         }
     }
@@ -878,14 +934,15 @@ public class MaxGeneralWeightedMatchingEVlogV {
         final int h = heavy[bid];
         int d = (time_current_ - time_created[bid]) + lazy[bid];
         lazy[bid] = 0;
-        for (int beta = base[bid], b = beta; ; ) {
+        for (int beta = base[bid], b = beta;;) {
             time_created[b] = time_current_;
             lazy[b] = d;
             if (b != h) {
                 construct_smaller_components(b, b, b);
                 heap2s.erase(bid, b);
             }
-            if ((b = node[b].next_b()) == beta) break;
+            if ((b = node[b].next_b()) == beta)
+                break;
         }
         if (h > 0) {
             swap_blossom(h, bid);
@@ -900,7 +957,7 @@ public class MaxGeneralWeightedMatchingEVlogV {
         Link old_link = link[mv];
         int old_base = surface[mate[mv]], root = surface[old_link.to];
         int d = (mate[root] == node[root].link[0].v) ? 1 : 0;
-        for (int b = node[old_base].link[d ^ 1].b; b != root; ) {
+        for (int b = node[old_base].link[d ^ 1].b; b != root;) {
             label[b] = kSeparated;
             activate_heap2_node(b);
             b = node[b].link[d ^ 1].b;
@@ -908,17 +965,22 @@ public class MaxGeneralWeightedMatchingEVlogV {
             activate_heap2_node(b);
             b = node[b].link[d ^ 1].b;
         }
-        for (int b = old_base; ; b = node[b].link[d].b) {
+        for (int b = old_base;; b = node[b].link[d].b) {
             label[b] = kInner;
             int nb = node[b].link[d].b;
-            if (b == root) link[mate[b]] = old_link;
-            else link[mate[b]] = new Link(node[b].link[d].v, node[nb].link[d ^ 1].v);
+            if (b == root)
+                link[mate[b]] = old_link;
+            else
+                link[mate[b]] = new Link(node[b].link[d].v, node[nb].link[d ^ 1].v);
             link[surface[mate[b]]] = link[mate[b]]; // fix tree links
             if (b > N) {
-                if (potential[b] == 0) expand(b);
-                else heap4.push(b, time_current_ + (potential[b] >> 1));
+                if (potential[b] == 0)
+                    expand(b);
+                else
+                    heap4.push(b, time_current_ + (potential[b] >> 1));
             }
-            if (b == root) break;
+            if (b == root)
+                break;
             push_outer_and_fix_potentials(nb, fix_blossom_potential(b = nb, kInner));
         }
     }
@@ -928,13 +990,15 @@ public class MaxGeneralWeightedMatchingEVlogV {
         while (!que.empty()) {
             int x = que.dequeue(), bx = surface[x];
             if (potential[x] == time_current_) {
-                if (x != root) rematch(x, 0);
+                if (x != root)
+                    rematch(x, 0);
                 return true;
             }
             for (int eid = ofs[x]; eid < ofs[x + 1]; ++eid) {
                 Edge e = edges[eid];
                 int y = e.to, by = surface[y];
-                if (bx == by) continue;
+                if (bx == by)
+                    continue;
                 int l = label[by];
                 if (l == kOuter) {
                     long t = reduced_cost(x, y, e) >> 1; // < 2 * Inf
@@ -946,13 +1010,17 @@ public class MaxGeneralWeightedMatchingEVlogV {
                     }
                 } else {
                     long t = reduced_cost(x, y, e); // < 3 * Inf
-                    if (t >= Inf) continue;
+                    if (t >= Inf)
+                        continue;
                     if (l != kInner) {
                         if (t + lazy[by] == time_current_) {
-                            if (grow(x, y)) return true;
-                        } else update_heap2(x, y, by, (int) t, kFree);
+                            if (grow(x, y))
+                                return true;
+                        } else
+                            update_heap2(x, y, by, (int) t, kFree);
                     } else {
-                        if (mate[x] != y) update_heap2(x, y, by, (int) t, kInner);
+                        if (mate[x] != y)
+                            update_heap2(x, y, by, (int) t, kInner);
                     }
                 }
             }
@@ -966,7 +1034,8 @@ public class MaxGeneralWeightedMatchingEVlogV {
 
         // delta2 : grow
         int time2 = Inf;
-        if (!heap2.empty()) time2 = heap2.min().time;
+        if (!heap2.empty())
+            time2 = heap2.min().time;
 
         // delta3 : contract : O(m log n) time / Edmonds search [ bottleneck (?) ]
         int time3 = Inf;
@@ -976,12 +1045,14 @@ public class MaxGeneralWeightedMatchingEVlogV {
             if (surface[x] != surface[y]) {
                 time3 = e.time;
                 break;
-            } else heap3.remove();
+            } else
+                heap3.remove();
         }
 
         // delta4 : expand
         int time4 = Inf;
-        if (!heap4.empty()) time4 = heap4.min();
+        if (!heap4.empty())
+            time4 = heap4.min();
 
         // -- events --
         int time_next = Math.min(Math.min(time1, time2), Math.min(time3, time4));
@@ -990,18 +1061,21 @@ public class MaxGeneralWeightedMatchingEVlogV {
 
         if (time_current_ == event1.time) {
             int x = event1.id;
-            if (x != root) rematch(x, 0);
+            if (x != root)
+                rematch(x, 0);
             return true;
         }
         while (!heap2.empty() && heap2.min().time == time_current_) {
             int x = heap2.min().from, y = heap2.min().to;
-            if (grow(x, y)) return true; // `grow` function will call `heap2.erase(by)`.
+            if (grow(x, y))
+                return true; // `grow` function will call `heap2.erase(by)`.
         }
         while (!heap3.isEmpty() && heap3.peek().time == time_current_) {
             int x = heap3.peek().from, eid = heap3.peek().to;
             int y = edges[eid].to;
             heap3.remove();
-            if (surface[x] == surface[y]) continue;
+            if (surface[x] == surface[y])
+                continue;
             contract(x, y, eid);
         }
         while (!heap4.empty() && heap4.min() == time_current_) {
@@ -1063,7 +1137,8 @@ public class MaxGeneralWeightedMatchingEVlogV {
                 for (int eid = ofs[u]; eid < ofs[u + 1]; ++eid) {
                     Edge e = edges[eid];
                     int v = e.to;
-                    if (mate[v] > 0 || reduced_cost(u, v, e) > 0) continue;
+                    if (mate[v] > 0 || reduced_cost(u, v, e) > 0)
+                        continue;
                     mate[u] = v;
                     mate[v] = u;
                     break;
@@ -1074,11 +1149,9 @@ public class MaxGeneralWeightedMatchingEVlogV {
     // usage example
     public static void main(String[] args) {
         int n = 6;
-        InputEdge[] edges = {
-                new InputEdge(1, 4, 1), new InputEdge(1, 5, 1), new InputEdge(1, 5, 1),
-                new InputEdge(2, 4, 2), new InputEdge(2, 5, 3), new InputEdge(2, 6, 1),
-                new InputEdge(3, 4, 1), new InputEdge(3, 5, 1), new InputEdge(3, 6, 1)
-        };
+        InputEdge[] edges = {new InputEdge(1, 4, 1), new InputEdge(1, 5, 1), new InputEdge(1, 5, 1),
+            new InputEdge(2, 4, 2), new InputEdge(2, 5, 3), new InputEdge(2, 6, 1), new InputEdge(3, 4, 1),
+            new InputEdge(3, 5, 1), new InputEdge(3, 6, 1)};
         MaxGeneralWeightedMatchingEVlogV mm = new MaxGeneralWeightedMatchingEVlogV(n, edges);
         System.out.println(mm.maximum_weighted_matching(false));
     }

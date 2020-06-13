@@ -4,7 +4,6 @@ import java.util.*;
 import java.util.stream.IntStream;
 
 public class NthElement {
-
     // See: http://www.cplusplus.com/reference/algorithm/nth_element
     // O(n) on average
     public static void nth_element(int[] a, int low, int high, int n, Random rnd) {
@@ -25,10 +24,8 @@ public class NthElement {
         int separator = a[separatorIndex];
         swap(a, i++, separatorIndex);
         while (i <= j) {
-            while (i <= j && a[i] < separator)
-                ++i;
-            while (i <= j && a[j] > separator)
-                --j;
+            while (i <= j && a[i] < separator) ++i;
+            while (i <= j && a[j] > separator) --j;
             if (i >= j)
                 break;
             swap(a, i++, j--);
@@ -63,7 +60,8 @@ public class NthElement {
                 a5[cnt++] = a[(i + j) >>> 1];
             }
             nth_element2(a5, 0, a5.length, a5.length / 2);
-            int separatorIndex = IntStream.range(low, high).filter(i -> a[i] == a5[a5.length / 2]).findFirst().getAsInt();
+            int separatorIndex =
+                IntStream.range(low, high).filter(i -> a[i] == a5[a5.length / 2]).findFirst().getAsInt();
             int k = partition(a, low, high, separatorIndex);
             if (n < k)
                 high = k;

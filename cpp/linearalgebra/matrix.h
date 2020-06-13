@@ -2,7 +2,7 @@
 
 using namespace std;
 
-template<class T>
+template <class T>
 vector<vector<T>> matrix_unit(int n) {
     vector<vector<T>> res(n, vector<T>(n));
     for (int i = 0; i < n; i++)
@@ -10,7 +10,7 @@ vector<vector<T>> matrix_unit(int n) {
     return res;
 }
 
-template<class T>
+template <class T>
 vector<vector<T>> &operator+=(vector<vector<T>> &a, const vector<vector<T>> &b) {
     for (size_t i = 0; i < a.size(); i++)
         for (size_t j = 0; j < a[0].size(); j++)
@@ -18,13 +18,13 @@ vector<vector<T>> &operator+=(vector<vector<T>> &a, const vector<vector<T>> &b) 
     return a;
 }
 
-template<class T>
+template <class T>
 vector<vector<T>> operator+(vector<vector<T>> a, const vector<vector<T>> &b) {
     a += b;
     return a;
 }
 
-template<class T>
+template <class T>
 vector<vector<T>> operator*(const vector<vector<T>> &a, const vector<vector<T>> &b) {
     int n = a.size();
     int m = a[0].size();
@@ -37,17 +37,18 @@ vector<vector<T>> operator*(const vector<vector<T>> &a, const vector<vector<T>> 
     return res;
 }
 
-template<class T>
+template <class T>
 vector<vector<T>> &operator*=(vector<vector<T>> &a, const vector<vector<T>> &b) {
     a = a * b;
     return a;
 }
 
-template<class T>
+template <class T>
 vector<vector<T>> operator^(const vector<vector<T>> &a, long long p) {
     vector<vector<T>> res = matrix_unit<T>(a.size());
     int highest_one_bit = -1;
-    while (1LL << (highest_one_bit + 1) <= p) ++highest_one_bit;
+    while (1LL << (highest_one_bit + 1) <= p)
+        ++highest_one_bit;
     for (int i = highest_one_bit; i >= 0; i--) {
         res *= res;
         if (p >> i & 1) {
@@ -57,7 +58,7 @@ vector<vector<T>> operator^(const vector<vector<T>> &a, long long p) {
     return res;
 }
 
-template<class T>
+template <class T>
 vector<vector<T>> transpose(const vector<vector<T>> &a) {
     int n = a.size();
     int m = a[0].size();
@@ -71,13 +72,14 @@ vector<vector<T>> transpose(const vector<vector<T>> &a) {
 }
 
 // a + a^2 + ... + a^p
-template<class T>
+template <class T>
 vector<vector<T>> matrix_pow_sum(const vector<vector<T>> &a, long long p) {
     int n = a.size();
     vector<vector<T>> res = vector<vector<T>>(n, vector<T>(n));
     vector<vector<T>> b = matrix_unit<T>(n);
     int highest_one_bit = -1;
-    while (1LL << (highest_one_bit + 1) <= p) ++highest_one_bit;
+    while (1LL << (highest_one_bit + 1) <= p)
+        ++highest_one_bit;
     for (int i = highest_one_bit; i >= 0; i--) {
         res = res * (matrix_unit<T>(n) + b);
         b *= b;
@@ -91,7 +93,7 @@ vector<vector<T>> matrix_pow_sum(const vector<vector<T>> &a, long long p) {
 
 // returns f[n] = f[n-1]*a[k-1] + ... + f[n-k]*a[0], where f[0], ..., f[k-1] are provided
 // O(k^3*log(n)) complexity
-template<class T>
+template <class T>
 T nth_element_of_recurrence(const vector<T> &a, const vector<T> &f, long long n) {
     int k = f.size();
     if (n < k)
@@ -105,10 +107,11 @@ T nth_element_of_recurrence(const vector<T> &a, const vector<T> &f, long long n)
     return ((A ^ n) * F)[0][0];
 }
 
-template<class T>
+template <class T>
 void matrix_print(const vector<vector<T>> &a) {
     for (auto &row : a) {
-        for (T x:row) cout << (int) x << " ";
+        for (T x : row)
+            cout << (int)x << " ";
         cout << endl;
     }
 }

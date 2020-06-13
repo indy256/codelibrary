@@ -1,13 +1,12 @@
-#include <bits/stdc++.h>
 #include "max_flow_dinic.h"
+
+#include <bits/stdc++.h>
 
 using namespace std;
 
 // usage example
 int main() {
-    int capacity[][3] = {{0, 3, 2},
-                         {0, 0, 2},
-                         {0, 0, 0}};
+    int capacity[][3] = {{0, 3, 2}, {0, 0, 2}, {0, 0, 0}};
     int n = 3;
     max_flow_dinic flow(n);
     for (int i = 0; i < n; i++)

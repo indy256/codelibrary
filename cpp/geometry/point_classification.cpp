@@ -4,9 +4,7 @@ using namespace std;
 
 using ll = long long;
 
-enum class Position {
-    Left, Right, Behind, Beyond, Origin, Destionation, Between
-};
+enum class Position { Left, Right, Behind, Beyond, Origin, Destionation, Between };
 
 // Classifies position of point p against vector a
 Position classify(ll px, ll py, ll ax, ll ay) {
@@ -33,5 +31,4 @@ Position classify(ll px, ll py, ll ax, ll ay) {
 }
 
 // usage example
-int main() {
-}
+int main() {}

@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.Random;
 
 public class Euclid {
-
     public static int gcd(int a, int b) {
         return b == 0 ? Math.abs(a) : gcd(b, a % b);
     }
@@ -39,14 +38,14 @@ public class Euclid {
             y = _y1;
             a = _b;
         }
-        return a > 0 ? new long[]{a, x, y} : new long[]{-a, -x, -y};
+        return a > 0 ? new long[] {a, x, y} : new long[] {-a, -x, -y};
     }
 
     public static long[] euclid2(long a, long b) {
         if (b == 0)
-            return a > 0 ? new long[]{a, 1, 0} : new long[]{-a, -1, 0};
+            return a > 0 ? new long[] {a, 1, 0} : new long[] {-a, -1, 0};
         long[] r = euclid2(b, a % b);
-        return new long[]{r[0], r[2], r[1] - a / b * r[2]};
+        return new long[] {r[0], r[2], r[1] - a / b * r[2]};
     }
 
     public static int mod(int a, int m) {
@@ -74,8 +73,7 @@ public class Euclid {
     public static int[] generateInverses(int p) {
         int[] res = new int[p];
         res[1] = 1;
-        for (int i = 2; i < p; ++i)
-            res[i] = (int) ((long) (p - p / i) * res[p % i] % p);
+        for (int i = 2; i < p; ++i) res[i] = (int) ((long) (p - p / i) * res[p % i] % p);
         return res;
     }
 
@@ -84,7 +82,8 @@ public class Euclid {
         int[] x = a.clone();
         for (int i = 0; i < x.length; ++i)
             for (int j = 0; j < i; ++j)
-                x[i] = mod(BigInteger.valueOf(p[j]).modInverse(BigInteger.valueOf(p[i])).longValue() * (x[i] - x[j]), p[i]);
+                x[i] = mod(
+                    BigInteger.valueOf(p[j]).modInverse(BigInteger.valueOf(p[i])).longValue() * (x[i] - x[j]), p[i]);
         BigInteger res = BigInteger.valueOf(x[0]);
         BigInteger m = BigInteger.ONE;
         for (int i = 1; i < x.length; i++) {
@@ -98,8 +97,7 @@ public class Euclid {
     public static int simpleRestore(int[] a, int[] p) {
         int res = 0;
         for (int i = 0, m = 1; i < a.length; i++, m *= p[i])
-            while (res % p[i] != a[i])
-                res += m;
+            while (res % p[i] != a[i]) res += m;
         return res;
     }
 
@@ -128,18 +126,18 @@ public class Euclid {
             }
 
             if (gcd1 != gcd || gcd2 != gcd || !Arrays.equals(euclid1, euclid2) || euclid1[0] != gcd || inv1 != inv
-                    || inv2 != inv) {
+                || inv2 != inv) {
                 System.err.println(a + " " + b);
             }
         }
         long a = 6;
         long b = 9;
         long[] res = euclid(a, b);
-        System.out.println(res[1] + " * (" + a + ") " + " + " + res[2] + " * (" + b + ") = gcd(" + a + "," + b + ") = "
-                + res[0]);
+        System.out.println(res[1] + " * (" + a + ") "
+            + " + " + res[2] + " * (" + b + ") = gcd(" + a + "," + b + ") = " + res[0]);
 
         System.out.println(Arrays.toString(generateInverses(7)));
 
-        System.out.println(garnerRestore(new int[]{200_000_125, 300_000_333}, new int[]{1000_000_007, 1000_000_009}));
+        System.out.println(garnerRestore(new int[] {200_000_125, 300_000_333}, new int[] {1000_000_007, 1000_000_009}));
     }
 }

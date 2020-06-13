@@ -4,7 +4,6 @@ import java.util.Arrays;
 
 // https://en.wikipedia.org/wiki/Combination
 public class Combinations {
-
     public static boolean nextCombination(int[] comb, int n) {
         int k = comb.length;
         for (int i = k - 1; i >= 0; i--) {
@@ -77,18 +76,18 @@ public class Combinations {
     public static void main(String[] args) {
         int[] p = {0, 1};
         System.out.println(!nextCombination(p, 2));
-        System.out.println(Arrays.equals(new int[]{0, 1}, p));
+        System.out.println(Arrays.equals(new int[] {0, 1}, p));
 
         p = new int[2];
         System.out.println(nextCombinationWithRepeats(p, 2));
-        System.out.println(Arrays.equals(new int[]{0, 1}, p));
+        System.out.println(Arrays.equals(new int[] {0, 1}, p));
 
         System.out.println(nextCombinationWithRepeats(p, 2));
-        System.out.println(Arrays.equals(new int[]{1, 1}, p));
+        System.out.println(Arrays.equals(new int[] {1, 1}, p));
 
         System.out.println(!nextCombinationWithRepeats(p, 2));
 
-        System.out.println(78 == numberByCombination(new int[]{1, 2, 3, 6, 8}, 9));
+        System.out.println(78 == numberByCombination(new int[] {1, 2, 3, 6, 8}, 9));
         System.out.println(Arrays.toString(combinationByNumber(9, 5, 78)));
 
         p = new int[3];

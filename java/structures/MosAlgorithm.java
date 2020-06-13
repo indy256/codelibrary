@@ -5,7 +5,6 @@ import java.util.*;
 // https://www.hackerearth.com/notes/mos-algorithm/
 // Solution of http://www.spoj.com/problems/DQUERY/en/
 public class MosAlgorithm {
-
     public static class Query {
         int index;
         int a;

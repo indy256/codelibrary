@@ -24,7 +24,7 @@ vector<double> gauss(vector<vector<double>> A, vector<double> b) {
     return b;
 }
 
-template<class T>
+template <class T>
 vector<T> gauss(vector<vector<T>> A, vector<T> b) {
     int n = A.size();
     for (int i = 0; i < n; i++) {
@@ -50,7 +50,7 @@ vector<T> gauss(vector<vector<T>> A, vector<T> b) {
     return b;
 }
 
-template<class T>
+template <class T>
 vector<vector<T>> inverse(vector<vector<T>> A) {
     int n = A.size();
     vector<vector<T>> B(n, vector<T>(n));
@@ -83,28 +83,24 @@ vector<vector<T>> inverse(vector<vector<T>> A) {
     return B;
 }
 
-#include "matrix.h"
 #include "../numbertheory/modint.h"
+#include "matrix.h"
 
-constexpr int mod = (int) 1e9 + 7;
+constexpr int mod = (int)1e9 + 7;
 using mint = modint<mod>;
 
 // usage example
 int main() {
     {
-        vector<vector<double>> A{{4,  2, -1},
-                                 {2,  4, 3},
-                                 {-1, 3, 5}};
+        vector<vector<double>> A{{4, 2, -1}, {2, 4, 3}, {-1, 3, 5}};
         vector<double> b = {1, 0, 0};
         vector<double> x = gauss(A, b);
-        vector<vector<double >> y = A * transpose(vector<vector<double>>{x});
+        vector<vector<double>> y = A * transpose(vector<vector<double>>{x});
         for (int i = 0; i < b.size(); i++)
             assert(abs(b[i] - y[i][0]) < 1e-9);
     }
     {
-        vector<vector<mint>> A{{4,  2, -1},
-                               {2,  4, 3},
-                               {-1, 3, 5}};
+        vector<vector<mint>> A{{4, 2, -1}, {2, 4, 3}, {-1, 3, 5}};
         vector<mint> b = {1, 2, 3};
         vector<mint> x = gauss(A, b);
         vector<vector<mint>> y = A * transpose(vector<vector<mint>>{x});

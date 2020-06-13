@@ -18,7 +18,6 @@ import java.util.Arrays;
     (https://arxiv.org/abs/1703.03998)
 */
 public class MaxGeneralMatchingEsqrtV {
-
     public static class Edge {
         int from, to;
 
@@ -30,7 +29,7 @@ public class MaxGeneralMatchingEsqrtV {
 
     static final int Inf = 1 << 30;
     static final int kInner = -1; // should be < 0
-    static final int kFree = 0;   // should be 0
+    static final int kFree = 0; // should be 0
 
     static class Link {
         int from, to;
@@ -54,8 +53,7 @@ public class MaxGeneralMatchingEsqrtV {
         int N;
         int[] head, next;
 
-        LinkedList() {
-        }
+        LinkedList() {}
 
         LinkedList(int N, int M) {
             this.N = N;
@@ -78,8 +76,7 @@ public class MaxGeneralMatchingEsqrtV {
         int qh, qt;
         int[] data;
 
-        Queue() {
-        }
+        Queue() {}
 
         Queue(int N) {
             qh = 0;
@@ -115,8 +112,7 @@ public class MaxGeneralMatchingEsqrtV {
     static class DisjointSetUnion {
         int[] par;
 
-        DisjointSetUnion() {
-        }
+        DisjointSetUnion() {}
 
         DisjointSetUnion(int N) {
             par = new int[N];
@@ -130,7 +126,8 @@ public class MaxGeneralMatchingEsqrtV {
         void unite(int u, int v) {
             u = find(u);
             v = find(v);
-            if (u != v) par[v] = u;
+            if (u != v)
+                par[v] = u;
         }
     }
 
@@ -179,7 +176,8 @@ public class MaxGeneralMatchingEsqrtV {
         while (match * 2 + 1 < N) {
             reset_count();
             boolean has_augmenting_path = do_edmonds_search();
-            if (!has_augmenting_path) break;
+            if (!has_augmenting_path)
+                break;
             match += find_maximal();
             clear();
         }
@@ -224,10 +222,11 @@ public class MaxGeneralMatchingEsqrtV {
                 by = t;
             }
             bx = lca = dsu.find(link[bx].from);
-            if (label[mate[bx]] == h) break;
+            if (label[mate[bx]] == h)
+                break;
             label[mate[bx]] = h;
         }
-        for (int bv : new int[]{dsu.par[x], dsu.par[y]}) {
+        for (int bv : new int[] {dsu.par[x], dsu.par[y]}) {
             for (; bv != lca; bv = dsu.par[link[bv].from]) {
                 int mv = mate[bv];
                 link[mv] = new Link(x, y);
@@ -249,19 +248,24 @@ public class MaxGeneralMatchingEsqrtV {
                 if (label[y] > 0) { // outer blossom/vertex
                     int time_next = (px + potential[y]) >> 1;
                     if (lx != label[y]) {
-                        if (time_next == time_current_) return true;
+                        if (time_next == time_current_)
+                            return true;
                         time_augment_ = Math.min(time_next, time_augment_);
                     } else {
-                        if (bx == dsu.find(y)) continue;
+                        if (bx == dsu.find(y))
+                            continue;
                         if (time_next == time_current_) {
                             contract(x, y);
                             bx = dsu.find(x);
-                        } else if (time_next <= NH) list.push(time_next, eid);
+                        } else if (time_next <= NH)
+                            list.push(time_next, eid);
                     }
                 } else if (label[y] == kFree) { // free vertex
                     int time_next = px + 1;
-                    if (time_next == time_current_) grow(x, y, mate[y]);
-                    else if (time_next <= NH) list.push(time_next, eid);
+                    if (time_next == time_current_)
+                        grow(x, y, mate[y]);
+                    else if (time_next <= NH)
+                        list.push(time_next, eid);
                 }
             }
         }
@@ -273,15 +277,18 @@ public class MaxGeneralMatchingEsqrtV {
         int time_lim = Math.min(NH + 1, time_augment_);
         for (++time_current_; time_current_ <= time_lim; ++time_current_) {
             dsu_changelog_size_ = dsu_changelog_last_;
-            if (time_current_ == time_lim) break;
+            if (time_current_ == time_lim)
+                break;
             boolean updated = false;
             for (int h = list.head[time_current_]; h >= 0; h = list.next[h]) {
                 Edge e = edges[h];
                 int x = e.from, y = e.to;
                 if (label[y] > 0) {
                     // Case: outer -- (free => inner => outer)
-                    if (potential[x] + potential[y] != (time_current_ << 1)) continue;
-                    if (dsu.find(x) == dsu.find(y)) continue;
+                    if (potential[x] + potential[y] != (time_current_ << 1))
+                        continue;
+                    if (dsu.find(x) == dsu.find(y))
+                        continue;
                     if (label[x] != label[y]) {
                         time_augment_ = time_current_;
                         return false;
@@ -294,7 +301,8 @@ public class MaxGeneralMatchingEsqrtV {
                 }
             }
             list.head[time_current_] = -1;
-            if (updated) return false;
+            if (updated)
+                return false;
         }
         return time_current_ > NH;
     }
@@ -305,17 +313,23 @@ public class MaxGeneralMatchingEsqrtV {
             if (mate[u] == 0) {
                 que.enqueue(u);
                 label[u] = u; // component id
-            } else label[u] = kFree;
+            } else
+                label[u] = kFree;
         }
         while (true) {
-            if (find_augmenting_path()) break;
+            if (find_augmenting_path())
+                break;
             boolean maximum = adjust_dual_variables();
-            if (maximum) return false;
-            if (time_current_ == time_augment_) break;
+            if (maximum)
+                return false;
+            if (time_current_ == time_augment_)
+                break;
         }
         for (int u = 1; u <= N; ++u) {
-            if (label[u] > 0) potential[u] -= time_current_;
-            else if (label[u] < 0) potential[u] = 1 + (time_current_ - potential[u]);
+            if (label[u] > 0)
+                potential[u] -= time_current_;
+            else if (label[u] < 0)
+                potential[u] = 1 + (time_current_ - potential[u]);
         }
         return true;
     }
@@ -325,7 +339,8 @@ public class MaxGeneralMatchingEsqrtV {
     void rematch(int v, int w) {
         int t = mate[v];
         mate[v] = w;
-        if (mate[t] != v) return;
+        if (mate[t] != v)
+            return;
         if (link[v].to == dsu.find(link[v].to)) {
             mate[t] = link[v].from;
             rematch(mate[t], t);
@@ -340,10 +355,12 @@ public class MaxGeneralMatchingEsqrtV {
         int px = potential[x], lx = label[bx];
         for (int eid = ofs[x]; eid < ofs[x + 1]; ++eid) {
             int y = edges[eid].to;
-            if (px + potential[y] != 0) continue;
+            if (px + potential[y] != 0)
+                continue;
             int by = dsu.find(y), ly = label[by];
             if (ly > 0) { // outer
-                if (lx >= ly) continue;
+                if (lx >= ly)
+                    continue;
                 int stack_beg = stack_last_;
                 for (int bv = by; bv != bx; bv = dsu.find(link[bv].from)) {
                     int bw = dsu.find(mate[bv]);
@@ -354,7 +371,8 @@ public class MaxGeneralMatchingEsqrtV {
                 while (stack_last_ > stack_beg) {
                     int bv = stack[--stack_last_];
                     for (int v = blossom.head[bv]; v >= 0; v = blossom.next[v]) {
-                        if (!dfs_augment(v, bx)) continue;
+                        if (!dfs_augment(v, bx))
+                            continue;
                         stack_last_ = stack_beg;
                         return true;
                     }
@@ -371,7 +389,8 @@ public class MaxGeneralMatchingEsqrtV {
                 link[bz] = new Link(x, y);
                 label[bz] = outer_id_++;
                 for (int v = blossom.head[bz]; v >= 0; v = blossom.next[v]) {
-                    if (dfs_augment(v, bz)) return true;
+                    if (dfs_augment(v, bz))
+                        return true;
                 }
             }
         }
@@ -392,10 +411,12 @@ public class MaxGeneralMatchingEsqrtV {
         for (int u = 1; u <= N; ++u)
             if (mate[u] == 0) {
                 int bu = dsu.par[u];
-                if (label[bu] != kFree) continue;
+                if (label[bu] != kFree)
+                    continue;
                 label[bu] = outer_id_++;
                 for (int v = blossom.head[bu]; v >= 0; v = blossom.next[v]) {
-                    if (!dfs_augment(v, bu)) continue;
+                    if (!dfs_augment(v, bu))
+                        continue;
                     ret += 1;
                     break;
                 }
@@ -413,8 +434,7 @@ public class MaxGeneralMatchingEsqrtV {
         label = new int[N + 1];
         Arrays.fill(label, kFree);
         link = new Link[N + 1];
-        for (int i = 0; i < link.length; i++)
-            link[i] = new Link(0, 0);
+        for (int i = 0; i < link.length; i++) link[i] = new Link(0, 0);
 
         dsu_changelog = new Log[N];
 
@@ -429,11 +449,8 @@ public class MaxGeneralMatchingEsqrtV {
     // Usage example
     public static void main(String[] args) {
         int n = 6;
-        Edge[] edges = {
-                new Edge(1, 4), new Edge(1, 5), new Edge(1, 5),
-                new Edge(2, 4), new Edge(2, 5), new Edge(2, 6),
-                new Edge(3, 4), new Edge(3, 5), new Edge(3, 6)
-        };
+        Edge[] edges = {new Edge(1, 4), new Edge(1, 5), new Edge(1, 5), new Edge(2, 4), new Edge(2, 5), new Edge(2, 6),
+            new Edge(3, 4), new Edge(3, 5), new Edge(3, 6)};
         MaxGeneralMatchingEsqrtV mm = new MaxGeneralMatchingEsqrtV(n, edges);
         int ans = mm.maximum_matching();
         System.out.println(ans);

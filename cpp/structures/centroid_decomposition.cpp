@@ -5,7 +5,8 @@ using namespace std;
 void calc_sizes(const vector<vector<int>> &tree, vector<int> &size, vector<bool> &deleted, int u, int p) {
     size[u] = 1;
     for (int v : tree[u]) {
-        if (v == p || deleted[v]) continue;
+        if (v == p || deleted[v])
+            continue;
         calc_sizes(tree, size, deleted, v, u);
         size[u] += size[v];
     }
@@ -14,7 +15,8 @@ void calc_sizes(const vector<vector<int>> &tree, vector<int> &size, vector<bool>
 int find_tree_centroid(const vector<vector<int>> &tree, vector<int> &size, vector<bool> &deleted, int u, int p,
                        int vertices) {
     for (int v : tree[u]) {
-        if (v == p || deleted[v]) continue;
+        if (v == p || deleted[v])
+            continue;
         if (size[v] > vertices / 2) {
             return find_tree_centroid(tree, size, deleted, v, u, vertices);
         }
@@ -39,17 +41,15 @@ void decompose(const vector<vector<int>> &tree, vector<int> &size, vector<bool> 
     cout << centroid << endl;
 
     for (int v : tree[centroid]) {
-        if (deleted[v]) continue;
+        if (deleted[v])
+            continue;
         decompose(tree, size, deleted, v, size[v]);
     }
 }
 
 // usage example
 int main() {
-    vector<vector<int>> tree = {{3},
-                                {3},
-                                {3},
-                                {0, 1, 2}};
+    vector<vector<int>> tree = {{3}, {3}, {3}, {0, 1, 2}};
 
     int n = tree.size();
     vector<int> size(n);

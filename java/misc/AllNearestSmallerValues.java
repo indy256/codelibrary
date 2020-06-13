@@ -3,7 +3,6 @@ package misc;
 import java.util.*;
 
 public class AllNearestSmallerValues {
-
     // https://en.wikipedia.org/wiki/All_nearest_smaller_values
     public static int[] nsv(int[] a) {
         int n = a.length;
@@ -56,9 +55,9 @@ public class AllNearestSmallerValues {
 
     // Usage example
     public static void main(String[] args) {
-        System.out.println(maxInscribedRectangle(new int[]{1, 2, 3}));
-        System.out.println(maxInscribedRectangle2(new int[]{1, 2, 3}));
-        System.out.println(Arrays.toString(nsv(new int[]{1, 1, 3, 2})));
+        System.out.println(maxInscribedRectangle(new int[] {1, 2, 3}));
+        System.out.println(maxInscribedRectangle2(new int[] {1, 2, 3}));
+        System.out.println(Arrays.toString(nsv(new int[] {1, 1, 3, 2})));
         Random rnd = new Random(1);
         for (int step = 0; step < 1000; step++) {
             int n = rnd.nextInt(10) + 1;

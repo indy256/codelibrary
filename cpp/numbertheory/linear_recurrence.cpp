@@ -1,11 +1,12 @@
 #include <bits/stdc++.h>
+
 #include "polynom.h"
 
 using namespace std;
 
 // returns f[n] = f[n-1]*a[k-1] + ... + f[n-k]*a[0], where f[0], ..., f[k-1] are provided
 // O(k*log(k)*log(n)) complexity
-template<class T>
+template <class T>
 T nth_element_of_recurrence(vector<T> a, const vector<T> &f, long long n) {
     if (n < f.size())
         return f[n];
@@ -16,7 +17,7 @@ T nth_element_of_recurrence(vector<T> a, const vector<T> &f, long long n) {
 }
 
 // https://en.wikipedia.org/wiki/Berlekamp%E2%80%93Massey_algorithm
-template<typename M>
+template <typename M>
 vector<M> berlekamp_massey(const vector<M> &a) {
     int n = a.size();
     vector<M> C(n), B(n);
@@ -46,12 +47,12 @@ vector<M> berlekamp_massey(const vector<M> &a) {
     }
     C.resize(L + 1);
     C.erase(C.begin());
-    reverse(C.begin(), C.end());;
+    reverse(C.begin(), C.end());
     return -C;
 }
 
 // usage example
-constexpr int mod = (int) 1e9 + 7;
+constexpr int mod = (int)1e9 + 7;
 using mint = modint<mod>;
 
 int main() {
@@ -60,13 +61,14 @@ int main() {
         vector<mint> f{1, 1};
         vector<mint> a{1, 1};
         for (int i = 0; i < 10; ++i) {
-            cout << (int) nth_element_of_recurrence(a, f, i) << endl;
+            cout << (int)nth_element_of_recurrence(a, f, i) << endl;
         }
         cout << endl;
     }
     {
         vector<mint> f = berlekamp_massey(vector<mint>({1, 1, 3, 5, 11}));
-        for (auto v:f) cout << (int) v << " ";
+        for (auto v : f)
+            cout << (int)v << " ";
         cout << endl;
     }
 }

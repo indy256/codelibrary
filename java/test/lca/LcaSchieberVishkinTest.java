@@ -1,12 +1,10 @@
 package test.lca;
 
 import graphs.lca.LcaSchieberVishkin;
-
 import java.util.*;
 import java.util.stream.Stream;
 
 public class LcaSchieberVishkinTest {
-
     // Random test
     public static void main(String[] args) {
         Random rnd = new Random(1);
@@ -36,9 +34,10 @@ public class LcaSchieberVishkinTest {
     }
 
     static List<Integer>[] getRandomTree(int n, Random rnd) {
-        List<Integer>[] t = Stream.generate(ArrayList::new).limit(n).toArray(List[]::new);
+        List<Integer>[] t = Stream.generate(ArrayList::new).limit(n).toArray(List[] ::new);
         int[] p = new int[n];
-        for (int i = 0, j; i < n; j = rnd.nextInt(i + 1), p[i] = p[j], p[j] = i, i++) ; // random permutation
+        for (int i = 0, j; i < n; j = rnd.nextInt(i + 1), p[i] = p[j], p[j] = i, i++)
+            ; // random permutation
         for (int i = 1; i < n; i++) {
             int parent = p[rnd.nextInt(i)];
             t[parent].add(p[i]);

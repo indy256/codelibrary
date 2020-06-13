@@ -1,0 +1,13 @@
+name: clang-format
+
+on: [push]
+
+jobs:
+  check-clang-format:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: run clang-format
+      run: |
+        source_files=$(find . -type f -name "*.cpp" -o -name "*.h" -o  -name "*.java")
+        diff -u <(cat $source_files) <(clang-format $source_files)

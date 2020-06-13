@@ -12,12 +12,14 @@ vector<bool> knapsack(const vector<int> &w, int W) {
     can[0] = true;
     for (int v = 1; v <= W; ++v) {
         int am = cnt[v];
-        if (am == 0) continue;
+        if (am == 0)
+            continue;
         for (int from = 0; from < v; ++from) {
             int counter = -1;
             for (int got = from; got <= W; got += v) {
                 --counter;
-                if (can[got]) counter = am;
+                if (can[got])
+                    counter = am;
                 else if (counter >= 0) {
                     can[got] = true;
                 }
@@ -30,6 +32,7 @@ vector<bool> knapsack(const vector<int> &w, int W) {
 // usage example
 int main() {
     auto b = knapsack({2, 3, 6, 7}, 10);
-    for (auto x:b)cout << x;
+    for (auto x : b)
+        cout << x;
     cout << endl;
 }

@@ -1,12 +1,10 @@
 package test.structures;
 
-import structures.HeavyLight;
-
 import java.util.*;
 import java.util.stream.Stream;
+import structures.HeavyLight;
 
 public class HeavyLightTest {
-
     // Random test
     public static void main(String[] args) {
         Random rnd = new Random(1);
@@ -24,13 +22,11 @@ public class HeavyLightTest {
                 if (rnd.nextBoolean()) {
                     long delta = rnd.nextInt(50) - 100;
                     hl.modify(a, b, delta);
-                    for (int u : path)
-                        x[u] = x[u] + delta;
+                    for (int u : path) x[u] = x[u] + delta;
                 } else {
                     long res1 = hl.get(a, b).sum;
                     long res2 = 0;
-                    for (int u : path)
-                        res2 = res2 + x[u];
+                    for (int u : path) res2 = res2 + x[u];
                     if (res1 != res2)
                         throw new RuntimeException();
                 }
@@ -43,8 +39,7 @@ public class HeavyLightTest {
             HeavyLight hl = new HeavyLight(tree, false);
             Map<Long, Integer> x = new HashMap<>();
             for (int u = 0; u < tree.length; u++)
-                for (int v : tree[u])
-                    x.put(edge(u, v), 0);
+                for (int v : tree[u]) x.put(edge(u, v), 0);
             for (int i = 0; i < 1000; i++) {
                 int a = rnd.nextInt(n);
                 int b = rnd.nextInt(n);
@@ -88,9 +83,10 @@ public class HeavyLightTest {
     }
 
     static List<Integer>[] getRandomTree(int n, Random rnd) {
-        List<Integer>[] t = Stream.generate(ArrayList::new).limit(n).toArray(List[]::new);
+        List<Integer>[] t = Stream.generate(ArrayList::new).limit(n).toArray(List[] ::new);
         int[] p = new int[n];
-        for (int i = 0, j; i < n; j = rnd.nextInt(i + 1), p[i] = p[j], p[j] = i, i++) ; // random permutation
+        for (int i = 0, j; i < n; j = rnd.nextInt(i + 1), p[i] = p[j], p[j] = i, i++)
+            ; // random permutation
         for (int i = 1; i < n; i++) {
             int parent = p[rnd.nextInt(i)];
             t[parent].add(p[i]);

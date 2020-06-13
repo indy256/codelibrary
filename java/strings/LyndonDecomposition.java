@@ -3,12 +3,11 @@ package strings;
 import java.util.*;
 
 public class LyndonDecomposition {
-
     public static String minCyclicShift(String a) {
         char[] s = (a + a).toCharArray();
         int n = s.length;
         int res = 0;
-        for (int i = 0; i < n / 2; ) {
+        for (int i = 0; i < n / 2;) {
             res = i;
             int j = i + 1, k = i;
             while (j < n && s[k] <= s[j]) {

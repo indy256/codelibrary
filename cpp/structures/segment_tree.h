@@ -33,9 +33,7 @@ struct segtree {
         }
     }
 
-    void pull(int x, int y) {
-        tree[x] = unite(tree[x + 1], tree[y]);
-    }
+    void pull(int x, int y) { tree[x] = unite(tree[x + 1], tree[y]); }
 
     int n;
     vector<node> tree;
@@ -51,7 +49,7 @@ struct segtree {
         pull(x, y);
     }
 
-    template<class T>
+    template <class T>
     void build(int x, int l, int r, const vector<T> &v) {
         if (l == r) {
             tree[x].apply(l, r, v[l]);
@@ -85,7 +83,7 @@ struct segtree {
         return res;
     }
 
-    template<class T>
+    template <class T>
     void modify(int x, int l, int r, int ll, int rr, const T &v) {
         if (ll <= l && r <= rr) {
             tree[x].apply(l, r, v);
@@ -109,7 +107,7 @@ struct segtree {
         build(0, 0, n - 1);
     }
 
-    template<class T>
+    template <class T>
     segtree(const vector<T> &v) {
         n = v.size();
         assert(n > 0);
@@ -127,7 +125,7 @@ struct segtree {
         return get(0, 0, n - 1, p, p);
     }
 
-    template<class T>
+    template <class T>
     void modify(int ll, int rr, const T v) {
         assert(0 <= ll && ll <= rr && rr <= n - 1);
         modify(0, 0, n - 1, ll, rr, v);
@@ -164,10 +162,10 @@ struct segtree {
 // Returns min(p | p<=rr && sum[ll..p]>=sum). If no such p exists, returns -1
 int sum_lower_bound(segtree &t, int ll, int rr, long long sum) {
     long long sumSoFar = 0;
-    return t.find_first(ll, rr,
-                        [&](const segtree::node &node) {
-                            if (sumSoFar + node.sum >= sum) return true;
-                            sumSoFar += node.sum;
-                            return false;
-                        });
+    return t.find_first(ll, rr, [&](const segtree::node &node) {
+        if (sumSoFar + node.sum >= sum)
+            return true;
+        sumSoFar += node.sum;
+        return false;
+    });
 }

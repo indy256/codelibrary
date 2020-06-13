@@ -1,9 +1,9 @@
 package optimization;
 
-import javax.swing.*;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
+import javax.swing.*;
 
 public class GeneticAlgorithm extends JFrame {
     Random rnd = new Random(1);
@@ -23,8 +23,7 @@ public class GeneticAlgorithm extends JFrame {
 
     public void geneticAlgorithm() {
         bestState = new int[n];
-        for (int i = 0; i < n; i++)
-            bestState[i] = i;
+        for (int i = 0; i < n; i++) bestState[i] = i;
         final int populationLimit = 100;
         final Population population = new Population(populationLimit);
         final int n = x.length;
@@ -70,7 +69,7 @@ public class GeneticAlgorithm extends JFrame {
         boolean[] used1 = new boolean[n];
         boolean[] used2 = new boolean[n];
 
-        for (int i = i1; ; i = (i + 1) % n) {
+        for (int i = i1;; i = (i + 1) % n) {
             n1[i] = p2[i];
             used1[n1[i]] = true;
             n2[i] = p1[i];
@@ -97,17 +96,15 @@ public class GeneticAlgorithm extends JFrame {
         int pos2 = 0;
         for (int i = 0; i < n; i++) {
             if (n1[i] == -1) {
-                while (used1[pos1])
-                    ++pos1;
+                while (used1[pos1]) ++pos1;
                 n1[i] = pos1++;
             }
             if (n2[i] == -1) {
-                while (used2[pos2])
-                    ++pos2;
+                while (used2[pos2]) ++pos2;
                 n2[i] = pos2++;
             }
         }
-        return new int[][]{n1, n2};
+        return new int[][] {n1, n2};
     }
 
     void mutate(int[] p) {
@@ -126,7 +123,8 @@ public class GeneticAlgorithm extends JFrame {
             p[j] = p[i];
             p[i] = t;
             i = (i + 1) % n;
-            if (i == j) break;
+            if (i == j)
+                break;
             j = (j - 1 + n) % n;
         }
     }
@@ -157,17 +155,18 @@ public class GeneticAlgorithm extends JFrame {
     // try all 2-opt moves
     int[] optimize(int[] p) {
         int[] res = p.clone();
-        for (boolean improved = true; improved; ) {
+        for (boolean improved = true; improved;) {
             improved = false;
             for (int i = 0; i < n; i++) {
                 for (int j = 0; j < n; j++) {
-                    if (i == j || (j + 1) % n == i) continue;
+                    if (i == j || (j + 1) % n == i)
+                        continue;
                     int i1 = (i - 1 + n) % n;
                     int j1 = (j + 1) % n;
                     double delta = dist(x[res[i1]], y[res[i1]], x[res[j]], y[res[j]])
-                            + dist(x[res[i]], y[res[i]], x[res[j1]], y[res[j1]])
-                            - dist(x[res[i1]], y[res[i1]], x[res[i]], y[res[i]])
-                            - dist(x[res[j]], y[res[j]], x[res[j1]], y[res[j1]]);
+                        + dist(x[res[i]], y[res[i]], x[res[j1]], y[res[j1]])
+                        - dist(x[res[i1]], y[res[i1]], x[res[i]], y[res[i]])
+                        - dist(x[res[j]], y[res[j]], x[res[j1]], y[res[j1]]);
                     if (delta < -1e-9) {
                         reverse(res, i, j);
                         improved = true;
@@ -222,10 +221,9 @@ public class GeneticAlgorithm extends JFrame {
                 int h = getHeight() - 30;
                 for (int i = 0, j = n - 1; i < n; j = i++)
                     g.drawLine((int) (x[bestState[i]] * w), (int) ((1 - y[bestState[i]]) * h),
-                            (int) (x[bestState[j]] * w), (int) ((1 - y[bestState[j]]) * h));
+                        (int) (x[bestState[j]] * w), (int) ((1 - y[bestState[j]]) * h));
                 g.setColor(Color.RED);
-                for (int i = 0; i < n; i++)
-                    g.drawOval((int) (x[i] * w) - 1, (int) ((1 - y[i]) * h) - 1, 3, 3);
+                for (int i = 0; i < n; i++) g.drawOval((int) (x[i] * w) - 1, (int) ((1 - y[i]) * h) - 1, 3, 3);
                 g.setColor(Color.BLACK);
                 g.drawString(String.format("length: %.3f", eval(bestState)), 5, h + 20);
                 g.drawString(String.format("generation: %d", generation), 150, h + 20);

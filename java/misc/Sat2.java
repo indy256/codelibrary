@@ -5,7 +5,6 @@ import java.util.stream.Stream;
 
 // https://en.wikipedia.org/wiki/2-satisfiability
 public class Sat2 {
-
     static void dfs1(List<Integer>[] graph, boolean[] used, List<Integer> order, int u) {
         used[u] = true;
         for (int v : graph[u])
@@ -29,10 +28,9 @@ public class Sat2 {
             if (!used[i])
                 dfs1(graph, used, order, i);
 
-        List<Integer>[] reverseGraph = Stream.generate(ArrayList::new).limit(n).toArray(List[]::new);
+        List<Integer>[] reverseGraph = Stream.generate(ArrayList::new).limit(n).toArray(List[] ::new);
         for (int i = 0; i < n; i++)
-            for (int j : graph[i])
-                reverseGraph[j].add(i);
+            for (int j : graph[i]) reverseGraph[j].add(i);
 
         int[] comp = new int[n];
         Arrays.fill(comp, -1);
@@ -47,14 +45,13 @@ public class Sat2 {
                 return null;
 
         boolean[] res = new boolean[n / 2];
-        for (int i = 0; i < n; i += 2)
-            res[i / 2] = comp[i] > comp[i ^ 1];
+        for (int i = 0; i < n; i += 2) res[i / 2] = comp[i] > comp[i ^ 1];
         return res;
     }
 
     public static void main(String[] args) {
         int n = 6;
-        List<Integer>[] g = Stream.generate(ArrayList::new).limit(n).toArray(List[]::new);
+        List<Integer>[] g = Stream.generate(ArrayList::new).limit(n).toArray(List[] ::new);
         // (a || b) && (b || !c)
         // !a => b
         // !b => a

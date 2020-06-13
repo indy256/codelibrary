@@ -28,8 +28,10 @@ vector<int> suffix_array(const string &S) {
         for (int i = 0; i < n; i++) {
             // Condition sa[i - 1] + len < n emulates 0-symbol at the end of the string.
             // A separate class is created for each suffix followed by emulated 0-symbol.
-            classes[sa[i]] = i > 0 && c[sa[i - 1]] == c[sa[i]] && sa[i - 1] + len < n
-                             && c[sa[i - 1] + len / 2] == c[sa[i] + len / 2] ? classes[sa[i - 1]] : i;
+            classes[sa[i]] =
+                i > 0 && c[sa[i - 1]] == c[sa[i]] && sa[i - 1] + len < n && c[sa[i - 1] + len / 2] == c[sa[i] + len / 2]
+                    ? classes[sa[i - 1]]
+                    : i;
         }
         // Suffixes are already sorted by first len characters
         // Now sort suffixes by first len * 2 characters
@@ -58,7 +60,8 @@ vector<int> lcp_array(const string &s) {
     vector<int> lcp(n - 1);
     for (int i = 0, h = 0; i < n; i++) {
         if (rank[i] < n - 1) {
-            for (int j = sa[rank[i] + 1]; s[i + h] == s[j + h]; ++h);
+            for (int j = sa[rank[i] + 1]; s[i + h] == s[j + h]; ++h)
+                ;
             lcp[rank[i]] = h;
             if (h > 0)
                 --h;
@@ -72,11 +75,13 @@ int main() {
     string s = "abcab";
 
     vector<int> sa = suffix_array(s);
-    for (int v : sa) cout << v << " ";
+    for (int v : sa)
+        cout << v << " ";
     cout << endl;
 
     vector<int> lcp = lcp_array(s);
-    for (int v : lcp) cout << v << " ";
+    for (int v : lcp)
+        cout << v << " ";
     cout << endl;
 
     mt19937 rng(1);

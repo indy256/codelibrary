@@ -3,7 +3,6 @@ package geometry;
 import java.util.*;
 
 public class Closest2PointsFast {
-
     public static class Point {
         final int x, y;
         boolean mark;
@@ -33,8 +32,8 @@ public class Closest2PointsFast {
         for (int i = l; i <= r; i++) {
             sortedX[i].mark = i <= mid;
         }
-        Point[] sortedY1 = Arrays.stream(sortedY).filter(p -> p.mark).toArray(Point[]::new);
-        Point[] sortedY2 = Arrays.stream(sortedY).filter(p -> !p.mark).toArray(Point[]::new);
+        Point[] sortedY1 = Arrays.stream(sortedY).filter(p -> p.mark).toArray(Point[] ::new);
+        Point[] sortedY2 = Arrays.stream(sortedY).filter(p -> !p.mark).toArray(Point[] ::new);
         long d1 = rec(sortedX, sortedY1, l, mid, result, mindist2);
         mindist2 = Math.min(mindist2, d1);
         long d2 = rec(sortedX, sortedY2, mid + 1, r, result, mindist2);
@@ -87,8 +86,7 @@ public class Closest2PointsFast {
     static long slowClosestPair(Point[] points) {
         long res = Long.MAX_VALUE;
         for (int i = 0; i < points.length; i++)
-            for (int j = i + 1; j < points.length; j++)
-                res = Math.min(res, dist2(points[i], points[j]));
+            for (int j = i + 1; j < points.length; j++) res = Math.min(res, dist2(points[i], points[j]));
         return res;
     }
 }

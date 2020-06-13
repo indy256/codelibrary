@@ -1,5 +1,6 @@
 #if defined(__GNUC__) && !defined(__clang__)
 #include <bits/stdc++.h>
+
 #include <ext/pb_ds/assoc_container.hpp>
 #include <ext/pb_ds/tree_policy.hpp>
 
@@ -47,15 +48,15 @@ int main() {
     set.insert(8);
     set.insert(16);
 
-    cout << *set.find_by_order(1) << endl; // 2
-    cout << *set.find_by_order(2) << endl; // 4
-    cout << *set.find_by_order(4) << endl; // 16
-    cout << (set.end() == set.find_by_order(6)) << endl; // true
-    cout << set.order_of_key(-5) << endl; // 0
-    cout << set.order_of_key(1) << endl; // 0
-    cout << set.order_of_key(3) << endl; // 2
-    cout << set.order_of_key(4) << endl; // 2
-    cout << set.order_of_key(400) << endl; // 5
+    cout << *set.find_by_order(1) << endl;                // 2
+    cout << *set.find_by_order(2) << endl;                // 4
+    cout << *set.find_by_order(4) << endl;                // 16
+    cout << (set.end() == set.find_by_order(6)) << endl;  // true
+    cout << set.order_of_key(-5) << endl;                 // 0
+    cout << set.order_of_key(1) << endl;                  // 0
+    cout << set.order_of_key(3) << endl;                  // 2
+    cout << set.order_of_key(4) << endl;                  // 2
+    cout << set.order_of_key(400) << endl;                // 5
     cout << endl;
 
     tree2d t(10);

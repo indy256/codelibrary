@@ -25,12 +25,11 @@ vector<int> topological_sort(const vector<vector<int>> &graph) {
 
 // usage example
 int main() {
-    vector<vector<int>> g = {{0},
-                             {},
-                             {0, 1}};
+    vector<vector<int>> g = {{0}, {}, {0, 1}};
 
     vector<int> order = topological_sort(g);
 
-    for (int v : order) cout << v << " ";
+    for (int v : order)
+        cout << v << " ";
     cout << endl;
 }

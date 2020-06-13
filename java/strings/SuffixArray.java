@@ -5,7 +5,6 @@ import java.util.stream.IntStream;
 
 // https://en.wikipedia.org/wiki/Suffix_array
 public class SuffixArray {
-
     // build suffix array in O(n*log(n))
     public static int[] suffixArray(CharSequence S) {
         int n = S.length();
@@ -13,8 +12,11 @@ public class SuffixArray {
         // Stable sort of characters.
         // Same characters are sorted by their position in descending order.
         // E.g. last character which represents suffix of length 1 should be ordered first among same characters.
-        int[] sa = IntStream.range(0, n).mapToObj(i -> n - 1 - i).
-                sorted(Comparator.comparingInt(S::charAt)).mapToInt(Integer::intValue).toArray();
+        int[] sa = IntStream.range(0, n)
+                       .mapToObj(i -> n - 1 - i)
+                       .sorted(Comparator.comparingInt(S::charAt))
+                       .mapToInt(Integer::intValue)
+                       .toArray();
 
         int[] classes = S.chars().toArray();
         // sa[i] - suffix on i'th position after sorting by first len characters
@@ -27,7 +29,9 @@ public class SuffixArray {
                 // Condition sa[i - 1] + len < n emulates 0-symbol at the end of the string.
                 // A separate class is created for each suffix followed by emulated 0-symbol.
                 classes[sa[i]] = i > 0 && c[sa[i - 1]] == c[sa[i]] && sa[i - 1] + len < n
-                        && c[sa[i - 1] + len / 2] == c[sa[i] + len / 2] ? classes[sa[i - 1]] : i;
+                        && c[sa[i - 1] + len / 2] == c[sa[i] + len / 2]
+                    ? classes[sa[i - 1]]
+                    : i;
             }
             // Suffixes are already sorted by first len characters
             // Now sort suffixes by first len * 2 characters
@@ -48,13 +52,19 @@ public class SuffixArray {
     // sort rotations of a string in O(n*log(n))
     public static int[] rotationArray(CharSequence S) {
         int n = S.length();
-        int[] sa = IntStream.range(0, n).boxed().sorted(Comparator.comparingInt(S::charAt)).mapToInt(Integer::intValue).toArray();
+        int[] sa = IntStream.range(0, n)
+                       .boxed()
+                       .sorted(Comparator.comparingInt(S::charAt))
+                       .mapToInt(Integer::intValue)
+                       .toArray();
         int[] classes = S.chars().toArray();
         for (int len = 1; len < n; len *= 2) {
             int[] c = classes.clone();
             for (int i = 0; i < n; i++)
-                classes[sa[i]] = i > 0 && c[sa[i - 1]] == c[sa[i]]
-                        && c[(sa[i - 1] + len / 2) % n] == c[(sa[i] + len / 2) % n] ? classes[sa[i - 1]] : i;
+                classes[sa[i]] =
+                    i > 0 && c[sa[i - 1]] == c[sa[i]] && c[(sa[i - 1] + len / 2) % n] == c[(sa[i] + len / 2) % n]
+                    ? classes[sa[i - 1]]
+                    : i;
             int[] cnt = IntStream.range(0, n).toArray();
             int[] s = sa.clone();
             for (int i = 0; i < n; i++) {
@@ -69,12 +79,12 @@ public class SuffixArray {
     public static int[] lcp(int[] sa, CharSequence s) {
         int n = sa.length;
         int[] rank = new int[n];
-        for (int i = 0; i < n; i++)
-            rank[sa[i]] = i;
+        for (int i = 0; i < n; i++) rank[sa[i]] = i;
         int[] lcp = new int[n - 1];
         for (int i = 0, h = 0; i < n; i++) {
             if (rank[i] < n - 1) {
-                for (int j = sa[rank[i] + 1]; Math.max(i, j) + h < s.length() && s.charAt(i + h) == s.charAt(j + h); ++h)
+                for (int j = sa[rank[i] + 1]; Math.max(i, j) + h < s.length() && s.charAt(i + h) == s.charAt(j + h);
+                     ++h)
                     ;
                 lcp[rank[i]] = h;
                 if (h > 0)
@@ -90,8 +100,7 @@ public class SuffixArray {
         int[] sa1 = suffixArray(s1);
 
         // print suffixes in lexicographic order
-        for (int p : sa1)
-            System.out.println(s1.substring(p));
+        for (int p : sa1) System.out.println(s1.substring(p));
 
         System.out.println("lcp = " + Arrays.toString(lcp(sa1, s1)));
 
@@ -99,17 +108,16 @@ public class SuffixArray {
         Random rnd = new Random(1);
         for (int step = 0; step < 100000; step++) {
             int n = rnd.nextInt(100) + 1;
-            StringBuilder s = rnd.ints(n, 0, 10).collect(StringBuilder::new, (sb, i) -> sb.append((char) ('a' + i)), StringBuilder::append);
+            StringBuilder s = rnd.ints(n, 0, 10).collect(
+                StringBuilder::new, (sb, i) -> sb.append((char) ('a' + i)), StringBuilder::append);
             int[] sa = suffixArray(s);
             int[] ra = rotationArray(s.toString() + '\0');
             int[] lcp = lcp(sa, s);
             for (int i = 0; i + 1 < n; i++) {
                 String a = s.substring(sa[i]);
                 String b = s.substring(sa[i + 1]);
-                if (a.compareTo(b) >= 0
-                        || !a.substring(0, lcp[i]).equals(b.substring(0, lcp[i]))
-                        || (a + " ").charAt(lcp[i]) == (b + " ").charAt(lcp[i])
-                        || sa[i] != ra[i + 1])
+                if (a.compareTo(b) >= 0 || !a.substring(0, lcp[i]).equals(b.substring(0, lcp[i]))
+                    || (a + " ").charAt(lcp[i]) == (b + " ").charAt(lcp[i]) || sa[i] != ra[i + 1])
                     throw new RuntimeException();
             }
         }

@@ -1,11 +1,9 @@
 package test.matchings;
 
 import graphs.matchings.MaxBipartiteMatchingV3;
-
 import java.util.Random;
 
 public class MaxMatching2Test {
-
     // random tests
     public static void main(String[] args) {
         Random rnd = new Random(1);
@@ -14,8 +12,7 @@ public class MaxMatching2Test {
             int n2 = rnd.nextInt(20) + 1;
             boolean[][] g = new boolean[n1][n2];
             for (int i = 0; i < n1; i++)
-                for (int j = 0; j < n2; j++)
-                    g[i][j] = rnd.nextBoolean();
+                for (int j = 0; j < n2; j++) g[i][j] = rnd.nextBoolean();
             int res1 = MaxBipartiteMatchingV3.maxMatching(g);
             int res2 = slowMinVertexCover(g);
             if (res1 != res2)

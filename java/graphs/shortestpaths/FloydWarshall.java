@@ -3,7 +3,6 @@ package graphs.shortestpaths;
 import java.util.Arrays;
 
 public class FloydWarshall {
-
     static final int INF = Integer.MAX_VALUE / 2;
 
     // precondition: d[i][i] == 0
@@ -11,8 +10,7 @@ public class FloydWarshall {
         int n = d.length;
         int[][] pred = new int[n][n];
         for (int i = 0; i < n; i++)
-            for (int j = 0; j < n; j++)
-                pred[i][j] = (i == j || d[i][j] == INF) ? -1 : i;
+            for (int j = 0; j < n; j++) pred[i][j] = (i == j || d[i][j] == INF) ? -1 : i;
         for (int k = 0; k < n; k++) {
             for (int i = 0; i < n; i++) {
                 // if (d[i][k] == INF) continue;
@@ -38,7 +36,8 @@ public class FloydWarshall {
         int pos = n;
         while (true) {
             path[--pos] = j;
-            if (i == j) break;
+            if (i == j)
+                break;
             j = pred[i][j];
         }
         return Arrays.copyOfRange(path, pos, n);
@@ -56,6 +55,6 @@ public class FloydWarshall {
         System.out.println(-1 == pred[0][0]);
         System.out.println(2 == pred[0][1]);
         System.out.println(0 == pred[0][2]);
-        System.out.println(Arrays.equals(new int[]{0, 2, 1}, path));
+        System.out.println(Arrays.equals(new int[] {0, 2, 1}, path));
     }
 }

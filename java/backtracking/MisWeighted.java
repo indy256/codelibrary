@@ -3,14 +3,14 @@ package backtracking;
 import java.util.Random;
 
 public class MisWeighted {
-
     // maximum independent weighted set in O(3^(n/3))
     // prerequisite: g[i] has i'th bit set
     public static int mis(long[] g, long unused, int[] weights) {
         if (unused == 0)
             return 0;
         int v = -1;
-        for (int u = Long.numberOfTrailingZeros(unused); u < g.length; u += Long.numberOfTrailingZeros(unused >> (u + 1)) + 1)
+        for (int u = Long.numberOfTrailingZeros(unused); u < g.length;
+             u += Long.numberOfTrailingZeros(unused >> (u + 1)) + 1)
             if (v == -1 || Long.bitCount(g[v] & unused) > Long.bitCount(g[u] & unused))
                 v = u;
         int res = 0;
@@ -27,16 +27,14 @@ public class MisWeighted {
             int n = rnd.nextInt(16) + 1;
             long[] g = new long[n];
             int[] weights = new int[n];
-            for (int i = 0; i < n; i++)
-                weights[i] = rnd.nextInt(1000);
+            for (int i = 0; i < n; i++) weights[i] = rnd.nextInt(1000);
             for (int i = 0; i < n; i++)
                 for (int j = 0; j < i; j++)
                     if (rnd.nextBoolean()) {
                         g[i] |= 1L << j;
                         g[j] |= 1L << i;
                     }
-            for (int i = 0; i < n; i++)
-                g[i] |= 1 << i;
+            for (int i = 0; i < n; i++) g[i] |= 1 << i;
             int res1 = mis(g, (1L << n) - 1, weights);
             int res2 = misSlow(g, weights);
             if (res1 != res2)

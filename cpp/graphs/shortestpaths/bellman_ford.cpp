@@ -17,7 +17,7 @@ tuple<bool, vector<int>, vector<int>> bellman_ford(const vector<vector<edge>> &g
     for (int k = 0; k < n; k++) {
         was_changed = false;
         for (int u = 0; u < n; u++) {
-            for (auto[v, cost] : g[u]) {
+            for (auto [v, cost] : g[u]) {
                 if (prio[v] > prio[u] + cost) {
                     prio[v] = prio[u] + cost;
                     pred[v] = u;
@@ -41,7 +41,7 @@ vector<int> find_negative_cycle(const vector<vector<edge>> &g) {
     for (int k = 0; k < n; k++) {
         last = -1;
         for (int u = 0; u < n; u++) {
-            for (auto[v, cost] : g[u]) {
+            for (auto [v, cost] : g[u]) {
                 if (prio[v] > prio[u] + cost) {
                     prio[v] = prio[u] + cost;
                     pred[v] = u;

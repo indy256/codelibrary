@@ -4,7 +4,6 @@ import java.util.*;
 
 // Based on Daniel Sleator's implementation http://www.codeforces.com/contest/117/submission/860934
 public class LinkCutTreeLca {
-
     public static class Node {
         Node left;
         Node right;
@@ -71,7 +70,7 @@ public class LinkCutTreeLca {
             Node p = x.parent;
             Node g = p.parent;
             if (!p.isRoot())
-                rotate((x == p.left) == (p == g.left) ? p/*zig-zig*/ : x/*zig-zag*/);
+                rotate((x == p.left) == (p == g.left) ? p /*zig-zig*/ : x /*zig-zag*/);
             rotate(x);
         }
     }
@@ -90,8 +89,7 @@ public class LinkCutTreeLca {
 
     public static Node findRoot(Node x) {
         expose(x);
-        while (x.right != null)
-            x = x.right;
+        while (x.right != null) x = x.right;
         splay(x);
         return x;
     }
@@ -128,8 +126,7 @@ public class LinkCutTreeLca {
             int[] p = new int[n];
             Arrays.fill(p, -1);
             Node[] nodes = new Node[n];
-            for (int i = 0; i < n; i++)
-                nodes[i] = new Node();
+            for (int i = 0; i < n; i++) nodes[i] = new Node();
             for (int query = 0; query < 10_000; query++) {
                 int cmd = rnd.nextInt(10);
                 int u = rnd.nextInt(n);
@@ -151,10 +148,10 @@ public class LinkCutTreeLca {
                         Node lca = lca(x, y);
                         int cur = u;
                         Set<Integer> path = new HashSet<>();
-                        for (; cur != -1; cur = p[cur])
-                            path.add(cur);
+                        for (; cur != -1; cur = p[cur]) path.add(cur);
                         cur = v;
-                        for (; cur != -1 && !path.contains(cur); cur = p[cur]) ;
+                        for (; cur != -1 && !path.contains(cur); cur = p[cur])
+                            ;
                         if (lca != nodes[cur])
                             throw new RuntimeException();
                     }
@@ -179,8 +176,7 @@ public class LinkCutTreeLca {
 
     static int root(int[] p, int u) {
         int root = u;
-        while (p[root] != -1)
-            root = p[root];
+        while (p[root] != -1) root = p[root];
         return root;
     }
 }

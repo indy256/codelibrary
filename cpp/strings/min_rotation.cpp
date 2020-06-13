@@ -17,7 +17,8 @@ string min_cyclic_shift(string s) {
                 ++k;
             ++j;
         }
-        while (i <= k) i += j - k;
+        while (i <= k)
+            i += j - k;
     }
     return s.substr(pos, n / 2);
 }

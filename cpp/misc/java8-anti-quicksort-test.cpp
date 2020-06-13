@@ -40,9 +40,10 @@ void hackedSort(int left, int right, bool leftmost) {
     // Use insertion sort on tiny arrays
     if (length < INSERTION_SORT_THRESHOLD) {
         for (int i = right; i >= left; i--) {
-            if (a[i] == NO_VALUE) a[i] = MIN_VALUE++;
+            if (a[i] == NO_VALUE)
+                a[i] = MIN_VALUE++;
         }
-        shuffle(a + left, a + right + 1, rng); // why not?
+        shuffle(a + left, a + right + 1, rng);  // why not?
 
         if (leftmost) {
             for (int i = left, j = i; i < right; j = ++i) {
@@ -108,11 +109,15 @@ void hackedSort(int left, int right, bool leftmost) {
     int e4 = e3 + seventh;
     int e5 = e4 + seventh;
 
-    if (a[e5] == NO_VALUE) a[e5] = MIN_VALUE++;
-    if (a[e4] == NO_VALUE) a[e4] = MIN_VALUE++;
+    if (a[e5] == NO_VALUE)
+        a[e5] = MIN_VALUE++;
+    if (a[e4] == NO_VALUE)
+        a[e4] = MIN_VALUE++;
 
-    if (a[e1] == NO_VALUE) a[e1] = MAX_VALUE--;
-    if (a[e2] == NO_VALUE) a[e2] = MAX_VALUE--;
+    if (a[e1] == NO_VALUE)
+        a[e1] = MAX_VALUE--;
+    if (a[e2] == NO_VALUE)
+        a[e2] = MAX_VALUE--;
     if (LESS(a[e2], a[e1])) {
         int t = a[e2];
         a[e2] = a[e1];
@@ -194,8 +199,10 @@ void hackedSort(int left, int right, bool leftmost) {
         a[e4] = a[right];
         p[e2] = p[left];
         p[e4] = p[right];
-        while (LESS(a[++less], pivot1));
-        while (GREATER(a[--great], pivot2));
+        while (LESS(a[++less], pivot1))
+            ;
+        while (GREATER(a[--great], pivot2))
+            ;
         for (int k = less - 1; ++k <= great;) {
             int ak = a[k];
             int pk = p[k];
@@ -226,7 +233,7 @@ void hackedSort(int left, int right, bool leftmost) {
                 --great;
             }
         }
-        m1:
+    m1:
         a[left] = a[less - 1];
         a[less - 1] = pivot1;
         a[right] = a[great + 1];
@@ -241,13 +248,13 @@ void hackedSort(int left, int right, bool leftmost) {
             for (int k = less - 1; ++k <= great;) {
                 int ak = a[k];
                 int pk = p[k];
-                if (ak == pivot1) { // Move a[k] to left part
+                if (ak == pivot1) {  // Move a[k] to left part
                     a[k] = a[less];
                     p[k] = p[less];
                     a[less] = ak;
                     p[less] = pk;
                     ++less;
-                } else if (ak == pivot2) { // Move a[k] to right part
+                } else if (ak == pivot2) {  // Move a[k] to right part
                     while (a[great] == pivot2) {
                         if (great-- == k) {
                             goto m2;
@@ -268,7 +275,7 @@ void hackedSort(int left, int right, bool leftmost) {
                     --great;
                 }
             }
-            m2:;
+        m2:;
         }
         hackedSort(less, great, false);
     }

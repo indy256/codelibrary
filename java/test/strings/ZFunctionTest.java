@@ -1,11 +1,9 @@
 package test.strings;
 
+import java.util.Random;
 import strings.ZFunction;
 
-import java.util.Random;
-
 public class ZFunctionTest {
-
     // random tests
     public static void main(String[] args) {
         Random rnd = new Random(1);
@@ -30,8 +28,7 @@ public class ZFunctionTest {
     static String getRandomString(Random rnd, int maxlen) {
         int n = rnd.nextInt(maxlen) + 1;
         char[] s = new char[n];
-        for (int i = 0; i < n; i++)
-            s[i] = (char) ('a' + rnd.nextInt(3));
+        for (int i = 0; i < n; i++) s[i] = (char) ('a' + rnd.nextInt(3));
         return new String(s);
     }
 }

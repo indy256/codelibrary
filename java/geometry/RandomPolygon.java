@@ -1,11 +1,10 @@
 package geometry;
 
-import javax.swing.*;
 import java.awt.*;
 import java.util.Random;
+import javax.swing.*;
 
 public class RandomPolygon extends JFrame {
-
     public static int[][] getRandomPolygon(int n, int maxWidth, int maxHeight) {
         Random rnd = new Random(1);
         int[] x = new int[n];
@@ -17,7 +16,7 @@ public class RandomPolygon extends JFrame {
                 y[i] = rnd.nextInt(maxHeight);
                 p[i] = i;
             }
-            for (boolean improved = true; improved; ) {
+            for (boolean improved = true; improved;) {
                 improved = false;
                 for (int i = 0; i < n; i++) {
                     for (int j = 0; j < n; j++) {
@@ -47,9 +46,9 @@ public class RandomPolygon extends JFrame {
             for (int i2 = 0, i1 = n - 1; i2 < n; i1 = i2++)
                 for (int j2 = 0, j1 = n - 1; j2 < n; j1 = j2++)
                     ok &= i1 == j1 || i1 == j2 || i2 == j1
-                            || !isCrossOrTouchIntersect(x[i1], y[i1], x[i2], y[i2], x[j1], y[j1], x[j2], y[j2]);
+                        || !isCrossOrTouchIntersect(x[i1], y[i1], x[i2], y[i2], x[j1], y[j1], x[j2], y[j2]);
             if (ok)
-                return new int[][]{x, y};
+                return new int[][] {x, y};
         }
     }
 
@@ -62,7 +61,8 @@ public class RandomPolygon extends JFrame {
             p[j] = p[i];
             p[i] = t;
             i = (i + 1) % n;
-            if (i == j) break;
+            if (i == j)
+                break;
             j = (j - 1 + n) % n;
         }
     }
@@ -79,7 +79,7 @@ public class RandomPolygon extends JFrame {
 
     static boolean isCrossOrTouchIntersect(long x1, long y1, long x2, long y2, long x3, long y3, long x4, long y4) {
         if (Math.max(x1, x2) < Math.min(x3, x4) || Math.max(x3, x4) < Math.min(x1, x2)
-                || Math.max(y1, y2) < Math.min(y3, y4) || Math.max(y3, y4) < Math.min(y1, y2))
+            || Math.max(y1, y2) < Math.min(y3, y4) || Math.max(y3, y4) < Math.min(y1, y2))
             return false;
         long z1 = (x2 - x1) * (y3 - y1) - (y2 - y1) * (x3 - x1);
         long z2 = (x2 - x1) * (y4 - y1) - (y2 - y1) * (x4 - x1);
@@ -98,11 +98,9 @@ public class RandomPolygon extends JFrame {
                 int[][] xy = getRandomPolygon(new Random().nextInt(100) + 3, getWidth() - 20, getHeight() - 50);
                 g.setColor(Color.BLUE);
                 int n = xy[0].length;
-                for (int i = 0, j = n - 1; i < n; j = i++)
-                    g.drawLine(xy[0][i], xy[1][i], xy[0][j], xy[1][j]);
+                for (int i = 0, j = n - 1; i < n; j = i++) g.drawLine(xy[0][i], xy[1][i], xy[0][j], xy[1][j]);
                 g.setColor(Color.RED);
-                for (int i = 0; i < n; i++)
-                    g.drawOval(xy[0][i] - 1, xy[1][i] - 1, 3, 3);
+                for (int i = 0; i < n; i++) g.drawOval(xy[0][i] - 1, xy[1][i] - 1, 3, 3);
             }
         });
         setSize(new Dimension(600, 600));

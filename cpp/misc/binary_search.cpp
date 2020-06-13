@@ -2,7 +2,7 @@
 
 using namespace std;
 
-int binary_search(bool (*f)(int)/* function<bool(int)> f */, int from_inclusive, int to_inclusive) {
+int binary_search(bool (*f)(int) /* function<bool(int)> f */, int from_inclusive, int to_inclusive) {
     // invariant: f[lo] == false, f[hi] == true
     int lo = from_inclusive - 1;
     int hi = to_inclusive + 1;

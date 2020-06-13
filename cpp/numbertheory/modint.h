@@ -2,18 +2,17 @@
 
 using namespace std;
 
-template<int mod>
+template <int mod>
 struct modint {
     int value;
 
-    modint(long long x = 0) {
-        value = normalize(x);
-    }
+    modint(long long x = 0) { value = normalize(x); }
 
     int normalize(long long x) {
         if (x < -mod || x >= mod)
             x %= mod;
-        if (x < 0) x += mod;
+        if (x < 0)
+            x += mod;
         return static_cast<int>(x);
     }
 
@@ -22,12 +21,14 @@ struct modint {
     modint operator-() const { return modint(-value); }
 
     modint &operator+=(modint rhs) {
-        if ((value += rhs.value) >= mod) value -= mod;
+        if ((value += rhs.value) >= mod)
+            value -= mod;
         return *this;
     }
 
     modint &operator-=(modint rhs) {
-        if ((value -= rhs.value) < 0) value += mod;
+        if ((value -= rhs.value) < 0)
+            value += mod;
         return *this;
     }
 

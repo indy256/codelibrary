@@ -5,11 +5,10 @@ import java.util.stream.Stream;
 
 // https://en.wikipedia.org/wiki/Edmonds%E2%80%93Karp_algorithm in O(V * E^2)
 public class MaxFlowEdmondsKarp {
-
     List<Edge>[] graph;
 
     public MaxFlowEdmondsKarp(int nodes) {
-        graph = Stream.generate(ArrayList::new).limit(nodes).toArray(List[]::new);
+        graph = Stream.generate(ArrayList::new).limit(nodes).toArray(List[] ::new);
     }
 
     class Edge {
@@ -47,8 +46,7 @@ public class MaxFlowEdmondsKarp {
             if (pred[t] == null)
                 break;
             int df = Integer.MAX_VALUE;
-            for (int u = t; u != s; u = pred[u].s)
-                df = Math.min(df, pred[u].cap - pred[u].f);
+            for (int u = t; u != s; u = pred[u].s) df = Math.min(df, pred[u].cap - pred[u].f);
             for (int u = t; u != s; u = pred[u].s) {
                 pred[u].f += df;
                 graph[pred[u].t].get(pred[u].rev).f -= df;

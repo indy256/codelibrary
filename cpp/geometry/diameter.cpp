@@ -56,9 +56,6 @@ double diameter(const vector<point> &p) {
 
 // usage example
 int main() {
-    double d = diameter({{0, 0},
-                         {3, 0},
-                         {0, 3},
-                         {1, 1}});
+    double d = diameter({{0, 0}, {3, 0}, {0, 3}, {1, 1}});
     cout << d << endl;
 }

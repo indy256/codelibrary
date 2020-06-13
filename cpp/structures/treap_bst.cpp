@@ -14,13 +14,9 @@ struct Treap {
 
     Treap(int key) : key(key), prio(rng()), size(1), l(nullptr), r(nullptr) {}
 
-    void update() {
-        size = 1 + get_size(l) + get_size(r);
-    }
+    void update() { size = 1 + get_size(l) + get_size(r); }
 
-    static int get_size(Treap *node) {
-        return node ? node->size : 0;
-    }
+    static int get_size(Treap *node) { return node ? node->size : 0; }
 };
 
 using pTreap = Treap *;
@@ -64,8 +60,10 @@ void erase(pTreap &t, int key) {
 }
 
 pTreap unite(pTreap l, pTreap r) {
-    if (!l || !r) return l ? l : r;
-    if (l->prio < r->prio) swap(l, r);
+    if (!l || !r)
+        return l ? l : r;
+    if (l->prio < r->prio)
+        swap(l, r);
     pTreap lt, rt;
     split(r, l->key, lt, rt);
     l->l = unite(l->l, lt);
@@ -102,12 +100,12 @@ void clear(pTreap &t) {
 int main() {
     pTreap t1 = nullptr;
     int a1[] = {1, 2};
-    for (int x: a1)
+    for (int x : a1)
         insert(t1, new Treap(x));
 
     pTreap t2 = nullptr;
     int a2[] = {7, 4, 5};
-    for (int x: a2)
+    for (int x : a2)
         insert(t2, new Treap(x));
 
     pTreap t = nullptr;

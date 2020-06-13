@@ -16,8 +16,7 @@ public class BinaryHeap {
     public BinaryHeap(int[] values) {
         heap = values.clone();
         size = values.length;
-        for (int pos = size / 2 - 1; pos >= 0; pos--)
-            down(pos);
+        for (int pos = size / 2 - 1; pos >= 0; pos--) down(pos);
     }
 
     public int removeMin() {

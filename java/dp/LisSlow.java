@@ -4,7 +4,6 @@ import java.util.Arrays;
 
 // https://en.wikipedia.org/wiki/Longest_increasing_subsequence in O(n^2)
 public class LisSlow {
-
     public static int[] getLis(int[] x) {
         int n = x.length;
         int[] len = new int[n];

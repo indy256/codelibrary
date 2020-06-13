@@ -4,7 +4,6 @@ import java.util.*;
 import java.util.stream.Stream;
 
 public class Biconnectivity {
-
     static class Edge {
         int u, v;
 
@@ -103,9 +102,8 @@ public class Biconnectivity {
     public static List<Integer>[] ebcTree(List<Integer>[] graph, List<List<Integer>> components) {
         int[] comp = new int[graph.length];
         for (int i = 0; i < components.size(); i++)
-            for (int u : components.get(i))
-                comp[u] = i;
-        List<Integer>[] g = Stream.generate(ArrayList::new).limit(components.size()).toArray(List[]::new);
+            for (int u : components.get(i)) comp[u] = i;
+        List<Integer>[] g = Stream.generate(ArrayList::new).limit(components.size()).toArray(List[] ::new);
         for (int u = 0; u < graph.length; u++)
             for (int v : graph[u])
                 if (comp[u] != comp[v])
@@ -119,7 +117,7 @@ public class Biconnectivity {
         // int[][] edges = {{0, 1}};
 
         int n = Arrays.stream(edges).mapToInt(e -> Math.max(e[0], e[1])).max().getAsInt() + 1;
-        List<Integer>[] graph = Stream.generate(ArrayList::new).limit(n).toArray(List[]::new);
+        List<Integer>[] graph = Stream.generate(ArrayList::new).limit(n).toArray(List[] ::new);
 
         for (int[] edge : edges) {
             graph[edge[0]].add(edge[1]);
@@ -133,6 +131,7 @@ public class Biconnectivity {
         System.out.println("vertex-biconnected components:" + bc.vertexBiconnectedComponents);
         System.out.println("cut points: " + bc.cutPoints);
         System.out.println("bridges:" + bc.bridges);
-        System.out.println("edge-biconnected condensation tree:" + Arrays.toString(ebcTree(graph, bc.edgeBiconnectedComponents)));
+        System.out.println(
+            "edge-biconnected condensation tree:" + Arrays.toString(ebcTree(graph, bc.edgeBiconnectedComponents)));
     }
 }

@@ -4,7 +4,6 @@ import java.util.Arrays;
 
 // https://en.wikipedia.org/wiki/Hungarian_algorithm in O(n^2 * m)
 public class MinBipartiteWeightedMatchingHungarian {
-
     // a[n][m], n <= m, sum(a[i][p[i]]) -> min
     public static int minWeightPerfectMatching(int[][] a) {
         int n = a.length;
@@ -51,18 +50,14 @@ public class MinBipartiteWeightedMatchingHungarian {
             }
         }
         int[] matching = new int[n];
-        for (int i = 1; i < m; ++i)
-            matching[p[i]] = i;
+        for (int i = 1; i < m; ++i) matching[p[i]] = i;
         return -v[0];
     }
 
     // Usage example
     public static void main(String[] args) {
         // row1 and col1 should contain 0
-        int[][] a = {
-                {0, 0, 0},
-                {0, 1, 2},
-                {0, 1, 2}};
+        int[][] a = {{0, 0, 0}, {0, 1, 2}, {0, 1, 2}};
         int res = minWeightPerfectMatching(a);
         System.out.println(3 == res);
     }

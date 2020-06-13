@@ -4,7 +4,6 @@ import java.math.BigInteger;
 import java.util.Random;
 
 public class NTT {
-
     static int pow(int x, int n, int mod) {
         int res = 1;
         for (long p = x; n > 0; n >>= 1, p = (p * p) % mod)
@@ -41,8 +40,7 @@ public class NTT {
         }
         if (invert) {
             int nrev = pow(n, mod - 2, mod);
-            for (int i = 0; i < n; ++i)
-                a[i] = (int) ((long) a[i] * nrev % mod);
+            for (int i = 0; i < n; ++i) a[i] = (int) ((long) a[i] * nrev % mod);
         }
     }
 
@@ -51,18 +49,15 @@ public class NTT {
         int n = Integer.highestOneBit(need - 1) << 1;
         int[] A = new int[n];
         int[] B = new int[n];
-        for (int i = 0; i < a.length; i++)
-            A[i] = a[i];
-        for (int i = 0; i < b.length; i++)
-            B[i] = b[i];
+        for (int i = 0; i < a.length; i++) A[i] = a[i];
+        for (int i = 0; i < b.length; i++) B[i] = b[i];
 
         int mod = 998244353; // 2^23 * 119 + 1
         int root = 3;
 
         ntt(A, false, mod, root);
         ntt(B, false, mod, root);
-        for (int i = 0; i < n; i++)
-            A[i] = (int) (((long) A[i] * B[i]) % mod);
+        for (int i = 0; i < n; i++) A[i] = (int) (((long) A[i] * B[i]) % mod);
         ntt(A, true, mod, root);
         int carry = 0;
         for (int i = 0; i < need; i++) {
@@ -103,13 +98,14 @@ public class NTT {
                 throw new RuntimeException();
         }
 
-//        generatePrimitiveRootsOfUnity(1 << 20);
+        //        generatePrimitiveRootsOfUnity(1 << 20);
     }
 
     static void generatePrimitiveRootsOfUnity(int N) {
         for (int i = 900; i < 1000; i++) {
             int mod = N * i + 1;
-            if (!BigInteger.valueOf(mod).isProbablePrime(100)) continue;
+            if (!BigInteger.valueOf(mod).isProbablePrime(100))
+                continue;
             for (int root = 2; root < 1000; root++) {
                 if (pow(root, N, mod) == 1 && pow(root, N / 2, mod) != 1) {
                     System.out.println(i + " " + mod + " " + root);

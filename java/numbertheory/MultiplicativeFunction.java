@@ -5,7 +5,6 @@ import java.util.stream.IntStream;
 
 // f(a*b) = f(a)*f(b) | gcd(a,b)=1
 public interface MultiplicativeFunction {
-
     long apply(long prime, int exponent, long power);
 
     MultiplicativeFunction PHI = (p, exp, power) -> power - power / p;
@@ -55,8 +54,7 @@ public interface MultiplicativeFunction {
         int[] divisors = IntStream.range(0, n + 1).toArray();
         for (int i = 2; i * i <= n; i++)
             if (divisors[i] == i)
-                for (int j = i * i; j <= n; j += i)
-                    divisors[j] = i;
+                for (int j = i * i; j <= n; j += i) divisors[j] = i;
         return divisors;
     }
 

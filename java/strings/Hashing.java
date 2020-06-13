@@ -48,7 +48,8 @@ public class Hashing {
                 int j1 = rnd.nextInt(n1 - i1 + 1) + i1;
                 int i2 = rnd.nextInt(n2 + 1);
                 int j2 = rnd.nextInt(n2 - i2 + 1) + i2;
-                if (s1.substring(i1, j1).equals(s2.substring(i2, j2)) != (h1.getHash(i1, j1 - i1) == h2.getHash(i2, j2 - i2)))
+                if (s1.substring(i1, j1).equals(s2.substring(i2, j2))
+                    != (h1.getHash(i1, j1 - i1) == h2.getHash(i2, j2 - i2)))
                     throw new RuntimeException();
             }
         }

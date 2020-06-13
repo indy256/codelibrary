@@ -3,7 +3,6 @@ package misc;
 import java.util.*;
 
 public class ArrayRotate {
-
     public static void rotate1(int[] a, int first, int middle, int last) {
         int next = middle;
         while (first != next) {
@@ -22,8 +21,7 @@ public class ArrayRotate {
     }
 
     static void reverse(int[] a, int from, int to) {
-        while (from + 1 < to)
-            swap(a, from++, --to);
+        while (from + 1 < to) swap(a, from++, --to);
     }
 
     static void swap(int[] a, int i, int j) {

@@ -3,7 +3,6 @@ package sort;
 import java.util.Random;
 
 public class Partition {
-
     // like http://www.cplusplus.com/reference/algorithm/partition/
     // but additionally places separator at the end of the first group
     public static int partition(int[] a, int fromInclusive, int toExclusive, int separatorIndex) {
@@ -12,10 +11,8 @@ public class Partition {
         int separator = a[separatorIndex];
         swap(a, i++, separatorIndex);
         while (i <= j) {
-            while (i <= j && a[i] < separator)
-                ++i;
-            while (i <= j && a[j] > separator)
-                --j;
+            while (i <= j && a[i] < separator) ++i;
+            while (i <= j && a[j] > separator) --j;
             if (i >= j)
                 break;
             swap(a, i++, j--);

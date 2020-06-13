@@ -4,7 +4,6 @@ import java.util.*;
 
 // https://en.wikipedia.org/wiki/Suffix_automaton
 public class SuffixAutomaton {
-
     public static class State {
         public int length;
         public int suffLink;
@@ -12,9 +11,7 @@ public class SuffixAutomaton {
         public int firstPos = -1;
         public int[] next = new int[128];
 
-        {
-            Arrays.fill(next, -1);
-        }
+        { Arrays.fill(next, -1); }
     }
 
     public static State[] buildSuffixAutomaton(CharSequence s) {

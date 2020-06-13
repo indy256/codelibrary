@@ -27,9 +27,6 @@ int maxFlow(vector<vector<int>> &cap, int s, int t) {
 
 // usage example
 int main() {
-    vector<vector<int>> capacity{{0, 1, 1, 0},
-                                 {1, 0, 1, 1},
-                                 {1, 1, 0, 1},
-                                 {0, 1, 1, 0}};
+    vector<vector<int>> capacity{{0, 1, 1, 0}, {1, 0, 1, 1}, {1, 1, 0, 1}, {0, 1, 1, 0}};
     cout << (2 == maxFlow(capacity, 0, 3)) << endl;
 }

@@ -3,7 +3,6 @@ package geometry;
 import java.util.*;
 
 public class ConvexCut {
-
     public static class Point {
         public double x, y;
 
@@ -38,7 +37,8 @@ public class ConvexCut {
         return cross < -EPS ? -1 : cross > EPS ? 1 : 0;
     }
 
-    static Point getLinesIntersection(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4) {
+    static Point getLinesIntersection(
+        double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4) {
         double a1 = y2 - y1;
         double b1 = x1 - x2;
         double c1 = -(x1 * y2 - x2 * y1);
@@ -51,6 +51,5 @@ public class ConvexCut {
         return new Point(x, y);
     }
 
-    public static void main(String[] args) {
-    }
+    public static void main(String[] args) {}
 }

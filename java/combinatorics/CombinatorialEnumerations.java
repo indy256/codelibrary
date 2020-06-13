@@ -3,10 +3,8 @@ package combinatorics;
 import java.util.Arrays;
 
 public class CombinatorialEnumerations {
-
     // subclass and implement count() method
     public static abstract class AbstractEnumeration {
-
         // range of definition of sequence elements
         protected final int range;
 
@@ -71,7 +69,6 @@ public class CombinatorialEnumerations {
     }
 
     public static class Arrangements extends AbstractEnumeration {
-
         public Arrangements(int n, int k) {
             super(n, k);
         }
@@ -86,8 +83,7 @@ public class CombinatorialEnumerations {
                     return 0;
 
             long res = 1;
-            for (int i = 0; i < length - size; i++)
-                res *= range - size - i;
+            for (int i = 0; i < length - size; i++) res *= range - size - i;
             return res;
         }
     }
@@ -99,7 +95,6 @@ public class CombinatorialEnumerations {
     }
 
     public static class Combinations extends AbstractEnumeration {
-
         final long[][] binomial;
 
         public Combinations(int n, int k) {
@@ -127,7 +122,6 @@ public class CombinatorialEnumerations {
     }
 
     public static class CorrectBracketSequences extends AbstractEnumeration {
-
         final long[][] d;
 
         // sequenceLength must be a multiple of 2
@@ -164,7 +158,6 @@ public class CombinatorialEnumerations {
     }
 
     public static class Partitions extends AbstractEnumeration {
-
         final long[][] pp;
 
         public Partitions(int value) {
@@ -173,25 +166,23 @@ public class CombinatorialEnumerations {
             // p[i][j] - number of partitions of i with largest summand equal to j
             p[0][0] = 1;
             for (int i = 1; i <= value; i++)
-                for (int j = 1; j <= i; j++)
-                    p[i][j] = p[i - 1][j - 1] + p[i - j][j];
+                for (int j = 1; j <= i; j++) p[i][j] = p[i - 1][j - 1] + p[i - j][j];
             pp = new long[value + 1][value + 1];
             for (int i = 1; i <= value; i++)
-                for (int j = 1; j <= value; j++)
-                    pp[i][j] = p[i][j] + pp[i][j - 1];
+                for (int j = 1; j <= value; j++) pp[i][j] = p[i][j] + pp[i][j - 1];
         }
 
         @Override
         protected long count(int[] prefix) {
             int size = prefix.length;
             int sum = 0;
-            for (int e : prefix)
-                sum += e;
+            for (int e : prefix) sum += e;
 
             if (sum == range - 1)
                 return 1;
 
-            if (sum > range - 1 || size > 0 && prefix[size - 1] == 0 || size >= 2 && prefix[size - 1] > prefix[size - 2])
+            if (sum > range - 1 || size > 0 && prefix[size - 1] == 0
+                || size >= 2 && prefix[size - 1] > prefix[size - 2])
                 return 0;
 
             int last = size > 0 ? prefix[size - 1] : range - 1;

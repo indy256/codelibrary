@@ -43,13 +43,17 @@ int priority(char op) {
 int eval(string s) {
     s = '(' + s + ')';
     for (char c : s)
-        if ('0' <= c && c <= '9') values.push(c - '0');
-        else if (c == '(') ops.push(c);
+        if ('0' <= c && c <= '9')
+            values.push(c - '0');
+        else if (c == '(')
+            ops.push(c);
         else if (c == ')') {
-            while (ops.top() != '(') process_op();
+            while (ops.top() != '(')
+                process_op();
             ops.pop();
         } else {
-            while (!ops.empty() && priority(ops.top()) >= priority(c)) process_op();
+            while (!ops.empty() && priority(ops.top()) >= priority(c))
+                process_op();
             ops.push(c);
         }
     return values.top();

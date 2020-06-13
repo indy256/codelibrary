@@ -3,7 +3,6 @@ package strings;
 import java.util.Arrays;
 
 public class StringDistances {
-
     // https://en.wikipedia.org/wiki/Longest_common_subsequence_problem
     public static int[] getLCS(int[] x, int[] y) {
         int m = x.length;
@@ -20,7 +19,7 @@ public class StringDistances {
         }
         int cnt = lcs[m][n];
         int[] res = new int[cnt];
-        for (int i = m - 1, j = n - 1; i >= 0 && j >= 0; ) {
+        for (int i = m - 1, j = n - 1; i >= 0 && j >= 0;) {
             if (x[i] == y[j]) {
                 res[--cnt] = x[i];
                 --i;

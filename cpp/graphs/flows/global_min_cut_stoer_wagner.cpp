@@ -47,12 +47,10 @@ pair<int, vector<int>> min_cut(vector<vector<int>> &cap) {
 
 // usage example
 int main() {
-    vector<vector<int>> capacity{{0, 1, 1, 0},
-                                 {1, 0, 1, 1},
-                                 {1, 1, 0, 1},
-                                 {0, 1, 1, 0}};
-    auto[cap, cut] = min_cut(capacity);
+    vector<vector<int>> capacity{{0, 1, 1, 0}, {1, 0, 1, 1}, {1, 1, 0, 1}, {0, 1, 1, 0}};
+    auto [cap, cut] = min_cut(capacity);
     cout << cap << endl;
-    for (int v:cut) cout << v << " ";
+    for (int v : cut)
+        cout << v << " ";
     cout << endl;
 }

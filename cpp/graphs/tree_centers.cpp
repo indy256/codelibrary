@@ -8,7 +8,8 @@ int find_tree_centroid(const vector<vector<int>> &tree, int u, int p) {
     int cnt = 1;
     bool goodCenter = true;
     for (int v : tree[u]) {
-        if (v == p) continue;
+        if (v == p)
+            continue;
         int res = find_tree_centroid(tree, v, u);
         if (res >= 0)
             return res;
@@ -21,5 +22,4 @@ int find_tree_centroid(const vector<vector<int>> &tree, int u, int p) {
 }
 
 // usage example
-int main() {
-}
+int main() {}

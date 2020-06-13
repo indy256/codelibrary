@@ -1,14 +1,12 @@
 package structures;
 
 public class DisjointSetsRank {
-
     int[] p;
     int[] rank;
 
     public DisjointSetsRank(int size) {
         p = new int[size];
-        for (int i = 0; i < size; i++)
-            p[i] = i;
+        for (int i = 0; i < size; i++) p[i] = i;
         rank = new int[size];
     }
 

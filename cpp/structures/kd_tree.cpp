@@ -14,7 +14,7 @@ void build_tree(int left, int right, pii *points) {
         return;
     int mid = (left + right) >> 1;
 
-    //sort(points + left, points + right + 1, divX ? cmpX : cmpY);
+    // sort(points + left, points + right + 1, divX ? cmpX : cmpY);
     int minx = numeric_limits<int>::max();
     int maxx = numeric_limits<int>::min();
     int miny = numeric_limits<int>::max();
@@ -48,7 +48,7 @@ void find_nearest_neighbour(int left, int right, int x, int y) {
     int mid = (left + right) >> 1;
     int dx = x - tx[mid];
     int dy = y - ty[mid];
-    long long d = dx * (long long) dx + dy * (long long) dy;
+    long long d = dx * (long long)dx + dy * (long long)dy;
     if (closest_dist > d && d) {
         closest_dist = d;
         closest_node = mid;
@@ -57,7 +57,7 @@ void find_nearest_neighbour(int left, int right, int x, int y) {
         return;
 
     int delta = divX[mid] ? dx : dy;
-    long long delta2 = delta * (long long) delta;
+    long long delta2 = delta * (long long)delta;
     int l1 = left;
     int r1 = mid;
     int l2 = mid + 1;

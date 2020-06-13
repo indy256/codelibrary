@@ -15,8 +15,7 @@ struct point2 {
 };
 
 int main() {
-    point a[] = {{2, 3},
-                 {1, 2}};
+    point a[] = {{2, 3}, {1, 2}};
 
     auto cmp = [](auto &a, auto &b) { return a.x < b.x || (a.x == b.x && a.y < b.y); };
     sort(a, a + 2, cmp);
@@ -26,8 +25,7 @@ int main() {
         cout << it.x << " " << it.y << endl;
     }
 
-    point2 b[] = {{2, 3},
-                  {1, 2}};
+    point2 b[] = {{2, 3}, {1, 2}};
     set<point2, less<>> s2(b, b + 2);
     for (auto &it : s2) {
         cout << it.x << " " << it.y << endl;

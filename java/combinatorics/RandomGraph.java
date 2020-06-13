@@ -4,7 +4,6 @@ import java.util.*;
 import java.util.stream.Stream;
 
 public class RandomGraph {
-
     // precondition: n >= 2
     public static List<Integer>[] getRandomTree(int V, Random rnd) {
         int[] a = new int[V - 2];
@@ -15,9 +14,10 @@ public class RandomGraph {
     }
 
     public static List<Integer>[] getRandomTree2(int n, Random rnd) {
-        List<Integer>[] t = Stream.generate(ArrayList::new).limit(n).toArray(List[]::new);
+        List<Integer>[] t = Stream.generate(ArrayList::new).limit(n).toArray(List[] ::new);
         int[] p = new int[n];
-        for (int i = 0, j; i < n; j = rnd.nextInt(i + 1), p[i] = p[j], p[j] = i, i++) ; // random permutation
+        for (int i = 0, j; i < n; j = rnd.nextInt(i + 1), p[i] = p[j], p[j] = i, i++)
+            ; // random permutation
         for (int i = 1; i < n; i++) {
             int parent = p[rnd.nextInt(i)];
             t[parent].add(p[i]);
@@ -48,8 +48,7 @@ public class RandomGraph {
             g[u].add(v);
             g[v].add(u);
         }
-        for (int i = 0; i < V; i++)
-            Collections.sort(g[i]);
+        for (int i = 0; i < V; i++) Collections.sort(g[i]);
         return g;
     }
 
@@ -70,14 +69,14 @@ public class RandomGraph {
                 u = rnd.nextInt(V);
                 v = rnd.nextInt(V);
                 edge = ((long) u << 32) + v;
-                if (u < v && !edgeSet.contains(edge)) break;
+                if (u < v && !edgeSet.contains(edge))
+                    break;
             }
             edgeSet.add(edge);
             g[u].add(v);
             g[v].add(u);
         }
-        for (int i = 0; i < V; i++)
-            Collections.sort(g[i]);
+        for (int i = 0; i < V; i++) Collections.sort(g[i]);
         return g;
     }
 
@@ -97,10 +96,10 @@ public class RandomGraph {
 
     // Usage example
     public static void main(String[] args) {
-        List<Integer>[] tree = PruferCode.pruferCode2Tree(new int[]{3, 3, 3, 4});
+        List<Integer>[] tree = PruferCode.pruferCode2Tree(new int[] {3, 3, 3, 4});
         System.out.println(Arrays.toString(tree));
         System.out.println(Arrays.toString(PruferCode.tree2PruferCode(tree)));
-        System.out.println(Arrays.toString(PruferCode.pruferCode2Tree(new int[]{0, 0})));
+        System.out.println(Arrays.toString(PruferCode.pruferCode2Tree(new int[] {0, 0})));
 
         Random rnd = new Random(1);
         for (int step = 0; step < 1000; step++) {

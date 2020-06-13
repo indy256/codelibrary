@@ -4,7 +4,6 @@ import java.util.Arrays;
 
 // https://en.wikipedia.org/wiki/Prim%27s_algorithm in O(V^2)
 public class Prim {
-
     public static long mstPrim(int[][] d) {
         int n = d.length;
         int[] prev = new int[n];
@@ -32,6 +31,5 @@ public class Prim {
     }
 
     // Usage example
-    public static void main(String[] args) {
-    }
+    public static void main(String[] args) {}
 }

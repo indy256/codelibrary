@@ -4,7 +4,6 @@ import java.util.*;
 import java.util.function.IntPredicate;
 
 public class Sort {
-
     static Random rnd = new Random(1);
 
     public static void qSort(int[] a, int low, int high) {
@@ -14,10 +13,8 @@ public class Sort {
         int i = low;
         int j = high;
         do {
-            while (a[i] < separator)
-                ++i;
-            while (a[j] > separator)
-                --j;
+            while (a[i] < separator) ++i;
+            while (a[j] > separator) --j;
             if (i > j)
                 break;
             int t = a[i];
@@ -77,7 +74,8 @@ public class Sort {
 
     // O(n*log(n)) complexity
     static void inPlaceMerge(int[] a, int from, int mid, int to) {
-        if (from >= mid || mid >= to) return;
+        if (from >= mid || mid >= to)
+            return;
         if (to - from == 2) {
             if (a[from] > a[mid])
                 swap(a, from, mid);
@@ -137,8 +135,7 @@ public class Sort {
 
     public static void heapSort(int[] a) {
         int n = a.length;
-        for (int i = n / 2 - 1; i >= 0; i--)
-            pushDown(a, i, n);
+        for (int i = n / 2 - 1; i >= 0; i--) pushDown(a, i, n);
         while (n > 1) {
             swap(a, 0, n - 1);
             pushDown(a, 0, --n);
@@ -172,8 +169,7 @@ public class Sort {
     public static void selectionSort(int[] a) {
         int n = a.length;
         int[] p = new int[n];
-        for (int i = 0; i < n; i++)
-            p[i] = i;
+        for (int i = 0; i < n; i++) p[i] = i;
         for (int i = 0; i < n - 1; i++) {
             for (int j = i + 1; j < n; j++) {
                 if (a[p[i]] > a[p[j]]) {
@@ -182,8 +178,7 @@ public class Sort {
             }
         }
         int[] b = a.clone();
-        for (int i = 0; i < n; i++)
-            a[i] = b[p[i]];
+        for (int i = 0; i < n; i++) a[i] = b[p[i]];
     }
 
     public static void insertionSort(int[] a) {
@@ -223,10 +218,8 @@ public class Sort {
         for (int p = 0; p < w / d; p++) {
             // counting-sort
             int[] cnt = new int[1 << d];
-            for (int i = 0; i < a.length; i++)
-                ++cnt[((a[i] ^ Integer.MIN_VALUE) >>> (d * p)) & ((1 << d) - 1)];
-            for (int i = 1; i < cnt.length; i++)
-                cnt[i] += cnt[i - 1];
+            for (int i = 0; i < a.length; i++) ++cnt[((a[i] ^ Integer.MIN_VALUE) >>> (d * p)) & ((1 << d) - 1)];
+            for (int i = 1; i < cnt.length; i++) cnt[i] += cnt[i - 1];
             for (int i = a.length - 1; i >= 0; i--)
                 t[--cnt[((a[i] ^ Integer.MIN_VALUE) >>> (d * p)) & ((1 << d) - 1)]] = a[i];
             System.arraycopy(t, 0, a, 0, a.length);

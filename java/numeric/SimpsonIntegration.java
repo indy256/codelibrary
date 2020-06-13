@@ -3,7 +3,6 @@ package numeric;
 import java.util.function.DoubleFunction;
 
 public class SimpsonIntegration {
-
     public static double integrate(DoubleFunction<Double> f, double a, double b) {
         double eps = 1e-10;
         double m = (a + b) / 2;

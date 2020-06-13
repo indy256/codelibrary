@@ -5,7 +5,6 @@ import java.util.function.Predicate;
 
 // https://cp-algorithms.com/data_structures/treap.html
 public class TreapIndexed {
-
     static Random random = new Random();
 
     public static class Node {
@@ -194,7 +193,8 @@ public class TreapIndexed {
     static int sumLowerBound(Node treap, int ll, int rr, long sum) {
         long[] sumSoFar = new long[1];
         return findFirst(treap, ll, rr, node -> {
-            if (sumSoFar[0] + node.sum >= sum) return true;
+            if (sumSoFar[0] + node.sum >= sum)
+                return true;
             sumSoFar[0] += node.sum;
             return false;
         });
@@ -220,8 +220,7 @@ public class TreapIndexed {
                 int b = rnd.nextInt(list.size());
                 int a = rnd.nextInt(b + 1);
                 int res = list.get(a);
-                for (int i = a + 1; i <= b; i++)
-                    res = Math.max(res, list.get(i));
+                for (int i = a + 1; i <= b; i++) res = Math.max(res, list.get(i));
                 TreapAndResult tr = query(treap, a, b);
                 treap = tr.treap;
                 if (res != tr.mx)
@@ -230,8 +229,7 @@ public class TreapIndexed {
                 int b = rnd.nextInt(list.size());
                 int a = rnd.nextInt(b + 1);
                 int delta = rnd.nextInt(100) - 50;
-                for (int i = a; i <= b; i++)
-                    list.set(i, list.get(i) + delta);
+                for (int i = a; i <= b; i++) list.set(i, list.get(i) + delta);
                 treap = modify(treap, a, b, delta);
             } else {
                 for (int i = 0; i < list.size(); i++) {
@@ -246,7 +244,7 @@ public class TreapIndexed {
         System.out.println("Test passed");
 
         treap = null;
-        for (long v : new long[]{2, 1, 10, 20}) {
+        for (long v : new long[] {2, 1, 10, 20}) {
             treap = insert(treap, Node.getSize(treap), v);
         }
         System.out.println(2 == sumLowerBound(treap, 0, treap.size - 1, 12));

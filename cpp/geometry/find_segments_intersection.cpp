@@ -18,9 +18,7 @@ struct segment {
     pii a, b;
     int id;
 
-    segment(pii a, pii b, int id) :
-            a(std::move(a)), b(std::move(b)), id(id) {
-    }
+    segment(pii a, pii b, int id) : a(std::move(a)), b(std::move(b)), id(id) {}
 
     bool operator<(const segment &o) const {
         if (a.first < o.a.first) {

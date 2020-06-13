@@ -1,13 +1,12 @@
 package numbertheory;
 
+import static java.util.stream.Collectors.summingInt;
+
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static java.util.stream.Collectors.summingInt;
-
 public class Factorization {
-
     // returns prime_divisor -> power
     // O(sqrt(n)) complexity
     public static Map<Long, Integer> factorize(long n) {

@@ -1,10 +1,7 @@
 package geometry;
 
 public class PointClassification {
-
-    public enum Position {
-        LEFT, RIGHT, BEHIND, BEYOND, ORIGIN, DESTINATION, BETWEEN
-    }
+    public enum Position { LEFT, RIGHT, BEHIND, BEYOND, ORIGIN, DESTINATION, BETWEEN }
 
     // Classifies position of point p against vector a
     public static Position classify(long px, long py, long ax, long ay) {

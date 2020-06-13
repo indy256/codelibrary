@@ -1,9 +1,9 @@
 package optimization;
 
-import javax.swing.*;
 import java.awt.*;
 import java.util.Random;
 import java.util.stream.IntStream;
+import javax.swing.*;
 
 // https://en.wikipedia.org/wiki/Lin–Kernighan_heuristic
 public class LinKernighan extends JFrame {
@@ -23,17 +23,16 @@ public class LinKernighan extends JFrame {
     }
 
     public void linKernighan() {
-//        int[] curState = optimize(getRandomPermutation(n));
+        //        int[] curState = optimize(getRandomPermutation(n));
         int[] curState = IntStream.range(0, n).toArray();
         double curDist = eval(curState);
         updateBest(curState, curDist);
-        for (boolean improved = true; improved; ) {
+        for (boolean improved = true; improved;) {
             improved = false;
             for (int rev = -1; rev <= 1; rev += 2) {
                 for (int i = 0; i < n; i++) {
                     int[] p = new int[n];
-                    for (int j = 0; j < n; j++)
-                        p[j] = curState[(i + rev * j + n) % n];
+                    for (int j = 0; j < n; j++) p[j] = curState[(i + rev * j + n) % n];
                     boolean[][] added = new boolean[n][n];
                     double cost = eval(p);
                     double delta = -dist(x[p[n - 1]], y[p[n - 1]], x[p[0]], y[p[0]]);
@@ -90,7 +89,8 @@ public class LinKernighan extends JFrame {
             p[j] = p[i];
             p[i] = t;
             i = (i + 1) % n;
-            if (i == j) break;
+            if (i == j)
+                break;
             j = (j - 1 + n) % n;
         }
     }
@@ -120,17 +120,18 @@ public class LinKernighan extends JFrame {
 
     int[] optimize(int[] p) {
         int[] res = p.clone();
-        for (boolean improved = true; improved; ) {
+        for (boolean improved = true; improved;) {
             improved = false;
             for (int i = 0; i < n; i++) {
                 for (int j = 0; j < n; j++) {
-                    if (i == j || (j + 1) % n == i) continue;
+                    if (i == j || (j + 1) % n == i)
+                        continue;
                     int i1 = (i - 1 + n) % n;
                     int j1 = (j + 1) % n;
                     double delta = dist(x[res[i1]], y[res[i1]], x[res[j]], y[res[j]])
-                            + dist(x[res[i]], y[res[i]], x[res[j1]], y[res[j1]])
-                            - dist(x[res[i1]], y[res[i1]], x[res[i]], y[res[i]])
-                            - dist(x[res[j]], y[res[j]], x[res[j1]], y[res[j1]]);
+                        + dist(x[res[i]], y[res[i]], x[res[j1]], y[res[j1]])
+                        - dist(x[res[i1]], y[res[i1]], x[res[i]], y[res[i]])
+                        - dist(x[res[j]], y[res[j]], x[res[j1]], y[res[j1]]);
                     if (delta < -1e-9) {
                         reverse(res, i, j);
                         improved = true;
@@ -146,14 +147,15 @@ public class LinKernighan extends JFrame {
         setContentPane(new JPanel() {
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                if (bestState == null) return;
+                if (bestState == null)
+                    return;
                 ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                 ((Graphics2D) g).setStroke(new BasicStroke(3));
                 int w = getWidth() - 5;
                 int h = getHeight() - 30;
                 for (int i = 0, j = n - 1; i < n; j = i++)
                     g.drawLine((int) (x[bestState[i]] * w), (int) ((1 - y[bestState[i]]) * h),
-                            (int) (x[bestState[j]] * w), (int) ((1 - y[bestState[j]]) * h));
+                        (int) (x[bestState[j]] * w), (int) ((1 - y[bestState[j]]) * h));
                 g.drawString(String.format("length: %.3f", eval(bestState)), 5, h + 20);
             }
         });

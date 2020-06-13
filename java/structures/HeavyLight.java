@@ -8,7 +8,6 @@ import java.util.stream.Stream;
 // Heavy-light decomposition with path queries. Query complexity is O(log^2(n)).
 // Based on the code from http://codeforces.com/blog/entry/22072
 public class HeavyLight {
-
     List<Integer>[] tree;
     boolean valuesOnVertices; // true - values on vertices, false - values on edges
     public SegmentTree segmentTree;
@@ -88,7 +87,7 @@ public class HeavyLight {
 
     // Usage example
     public static void main(String[] args) {
-        List<Integer>[] tree = Stream.generate(ArrayList::new).limit(5).toArray(List[]::new);
+        List<Integer>[] tree = Stream.generate(ArrayList::new).limit(5).toArray(List[] ::new);
         tree[0].add(1);
         tree[1].add(0);
 

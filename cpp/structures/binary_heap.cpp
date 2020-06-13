@@ -2,7 +2,7 @@
 
 using namespace std;
 
-template<class T>
+template <class T>
 struct binary_heap {
     vector<T> heap;
     vector<int> pos2Id;

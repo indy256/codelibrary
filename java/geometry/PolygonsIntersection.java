@@ -3,14 +3,11 @@ package geometry;
 import java.util.*;
 
 public class PolygonsIntersection {
-
     public static double overlap(Point[] polygon1, Point[] polygon2) {
         Point[][] polygons = {polygon1, polygon2};
         Set<Double> xs = new TreeSet<>();
-        for (Point point : polygon1)
-            xs.add(point.x);
-        for (Point point : polygon2)
-            xs.add(point.x);
+        for (Point point : polygon1) xs.add(point.x);
+        for (Point point : polygon2) xs.add(point.x);
 
         for (int i1 = 0, j1 = polygon1.length - 1; i1 < polygon1.length; j1 = i1++) {
             for (int i2 = 0, j2 = polygon2.length - 1; i2 < polygon2.length; j2 = i2++) {

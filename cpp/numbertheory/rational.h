@@ -2,13 +2,11 @@
 
 using namespace std;
 
-template<class T>
+template <class T>
 struct rational {
     T a, b;
 
-    rational(T a, T b = 1) : a{a}, b{b} {
-        normalize();
-    }
+    rational(T a, T b = 1) : a{a}, b{b} { normalize(); }
 
     void normalize() {
         if (b < 0) {

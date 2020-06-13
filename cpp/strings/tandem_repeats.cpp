@@ -3,7 +3,7 @@
 using namespace std;
 
 vector<int> z_function(const string &s) {
-    int n = (int) s.length();
+    int n = (int)s.length();
     vector<int> z(n);
     for (int i = 1, l = 0, r = 0; i < n; ++i) {
         if (i <= r)
@@ -27,19 +27,21 @@ void output_tandem(const string &s, int shift, bool left, int cntr, int l, int l
 
 void output_tandems(const string &s, int shift, bool left, int cntr, int l, int k1, int k2) {
     for (int l1 = 1; l1 <= l; ++l1) {
-        if (left && l1 == l) break;
+        if (left && l1 == l)
+            break;
         if (l1 <= k1 && l - l1 <= k2)
             output_tandem(s, shift, left, cntr, l, l1, l - l1);
     }
 }
 
 inline int get_z(const vector<int> &z, int i) {
-    return 0 <= i && i < (int) z.size() ? z[i] : 0;
+    return 0 <= i && i < (int)z.size() ? z[i] : 0;
 }
 
 void find_tandems(string s, int shift = 0) {
-    int n = (int) s.length();
-    if (n == 1) return;
+    int n = (int)s.length();
+    if (n == 1)
+        return;
 
     int nu = n / 2;
     int nv = n - nu;

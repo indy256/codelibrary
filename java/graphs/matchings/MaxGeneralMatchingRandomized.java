@@ -3,7 +3,6 @@ package graphs.matchings;
 import java.util.Random;
 
 public class MaxGeneralMatchingRandomized {
-
     static final int MOD = 29989;
 
     static int pow(int a, int b) {
@@ -31,12 +30,10 @@ public class MaxGeneralMatchingRandomized {
             a[k] = t;
 
             int inv = pow(a[r][j], MOD - 2);
-            for (int i = j; i < n; i++)
-                a[r][i] = a[r][i] * inv % MOD;
+            for (int i = j; i < n; i++) a[r][i] = a[r][i] * inv % MOD;
 
             for (int u = r + 1; u < n; u++)
-                for (int v = j + 1; v < n; v++)
-                    a[u][v] = (a[u][v] - a[r][v] * a[u][j] % MOD + MOD) % MOD;
+                for (int v = j + 1; v < n; v++) a[u][v] = (a[u][v] - a[r][v] * a[u][j] % MOD + MOD) % MOD;
             ++r;
         }
         return r;
@@ -59,7 +56,7 @@ public class MaxGeneralMatchingRandomized {
 
     // Usage example
     public static void main(String[] args) {
-        int res = maxMatching(new boolean[][]{{false, true}, {true, false}});
+        int res = maxMatching(new boolean[][] {{false, true}, {true, false}});
         System.out.println(1 == res);
     }
 }

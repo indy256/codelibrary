@@ -1,7 +1,6 @@
 package optimization;
 
 public class ConvexHullOptimization {
-
     long[] A = new long[1000000];
     long[] B = new long[1000000];
     int len;
@@ -9,8 +8,10 @@ public class ConvexHullOptimization {
 
     // a descends
     public void addLine(long a, long b) {
-        // intersection of (A[len-2],B[len-2]) with (A[len-1],B[len-1]) must lie to the left of intersection of (A[len-1],B[len-1]) with (a,b)
-        while (len >= 2 && (B[len - 2] - B[len - 1]) * (a - A[len - 1]) >= (B[len - 1] - b) * (A[len - 1] - A[len - 2])) {
+        // intersection of (A[len-2],B[len-2]) with (A[len-1],B[len-1]) must lie to the left of intersection of
+        // (A[len-1],B[len-1]) with (a,b)
+        while (
+            len >= 2 && (B[len - 2] - B[len - 1]) * (a - A[len - 1]) >= (B[len - 1] - b) * (A[len - 1] - A[len - 2])) {
             --len;
         }
         A[len] = a;

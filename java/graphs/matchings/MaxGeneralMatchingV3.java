@@ -6,7 +6,6 @@ import java.util.stream.Stream;
 
 // https://en.wikipedia.org/wiki/Blossom_algorithm in O(V^3)
 public class MaxGeneralMatchingV3 {
-
     public static int maxMatching(List<Integer>[] graph) {
         int n = graph.length;
         int[] match = new int[n];
@@ -40,7 +39,8 @@ public class MaxGeneralMatchingV3 {
         for (int qh = 0; qh < qt; qh++) {
             int u = q[qh];
             for (int v : graph[u]) {
-                if (bases[u] == bases[v] || match[u] == v) continue;
+                if (bases[u] == bases[v] || match[u] == v)
+                    continue;
                 if (v == root || match[v] != -1 && p[match[v]] != -1) {
                     int base = lca(match, bases, p, u, v);
                     boolean[] blossom = new boolean[n];
@@ -80,19 +80,21 @@ public class MaxGeneralMatchingV3 {
         while (true) {
             a = base[a];
             used[a] = true;
-            if (match[a] == -1) break;
+            if (match[a] == -1)
+                break;
             a = p[match[a]];
         }
         while (true) {
             b = base[b];
-            if (used[b]) return b;
+            if (used[b])
+                return b;
             b = p[match[b]];
         }
     }
 
     // Usage example
     public static void main(String[] args) {
-        List<Integer>[] graph = Stream.generate(ArrayList::new).limit(4).toArray(List[]::new);
+        List<Integer>[] graph = Stream.generate(ArrayList::new).limit(4).toArray(List[] ::new);
         graph[0].add(1);
         graph[1].add(0);
         graph[2].add(1);

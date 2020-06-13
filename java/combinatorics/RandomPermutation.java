@@ -3,7 +3,6 @@ package combinatorics;
 import java.util.*;
 
 public class RandomPermutation {
-
     public static void shuffle(int[] a) {
         Random rnd = new Random();
         for (int i = a.length - 1; i >= 1; i--) {
@@ -28,8 +27,7 @@ public class RandomPermutation {
     public static int[] getRandomArrangement(int n, int m) {
         Random rnd = new Random();
         int[] res = new int[n];
-        for (int i = 0; i < n; i++)
-            res[i] = i;
+        for (int i = 0; i < n; i++) res[i] = i;
         for (int i = 0; i < m; i++) {
             int j = i + rnd.nextInt(n - i);
             int t = res[i];

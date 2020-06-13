@@ -4,7 +4,6 @@ import java.util.*;
 
 // https://en.wikipedia.org/wiki/R-tree
 public class RTree {
-
     public static class Segment {
         final int x1, y1, x2, y2;
 
@@ -76,14 +75,14 @@ public class RTree {
     static int partition(Segment[] a, int fromInclusive, int toExclusive, int separatorIndex, boolean divX) {
         int i = fromInclusive;
         int j = toExclusive - 1;
-        if (i >= j) return j;
-        int separator = divX ? a[separatorIndex].x1 + a[separatorIndex].x2 : a[separatorIndex].y1 + a[separatorIndex].y2;
+        if (i >= j)
+            return j;
+        int separator =
+            divX ? a[separatorIndex].x1 + a[separatorIndex].x2 : a[separatorIndex].y1 + a[separatorIndex].y2;
         swap(a, i++, separatorIndex);
         while (i <= j) {
-            while (i <= j && (divX ? a[i].x1 + a[i].x2 : a[i].y1 + a[i].y2) < separator)
-                ++i;
-            while (i <= j && (divX ? a[j].x1 + a[j].x2 : a[j].y1 + a[j].y2) > separator)
-                --j;
+            while (i <= j && (divX ? a[i].x1 + a[i].x2 : a[i].y1 + a[i].y2) < separator) ++i;
+            while (i <= j && (divX ? a[j].x1 + a[j].x2 : a[j].y1 + a[j].y2) > separator) --j;
             if (i >= j)
                 break;
             swap(a, i++, j--);
@@ -180,7 +179,8 @@ public class RTree {
             RTree rTree = new RTree(segments);
             int index = rTree.findNearestNeighbour(qx, qy);
             Segment s = segments[index];
-            if (minDist != rTree.bestDist || !(Math.abs(pointToSegmentSquaredDistance(qx, qy, s.x1, s.y1, s.x2, s.y2) - minDist) < 1e-9))
+            if (minDist != rTree.bestDist
+                || !(Math.abs(pointToSegmentSquaredDistance(qx, qy, s.x1, s.y1, s.x2, s.y2) - minDist) < 1e-9))
                 throw new RuntimeException();
         }
     }

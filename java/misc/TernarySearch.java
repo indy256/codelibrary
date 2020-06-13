@@ -6,7 +6,6 @@ import java.util.function.*;
 // https://en.wikipedia.org/wiki/Ternary_search
 // Finds the smallest i in [a, b] that maximizes f(i), assuming that f(a) < ... < f(i) ≥ ··· ≥ f(b)
 public class TernarySearch {
-
     public static int ternarySearch(IntUnaryOperator f, int fromInclusive, int toInclusive) {
         int lo = fromInclusive - 1;
         int hi = toInclusive;
@@ -53,7 +52,7 @@ public class TernarySearch {
 
     // random tests
     public static void main(String[] args) {
-        System.out.println(ternarySearchDouble(x -> -(x - 2) * (x - 2), -10, 10));
+        System.out.println(ternarySearchDouble(x -> - (x - 2) * (x - 2), -10, 10));
 
         Random rnd = new Random(1);
         for (int step = 0; step < 10_000; step++) {
@@ -62,10 +61,8 @@ public class TernarySearch {
             int[] a = new int[n];
             final int range = 10;
             a[p] = rnd.nextInt(range);
-            for (int i = p - 1; i >= 0; i--)
-                a[i] = a[i + 1] - rnd.nextInt(range) - 1;
-            for (int i = p + 1; i < n; i++)
-                a[i] = a[i - 1] - rnd.nextInt(range);
+            for (int i = p - 1; i >= 0; i--) a[i] = a[i + 1] - rnd.nextInt(range) - 1;
+            for (int i = p + 1; i < n; i++) a[i] = a[i - 1] - rnd.nextInt(range);
             int res = ternarySearch(i -> a[i], 0, a.length - 1);
             int res2 = ternarySearch2(i -> a[i], 0, a.length - 1);
             if (p != res || p != res2)

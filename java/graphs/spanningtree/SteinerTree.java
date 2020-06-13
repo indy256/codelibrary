@@ -1,7 +1,6 @@
 package graphs.spanningtree;
 
 public class SteinerTree {
-
     public static int minLengthSteinerTree(int[][] g, int[] verticesToConnect) {
         int n = g.length;
         int m = verticesToConnect.length;
@@ -10,14 +9,12 @@ public class SteinerTree {
 
         for (int k = 0; k < n; k++)
             for (int i = 0; i < n; i++)
-                for (int j = 0; j < n; j++)
-                    g[i][j] = Math.min(g[i][j], g[i][k] + g[k][j]);
+                for (int j = 0; j < n; j++) g[i][j] = Math.min(g[i][j], g[i][k] + g[k][j]);
 
         int[][] dp = new int[1 << m][n];
 
         for (int i = 0; i < m; i++)
-            for (int j = 0; j < n; j++)
-                dp[1 << i][j] = g[verticesToConnect[i]][j];
+            for (int j = 0; j < n; j++) dp[1 << i][j] = g[verticesToConnect[i]][j];
 
         for (int i = 1; i < 1 << m; i++) {
             if (((i - 1) & i) != 0) {

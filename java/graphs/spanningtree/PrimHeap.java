@@ -4,7 +4,6 @@ import java.util.*;
 
 // https://en.wikipedia.org/wiki/Prim%27s_algorithm in O(E*log(V))
 public class PrimHeap {
-
     public static long mst(List<Edge>[] edges, int[] pred) {
         int n = edges.length;
         Arrays.fill(pred, -1);

@@ -3,7 +3,6 @@ package misc;
 import java.util.*;
 
 public class MonotonicApproximation {
-
     // returns minimum sum |a[i]-b[i]| where b is non-strictly increasing array
     // see http://codeforces.com/blog/entry/47821
     public static long monotonicApproximation(int[] a) {
@@ -43,12 +42,10 @@ public class MonotonicApproximation {
         long[] cur = new long[n];
         long[] next = new long[n];
         cur[0] = Math.abs(a[0] - b[0]);
-        for (int i = 1; i < n; i++)
-            cur[i] = Math.min(cur[i - 1], Math.abs(a[0] - b[i]));
+        for (int i = 1; i < n; i++) cur[i] = Math.min(cur[i - 1], Math.abs(a[0] - b[i]));
         for (int i = 1; i < n; i++) {
             next[0] = Math.abs(a[i] - b[0]) + cur[0];
-            for (int j = 1; j < n; j++)
-                next[j] = Math.min(next[j - 1], Math.abs(a[i] - b[j]) + cur[j]);
+            for (int j = 1; j < n; j++) next[j] = Math.min(next[j - 1], Math.abs(a[i] - b[j]) + cur[j]);
             System.arraycopy(next, 0, cur, 0, n);
         }
         return cur[n - 1];

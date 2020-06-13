@@ -16,8 +16,8 @@ struct min_cost_circulation {
     min_cost_circulation(int nodes) : graph(nodes) {}
 
     void add_bidi_edge(int s, int t, int cap, int cost) {
-        Edge a = {t, (int) graph[t].size(), 0, cap, cost};
-        Edge b = {s, (int) graph[s].size(), 0, 0, -cost};
+        Edge a = {t, (int)graph[t].size(), 0, cap, cost};
+        Edge b = {s, (int)graph[s].size(), 0, 0, -cost};
         graph[s].emplace_back(a);
         graph[t].emplace_back(b);
     }
@@ -81,12 +81,8 @@ struct min_cost_circulation {
 
 // Usage example
 int main() {
-    int capacity[][3] = {{0, 1, 0},
-                         {0, 0, 1},
-                         {1, 0, 0}};
-    int cost[][3] = {{0,  -1, 0},
-                     {0,  0,  1},
-                     {-1, 0,  0}};
+    int capacity[][3] = {{0, 1, 0}, {0, 0, 1}, {1, 0, 0}};
+    int cost[][3] = {{0, -1, 0}, {0, 0, 1}, {-1, 0, 0}};
     int nodes = 3;
     min_cost_circulation mcf(nodes);
     for (int i = 0; i < nodes; i++)

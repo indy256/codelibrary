@@ -1,5 +1,6 @@
-#include <cstdio>
 #include <memory.h>
+
+#include <cstdio>
 
 const int BUF_SIZE = 65536;
 char input[BUF_SIZE];

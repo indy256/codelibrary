@@ -1,4 +1,5 @@
 #include <bits/stdc++.h>
+
 #include "../numeric/fft.h"
 #include "modint.h"
 
@@ -6,7 +7,7 @@ using namespace std;
 
 // https://cp-algorithms.com/algebra/polynomial.html
 
-template<class T>
+template <class T>
 vector<T> &operator+=(vector<T> &a, const vector<T> &b) {
     if (a.size() < b.size()) {
         a.resize(b.size());
@@ -17,13 +18,13 @@ vector<T> &operator+=(vector<T> &a, const vector<T> &b) {
     return a;
 }
 
-template<class T>
+template <class T>
 vector<T> operator+(vector<T> a, const vector<T> &b) {
     a += b;
     return a;
 }
 
-template<class T>
+template <class T>
 vector<T> &operator-=(vector<T> &a, const vector<T> &b) {
     if (a.size() < b.size()) {
         a.resize(b.size());
@@ -34,13 +35,13 @@ vector<T> &operator-=(vector<T> &a, const vector<T> &b) {
     return a;
 }
 
-template<class T>
+template <class T>
 vector<T> operator-(vector<T> a, const vector<T> &b) {
     a -= b;
     return a;
 }
 
-template<class T>
+template <class T>
 vector<T> operator-(vector<T> a) {
     for (int i = 0; i < a.size(); i++) {
         a[i] = -a[i];
@@ -49,7 +50,7 @@ vector<T> operator-(vector<T> a) {
 }
 
 // fast multiplication for modint in O(n*log(n))
-template<int mod>
+template <int mod>
 vector<modint<mod>> operator*(const vector<modint<mod>> &a, const vector<modint<mod>> &b) {
     if (a.empty() || b.empty()) {
         return {};
@@ -80,7 +81,7 @@ vector<modint<mod>> operator*(const vector<modint<mod>> &a, const vector<modint<
 }
 
 // fallback multiplication in O(n*m)
-template<class T>
+template <class T>
 vector<T> operator*(const vector<T> &a, const vector<T> &b) {
     if (a.empty() || b.empty()) {
         return {};
@@ -94,13 +95,13 @@ vector<T> operator*(const vector<T> &a, const vector<T> &b) {
     return c;
 }
 
-template<class T>
+template <class T>
 vector<T> &operator*=(vector<T> &a, const vector<T> &b) {
     a = a * b;
     return a;
 }
 
-template<class T>
+template <class T>
 vector<T> inverse(const vector<T> &a) {
     assert(!a.empty());
     int n = a.size();
@@ -117,7 +118,7 @@ vector<T> inverse(const vector<T> &a) {
     return b;
 }
 
-template<class T>
+template <class T>
 vector<T> &operator/=(vector<T> &a, vector<T> b) {
     int n = a.size();
     int m = b.size();
@@ -134,13 +135,13 @@ vector<T> &operator/=(vector<T> &a, vector<T> b) {
     return a;
 }
 
-template<class T>
+template <class T>
 vector<T> operator/(vector<T> a, const vector<T> &b) {
     a /= b;
     return a;
 }
 
-template<class T>
+template <class T>
 vector<T> &operator%=(vector<T> &a, const vector<T> &b) {
     int n = a.size();
     int m = b.size();
@@ -154,18 +155,19 @@ vector<T> &operator%=(vector<T> &a, const vector<T> &b) {
     return a;
 }
 
-template<class T>
+template <class T>
 vector<T> operator%(vector<T> a, const vector<T> &b) {
     a %= b;
     return a;
 }
 
-template<class T>
+template <class T>
 vector<T> power(const vector<T> &a, long long b, const vector<T> &mod) {
     assert(b >= 0);
     vector<T> res = vector<T>{1} % mod;
     int highest_one_bit = -1;
-    while (1LL << (highest_one_bit + 1) <= b) ++highest_one_bit;
+    while (1LL << (highest_one_bit + 1) <= b)
+        ++highest_one_bit;
     for (int i = highest_one_bit; i >= 0; i--) {
         res = res * res % mod;
         if (b >> i & 1) {
@@ -175,7 +177,7 @@ vector<T> power(const vector<T> &a, long long b, const vector<T> &mod) {
     return res;
 }
 
-template<class T>
+template <class T>
 vector<T> derivative(vector<T> a) {
     for (size_t i = 0; i < a.size(); i++) {
         a[i] *= i;
@@ -186,7 +188,7 @@ vector<T> derivative(vector<T> a) {
     return a;
 }
 
-template<class T>
+template <class T>
 vector<T> integrate(vector<T> a) {
     a.insert(a.begin(), 0);
     for (int i = 1; i < a.size(); i++) {
@@ -195,7 +197,7 @@ vector<T> integrate(vector<T> a) {
     return a;
 }
 
-template<class T>
+template <class T>
 vector<T> logarithm(const vector<T> &a) {
     assert(!a.empty() && a[0] == 1);
     vector<T> res = integrate(derivative(a) * inverse(a));
@@ -203,7 +205,7 @@ vector<T> logarithm(const vector<T> &a) {
     return res;
 }
 
-template<class T>
+template <class T>
 vector<T> exponent(const vector<T> &a) {
     assert(!a.empty() && a[0] == 0);
     int n = a.size();
@@ -223,7 +225,7 @@ vector<T> exponent(const vector<T> &a) {
     return b;
 }
 
-template<class T>
+template <class T>
 vector<T> sqrt(const vector<T> &a) {
     assert(!a.empty() && a[0] == 1);
     int n = a.size();
@@ -241,7 +243,7 @@ vector<T> sqrt(const vector<T> &a) {
     return b;
 }
 
-template<class T>
+template <class T>
 vector<T> multiply(const vector<vector<T>> &a) {
     if (a.empty()) {
         return {0};
@@ -253,19 +255,19 @@ vector<T> multiply(const vector<vector<T>> &a) {
         int m = (l + r) >> 1;
         return mult(l, m) * mult(m + 1, r);
     };
-    return mult(0, (int) a.size() - 1);
+    return mult(0, (int)a.size() - 1);
 }
 
-template<class T>
+template <class T>
 T evaluate(const vector<T> &a, const T &x) {
     T res = 0;
-    for (int i = (int) a.size() - 1; i >= 0; i--) {
+    for (int i = (int)a.size() - 1; i >= 0; i--) {
         res = res * x + a[i];
     }
     return res;
 }
 
-template<class T>
+template <class T>
 vector<T> evaluate(const vector<T> &a, const vector<T> &x) {
     if (x.empty()) {
         return {};
@@ -309,7 +311,7 @@ vector<T> evaluate(const vector<T> &a, const vector<T> &x) {
     return res;
 }
 
-template<class T>
+template <class T>
 vector<T> interpolate(const vector<T> &x, const vector<T> &y) {
     if (x.empty()) {
         return {};
@@ -365,7 +367,7 @@ vector<T> interpolate(const vector<T> &x, const vector<T> &y) {
 
 // f[i] = 1^n + 2^n + ... + up^n
 // O(n*log(n)) complexity
-template<class T>
+template <class T>
 vector<T> faulhaber(const T &up, int n) {
     vector<T> ex(n + 1);
     T e = 1;
@@ -396,7 +398,7 @@ vector<T> faulhaber(const T &up, int n) {
 
 // (x + 1) * (x + 2) * ... * (x + n)
 // (can be optimized with precomputed inverses)
-template<class T>
+template <class T>
 vector<T> sequence(int n) {
     if (n == 0) {
         return {1};
@@ -429,11 +431,11 @@ vector<T> sequence(int n) {
     return res;
 }
 
-template<class T>
+template <class T>
 T factorial(long long n) {
     if (n == 0)
         return 1;
-    int m = min((long long) (sqrt(n) * 2), n);
+    int m = min((long long)(sqrt(n) * 2), n);
     vector<T> a = sequence<T>(m);
     vector<T> x(n / m);
     for (size_t i = 0; i < x.size(); ++i) {
@@ -442,21 +444,22 @@ T factorial(long long n) {
     }
     vector<T> b = evaluate(a, x);
     T res = 1;
-    for (auto v:b) res *= v;
+    for (auto v : b)
+        res *= v;
     for (long long i = n / m * m + 1; i <= n; ++i) {
         res *= i;
     }
     return res;
 }
 
-template<class T>
+template <class T>
 T binomial(int n, int m) {
     return factorial<T>(n) / factorial<T>(m) / factorial<T>(n - m);
 }
 
-template<class T>
+template <class T>
 class OnlineProduct {
-public:
+   public:
     const vector<T> a;
     vector<T> b;
     vector<T> c;
@@ -464,21 +467,21 @@ public:
     OnlineProduct(const vector<T> &a_) : a(a_) {}
 
     T add(const T &val) {
-        int i = (int) b.size();
+        int i = (int)b.size();
         b.push_back(val);
-        if ((int) c.size() <= i) {
+        if ((int)c.size() <= i) {
             c.resize(i + 1);
         }
         c[i] += a[0] * b[i];
         int z = 1;
-        while ((i & (z - 1)) == z - 1 && (int) a.size() > z) {
-            vector<T> a_mul(a.begin() + z, a.begin() + min(z << 1, (int) a.size()));
+        while ((i & (z - 1)) == z - 1 && (int)a.size() > z) {
+            vector<T> a_mul(a.begin() + z, a.begin() + min(z << 1, (int)a.size()));
             vector<T> b_mul(b.end() - z, b.end());
             vector<T> c_mul = a_mul * b_mul;
-            if ((int) c.size() <= i + (int) c_mul.size()) {
+            if ((int)c.size() <= i + (int)c_mul.size()) {
                 c.resize(i + c_mul.size() + 1);
             }
-            for (int j = 0; j < (int) c_mul.size(); j++) {
+            for (int j = 0; j < (int)c_mul.size(); j++) {
                 c[i + 1 + j] += c_mul[j];
             }
             z <<= 1;

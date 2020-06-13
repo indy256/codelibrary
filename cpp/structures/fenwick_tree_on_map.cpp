@@ -13,7 +13,8 @@ void add(unordered_map<int, int> &t, int i, int value) {
 int sum(unordered_map<int, int> &t, int i) {
     int res = 0;
     for (; i >= 0; i = (i & (i + 1)) - 1)
-        if (t.count(i)) res += t[i];
+        if (t.count(i))
+            res += t[i];
     return res;
 }
 

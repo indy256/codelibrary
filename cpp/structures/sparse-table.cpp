@@ -4,12 +4,13 @@ using namespace std;
 #ifdef _MSC_VER
 int __builtin_clz(unsigned x) {
     int bit = 31;
-    while (bit >= 0 && (x & (1 << bit)) == 0) --bit;
+    while (bit >= 0 && (x & (1 << bit)) == 0)
+        --bit;
     return 31 - bit;
 }
 #endif
 
-template<class T, class F = function<T(const T &, const T &)>>
+template <class T, class F = function<T(const T &, const T &)>>
 struct SparseTable {
     vector<vector<T>> t;
     F func;
@@ -24,7 +25,7 @@ struct SparseTable {
     }
 
     T get(int from, int to) const {
-        assert(0 <= from && from <= to && to <= (int) t[0].size() - 1);
+        assert(0 <= from && from <= to && to <= (int)t[0].size() - 1);
         int k = 31 - __builtin_clz(to - from + 1);
         return func(t[k][from], t[k][to - (1 << k) + 1]);
     }

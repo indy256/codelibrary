@@ -1,21 +1,27 @@
 #include <bits/stdc++.h>
+
 #include "segment_tree.h"
 
 using namespace std;
 
 class HeavyLight {
-public:
+   public:
     vector<vector<int>> tree;
-    bool valuesOnVertices; // true - values on vertices, false - values on edges
+    bool valuesOnVertices;  // true - values on vertices, false - values on edges
     segtree segment_tree;
     vector<int> parent;
     vector<int> depth;
     vector<int> pathRoot;
     vector<int> in;
 
-    HeavyLight(const vector<vector<int>> &t, bool valuesOnVertices) :
-            tree(t), valuesOnVertices(valuesOnVertices), segment_tree(t.size()),
-            parent(t.size()), depth(t.size()), pathRoot(t.size()), in(t.size()) {
+    HeavyLight(const vector<vector<int>> &t, bool valuesOnVertices)
+        : tree(t),
+          valuesOnVertices(valuesOnVertices),
+          segment_tree(t.size()),
+          parent(t.size()),
+          depth(t.size()),
+          pathRoot(t.size()),
+          in(t.size()) {
         int time = 0;
         parent[0] = -1;
 
@@ -74,11 +80,7 @@ public:
 
 // usage example
 int main() {
-    vector<vector<int>> tree{{1, 2},
-                             {0, 3, 4},
-                             {0},
-                             {1},
-                             {1}};
+    vector<vector<int>> tree{{1, 2}, {0, 3, 4}, {0}, {1}, {1}};
 
     HeavyLight hl_v(tree, true);
     hl_v.modify(3, 2, 1);

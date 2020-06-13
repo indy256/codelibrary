@@ -12,14 +12,13 @@ struct Treap {
     long long sum;
     long long add;
 
-    long long key; // keys should be unique
+    long long key;  // keys should be unique
     int size;
     long long prio;
     Treap *l, *r;
 
-
-    Treap(long long key, long long value) : node_value(value), mx(value), sum(value), add(0),
-                                            key(key), size(1), prio(rng()), l(nullptr), r(nullptr) {}
+    Treap(long long key, long long value)
+        : node_value(value), mx(value), sum(value), add(0), key(key), size(1), prio(rng()), l(nullptr), r(nullptr) {}
 
     void apply(long long v) {
         node_value += v;
@@ -44,17 +43,11 @@ struct Treap {
         size = 1 + get_size(l) + get_size(r);
     }
 
-    static long long get_mx(Treap *root) {
-        return root == nullptr ? numeric_limits<long long>::min() : root->mx;
-    }
+    static long long get_mx(Treap *root) { return root == nullptr ? numeric_limits<long long>::min() : root->mx; }
 
-    static long long get_sum(Treap *root) {
-        return root == nullptr ? 0 : root->sum;
-    }
+    static long long get_sum(Treap *root) { return root == nullptr ? 0 : root->sum; }
 
-    static int get_size(Treap *root) {
-        return root == nullptr ? 0 : root->size;
-    }
+    static int get_size(Treap *root) { return root == nullptr ? 0 : root->size; }
 };
 
 using pTreap = Treap *;
@@ -123,7 +116,8 @@ Treap query(pTreap &t, long long ll, long long rr) {
     split(t, rr + 1, left1, right1);
     split(left1, ll, left2, right2);
     Treap res(0, 0);
-    if (right2) res = *right2;
+    if (right2)
+        res = *right2;
     merge(t, left2, right2);
     merge(t, t, right1);
     return res;

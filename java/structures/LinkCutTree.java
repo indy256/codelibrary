@@ -5,7 +5,6 @@ import java.util.*;
 // LinkCut tree with path queries. Query complexity is O(log(n)) amortized.
 // Based on Daniel Sleator's implementation http://www.codeforces.com/contest/117/submission/860934
 public class LinkCutTree {
-
     public static class Node {
         long nodeValue;
         long subTreeSum;
@@ -129,7 +128,7 @@ public class LinkCutTree {
             p.push();
             x.push();
             if (!p.isRoot())
-                rotate((x == p.left) == (p == g.left) ? p/*zig-zig*/ : x/*zig-zag*/);
+                rotate((x == p.left) == (p == g.left) ? p /*zig-zig*/ : x /*zig-zag*/);
             rotate(x);
         }
         x.push();
@@ -199,8 +198,7 @@ public class LinkCutTree {
             boolean[][] g = new boolean[n][n];
             int[] val = new int[n];
             Node[] nodes = new Node[n];
-            for (int i = 0; i < n; i++)
-                nodes[i] = new Node(0);
+            for (int i = 0; i < n; i++) nodes[i] = new Node(0);
             for (int query = 0; query < 2_000; query++) {
                 int cmd = rnd.nextInt(10);
                 int u = rnd.nextInt(n);
@@ -219,8 +217,7 @@ public class LinkCutTree {
                         List<Integer> path = new ArrayList<>();
                         getPathFromAtoB(g, u, v, -1, path);
                         int res = 0;
-                        for (int i : path)
-                            res = res + val[i];
+                        for (int i : path) res = res + val[i];
                         if (query(x, y) != res)
                             throw new RuntimeException();
                     }
@@ -229,8 +226,7 @@ public class LinkCutTree {
                         List<Integer> path = new ArrayList<>();
                         getPathFromAtoB(g, u, v, -1, path);
                         int delta = rnd.nextInt(100) + 1;
-                        for (int i : path)
-                            val[i] += delta;
+                        for (int i : path) val[i] += delta;
                         modify(x, y, delta);
                     }
                 } else {

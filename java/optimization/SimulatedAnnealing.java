@@ -1,8 +1,8 @@
 package optimization;
 
-import javax.swing.*;
 import java.awt.*;
 import java.util.Random;
+import javax.swing.*;
 
 public class SimulatedAnnealing extends JFrame {
     Random rnd = new Random(1);
@@ -21,8 +21,7 @@ public class SimulatedAnnealing extends JFrame {
 
     public void anneal() {
         int[] curState = new int[n];
-        for (int i = 0; i < n; i++)
-            curState[i] = i;
+        for (int i = 0; i < n; i++) curState[i] = i;
         double curEnergy = eval(curState);
         bestState = curState.clone();
         double bestEnergy = curEnergy;
@@ -32,9 +31,9 @@ public class SimulatedAnnealing extends JFrame {
             int i1 = (i - 1 + n) % n;
             int j1 = (j + 1) % n;
             double delta = dist(x[curState[i1]], y[curState[i1]], x[curState[j]], y[curState[j]])
-                    + dist(x[curState[i]], y[curState[i]], x[curState[j1]], y[curState[j1]])
-                    - dist(x[curState[i1]], y[curState[i1]], x[curState[i]], y[curState[i]])
-                    - dist(x[curState[j]], y[curState[j]], x[curState[j1]], y[curState[j1]]);
+                + dist(x[curState[i]], y[curState[i]], x[curState[j1]], y[curState[j1]])
+                - dist(x[curState[i1]], y[curState[i1]], x[curState[i]], y[curState[i]])
+                - dist(x[curState[j]], y[curState[j]], x[curState[j1]], y[curState[j1]]);
             if (delta < 0 || Math.exp(-delta / temperature) > rnd.nextDouble()) {
                 reverse(curState, i, j);
                 curEnergy += delta;
@@ -57,7 +56,8 @@ public class SimulatedAnnealing extends JFrame {
             p[j] = p[i];
             p[i] = t;
             i = (i + 1) % n;
-            if (i == j) break;
+            if (i == j)
+                break;
             j = (j - 1 + n) % n;
         }
     }
@@ -87,10 +87,9 @@ public class SimulatedAnnealing extends JFrame {
                 int h = getHeight() - 30;
                 for (int i = 0, j = n - 1; i < n; j = i++)
                     g.drawLine((int) (x[bestState[i]] * w), (int) ((1 - y[bestState[i]]) * h),
-                            (int) (x[bestState[j]] * w), (int) ((1 - y[bestState[j]]) * h));
+                        (int) (x[bestState[j]] * w), (int) ((1 - y[bestState[j]]) * h));
                 g.setColor(Color.RED);
-                for (int i = 0; i < n; i++)
-                    g.drawOval((int) (x[i] * w) - 1, (int) ((1 - y[i]) * h) - 1, 3, 3);
+                for (int i = 0; i < n; i++) g.drawOval((int) (x[i] * w) - 1, (int) ((1 - y[i]) * h) - 1, 3, 3);
                 g.setColor(Color.BLACK);
                 g.drawString(String.format("length: %.3f", eval(bestState)), 5, h + 20);
             }

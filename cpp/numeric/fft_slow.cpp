@@ -1,4 +1,4 @@
-#pragma GCC optimize ("Ofast")
+#pragma GCC optimize("Ofast")
 
 #include <bits/stdc++.h>
 
@@ -13,7 +13,8 @@ const double PI = acos(-1);
 void fft(vector<cpx> &z, bool inverse) {
     size_t n = z.size();
     assert((n & (n - 1)) == 0);
-    if (n == 1) return;
+    if (n == 1)
+        return;
     vector<cpx> z0(n / 2);
     vector<cpx> z1(n / 2);
     for (int i = 0; i < n / 2; i++) {
@@ -37,7 +38,8 @@ void fft(vector<cpx> &z, bool inverse) {
 vector<int> multiply_bigint(const vector<int> &a, const vector<int> &b) {
     int need = a.size() + b.size();
     int n = 1;
-    while (n < need) n <<= 1;
+    while (n < need)
+        n <<= 1;
     vector<cpx> fa(a.begin(), a.end());
     vector<cpx> fb(b.begin(), b.end());
     fa.resize(n);
@@ -50,7 +52,7 @@ vector<int> multiply_bigint(const vector<int> &a, const vector<int> &b) {
     fft(fa, true);
     vector<int> result(need);
     for (int i = 0, carry = 0; i < need; i++) {
-        result[i] = (int) (fa[i].real() + 0.5) + carry;
+        result[i] = (int)(fa[i].real() + 0.5) + carry;
         carry = result[i] / 10;
         result[i] %= 10;
     }
@@ -63,6 +65,7 @@ int main() {
     vector<int> b{2, 1};
     vector<int> res = multiply_bigint(a, b);
 
-    for (int x:res) cout << x << " ";
+    for (int x : res)
+        cout << x << " ";
     cout << endl;
 }

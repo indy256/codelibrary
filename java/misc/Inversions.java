@@ -3,7 +3,6 @@ package misc;
 import java.util.*;
 
 public class Inversions {
-
     // warning: a is modified during processing
     public static long inversions(int[] a, int low, int high) {
         if (high - low < 2)

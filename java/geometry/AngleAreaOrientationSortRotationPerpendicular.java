@@ -4,7 +4,6 @@ import java.awt.geom.*;
 import java.util.*;
 
 public class AngleAreaOrientationSortRotationPerpendicular {
-
     // pay attention to case ax==0 && ay==0 or bx==0 && by == 0
     public static double angleBetween(long ax, long ay, long bx, long by) {
         double a = Math.atan2(ax * by - ay * bx, ax * bx + ay * by);
@@ -56,11 +55,13 @@ public class AngleAreaOrientationSortRotationPerpendicular {
         public int compareTo(Point o) {
             boolean up1 = y > 0 || (y == 0 && x >= 0);
             boolean up2 = o.y > 0 || (o.y == 0 && o.x >= 0);
-            if (up1 != up2) return up1 ? -1 : 1;
+            if (up1 != up2)
+                return up1 ? -1 : 1;
             int cmp = Long.signum((long) o.x * y - (long) o.y * x);
-            if (cmp != 0) return cmp;
+            if (cmp != 0)
+                return cmp;
             return Long.compare((long) x * x + (long) y * y, (long) o.x * o.x + (long) o.y * o.y);
-            //return Double.compare(Math.atan2(y, x), Math.atan2(o.y, o.x));
+            // return Double.compare(Math.atan2(y, x), Math.atan2(o.y, o.x));
         }
 
         @Override
@@ -70,7 +71,8 @@ public class AngleAreaOrientationSortRotationPerpendicular {
     }
 
     public Point2D.Double rotateCCW(Point2D.Double p, double angle) {
-        return new Point2D.Double(p.x * Math.cos(angle) - p.y * Math.sin(angle), p.x * Math.sin(angle) + p.y * Math.cos(angle));
+        return new Point2D.Double(
+            p.x * Math.cos(angle) - p.y * Math.sin(angle), p.x * Math.sin(angle) + p.y * Math.cos(angle));
     }
 
     public Line perpendicular(Line line, long x, long y) {
@@ -111,7 +113,7 @@ public class AngleAreaOrientationSortRotationPerpendicular {
             if (!(Math.abs(res1 - res2) < 1e-9))
                 throw new RuntimeException();
         }
-        Point[] points = new Point[]{new Point(1, 1), new Point(1, -1), new Point(0, 0)};
+        Point[] points = new Point[] {new Point(1, 1), new Point(1, -1), new Point(0, 0)};
         Arrays.sort(points);
         System.out.println(Arrays.toString(points));
 

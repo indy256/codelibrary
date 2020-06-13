@@ -16,7 +16,8 @@ public class LcaSchieberVishkin {
         parent[u] = p;
         I[u] = preOrder[u] = time++;
         for (int v : tree[u]) {
-            if (v == p) continue;
+            if (v == p)
+                continue;
             dfs1(tree, v, u);
             if (Integer.lowestOneBit(I[u]) < Integer.lowestOneBit(I[v])) {
                 I[u] = I[v];
@@ -28,7 +29,8 @@ public class LcaSchieberVishkin {
     void dfs2(List<Integer>[] tree, int u, int p, int up) {
         A[u] = up | Integer.lowestOneBit(I[u]);
         for (int v : tree[u]) {
-            if (v == p) continue;
+            if (v == p)
+                continue;
             dfs2(tree, v, u, A[u]);
         }
     }
@@ -62,7 +64,7 @@ public class LcaSchieberVishkin {
 
     // Usage example
     public static void main(String[] args) {
-        List<Integer>[] tree = Stream.generate(ArrayList::new).limit(5).toArray(List[]::new);
+        List<Integer>[] tree = Stream.generate(ArrayList::new).limit(5).toArray(List[] ::new);
         tree[0].add(1);
         tree[0].add(2);
         tree[1].add(3);

@@ -40,7 +40,8 @@ public class MaxGeneralWeightedMatchingV3 {
     }
 
     void update_slack(int u, int x) {
-        if (slack[x] == 0 || e_delta(g[u][x]) < e_delta(g[slack[x]][x])) slack[x] = u;
+        if (slack[x] == 0 || e_delta(g[u][x]) < e_delta(g[slack[x]][x]))
+            slack[x] = u;
     }
 
     void set_slack(int x) {
@@ -51,38 +52,39 @@ public class MaxGeneralWeightedMatchingV3 {
     }
 
     void q_push(int x) {
-        if (x <= n) q.addLast(x);
+        if (x <= n)
+            q.addLast(x);
         else
-            for (int i : flower[x])
-                q_push(i);
+            for (int i : flower[x]) q_push(i);
     }
 
     void set_st(int x, int b) {
         st[x] = b;
         if (x > n)
-            for (int i : flower[x])
-                set_st(i, b);
+            for (int i : flower[x]) set_st(i, b);
     }
 
     int get_pr(int b, int xr) {
         int pr = flower[b].indexOf(xr);
-//        int pr = find(flower[b].begin(), flower[b].end(), xr) - flower[b].begin();
+        //        int pr = find(flower[b].begin(), flower[b].end(), xr) - flower[b].begin();
         if (pr % 2 == 1) {
             reverse(flower[b], 1, flower[b].size());
             // reverse(flower[b].begin() + 1, flower[b].end());
             return (int) flower[b].size() - pr;
-        } else return pr;
+        } else
+            return pr;
     }
 
     void set_match(int u, int v) {
         match[u] = g[u][v].v;
-        if (u <= n) return;
+        if (u <= n)
+            return;
         edge e = g[u][v];
         int xr = flower_from[u][e.u], pr = get_pr(u, xr);
         for (int i = 0; i < pr; ++i) set_match(flower[u].get(i), flower[u].get(i ^ 1));
         set_match(xr, v);
         rotate(flower[u], 0, pr, flower[u].size());
-//        rotate(flower[u].begin(), flower[u].begin() + pr, flower[u].end());
+        //        rotate(flower[u].begin(), flower[u].begin() + pr, flower[u].end());
     }
 
     static void rotate(List<Integer> a, int first, int middle, int last) {
@@ -92,8 +94,7 @@ public class MaxGeneralWeightedMatchingV3 {
     }
 
     static void reverse(List<Integer> a, int from, int to) {
-        while (from + 1 < to)
-            swap(a, from++, --to);
+        while (from + 1 < to) swap(a, from++, --to);
     }
 
     static void swap(List<Integer> a, int i, int j) {
@@ -101,10 +102,11 @@ public class MaxGeneralWeightedMatchingV3 {
     }
 
     void augment(int u, int v) {
-        for (; ; ) {
+        for (;;) {
             int xnv = st[match[u]];
             set_match(u, v);
-            if (xnv == 0) return;
+            if (xnv == 0)
+                return;
             set_match(xnv, st[pa[xnv]]);
             u = st[pa[xnv]];
             v = xnv;
@@ -114,17 +116,19 @@ public class MaxGeneralWeightedMatchingV3 {
     static int t = 0;
 
     int get_lca(int u, int v) {
-        for (++t; u != 0 || v != 0; ) {
+        for (++t; u != 0 || v != 0;) {
             if (u == 0) {
                 int tmp = u;
                 u = v;
                 v = tmp;
                 continue;
             }
-            if (vis[u] == t) return u;
+            if (vis[u] == t)
+                return u;
             vis[u] = t;
             u = st[match[u]];
-            if (u != 0) u = st[pa[u]];
+            if (u != 0)
+                u = st[pa[u]];
             int tmp = u;
             u = v;
             v = tmp;
@@ -135,7 +139,8 @@ public class MaxGeneralWeightedMatchingV3 {
     void add_blossom(int u, int lca, int v) {
         int b = n + 1;
         while (b <= n_x && st[b] != 0) ++b;
-        if (b > n_x) ++n_x;
+        if (b > n_x)
+            ++n_x;
         lab[b] = 0;
         S[b] = 0;
         match[b] = match[lca];
@@ -164,14 +169,14 @@ public class MaxGeneralWeightedMatchingV3 {
                     g[x][b] = g[x][xs];
                 }
             for (int x = 1; x <= n; ++x)
-                if (flower_from[xs][x] != 0) flower_from[b][x] = xs;
+                if (flower_from[xs][x] != 0)
+                    flower_from[b][x] = xs;
         }
         set_slack(b);
     }
 
     void expand_blossom(int b) {
-        for (int i : flower[b])
-            set_st(i, i);
+        for (int i : flower[b]) set_st(i, i);
         int xr = flower_from[b][g[b][pa[b]].u];
         int pr = get_pr(b, xr);
         for (int i = 0; i < pr; i += 2) {
@@ -218,9 +223,9 @@ public class MaxGeneralWeightedMatchingV3 {
 
     boolean matching() {
         Arrays.fill(S, 1, n_x + 1, -1);
-//        memset(S + 1, -1, sizeof( int) *n_x);
+        //        memset(S + 1, -1, sizeof( int) *n_x);
         Arrays.fill(slack, 1, n_x + 1, 0);
-//        memset(slack + 1, 0, sizeof( int) *n_x);
+        //        memset(slack + 1, 0, sizeof( int) *n_x);
         q = new ArrayDeque<>();
         for (int x = 1; x <= n_x; ++x)
             if (st[x] == x && match[x] == 0) {
@@ -228,17 +233,20 @@ public class MaxGeneralWeightedMatchingV3 {
                 S[x] = 0;
                 q_push(x);
             }
-        if (q.isEmpty()) return false;
-        for (; ; ) {
+        if (q.isEmpty())
+            return false;
+        for (;;) {
             while (!q.isEmpty()) {
                 int u = q.removeFirst();
-                if (S[st[u]] == 1) continue;
+                if (S[st[u]] == 1)
+                    continue;
                 for (int v = 1; v <= n; ++v)
                     if (g[u][v].w > 0 && st[u] != st[v]) {
                         if (e_delta(g[u][v]) == 0) {
                             if (on_found_edge(g[u][v]))
                                 return true;
-                        } else update_slack(u, st[v]);
+                        } else
+                            update_slack(u, st[v]);
                     }
             }
             int d = INF;
@@ -262,8 +270,10 @@ public class MaxGeneralWeightedMatchingV3 {
             }
             for (int b = n + 1; b <= n_x; ++b)
                 if (st[b] == b) {
-                    if (S[st[b]] == 0) lab[b] += d * 2;
-                    else if (S[st[b]] == 1) lab[b] -= d * 2;
+                    if (S[st[b]] == 0)
+                        lab[b] += d * 2;
+                    else if (S[st[b]] == 1)
+                        lab[b] -= d * 2;
                 }
             q = new ArrayDeque<>();
             for (int x = 1; x <= n_x; ++x)
@@ -287,7 +297,7 @@ public class MaxGeneralWeightedMatchingV3 {
     }
 
     Result solve() {
-//        memset(match + 1, 0, sizeof(int) * n);
+        //        memset(match + 1, 0, sizeof(int) * n);
         Arrays.fill(match, 1, n + 1, 0);
         n_x = n;
         int n_matches = 0;
@@ -302,10 +312,8 @@ public class MaxGeneralWeightedMatchingV3 {
                 flower_from[u][v] = (u == v ? u : 0);
                 w_max = Math.max(w_max, g[u][v].w);
             }
-        for (int u = 1; u <= n; ++u)
-            lab[u] = w_max;
-        while (matching())
-            ++n_matches;
+        for (int u = 1; u <= n; ++u) lab[u] = w_max;
+        while (matching()) ++n_matches;
         for (int u = 1; u <= n; ++u)
             if (match[u] != 0 && match[u] < u)
                 tot_weight += g[u][match[u]].w;
@@ -319,8 +327,7 @@ public class MaxGeneralWeightedMatchingV3 {
     void init(int _n) {
         n = _n;
         for (int u = 1; u <= n; ++u)
-            for (int v = 1; v <= n; ++v)
-                g[u][v] = new edge(u, v, 0);
+            for (int v = 1; v <= n; ++v) g[u][v] = new edge(u, v, 0);
     }
 
     // usage example

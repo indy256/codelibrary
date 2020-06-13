@@ -20,6 +20,7 @@ vector<int> nsv(vector<int> a) {
 int main() {
     const vector<int> p = nsv({1, 1, 3, 2});
 
-    for (int x:p) cout << x << " ";
+    for (int x : p)
+        cout << x << " ";
     cout << endl;
 }

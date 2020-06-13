@@ -3,7 +3,6 @@ package geometry;
 import java.util.*;
 
 public class CircleOperations {
-
     static final double EPS = 1e-10;
 
     public static double fastHypot(double x, double y) {
@@ -62,19 +61,18 @@ public class CircleOperations {
         double x0 = -a * c / aabb;
         double y0 = -b * c / aabb;
         if (d > -EPS)
-            return new Point[]{new Point(x0 + circle.x, y0 + circle.y)};
+            return new Point[] {new Point(x0 + circle.x, y0 + circle.y)};
         d /= -aabb;
         double k = Math.sqrt(d < 0 ? 0 : d);
-        return new Point[]{
-                new Point(x0 + k * b + circle.x, y0 - k * a + circle.y),
-                new Point(x0 - k * b + circle.x, y0 + k * a + circle.y)};
+        return new Point[] {new Point(x0 + k * b + circle.x, y0 - k * a + circle.y),
+            new Point(x0 - k * b + circle.x, y0 + k * a + circle.y)};
     }
 
     // algebraic solution
     public static Point[] circleLineIntersection2(Circle circle, Line line) {
         return Math.abs(line.a) >= Math.abs(line.b)
-                ? intersection(line.a, line.b, line.c, circle.x, circle.y, circle.r, false)
-                : intersection(line.b, line.a, line.c, circle.y, circle.x, circle.r, true);
+            ? intersection(line.a, line.b, line.c, circle.x, circle.y, circle.r, false)
+            : intersection(line.b, line.a, line.c, circle.y, circle.x, circle.r, true);
     }
 
     static Point[] intersection(double a, double b, double c, double CX, double CY, double R, boolean swap) {
@@ -91,8 +89,8 @@ public class CircleOperations {
         double x1 = (-c - b * y1) / a;
         double y2 = (-B - d) / (2 * A);
         double x2 = (-c - b * y2) / a;
-        return swap ? d > EPS ? new Point[]{new Point(y1, x1), new Point(y2, x2)} : new Point[]{new Point(y1, x1)}
-                : d > EPS ? new Point[]{new Point(x1, y1), new Point(x2, y2)} : new Point[]{new Point(x1, y1)};
+        return swap ? d > EPS ? new Point[] {new Point(y1, x1), new Point(y2, x2)} : new Point[] {new Point(y1, x1)}
+                    : d > EPS ? new Point[] {new Point(x1, y1), new Point(x2, y2)} : new Point[] {new Point(x1, y1)};
     }
 
     public static Point[] circleCircleIntersection(Circle c1, Circle c2) {
@@ -122,19 +120,17 @@ public class CircleOperations {
             return Math.PI * r * r;
         if (d > R + r - EPS)
             return 0;
-        double area = r * r * Math.acos((d * d + r * r - R * R) / 2 / d / r) + R * R
-                * Math.acos((d * d + R * R - r * r) / 2 / d / R) - 0.5
-                * Math.sqrt((-d + r + R) * (d + r - R) * (d - r + R) * (d + r + R));
+        double area = r * r * Math.acos((d * d + r * r - R * R) / 2 / d / r)
+            + R * R * Math.acos((d * d + R * R - r * r) / 2 / d / R)
+            - 0.5 * Math.sqrt((-d + r + R) * (d + r - R) * (d - r + R) * (d + r + R));
         return area;
     }
 
     public static Line[] tangents(Circle a, Circle b) {
         List<Line> lines = new ArrayList<>();
         for (int i = -1; i <= 1; i += 2)
-            for (int j = -1; j <= 1; j += 2)
-                tangents(new Point(b.x - a.x, b.y - a.y), a.r * i, b.r * j, lines);
-        for (Line line : lines)
-            line.c -= line.a * a.x + line.b * a.y;
+            for (int j = -1; j <= 1; j += 2) tangents(new Point(b.x - a.x, b.y - a.y), a.r * i, b.r * j, lines);
+        for (Line line : lines) line.c -= line.a * a.x + line.b * a.y;
         return lines.toArray(new Line[lines.size()]);
     }
 
@@ -142,7 +138,8 @@ public class CircleOperations {
         double r = r2 - r1;
         double z = center2.x * center2.x + center2.y * center2.y;
         double d = z - r * r;
-        if (d < -EPS) return;
+        if (d < -EPS)
+            return;
         d = Math.sqrt(d < 0 ? 0 : d);
         lines.add(new Line((center2.x * r + center2.y * d) / z, (center2.y * r - center2.x * d) / z, r1));
     }
@@ -188,7 +185,7 @@ public class CircleOperations {
         double d = 2 * (Bx * Cy - By * Cx);
         if (Math.abs(d) < EPS)
             return getCircumCircle(new Point(Math.min(a.x, Math.min(b.x, c.x)), Math.min(a.y, Math.min(b.y, c.y))),
-                    new Point(Math.max(a.x, Math.max(b.x, c.x)), Math.max(a.y, Math.max(b.y, c.y))));
+                new Point(Math.max(a.x, Math.max(b.x, c.x)), Math.max(a.y, Math.max(b.y, c.y))));
         double z1 = Bx * Bx + By * By;
         double z2 = Cx * Cx + Cy * Cy;
         double cx = Cy * z1 - By * z2;
@@ -219,7 +216,7 @@ public class CircleOperations {
             Point[] p2 = circleLineIntersection2(new Circle(x, y, r), new Line(new Point(x1, y1), new Point(x2, y2)));
 
             if (p1.length != p2.length || p1.length == 1 && !eq(p1[0], p2[0])
-                    || p1.length == 2 && !(eq(p1[0], p2[0]) && eq(p1[1], p2[1]) || eq(p1[0], p2[1]) && eq(p1[1], p2[0])))
+                || p1.length == 2 && !(eq(p1[0], p2[0]) && eq(p1[1], p2[1]) || eq(p1[0], p2[1]) && eq(p1[1], p2[0])))
                 throw new RuntimeException();
         }
     }

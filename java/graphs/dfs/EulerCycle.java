@@ -4,7 +4,6 @@ import java.util.*;
 import java.util.stream.Stream;
 
 public class EulerCycle {
-
     public static List<Integer> eulerCycleUndirected(List<Integer>[] graph, int u) {
         Set<Long> usedEdges = new HashSet<>();
         int n = graph.length;
@@ -81,7 +80,7 @@ public class EulerCycle {
     // Usage example
     public static void main(String[] args) {
         int n = 5;
-        List<Integer>[] g = Stream.generate(ArrayList::new).limit(n).toArray(List[]::new);
+        List<Integer>[] g = Stream.generate(ArrayList::new).limit(n).toArray(List[] ::new);
         g[0].add(1);
         g[1].add(2);
         g[2].add(0);
@@ -94,7 +93,7 @@ public class EulerCycle {
         System.out.println(eulerCycleDirected2(g, 0));
 
         n = 5;
-        g = Stream.generate(ArrayList::new).limit(n).toArray(List[]::new);
+        g = Stream.generate(ArrayList::new).limit(n).toArray(List[] ::new);
         g[0].add(1);
         g[1].add(0);
         g[1].add(2);

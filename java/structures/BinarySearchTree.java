@@ -1,7 +1,6 @@
 package structures;
 
 public class BinarySearchTree {
-
     Node root;
 
     static class Node {
@@ -67,8 +66,7 @@ public class BinarySearchTree {
             remove(t.r, key);
         else if (t.l != null && t.r != null) {
             Node m = t.r;
-            while (m.l != null)
-                m = m.l;
+            while (m.l != null) m = m.l;
             t.key = m.key;
             t.value = m.value;
             replace(m, m.r);

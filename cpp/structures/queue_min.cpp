@@ -28,7 +28,7 @@ struct queue_min {
                 s2.emplace(x, min_value);
             }
         }
-        T x = s2.top().first;;
+        T x = s2.top().first;
         s2.pop();
         return x;
     }

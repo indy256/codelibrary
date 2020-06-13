@@ -1,7 +1,6 @@
 package misc;
 
 public class KnightDistance {
-
     public static int dist(int x1, int y1, int x2, int y2) {
         int dx = Math.abs(x2 - x1);
         int dy = Math.abs(y2 - y1);
@@ -18,6 +17,5 @@ public class KnightDistance {
         return moves;
     }
 
-    public static void main(String[] args) {
-    }
+    public static void main(String[] args) {}
 }

@@ -3,10 +3,7 @@ package parsing;
 import java.util.*;
 
 public class RecursiveDescentParser {
-
-    enum Lexeme {
-        NUM, ID, IF, ELSE, WHILE, DO, LBRA, RBRA, LPAR, RPAR, PLUS, MINUS, LESS, EQUAL, SEMICOLON, EOF
-    }
+    enum Lexeme { NUM, ID, IF, ELSE, WHILE, DO, LBRA, RBRA, LPAR, RPAR, PLUS, MINUS, LESS, EQUAL, SEMICOLON, EOF }
 
     static class Lexer {
         static final Map<Character, Lexeme> SYMBOLS = new HashMap<>();
@@ -90,9 +87,7 @@ public class RecursiveDescentParser {
         }
     }
 
-    enum Nonterminal {
-        VAR, CONST, ADD, SUB, LT, SET, IF1, IF2, WHILE, DO, EMPTY, SEQ, EXPR, PROG
-    }
+    enum Nonterminal { VAR, CONST, ADD, SUB, LT, SET, IF1, IF2, WHILE, DO, EMPTY, SEQ, EXPR, PROG }
 
     static class Node {
         Nonterminal kind;
@@ -237,9 +232,7 @@ public class RecursiveDescentParser {
         }
     }
 
-    enum Command {
-        IFETCH, ISTORE, IPUSH, IPOP, IADD, ISUB, ILT, JZ, JNZ, JMP, HALT
-    }
+    enum Command { IFETCH, ISTORE, IPUSH, IPOP, IADD, ISUB, ILT, JZ, JNZ, JMP, HALT }
 
     static class Compiler {
         List<Object> compile(Node node) {
@@ -339,10 +332,11 @@ public class RecursiveDescentParser {
             int[] var = new int[26];
             Stack<Integer> stack = new Stack<>();
             int pc = 0;
-            m1:
+        m1:
             while (true) {
                 Command op = (Command) program.get(pc);
-                int arg = pc < program.size() - 1 && program.get(pc + 1) instanceof Integer ? (int) program.get(pc + 1) : 0;
+                int arg =
+                    pc < program.size() - 1 && program.get(pc + 1) instanceof Integer ? (int) program.get(pc + 1) : 0;
                 switch (op) {
                     case IFETCH:
                         stack.push(var[arg]);

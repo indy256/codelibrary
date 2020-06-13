@@ -1,7 +1,6 @@
 package structures;
 
 public class DoublyLinkedList {
-
     int[] next;
     int[] prev;
 

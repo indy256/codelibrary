@@ -4,7 +4,6 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 
 public class ExpressionParserRecursiveDescent {
-
     String s;
     int pos;
     char token;

@@ -3,12 +3,10 @@ package dp;
 import java.util.Arrays;
 
 public class ShortestHamiltonianCycle {
-
     public static int getShortestHamiltonianCycle(int[][] dist) {
         int n = dist.length;
         int[][] dp = new int[1 << n][n];
-        for (int[] d : dp)
-            Arrays.fill(d, Integer.MAX_VALUE / 2);
+        for (int[] d : dp) Arrays.fill(d, Integer.MAX_VALUE / 2);
         dp[1][0] = 0;
         for (int mask = 1; mask < 1 << n; mask += 2) {
             for (int i = 1; i < n; i++) {
@@ -47,8 +45,7 @@ public class ShortestHamiltonianCycle {
 
     // Usage example
     public static void main(String[] args) {
-        int[][] dist = {{0, 1, 10, 1, 10}, {1, 0, 10, 10, 1}, {10, 10, 0, 1, 1}, {1, 10, 1, 0, 10},
-                {10, 1, 1, 10, 0}};
+        int[][] dist = {{0, 1, 10, 1, 10}, {1, 0, 10, 10, 1}, {10, 10, 0, 1, 1}, {1, 10, 1, 0, 10}, {10, 1, 1, 10, 0}};
         System.out.println(5 == getShortestHamiltonianCycle(dist));
     }
 }

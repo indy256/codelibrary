@@ -4,7 +4,6 @@ import java.awt.geom.Line2D;
 import java.util.Random;
 
 public class PointToSegmentDistance {
-
     public static double pointToSegmentDistance(int x, int y, int x1, int y1, int x2, int y2) {
         long dx = x2 - x1;
         long dy = y2 - y1;

@@ -18,7 +18,8 @@ bool next_combination(vector<int> &comb, int n) {
 int main() {
     vector<int> comb{0, 1, 2};
     do {
-        for (int v : comb) cout << v + 1 << " ";
+        for (int v : comb)
+            cout << v + 1 << " ";
         cout << endl;
     } while (next_combination(comb, 5));
 }

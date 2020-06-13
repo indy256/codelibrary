@@ -7,7 +7,6 @@ import java.util.*;
 // https://cp-algorithms.com/algebra/fft.html
 // https://drive.google.com/file/d/1B9BIfATnI_qL6rYiE5hY9bh20SMVmHZ7/view
 public class FFT {
-
     // precondition: a.length is a power of 2 and a.length == b.length
     public static void fft(double[] a, double[] b, boolean inverse) {
         int n = a.length;
@@ -59,10 +58,8 @@ public class FFT {
         double[] pReal = new double[n];
         double[] pImag = new double[n];
         // p(x) = a(x) + i*b(x)
-        for (int i = 0; i < a.length; i++)
-            pReal[i] = a[i];
-        for (int i = 0; i < b.length; i++)
-            pImag[i] = b[i];
+        for (int i = 0; i < a.length; i++) pReal[i] = a[i];
+        for (int i = 0; i < b.length; i++) pImag[i] = b[i];
         fft(pReal, pImag, false);
         double[] abReal = new double[n];
         double[] abImag = new double[n];
@@ -72,8 +69,7 @@ public class FFT {
         for (int i = 0; i < n; i++) {
             int j = (n - i) & (n - 1);
             abReal[i] = (pReal[i] * pImag[i] + pReal[j] * pImag[j]) / 2;
-            abImag[i] = ((pReal[j] * pReal[j] - pImag[j] * pImag[j]) -
-                    (pReal[i] * pReal[i] - pImag[i] * pImag[i])) / 4;
+            abImag[i] = ((pReal[j] * pReal[j] - pImag[j] * pImag[j]) - (pReal[i] * pReal[i] - pImag[i] * pImag[i])) / 4;
         }
         fft(abReal, abImag, true);
         int[] result = new int[need];
@@ -176,6 +172,6 @@ public class FFT {
                 throw new RuntimeException();
         }
 
-        System.out.println(Arrays.toString(multiplyMod(new int[]{1, 2}, new int[]{2, 15}, 991992993)));
+        System.out.println(Arrays.toString(multiplyMod(new int[] {1, 2}, new int[] {2, 15}, 991992993)));
     }
 }

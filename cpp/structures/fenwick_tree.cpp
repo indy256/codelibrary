@@ -4,7 +4,7 @@ using namespace std;
 
 // https://cp-algorithms.com/data_structures/fenwick.html
 
-template<class T>
+template <class T>
 struct fenwick {
     vector<T> t;
 
@@ -27,7 +27,8 @@ struct fenwick {
     // requires non-negative tree values
     int lower_bound(T sum) {
         int highest_one_bit = 1;
-        while (highest_one_bit << 1 <= t.size()) highest_one_bit <<= 1;
+        while (highest_one_bit << 1 <= t.size())
+            highest_one_bit <<= 1;
         int pos = 0;
         for (size_t blockSize = highest_one_bit; blockSize != 0; blockSize >>= 1) {
             int p = pos + blockSize - 1;

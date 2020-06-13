@@ -1,10 +1,9 @@
 package parsing;
 
-import javax.script.*;
 import java.util.LinkedList;
+import javax.script.*;
 
 public class ExpressionParserShuntingYard {
-
     static boolean isDelim(char c) {
         return c == ' ';
     }
@@ -60,23 +59,19 @@ public class ExpressionParserShuntingYard {
             if (c == '(')
                 ops.add('(');
             else if (c == ')') {
-                while (ops.getLast() != '(')
-                    processOperator(st, ops);
+                while (ops.getLast() != '(') processOperator(st, ops);
                 ops.removeLast();
             } else if (isOperator(c)) {
-                while (!ops.isEmpty() && priority(c) <= priority(ops.getLast()))
-                    processOperator(st, ops);
+                while (!ops.isEmpty() && priority(c) <= priority(ops.getLast())) processOperator(st, ops);
                 ops.add(c);
             } else {
                 String operand = "";
-                while (i < s.length() && Character.isDigit(s.charAt(i)))
-                    operand += s.charAt(i++);
+                while (i < s.length() && Character.isDigit(s.charAt(i))) operand += s.charAt(i++);
                 --i;
                 st.add(Integer.parseInt(operand));
             }
         }
-        while (!ops.isEmpty())
-            processOperator(st, ops);
+        while (!ops.isEmpty()) processOperator(st, ops);
         return st.get(0);
     }
 

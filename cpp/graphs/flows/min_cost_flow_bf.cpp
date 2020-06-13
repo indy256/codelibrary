@@ -16,8 +16,8 @@ struct min_cost_flow {
     min_cost_flow(int nodes) : graph(nodes) {}
 
     void add_bidi_edge(int s, int t, int cap, int cost) {
-        Edge a = {t, (int) graph[t].size(), cap, 0, cost};
-        Edge b = {s, (int) graph[s].size(), 0, 0, -cost};
+        Edge a = {t, (int)graph[t].size(), cap, 0, cost};
+        Edge b = {s, (int)graph[s].size(), 0, 0, -cost};
         graph[s].emplace_back(a);
         graph[t].emplace_back(b);
     }
@@ -36,7 +36,8 @@ struct min_cost_flow {
             inqueue[u] = false;
             for (size_t i = 0; i < graph[u].size(); i++) {
                 Edge &e = graph[u][i];
-                if (e.cap <= e.f) continue;
+                if (e.cap <= e.f)
+                    continue;
                 int v = e.to;
                 int ndist = dist[u] + e.cost;
                 if (dist[v] > ndist) {
@@ -77,9 +78,7 @@ struct min_cost_flow {
 
 // Usage example
 int main() {
-    int capacity[][3] = {{0, 3, 2},
-                         {0, 0, 2},
-                         {0, 0, 0}};
+    int capacity[][3] = {{0, 3, 2}, {0, 0, 2}, {0, 0, 0}};
     int nodes = 3;
     min_cost_flow mcf(nodes);
     for (int i = 0; i < nodes; i++)
@@ -89,7 +88,7 @@ int main() {
 
     int s = 0;
     int t = 2;
-    auto[flow, flow_cost] = mcf.calc_min_cost_flow(s, t, numeric_limits<int>::max());
+    auto [flow, flow_cost] = mcf.calc_min_cost_flow(s, t, numeric_limits<int>::max());
 
     cout << (4 == flow) << endl;
     cout << (6 == flow_cost) << endl;

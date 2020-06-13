@@ -18,16 +18,16 @@ class MaximumMatching {
         "The Weighted Matching Approach to Maximum Cardinality Matching" (2017)
         (https://arxiv.org/abs/1703.03998)
     */
-public:
+   public:
     struct Edge {
         int from, to;
     };
     static constexpr int Inf = 1 << 30;
 
-private:
+   private:
     enum Label {
-        kInner = -1, // should be < 0
-        kFree = 0    // should be 0
+        kInner = -1,  // should be < 0
+        kFree = 0     // should be 0
     };
     struct Link {
         int from, to;
@@ -49,7 +49,7 @@ private:
         vector<int> head, next;
     };
 
-    template<typename T>
+    template <typename T>
     struct Queue {
         Queue() {}
 
@@ -75,30 +75,33 @@ private:
         DisjointSetUnion() {}
 
         DisjointSetUnion(int N) : par(N) {
-            for (int i = 0; i < N; ++i) par[i] = i;
+            for (int i = 0; i < N; ++i)
+                par[i] = i;
         }
 
         int find(int u) { return par[u] == u ? u : (par[u] = find(par[u])); }
 
         void unite(int u, int v) {
             u = find(u), v = find(v);
-            if (u != v) par[v] = u;
+            if (u != v)
+                par[v] = u;
         }
 
         vector<int> par;
     };
 
-public:
-    MaximumMatching(int N, const vector<Edge> &in)
-            : N(N), NH(N >> 1), ofs(N + 2, 0), edges(in.size() * 2) {
-
-        for (auto &e : in) ofs[e.from + 1] += 1, ofs[e.to + 1] += 1;
-        for (int i = 1; i <= N + 1; ++i) ofs[i] += ofs[i - 1];
+   public:
+    MaximumMatching(int N, const vector<Edge> &in) : N(N), NH(N >> 1), ofs(N + 2, 0), edges(in.size() * 2) {
+        for (auto &e : in)
+            ofs[e.from + 1] += 1, ofs[e.to + 1] += 1;
+        for (int i = 1; i <= N + 1; ++i)
+            ofs[i] += ofs[i - 1];
         for (auto &e : in) {
             edges[ofs[e.from]++] = e;
             edges[ofs[e.to]++] = {e.to, e.from};
         }
-        for (int i = N + 1; i > 0; --i) ofs[i] = ofs[i - 1];
+        for (int i = N + 1; i > 0; --i)
+            ofs[i] = ofs[i - 1];
         ofs[0] = 0;
     }
 
@@ -108,14 +111,15 @@ public:
         while (match * 2 + 1 < N) {
             reset_count();
             bool has_augmenting_path = do_edmonds_search();
-            if (!has_augmenting_path) break;
+            if (!has_augmenting_path)
+                break;
             match += find_maximal();
             clear();
         }
         return match;
     }
 
-private:
+   private:
     void reset_count() {
         time_current_ = 0;
         time_augment_ = Inf;
@@ -126,17 +130,21 @@ private:
 
     void clear() {
         que.clear();
-        for (int u = 1; u <= N; ++u) potential[u] = 1;
-        for (int u = 1; u <= N; ++u) dsu.par[u] = u;
-        for (int t = time_current_; t <= N / 2; ++t) list.head[t] = -1;
-        for (int u = 1; u <= N; ++u) blossom.head[u] = -1;
+        for (int u = 1; u <= N; ++u)
+            potential[u] = 1;
+        for (int u = 1; u <= N; ++u)
+            dsu.par[u] = u;
+        for (int t = time_current_; t <= N / 2; ++t)
+            list.head[t] = -1;
+        for (int u = 1; u <= N; ++u)
+            blossom.head[u] = -1;
     }
 
     // first phase
 
     inline void grow(int x, int y, int z) {
         label[y] = kInner;
-        potential[y] = time_current_; // visited time
+        potential[y] = time_current_;  // visited time
         link[z] = {x, y};
         label[z] = label[x];
         potential[z] = time_current_ + 1;
@@ -149,9 +157,11 @@ private:
         label[mate[bx]] = label[mate[by]] = h;
         int lca = -1;
         while (1) {
-            if (mate[by] != 0) swap(bx, by);
+            if (mate[by] != 0)
+                swap(bx, by);
             bx = lca = dsu.find(link[bx].from);
-            if (label[mate[bx]] == h) break;
+            if (label[mate[bx]] == h)
+                break;
             label[mate[bx]] = h;
         }
         for (auto bv : {dsu.par[x], dsu.par[y]}) {
@@ -173,22 +183,27 @@ private:
             int x = que.dequeue(), lx = label[x], px = potential[x], bx = dsu.find(x);
             for (int eid = ofs[x]; eid < ofs[x + 1]; ++eid) {
                 int y = edges[eid].to;
-                if (label[y] > 0) { // outer blossom/vertex
+                if (label[y] > 0) {  // outer blossom/vertex
                     int time_next = (px + potential[y]) >> 1;
                     if (lx != label[y]) {
-                        if (time_next == time_current_) return true;
+                        if (time_next == time_current_)
+                            return true;
                         time_augment_ = min(time_next, time_augment_);
                     } else {
-                        if (bx == dsu.find(y)) continue;
+                        if (bx == dsu.find(y))
+                            continue;
                         if (time_next == time_current_) {
                             contract(x, y);
                             bx = dsu.find(x);
-                        } else if (time_next <= NH) list.push(time_next, eid);
+                        } else if (time_next <= NH)
+                            list.push(time_next, eid);
                     }
-                } else if (label[y] == kFree) { // free vertex
+                } else if (label[y] == kFree) {  // free vertex
                     int time_next = px + 1;
-                    if (time_next == time_current_) grow(x, y, mate[y]);
-                    else if (time_next <= NH) list.push(time_next, eid);
+                    if (time_next == time_current_)
+                        grow(x, y, mate[y]);
+                    else if (time_next <= NH)
+                        list.push(time_next, eid);
                 }
             }
         }
@@ -200,15 +215,18 @@ private:
         const int time_lim = min(NH + 1, time_augment_);
         for (++time_current_; time_current_ <= time_lim; ++time_current_) {
             dsu_changelog_size_ = dsu_changelog_last_;
-            if (time_current_ == time_lim) break;
+            if (time_current_ == time_lim)
+                break;
             bool updated = false;
             for (int h = list.head[time_current_]; h >= 0; h = list.next[h]) {
                 auto &e = edges[h];
                 int x = e.from, y = e.to;
                 if (label[y] > 0) {
                     // Case: outer -- (free => inner => outer)
-                    if (potential[x] + potential[y] != (time_current_ << 1)) continue;
-                    if (dsu.find(x) == dsu.find(y)) continue;
+                    if (potential[x] + potential[y] != (time_current_ << 1))
+                        continue;
+                    if (dsu.find(x) == dsu.find(y))
+                        continue;
                     if (label[x] != label[y]) {
                         time_augment_ = time_current_;
                         return false;
@@ -221,7 +239,8 @@ private:
                 }
             }
             list.head[time_current_] = -1;
-            if (updated) return false;
+            if (updated)
+                return false;
         }
         return time_current_ > NH;
     }
@@ -231,18 +250,24 @@ private:
         for (int u = 1; u <= N; ++u) {
             if (mate[u] == 0) {
                 que.enqueue(u);
-                label[u] = u; // component id
-            } else label[u] = kFree;
+                label[u] = u;  // component id
+            } else
+                label[u] = kFree;
         }
         while (1) {
-            if (find_augmenting_path()) break;
+            if (find_augmenting_path())
+                break;
             bool maximum = adjust_dual_variables();
-            if (maximum) return false;
-            if (time_current_ == time_augment_) break;
+            if (maximum)
+                return false;
+            if (time_current_ == time_augment_)
+                break;
         }
         for (int u = 1; u <= N; ++u) {
-            if (label[u] > 0) potential[u] -= time_current_;
-            else if (label[u] < 0) potential[u] = 1 + (time_current_ - potential[u]);
+            if (label[u] > 0)
+                potential[u] -= time_current_;
+            else if (label[u] < 0)
+                potential[u] = 1 + (time_current_ - potential[u]);
         }
         return true;
     }
@@ -252,7 +277,8 @@ private:
     void rematch(int v, int w) {
         int t = mate[v];
         mate[v] = w;
-        if (mate[t] != v) return;
+        if (mate[t] != v)
+            return;
         if (link[v].to == dsu.find(link[v].to)) {
             mate[t] = link[v].from;
             rematch(mate[t], t);
@@ -267,10 +293,12 @@ private:
         int px = potential[x], lx = label[bx];
         for (int eid = ofs[x]; eid < ofs[x + 1]; ++eid) {
             int y = edges[eid].to;
-            if (px + potential[y] != 0) continue;
+            if (px + potential[y] != 0)
+                continue;
             int by = dsu.find(y), ly = label[by];
-            if (ly > 0) { // outer
-                if (lx >= ly) continue;
+            if (ly > 0) {  // outer
+                if (lx >= ly)
+                    continue;
                 int stack_beg = stack_last_;
                 for (int bv = by; bv != bx; bv = dsu.find(link[bv].from)) {
                     int bw = dsu.find(mate[bv]);
@@ -281,7 +309,8 @@ private:
                 while (stack_last_ > stack_beg) {
                     int bv = stack[--stack_last_];
                     for (int v = blossom.head[bv]; v >= 0; v = blossom.next[v]) {
-                        if (!dfs_augment(v, bx)) continue;
+                        if (!dfs_augment(v, bx))
+                            continue;
                         stack_last_ = stack_beg;
                         return true;
                     }
@@ -298,7 +327,8 @@ private:
                 link[bz] = {x, y};
                 label[bz] = outer_id_++;
                 for (int v = blossom.head[bz]; v >= 0; v = blossom.next[v]) {
-                    if (dfs_augment(v, bz)) return true;
+                    if (dfs_augment(v, bz))
+                        return true;
                 }
             }
         }
@@ -307,7 +337,8 @@ private:
 
     int find_maximal() {
         // discard blossoms whose potential is 0.
-        for (int u = 1; u <= N; ++u) dsu.par[u] = u;
+        for (int u = 1; u <= N; ++u)
+            dsu.par[u] = u;
         for (int i = 0; i < dsu_changelog_size_; ++i) {
             dsu.par[dsu_changelog[i].v] = dsu_changelog[i].par;
         }
@@ -319,10 +350,12 @@ private:
         for (int u = 1; u <= N; ++u)
             if (!mate[u]) {
                 int bu = dsu.par[u];
-                if (label[bu] != kFree) continue;
+                if (label[bu] != kFree)
+                    continue;
                 label[bu] = outer_id_++;
                 for (int v = blossom.head[bu]; v >= 0; v = blossom.next[v]) {
-                    if (!dfs_augment(v, bu)) continue;
+                    if (!dfs_augment(v, bu))
+                        continue;
                     ret += 1;
                     break;
                 }
@@ -351,7 +384,7 @@ private:
         stack_last_ = 0;
     }
 
-public:
+   public:
     const int N, NH;
     vector<int> ofs;
     vector<Edge> edges;
@@ -379,9 +412,7 @@ using Edge = MaximumMatching::Edge;
 // usage example
 int main() {
     int n = 3;
-    vector<Edge> es = {{0, 1},
-                       {1, 2},
-                       {0, 1}};
+    vector<Edge> es = {{0, 1}, {1, 2}, {0, 1}};
 
     auto mm = MaximumMatching(n, es);
     auto ans = mm.maximum_matching();
