@@ -4,5 +4,4 @@ ColumnLimit: 120
 AllowShortBlocksOnASingleLine: false
 AllowShortFunctionsOnASingleLine: false
 AllowShortIfStatementsOnASingleLine: false
-AllowShortLambdasOnASingleLine: false
 AllowShortLoopsOnASingleLine: false

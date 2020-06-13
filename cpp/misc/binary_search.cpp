@@ -41,11 +41,7 @@ int binary_search(bool a[], int from_inclusive, int to_inclusive) {
 
 // usage example
 int main() {
-    int first_true = binary_search(
-        [](int x) {
-            return x >= 4;
-        },
-        0, 10);
+    int first_true = binary_search([](int x) { return x >= 4; }, 0, 10);
     cout << (first_true == 4) << endl;
 
     cout << (binary_search(new bool[3]{false, true, true}, 0, 2) == 1) << endl;

@@ -6,12 +6,8 @@ vector<vector<int>> children, subtreeLabels, tree, L;
 vector<int> pred, mapping;
 int n;
 
-auto compare = [](int a, int b) -> bool {
-    return subtreeLabels[a] < subtreeLabels[b];
-};
-auto equals = [](int a, int b) -> bool {
-    return subtreeLabels[a] == subtreeLabels[b];
-};
+auto compare = [](int a, int b) -> bool { return subtreeLabels[a] < subtreeLabels[b]; };
+auto equals = [](int a, int b) -> bool { return subtreeLabels[a] == subtreeLabels[b]; };
 
 void generate_mapping(int r1, int r2) {
     mapping.resize(n);

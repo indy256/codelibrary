@@ -34,9 +34,7 @@ struct SparseTable {
 // usage example
 int main() {
     vector<int> a{3, 2, 1};
-    SparseTable<int> st(a, [](int i, int j) {
-        return min(i, j);
-    });
+    SparseTable<int> st(a, [](int i, int j) { return min(i, j); });
     cout << st.get(0, 2) << endl;
     cout << st.get(0, 1) << endl;
 }

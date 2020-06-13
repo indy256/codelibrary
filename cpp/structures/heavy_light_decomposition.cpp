@@ -59,16 +59,12 @@ class HeavyLight {
 
     segtree::node get(int u, int v) {
         segtree::node res;
-        process_path(u, v, [this, &res](int a, int b) {
-            res = segtree::unite(res, segment_tree.get(a, b));
-        });
+        process_path(u, v, [this, &res](int a, int b) { res = segtree::unite(res, segment_tree.get(a, b)); });
         return res;
     }
 
     void modify(int u, int v, long long delta) {
-        process_path(u, v, [this, delta](int a, int b) {
-            segment_tree.modify(a, b, delta);
-        });
+        process_path(u, v, [this, delta](int a, int b) { segment_tree.modify(a, b, delta); });
     }
 
     void process_path(int u, int v, const function<void(int x, int y)> &op) {

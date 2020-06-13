@@ -22,9 +22,7 @@ struct wavelet_tree {
         if (lo == hi || from >= to)
             return;
         int mid = (lo + hi) / 2;
-        auto f = [mid](int x) {
-            return x <= mid;
-        };
+        auto f = [mid](int x) { return x <= mid; };
         b.reserve(to - from + 1);
         b.push_back(0);
         for (auto it = from; it != to; it++) {

@@ -13,9 +13,7 @@ vector<int> suffix_array(const string &S) {
     for (int i = n - 1; i >= 0; --i) {
         sa.push_back(i);
     }
-    stable_sort(sa.begin(), sa.end(), [&](int a, int b) {
-        return S[a] < S[b];
-    });
+    stable_sort(sa.begin(), sa.end(), [&](int a, int b) { return S[a] < S[b]; });
 
     vector<int> classes(n);
     for (int i = 0; i < n; ++i) {
