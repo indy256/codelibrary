@@ -48,7 +48,6 @@ vector<M> berlekamp_massey(const vector<M> &a) {
     C.resize(L + 1);
     C.erase(C.begin());
     reverse(C.begin(), C.end());
-    ;
     return -C;
 }
 
