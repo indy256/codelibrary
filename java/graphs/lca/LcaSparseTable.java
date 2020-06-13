@@ -31,9 +31,7 @@ public class LcaSparseTable {
         dfs(tree, root, root);
     }
 
-    boolean isParent(int parent, int child) {
-        return tin[parent] <= tin[child] && tout[child] <= tout[parent];
-    }
+    boolean isParent(int parent, int child) { return tin[parent] <= tin[child] && tout[child] <= tout[parent]; }
 
     public int lca(int a, int b) {
         if (isParent(a, b))
