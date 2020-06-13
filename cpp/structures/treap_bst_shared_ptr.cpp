@@ -14,16 +14,11 @@ struct Treap {
     int size;
     pTreap l, r;
 
-    Treap(int key) : key(key), prio(rng()), size(1), l(nullptr), r(nullptr) {
-    }
+    Treap(int key) : key(key), prio(rng()), size(1), l(nullptr), r(nullptr) {}
 
-    void update() {
-        size = 1 + get_size(l) + get_size(r);
-    }
+    void update() { size = 1 + get_size(l) + get_size(r); }
 
-    static int get_size(pTreap node) {
-        return node ? node->size : 0;
-    }
+    static int get_size(pTreap node) { return node ? node->size : 0; }
 
     //    ~item() {
     //        cout << "item " << key << " disposed" << endl;

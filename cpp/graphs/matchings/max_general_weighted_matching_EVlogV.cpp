@@ -32,43 +32,29 @@ class MaximumWeightedMatching {
     class BinaryHeap {
        public:
         struct Node {
-            bool operator<(const Node &rhs) const {
-                return value < rhs.value;
-            }
+            bool operator<(const Node &rhs) const { return value < rhs.value; }
 
             T value;
             int id;
         };
 
-        BinaryHeap() {
-        }
+        BinaryHeap() {}
 
-        BinaryHeap(int N) : size_(0), node(N + 1), index(N, 0) {
-        }
+        BinaryHeap(int N) : size_(0), node(N + 1), index(N, 0) {}
 
-        int size() const {
-            return size_;
-        }
+        int size() const { return size_; }
 
-        bool empty() const {
-            return size_ == 0;
-        }
+        bool empty() const { return size_ == 0; }
 
         void clear() {
             while (size_ > 0)
                 index[node[size_--].id] = 0;
         }
 
-        T min() const {
-            return node[1].value;
-        }
+        T min() const { return node[1].value; }
 
-        int argmin() const {
-            return node[1].id;
-        }  // argmin ?
-        T get_val(int id) const {
-            return node[index[id]].value;
-        }
+        int argmin() const { return node[1].id; }  // argmin ?
+        T get_val(int id) const { return node[index[id]].value; }
 
         void pop() {
             if (size_ > 0)
@@ -80,9 +66,7 @@ class MaximumWeightedMatching {
                 pop(index[id]);
         }
 
-        bool has(int id) const {
-            return index[id] != 0;
-        }
+        bool has(int id) const { return index[id] != 0; }
 
         void update(int id, T v) {
             if (!has(id))
@@ -157,10 +141,8 @@ class MaximumWeightedMatching {
     class PairingHeaps {
        private:
         struct Node {
-            Node() : prev(-1) {
-            }  // "prev < 0" means the node is unused.
-            Node(Key v) : key(v), child(0), next(0), prev(0) {
-            }
+            Node() : prev(-1) {}  // "prev < 0" means the node is unused.
+            Node(Key v) : key(v), child(0), next(0), prev(0) {}
 
             Key key;
             int child, next, prev;
@@ -185,21 +167,13 @@ class MaximumWeightedMatching {
                 node[i] = Node();
         }
 
-        bool empty(int h) const {
-            return !heap[h];
-        }
+        bool empty(int h) const { return !heap[h]; }
 
-        bool used(int v) const {
-            return node[v].prev >= 0;
-        }
+        bool used(int v) const { return node[v].prev >= 0; }
 
-        Key min(int h) const {
-            return node[heap[h]].key;
-        }
+        Key min(int h) const { return node[heap[h]].key; }
 
-        int argmin(int h) const {
-            return heap[h];
-        }
+        int argmin(int h) const { return heap[h]; }
 
         void pop(int h) {
             // assert(!empty(h));
@@ -303,53 +277,32 @@ class MaximumWeightedMatching {
 
     template <typename T>
     struct PriorityQueue : public priority_queue<T, vector<T>, greater<T> > {
-        PriorityQueue() {
-        }
+        PriorityQueue() {}
 
-        PriorityQueue(int N) {
-            this->c.reserve(N);
-        }
+        PriorityQueue(int N) { this->c.reserve(N); }
 
-        T min() const {
-            return this->top();
-        }
+        T min() const { return this->top(); }
 
-        void clear() {
-            this->c.clear();
-        }
+        void clear() { this->c.clear(); }
     };
 
     template <typename T>
     struct Queue {
-        Queue() {
-        }
+        Queue() {}
 
-        Queue(int N) : qh(0), qt(0), data(N) {
-        }
+        Queue(int N) : qh(0), qt(0), data(N) {}
 
-        T operator[](int i) const {
-            return data[i];
-        }
+        T operator[](int i) const { return data[i]; }
 
-        void enqueue(int u) {
-            data[qt++] = u;
-        }
+        void enqueue(int u) { data[qt++] = u; }
 
-        int dequeue() {
-            return data[qh++];
-        }
+        int dequeue() { return data[qh++]; }
 
-        bool empty() const {
-            return qh == qt;
-        }
+        bool empty() const { return qh == qt; }
 
-        void clear() {
-            qh = qt = 0;
-        }
+        void clear() { qh = qt = 0; }
 
-        int size() const {
-            return qt;
-        }
+        int size() const { return qt; }
 
         int qh, qt;
         vector<T> data;
@@ -382,66 +335,43 @@ class MaximumWeightedMatching {
             int b, v;
         };
 
-        Node() {
-        }
+        Node() {}
 
-        Node(int u) : parent(0), size(1) {
-            link[0] = link[1] = {u, u};
-        }
+        Node(int u) : parent(0), size(1) { link[0] = link[1] = {u, u}; }
 
-        int next_v() const {
-            return link[0].v;
-        }
+        int next_v() const { return link[0].v; }
 
-        int next_b() const {
-            return link[0].b;
-        }
+        int next_b() const { return link[0].b; }
 
-        int prev_v() const {
-            return link[1].v;
-        }
+        int prev_v() const { return link[1].v; }
 
-        int prev_b() const {
-            return link[1].b;
-        }
+        int prev_b() const { return link[1].b; }
 
         int parent, size;
         NodeLink link[2];
     };
 
     struct Event {
-        Event() {
-        }
+        Event() {}
 
-        Event(cost_t time, int id) : time(time), id(id) {
-        }
+        Event(cost_t time, int id) : time(time), id(id) {}
 
-        bool operator<(const Event &rhs) const {
-            return time < rhs.time;
-        }
+        bool operator<(const Event &rhs) const { return time < rhs.time; }
 
-        bool operator>(const Event &rhs) const {
-            return time > rhs.time;
-        }
+        bool operator>(const Event &rhs) const { return time > rhs.time; }
 
         cost_t time;
         int id;
     };
 
     struct EdgeEvent {
-        EdgeEvent() {
-        }
+        EdgeEvent() {}
 
-        EdgeEvent(cost_t time, int from, int to) : time(time), from(from), to(to) {
-        }
+        EdgeEvent(cost_t time, int from, int to) : time(time), from(from), to(to) {}
 
-        bool operator>(const EdgeEvent &rhs) const {
-            return time > rhs.time;
-        }
+        bool operator>(const EdgeEvent &rhs) const { return time > rhs.time; }
 
-        bool operator<(const EdgeEvent &rhs) const {
-            return time < rhs.time;
-        }
+        bool operator<(const EdgeEvent &rhs) const { return time < rhs.time; }
 
         cost_t time;
         int from, to;

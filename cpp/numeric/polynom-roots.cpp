@@ -16,9 +16,7 @@ pair<poly, cdouble> horner(const poly &a, cdouble x0) {
     return {b, a[0] + b[0] * x0};
 }
 
-cdouble eval(const poly &p, cdouble x) {
-    return horner(p, x).second;
-}
+cdouble eval(const poly &p, cdouble x) { return horner(p, x).second; }
 
 poly derivative(const poly &p) {
     int n = p.size();

@@ -9,9 +9,7 @@ using T = long long;
 struct Line {
     T a, d;
 
-    T eval(T x) {
-        return a * x + d;
-    }
+    T eval(T x) { return a * x + d; }
 };
 
 struct Node {
@@ -19,8 +17,7 @@ struct Node {
     Node *left = nullptr;
     Node *right = nullptr;
 
-    Node(Line line) : line(line) {
-    }
+    Node(Line line) : line(line) {}
 
     void add_line(Line nline, T l, T r) {
         T m = (l + r) / 2;
@@ -64,17 +61,11 @@ struct LiChaoTree {
     T maxx;
     Node *root;
 
-    LiChaoTree(T minx, T maxx) : minx(minx), maxx(maxx) {
-        root = new Node({0, numeric_limits<T>::max() / 2});
-    }
+    LiChaoTree(T minx, T maxx) : minx(minx), maxx(maxx) { root = new Node({0, numeric_limits<T>::max() / 2}); }
 
-    void add_line(Line line) {
-        root->add_line(line, minx, maxx + 1);
-    }
+    void add_line(Line line) { root->add_line(line, minx, maxx + 1); }
 
-    T get_min(T x) {
-        return root->get_min(x, minx, maxx + 1);
-    }
+    T get_min(T x) { return root->get_min(x, minx, maxx + 1); }
 };
 
 // usage example

@@ -14,8 +14,7 @@ struct data_structure {
     int m[26];
     int cnt;
 
-    data_structure() : m{}, cnt{0} {
-    }
+    data_structure() : m{}, cnt{0} {}
 
     void add(int x) {
         if (m[x]++ == 0)
@@ -27,9 +26,7 @@ struct data_structure {
             --cnt;
     }
 
-    int get() {
-        return cnt;
-    }
+    int get() { return cnt; }
 };
 
 void apply(data_structure &ds, vector<int> &a, int l, int r, int i, int x) {  // Change s[i] to x
@@ -113,5 +110,4 @@ void solve(istream &in, ostream &out) {
 }
 
 // usage example
-int main() {
-}
+int main() {}

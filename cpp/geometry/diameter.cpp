@@ -29,9 +29,7 @@ double area(const point &a, const point &b, const point &c) {
     return abs((b.first - a.first) * (c.second - a.second) - (b.second - a.second) * (c.first - a.first));
 }
 
-double dist(const point &a, const point &b) {
-    return hypot(a.first - b.first, a.second - b.second);
-}
+double dist(const point &a, const point &b) { return hypot(a.first - b.first, a.second - b.second); }
 
 double diameter(const vector<point> &p) {
     vector<point> h = convexHull(p);

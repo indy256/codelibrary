@@ -18,13 +18,9 @@ int head[MAX_NODES];
 unsigned A[MAX_NODES];
 unsigned Time;
 
-unsigned lowest_one_bit(unsigned x) {
-    return x & -x;
-}
+unsigned lowest_one_bit(unsigned x) { return x & -x; }
 
-unsigned highest_one_bit(unsigned x) {
-    return x ? 1u << (31 - __builtin_clz(x)) : 0;
-}
+unsigned highest_one_bit(unsigned x) { return x ? 1u << (31 - __builtin_clz(x)) : 0; }
 
 void dfs1(const vector<vector<int>> &tree, int u, int p) {
     parent[u] = p;

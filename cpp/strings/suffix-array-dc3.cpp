@@ -5,9 +5,7 @@ using namespace std;
 // Suffix array DC3 algorithm from "Linear Work Suffix Array Construction"
 
 // lexicographic order for pairs
-inline bool leq(int a1, int a2, int b1, int b2) {
-    return (a1 < b1 || (a1 == b1 && a2 <= b2));
-}
+inline bool leq(int a1, int a2, int b1, int b2) { return (a1 < b1 || (a1 == b1 && a2 <= b2)); }
 
 // lexicographic order for triples
 inline bool leq(int a1, int a2, int a3, int b1, int b2, int b3) {

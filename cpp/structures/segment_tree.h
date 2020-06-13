@@ -33,9 +33,7 @@ struct segtree {
         }
     }
 
-    void pull(int x, int y) {
-        tree[x] = unite(tree[x + 1], tree[y]);
-    }
+    void pull(int x, int y) { tree[x] = unite(tree[x + 1], tree[y]); }
 
     int n;
     vector<node> tree;

@@ -42,8 +42,7 @@ public class MaxGeneralWeightedMatchingEVlogV {
         Node<T>[] node;
         int[] index;
 
-        BinaryHeap() {
-        }
+        BinaryHeap() {}
 
         BinaryHeap(int N) {
             size_ = 0;
@@ -337,8 +336,7 @@ public class MaxGeneralWeightedMatchingEVlogV {
         int qh, qt;
         int[] data;
 
-        Queue() {
-        }
+        Queue() {}
 
         Queue(int N) {
             qh = 0;
@@ -420,8 +418,7 @@ public class MaxGeneralWeightedMatchingEVlogV {
         int parent, size;
         NodeLink[] link = new NodeLink[2];
 
-        Node() {
-        }
+        Node() {}
 
         Node(int u) {
             parent = 0;
@@ -451,8 +448,7 @@ public class MaxGeneralWeightedMatchingEVlogV {
         int time;
         int id;
 
-        Event() {
-        }
+        Event() {}
 
         Event(int time, int id) {
             this.time = time;
@@ -466,8 +462,7 @@ public class MaxGeneralWeightedMatchingEVlogV {
         int time;
         int from, to;
 
-        EdgeEvent() {
-        }
+        EdgeEvent() {}
 
         EdgeEvent(int time, int from, int to) {
             this.time = time;

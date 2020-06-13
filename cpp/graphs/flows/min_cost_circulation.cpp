@@ -13,8 +13,7 @@ struct Edge {
 struct min_cost_circulation {
     vector<vector<Edge>> graph;
 
-    min_cost_circulation(int nodes) : graph(nodes) {
-    }
+    min_cost_circulation(int nodes) : graph(nodes) {}
 
     void add_bidi_edge(int s, int t, int cap, int cost) {
         Edge a = {t, (int)graph[t].size(), 0, cap, cost};

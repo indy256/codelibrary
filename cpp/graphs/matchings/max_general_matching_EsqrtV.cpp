@@ -37,20 +37,13 @@ class MaximumMatching {
     };
 
     struct LinkedList {
-        LinkedList() {
-        }
+        LinkedList() {}
 
-        LinkedList(int N, int M) : N(N), next(M) {
-            clear();
-        }
+        LinkedList(int N, int M) : N(N), next(M) { clear(); }
 
-        void clear() {
-            head.assign(N, -1);
-        }
+        void clear() { head.assign(N, -1); }
 
-        void push(int h, int u) {
-            next[u] = head[h], head[h] = u;
-        }
+        void push(int h, int u) { next[u] = head[h], head[h] = u; }
 
         int N;
         vector<int> head, next;
@@ -58,52 +51,35 @@ class MaximumMatching {
 
     template <typename T>
     struct Queue {
-        Queue() {
-        }
+        Queue() {}
 
-        Queue(int N) : qh(0), qt(0), data(N) {
-        }
+        Queue(int N) : qh(0), qt(0), data(N) {}
 
-        T operator[](int i) const {
-            return data[i];
-        }
+        T operator[](int i) const { return data[i]; }
 
-        void enqueue(int u) {
-            data[qt++] = u;
-        }
+        void enqueue(int u) { data[qt++] = u; }
 
-        int dequeue() {
-            return data[qh++];
-        }
+        int dequeue() { return data[qh++]; }
 
-        bool empty() const {
-            return qh == qt;
-        }
+        bool empty() const { return qh == qt; }
 
-        void clear() {
-            qh = qt = 0;
-        }
+        void clear() { qh = qt = 0; }
 
-        int size() const {
-            return qt;
-        }
+        int size() const { return qt; }
 
         int qh, qt;
         vector<T> data;
     };
 
     struct DisjointSetUnion {
-        DisjointSetUnion() {
-        }
+        DisjointSetUnion() {}
 
         DisjointSetUnion(int N) : par(N) {
             for (int i = 0; i < N; ++i)
                 par[i] = i;
         }
 
-        int find(int u) {
-            return par[u] == u ? u : (par[u] = find(par[u]));
-        }
+        int find(int u) { return par[u] == u ? u : (par[u] = find(par[u])); }
 
         void unite(int u, int v) {
             u = find(u), v = find(v);

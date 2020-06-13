@@ -18,9 +18,7 @@ int __builtin_popcountll(unsigned long long x) {
 
 using ll = long long;
 
-int ctz(ll x) {
-    return x == 0 ? 64 : __builtin_ctzll(x);
-}
+int ctz(ll x) { return x == 0 ? 64 : __builtin_ctzll(x); }
 
 // maximum independent set in O(3^(n/3))
 int mis(const vector<ll> &g, ll unused) {

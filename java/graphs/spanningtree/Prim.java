@@ -31,6 +31,5 @@ public class Prim {
     }
 
     // Usage example
-    public static void main(String[] args) {
-    }
+    public static void main(String[] args) {}
 }

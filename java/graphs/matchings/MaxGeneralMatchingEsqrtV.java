@@ -53,8 +53,7 @@ public class MaxGeneralMatchingEsqrtV {
         int N;
         int[] head, next;
 
-        LinkedList() {
-        }
+        LinkedList() {}
 
         LinkedList(int N, int M) {
             this.N = N;
@@ -77,8 +76,7 @@ public class MaxGeneralMatchingEsqrtV {
         int qh, qt;
         int[] data;
 
-        Queue() {
-        }
+        Queue() {}
 
         Queue(int N) {
             qh = 0;
@@ -114,8 +112,7 @@ public class MaxGeneralMatchingEsqrtV {
     static class DisjointSetUnion {
         int[] par;
 
-        DisjointSetUnion() {
-        }
+        DisjointSetUnion() {}
 
         DisjointSetUnion(int N) {
             par = new int[N];

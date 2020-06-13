@@ -55,6 +55,4 @@ void build_suffix_automaton(const string &s) {
 }
 
 // usage example
-int main() {
-    build_suffix_automaton("ababcc");
-}
+int main() { build_suffix_automaton("ababcc"); }

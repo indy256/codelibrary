@@ -9,13 +9,9 @@ struct point {
 struct point2 {
     int x, y;
 
-    bool operator<(const point2 &b) const {
-        return x == b.x ? y < b.y : x < b.x;
-    }
+    bool operator<(const point2 &b) const { return x == b.x ? y < b.y : x < b.x; }
 
-    bool operator<(int qx) const {
-        return x < qx;
-    }
+    bool operator<(int qx) const { return x < qx; }
 };
 
 int main() {

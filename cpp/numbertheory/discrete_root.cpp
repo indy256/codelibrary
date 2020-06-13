@@ -62,6 +62,4 @@ int discrete_root(int a, int b, int m) {
 }
 
 // usage example
-int main() {
-    cout << discrete_root(3, 3, 5) << endl;
-}
+int main() { cout << discrete_root(3, 3, 5) << endl; }

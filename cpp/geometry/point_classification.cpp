@@ -31,5 +31,4 @@ Position classify(ll px, ll py, ll ax, ll ay) {
 }
 
 // usage example
-int main() {
-}
+int main() {}

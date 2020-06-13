@@ -9,11 +9,9 @@ struct binary_heap {
     vector<int> id2Pos;
     int size;
 
-    binary_heap() : size(0) {
-    }
+    binary_heap() : size(0) {}
 
-    binary_heap(int n) : heap(n), pos2Id(n), id2Pos(n), size(0) {
-    }
+    binary_heap(int n) : heap(n), pos2Id(n), id2Pos(n), size(0) {}
 
     void add(int id, T value) {
         heap[size] = value;

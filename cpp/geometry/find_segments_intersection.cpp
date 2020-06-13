@@ -6,20 +6,15 @@ using namespace std;
 
 typedef pair<int, int> pii;
 
-int cross(int ax, int ay, int bx, int by, int cx, int cy) {
-    return (bx - ax) * (cy - ay) - (by - ay) * (cx - ax);
-}
+int cross(int ax, int ay, int bx, int by, int cx, int cy) { return (bx - ax) * (cy - ay) - (by - ay) * (cx - ax); }
 
-int cross(pii a, pii b, pii c) {
-    return cross(a.first, a.second, b.first, b.second, c.first, c.second);
-}
+int cross(pii a, pii b, pii c) { return cross(a.first, a.second, b.first, b.second, c.first, c.second); }
 
 struct segment {
     pii a, b;
     int id;
 
-    segment(pii a, pii b, int id) : a(std::move(a)), b(std::move(b)), id(id) {
-    }
+    segment(pii a, pii b, int id) : a(std::move(a)), b(std::move(b)), id(id) {}
 
     bool operator<(const segment &o) const {
         if (a.first < o.a.first) {
@@ -38,8 +33,7 @@ struct event {
     int id;
     int type;
 
-    event(pii p, int id, int type) : p(std::move(p)), id(id), type(type) {
-    }
+    event(pii p, int id, int type) : p(std::move(p)), id(id), type(type) {}
 
     bool operator<(const event &o) const {
         return p.first < o.p.first ||
@@ -103,5 +97,4 @@ pii findIntersection(vector<segment> s) {
 }
 
 // usage example
-int main() {
-}
+int main() {}

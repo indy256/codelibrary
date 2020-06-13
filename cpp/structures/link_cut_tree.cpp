@@ -23,13 +23,10 @@ struct Node {
           size(1),
           left(nullptr),
           right(nullptr),
-          parent(nullptr) {
-    }
+          parent(nullptr) {}
 
     // tests whether x is a root of a splay tree
-    bool isRoot() {
-        return parent == nullptr || (parent->left != this && parent->right != this);
-    }
+    bool isRoot() { return parent == nullptr || (parent->left != this && parent->right != this); }
 
     void apply(long long v) {
         node_value += v;
@@ -62,13 +59,9 @@ struct Node {
         size = 1 + get_size(left) + get_size(right);
     }
 
-    static long long get_sub_tree_sum(Node *root) {
-        return root == nullptr ? 0 : root->sub_tree_sum;
-    }
+    static long long get_sub_tree_sum(Node *root) { return root == nullptr ? 0 : root->sub_tree_sum; }
 
-    static int get_size(Node *root) {
-        return root == nullptr ? 0 : root->size;
-    }
+    static int get_size(Node *root) { return root == nullptr ? 0 : root->size; }
 };
 
 void connect(Node *ch, Node *p, int is_left_child) {

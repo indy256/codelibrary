@@ -34,9 +34,7 @@ void output_tandems(const string &s, int shift, bool left, int cntr, int l, int 
     }
 }
 
-inline int get_z(const vector<int> &z, int i) {
-    return 0 <= i && i < (int)z.size() ? z[i] : 0;
-}
+inline int get_z(const vector<int> &z, int i) { return 0 <= i && i < (int)z.size() ? z[i] : 0; }
 
 void find_tandems(string s, int shift = 0) {
     int n = (int)s.length();
@@ -74,6 +72,4 @@ void find_tandems(string s, int shift = 0) {
 }
 
 // usage example
-int main() {
-    find_tandems("abcabczz");
-}
+int main() { find_tandems("abcabczz"); }

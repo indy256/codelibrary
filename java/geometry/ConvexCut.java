@@ -51,6 +51,5 @@ public class ConvexCut {
         return new Point(x, y);
     }
 
-    public static void main(String[] args) {
-    }
+    public static void main(String[] args) {}
 }

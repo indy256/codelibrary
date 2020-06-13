@@ -13,8 +13,7 @@ using ordered_map = tree<int, int, less<>, rb_tree_tag, tree_order_statistics_no
 struct tree2d {
     vector<ordered_set> sets;
 
-    tree2d(int n) : sets(n) {
-    }
+    tree2d(int n) : sets(n) {}
 
     void add(int x, int v) {
         for (; x < sets.size(); x |= x + 1)
@@ -67,6 +66,5 @@ int main() {
 }
 
 #else
-int main() {
-}
+int main() {}
 #endif

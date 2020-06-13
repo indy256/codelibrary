@@ -24,6 +24,4 @@ string min_cyclic_shift(string s) {
 }
 
 // usage example
-int main() {
-    cout << min_cyclic_shift("bcabab") << endl;
-}
+int main() { cout << min_cyclic_shift("bcabab") << endl; }

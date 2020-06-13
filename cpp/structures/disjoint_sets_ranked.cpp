@@ -11,9 +11,7 @@ tuple<vector<int>, vector<int>> create_sets(int n) {
     return tuple{res, rank};
 }
 
-int root(vector<int> &p, int x) {
-    return x == p[x] ? x : (p[x] = root(p, p[x]));
-}
+int root(vector<int> &p, int x) { return x == p[x] ? x : (p[x] = root(p, p[x])); }
 
 void unite(vector<int> &p, vector<int> &rank, int a, int b) {
     a = root(p, a);

@@ -22,5 +22,4 @@ int find_tree_centroid(const vector<vector<int>> &tree, int u, int p) {
 }
 
 // usage example
-int main() {
-}
+int main() {}

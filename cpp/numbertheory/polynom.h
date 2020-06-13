@@ -464,8 +464,7 @@ class OnlineProduct {
     vector<T> b;
     vector<T> c;
 
-    OnlineProduct(const vector<T> &a_) : a(a_) {
-    }
+    OnlineProduct(const vector<T> &a_) : a(a_) {}
 
     T add(const T &val) {
         int i = (int)b.size();

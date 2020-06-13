@@ -21,8 +21,7 @@ class fenwick_interval {
     }
 
    public:
-    fenwick_interval(int n) : t1(n), t2(n) {
-    }
+    fenwick_interval(int n) : t1(n), t2(n) {}
 
     void add(int a, int b, T value) {
         add(t1, a, value);
@@ -32,9 +31,7 @@ class fenwick_interval {
     }
 
     // sum[0..i]
-    T sum(int i) {
-        return sum(t1, i) * i + sum(t2, i);
-    }
+    T sum(int i) { return sum(t1, i) * i + sum(t2, i); }
 };
 
 // usage example

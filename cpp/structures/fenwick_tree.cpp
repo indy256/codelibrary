@@ -8,8 +8,7 @@ template <class T>
 struct fenwick {
     vector<T> t;
 
-    fenwick(int n) : t(n) {
-    }
+    fenwick(int n) : t(n) {}
 
     void add(int i, T value) {
         for (; i < t.size(); i |= i + 1)

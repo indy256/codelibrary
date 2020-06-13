@@ -9,8 +9,7 @@ struct Node {
     int right;
     int nsum;
 
-    Node(int lo, int hi, int val) : left(lo), right(hi), nsum(val) {
-    }
+    Node(int lo, int hi, int val) : left(lo), right(hi), nsum(val) {}
 
     void add(int pos, int val) {
         if (pos < left || pos > right) {

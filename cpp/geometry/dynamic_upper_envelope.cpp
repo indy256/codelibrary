@@ -13,13 +13,9 @@ struct Line {
     ll a, b;
     mutable ll p;
 
-    bool operator<(const Line &o) const {
-        return a < o.a;
-    }
+    bool operator<(const Line &o) const { return a < o.a; }
 
-    bool operator<(ll x) const {
-        return p < x;
-    }
+    bool operator<(ll x) const { return p < x; }
 };
 
 struct LineContainer : multiset<Line, less<>> {

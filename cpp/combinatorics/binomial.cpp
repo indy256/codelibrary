@@ -9,6 +9,4 @@ int binomial(int n, int k) {
     return res;
 }
 
-int main() {
-    cout << binomial(5, 3) << endl;
-}
+int main() { cout << binomial(5, 3) << endl; }

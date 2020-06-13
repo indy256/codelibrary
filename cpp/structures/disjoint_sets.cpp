@@ -10,9 +10,7 @@ vector<int> create_sets(int n) {
     return res;
 }
 
-int root(vector<int> &p, int x) {
-    return x == p[x] ? x : (p[x] = root(p, p[x]));
-}
+int root(vector<int> &p, int x) { return x == p[x] ? x : (p[x] = root(p, p[x])); }
 
 void unite(vector<int> &p, int a, int b) {
     a = root(p, a);

@@ -12,8 +12,7 @@ struct max_flow_dinic {
     vector<vector<Edge>> graph;
     vector<int> dist;
 
-    max_flow_dinic(int nodes) : graph(nodes), dist(nodes) {
-    }
+    max_flow_dinic(int nodes) : graph(nodes), dist(nodes) {}
 
     void add_bidi_edge(int s, int t, int cap) {
         Edge a = {t, (int)graph[t].size(), cap, 0};

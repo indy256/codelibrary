@@ -55,9 +55,7 @@ long long calc_total_size() {
     return ret;
 }
 
-bool in_group(const vi &g) {
-    return fast_filter(g, false) == -1;
-}
+bool in_group(const vi &g) { return fast_filter(g, false) == -1; }
 
 void solve(const vector<vector<int>> &perms, int _n) {
     n = _n;

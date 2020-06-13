@@ -5,15 +5,11 @@ using namespace std;
 struct point {
     int x, y;
 
-    bool operator==(const point &p) const {
-        return x == p.x && y == p.y;
-    }
+    bool operator==(const point &p) const { return x == p.x && y == p.y; }
 };
 
 struct hasher {
-    size_t operator()(const point &p) const {
-        return p.x * 37 + p.y;
-    }
+    size_t operator()(const point &p) const { return p.x * 37 + p.y; }
 };
 
 int main() {
