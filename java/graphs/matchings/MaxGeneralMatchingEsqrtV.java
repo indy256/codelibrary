@@ -62,9 +62,7 @@ public class MaxGeneralMatchingEsqrtV {
             clear();
         }
 
-        void clear() {
-            Arrays.fill(head, -1);
-        }
+        void clear() { Arrays.fill(head, -1); }
 
         void push(int h, int u) {
             next[u] = head[h];
@@ -84,29 +82,17 @@ public class MaxGeneralMatchingEsqrtV {
             data = new int[N];
         }
 
-        int get(int i) {
-            return data[i];
-        }
+        int get(int i) { return data[i]; }
 
-        void enqueue(int u) {
-            data[qt++] = u;
-        }
+        void enqueue(int u) { data[qt++] = u; }
 
-        int dequeue() {
-            return data[qh++];
-        }
+        int dequeue() { return data[qh++]; }
 
-        boolean empty() {
-            return qh == qt;
-        }
+        boolean empty() { return qh == qt; }
 
-        void clear() {
-            qh = qt = 0;
-        }
+        void clear() { qh = qt = 0; }
 
-        int size() {
-            return qt;
-        }
+        int size() { return qt; }
     }
 
     static class DisjointSetUnion {
@@ -120,9 +106,7 @@ public class MaxGeneralMatchingEsqrtV {
                 par[i] = i;
         }
 
-        int find(int u) {
-            return par[u] == u ? u : (par[u] = find(par[u]));
-        }
+        int find(int u) { return par[u] == u ? u : (par[u] = find(par[u])); }
 
         void unite(int u, int v) {
             u = find(u);

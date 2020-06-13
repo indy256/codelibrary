@@ -35,9 +35,7 @@ public class MaxGeneralWeightedMatchingV3 {
 
     Deque<Integer> q = new ArrayDeque<>();
 
-    int e_delta(edge e) {
-        return lab[e.u] + lab[e.v] - g[e.u][e.v].w * 2;
-    }
+    int e_delta(edge e) { return lab[e.u] + lab[e.v] - g[e.u][e.v].w * 2; }
 
     void update_slack(int u, int x) {
         if (slack[x] == 0 || e_delta(g[u][x]) < e_delta(g[slack[x]][x]))
@@ -101,9 +99,7 @@ public class MaxGeneralWeightedMatchingV3 {
             swap(a, from++, --to);
     }
 
-    static void swap(List<Integer> a, int i, int j) {
-        a.set(i, a.set(j, a.get(i)));
-    }
+    static void swap(List<Integer> a, int i, int j) { a.set(i, a.set(j, a.get(i))); }
 
     void augment(int u, int v) {
         for (;;) {
@@ -330,9 +326,7 @@ public class MaxGeneralWeightedMatchingV3 {
         return new Result(tot_weight, n_matches);
     }
 
-    void add_edge(int u, int v, int w) {
-        g[u][v].w = g[v][u].w = w;
-    }
+    void add_edge(int u, int v, int w) { g[u][v].w = g[v][u].w = w; }
 
     void init(int _n) {
         n = _n;

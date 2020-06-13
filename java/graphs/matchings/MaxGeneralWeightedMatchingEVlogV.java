@@ -50,30 +50,20 @@ public class MaxGeneralWeightedMatchingEVlogV {
             index = new int[N];
         }
 
-        int size() {
-            return size_;
-        }
+        int size() { return size_; }
 
-        boolean empty() {
-            return size_ == 0;
-        }
+        boolean empty() { return size_ == 0; }
 
         void clear() {
             while (size_ > 0)
                 index[node[size_--].id] = 0;
         }
 
-        T min() {
-            return node[1].value;
-        }
+        T min() { return node[1].value; }
 
-        int argmin() {
-            return node[1].id;
-        } // argmin ?
+        int argmin() { return node[1].id; } // argmin ?
 
-        T get_val(int id) {
-            return node[index[id]].value;
-        }
+        T get_val(int id) { return node[index[id]].value; }
 
         void pop() {
             if (size_ > 0)
@@ -85,9 +75,7 @@ public class MaxGeneralWeightedMatchingEVlogV {
                 pop(index[id]);
         }
 
-        boolean has(int id) {
-            return index[id] != 0;
-        }
+        boolean has(int id) { return index[id] != 0; }
 
         void update(int id, T v) {
             if (!has(id)) {
@@ -164,9 +152,7 @@ public class MaxGeneralWeightedMatchingEVlogV {
             V key;
             int child, next, prev;
 
-            Node() {
-                prev = -1;
-            } // "prev < 0" means the node is unused.
+            Node() { prev = -1; } // "prev < 0" means the node is unused.
 
             Node(V v) {
                 key = v;
@@ -204,21 +190,13 @@ public class MaxGeneralWeightedMatchingEVlogV {
                 node[i] = new Node();
         }
 
-        boolean empty(int h) {
-            return heap[h] == 0;
-        }
+        boolean empty(int h) { return heap[h] == 0; }
 
-        boolean used(int v) {
-            return node[v].prev >= 0;
-        }
+        boolean used(int v) { return node[v].prev >= 0; }
 
-        Key min(int h) {
-            return node[heap[h]].key;
-        }
+        Key min(int h) { return node[heap[h]].key; }
 
-        int argmin(int h) {
-            return heap[h];
-        }
+        int argmin(int h) { return heap[h]; }
 
         void pop(int h) {
             // assert(!empty(h));
@@ -344,29 +322,17 @@ public class MaxGeneralWeightedMatchingEVlogV {
             data = new int[N];
         }
 
-        int get(int i) {
-            return data[i];
-        }
+        int get(int i) { return data[i]; }
 
-        void enqueue(int u) {
-            data[qt++] = u;
-        }
+        void enqueue(int u) { data[qt++] = u; }
 
-        int dequeue() {
-            return data[qh++];
-        }
+        int dequeue() { return data[qh++]; }
 
-        boolean empty() {
-            return qh == qt;
-        }
+        boolean empty() { return qh == qt; }
 
-        void clear() {
-            qh = qt = 0;
-        }
+        void clear() { qh = qt = 0; }
 
-        int size() {
-            return qt;
-        }
+        int size() { return qt; }
     }
 
     static class InputEdge {
@@ -427,21 +393,13 @@ public class MaxGeneralWeightedMatchingEVlogV {
             link[1] = new NodeLink(u, u);
         }
 
-        int next_v() {
-            return link[0].v;
-        }
+        int next_v() { return link[0].v; }
 
-        int next_b() {
-            return link[0].b;
-        }
+        int next_b() { return link[0].b; }
 
-        int prev_v() {
-            return link[1].v;
-        }
+        int prev_v() { return link[1].v; }
 
-        int prev_b() {
-            return link[1].b;
-        }
+        int prev_b() { return link[1].b; }
     }
 
     static class Event {
@@ -557,9 +515,7 @@ public class MaxGeneralWeightedMatchingEVlogV {
         return ret >> 1;
     }
 
-    long reduced_cost(int u, int v, Edge e) {
-        return potential[u] + potential[v] - e.cost;
-    }
+    long reduced_cost(int u, int v, Edge e) { return potential[u] + potential[v] - e.cost; }
 
     void rematch(int v, int w) {
         int t = mate[v];
