@@ -9,9 +9,7 @@ import java.util.stream.Stream;
 public class MinCostFlowBF {
     List<Edge>[] graph;
 
-    public MinCostFlowBF(int nodes) {
-        graph = Stream.generate(ArrayList::new).limit(nodes).toArray(List[] ::new);
-    }
+    public MinCostFlowBF(int nodes) { graph = Stream.generate(ArrayList::new).limit(nodes).toArray(List[] ::new); }
 
     class Edge {
         int to, rev, cap, f, cost;
