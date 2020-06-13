@@ -184,13 +184,9 @@ public class GeneticAlgorithm extends JFrame {
         final int[] p;
         private double cost = Double.NaN;
 
-        public Chromosome(int[] p) {
-            this.p = p;
-        }
+        public Chromosome(int[] p) { this.p = p; }
 
-        public double getCost() {
-            return Double.isNaN(cost) ? cost = eval(p) : cost;
-        }
+        public double getCost() { return Double.isNaN(cost) ? cost = eval(p) : cost; }
 
         @Override
         public int compareTo(Chromosome o) {
@@ -202,9 +198,7 @@ public class GeneticAlgorithm extends JFrame {
         List<Chromosome> chromosomes = new ArrayList<>();
         final int populationLimit;
 
-        public Population(int populationLimit) {
-            this.populationLimit = populationLimit;
-        }
+        public Population(int populationLimit) { this.populationLimit = populationLimit; }
 
         public void nextGeneration() {
             Collections.sort(chromosomes);
@@ -239,7 +233,5 @@ public class GeneticAlgorithm extends JFrame {
         new Thread(this::geneticAlgorithm).start();
     }
 
-    public static void main(String[] args) {
-        new GeneticAlgorithm();
-    }
+    public static void main(String[] args) { new GeneticAlgorithm(); }
 }

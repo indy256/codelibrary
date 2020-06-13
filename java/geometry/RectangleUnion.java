@@ -17,9 +17,7 @@ public class RectangleUnion {
             this.y = y;
         }
 
-        public void update(int from, int to, int delta) {
-            update(from, to, delta, 0, 0, y.length - 1);
-        }
+        public void update(int from, int to, int delta) { update(from, to, delta, 0, 0, y.length - 1); }
 
         void update(int from, int to, int delta, int root, int left, int right) {
             if (from == left && to == right) {

@@ -10,9 +10,7 @@ public class MergeableHeap {
         Heap left;
         Heap right;
 
-        Heap(int value) {
-            this.value = value;
-        }
+        Heap(int value) { this.value = value; }
     }
 
     public static Heap merge(Heap a, Heap b) {
@@ -34,9 +32,7 @@ public class MergeableHeap {
         return a;
     }
 
-    public static Heap add(Heap h, int value) {
-        return merge(h, new Heap(value));
-    }
+    public static Heap add(Heap h, int value) { return merge(h, new Heap(value)); }
 
     public static class HeapAndResult {
         Heap heap;
@@ -48,9 +44,7 @@ public class MergeableHeap {
         }
     }
 
-    public static HeapAndResult removeMin(Heap h) {
-        return new HeapAndResult(merge(h.left, h.right), h.value);
-    }
+    public static HeapAndResult removeMin(Heap h) { return new HeapAndResult(merge(h.left, h.right), h.value); }
 
     // Usage example
     public static void main(String[] args) {

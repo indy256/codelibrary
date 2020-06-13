@@ -4,13 +4,9 @@ import java.util.LinkedList;
 import javax.script.*;
 
 public class ExpressionParserShuntingYard {
-    static boolean isDelim(char c) {
-        return c == ' ';
-    }
+    static boolean isDelim(char c) { return c == ' '; }
 
-    static boolean isOperator(char c) {
-        return c == '+' || c == '-' || c == '*' || c == '/' || c == '%';
-    }
+    static boolean isOperator(char c) { return c == '+' || c == '-' || c == '*' || c == '/' || c == '%'; }
 
     static int priority(char op) {
         switch (op) {

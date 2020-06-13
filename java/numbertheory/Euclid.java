@@ -5,9 +5,7 @@ import java.util.Arrays;
 import java.util.Random;
 
 public class Euclid {
-    public static int gcd(int a, int b) {
-        return b == 0 ? Math.abs(a) : gcd(b, a % b);
-    }
+    public static int gcd(int a, int b) { return b == 0 ? Math.abs(a) : gcd(b, a % b); }
 
     public static int gcd2(int a, int b) {
         while (b != 0) {
@@ -18,9 +16,7 @@ public class Euclid {
         return Math.abs(a);
     }
 
-    public static int lcm(int a, int b) {
-        return Math.abs(a / gcd(a, b) * b);
-    }
+    public static int lcm(int a, int b) { return Math.abs(a / gcd(a, b) * b); }
 
     // returns { gcd(a,b), x, y } such that gcd(a,b) = a*x + b*y
     public static long[] euclid(long a, long b) {
@@ -65,9 +61,7 @@ public class Euclid {
     }
 
     // precondition: m > 0 && gcd(a, m) = 1
-    public static int modInverse2(int a, int m) {
-        return mod((int) euclid(a, m)[1], m);
-    }
+    public static int modInverse2(int a, int m) { return mod((int) euclid(a, m)[1], m); }
 
     // precondition: p is prime
     public static int[] generateInverses(int p) {

@@ -26,9 +26,7 @@ public class FenwickTreeExtended {
     }
 
     // sum[a..b]
-    public static int sum(int[] t, int a, int b) {
-        return sum(t, b) - sum(t, a - 1);
-    }
+    public static int sum(int[] t, int a, int b) { return sum(t, b) - sum(t, a - 1); }
 
     public static int get(int[] t, int i) {
         int res = t[i];
@@ -38,9 +36,7 @@ public class FenwickTreeExtended {
         return res;
     }
 
-    public static void set(int[] t, int i, int value) {
-        add(t, i, -get(t, i) + value);
-    }
+    public static void set(int[] t, int i, int value) { add(t, i, -get(t, i) + value); }
 
     ///////////////////////////////////////////////////////
     // interval add
@@ -50,9 +46,7 @@ public class FenwickTreeExtended {
     }
 
     // point query
-    public static int get1(int[] t, int i) {
-        return sum(t, i);
-    }
+    public static int get1(int[] t, int i) { return sum(t, i); }
     ///////////////////////////////////////////////////////
 
     ///////////////////////////////////////////////////////
@@ -65,9 +59,7 @@ public class FenwickTreeExtended {
     }
 
     // interval query
-    public static int sum(int[] t1, int[] t2, int i) {
-        return sum(t1, i) * i + sum(t2, i);
-    }
+    public static int sum(int[] t1, int[] t2, int i) { return sum(t1, i) * i + sum(t2, i); }
     ///////////////////////////////////////////////////////
 
     // Returns min(p | sum[0,p] >= sum)

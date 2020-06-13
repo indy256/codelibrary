@@ -51,13 +51,9 @@ public class Factorization {
         }
     }
 
-    static long gcd(long a, long b) {
-        return a == 0 ? b : gcd(b % a, a);
-    }
+    static long gcd(long a, long b) { return a == 0 ? b : gcd(b % a, a); }
 
-    static long g(long x, long n) {
-        return (41 * x + 1) % n;
-    }
+    static long g(long x, long n) { return (41 * x + 1) % n; }
 
     // returns divisor of n: https://en.wikipedia.org/wiki/Fermat%27s_factorization_method
     public static long ferma(long n) {

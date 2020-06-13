@@ -70,9 +70,7 @@ public class HeavyLightTest {
         System.out.println("Test passed");
     }
 
-    static long edge(int u, int v) {
-        return ((long) Math.min(u, v) << 16) + Math.max(u, v);
-    }
+    static long edge(int u, int v) { return ((long) Math.min(u, v) << 16) + Math.max(u, v); }
 
     static boolean getPathFromAtoB(List<Integer>[] tree, int a, int b, int p, List<Integer> path) {
         path.add(a);

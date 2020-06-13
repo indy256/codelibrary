@@ -10,9 +10,7 @@ public class DisjointSets {
         return p;
     }
 
-    public static int root(int[] p, int x) {
-        return x == p[x] ? x : (p[x] = root(p, p[x]));
-    }
+    public static int root(int[] p, int x) { return x == p[x] ? x : (p[x] = root(p, p[x])); }
 
     public static boolean unite(int[] p, int a, int b) {
         a = root(p, a);

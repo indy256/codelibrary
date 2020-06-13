@@ -10,9 +10,7 @@ public class LinkCutTreeLca {
         Node parent;
 
         // tests whether x is a root of a splay tree
-        boolean isRoot() {
-            return parent == null || (parent.left != this && parent.right != this);
-        }
+        boolean isRoot() { return parent == null || (parent.left != this && parent.right != this); }
     }
 
     static void connect(Node ch, Node p, Boolean isLeftChild) {

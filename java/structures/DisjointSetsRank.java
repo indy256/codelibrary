@@ -11,9 +11,7 @@ public class DisjointSetsRank {
         rank = new int[size];
     }
 
-    public int root(int x) {
-        return x == p[x] ? x : (p[x] = root(p[x]));
-    }
+    public int root(int x) { return x == p[x] ? x : (p[x] = root(p[x])); }
 
     public void unite(int a, int b) {
         a = root(a);

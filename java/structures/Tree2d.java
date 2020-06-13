@@ -3,9 +3,7 @@ package structures;
 public class Tree2d {
     Treap.Node[] t;
 
-    public Tree2d(int n) {
-        t = new Treap.Node[2 * n];
-    }
+    public Tree2d(int n) { t = new Treap.Node[2 * n]; }
 
     public long query(int x1, int x2, int y1, int y2) {
         long res = 0;

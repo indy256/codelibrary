@@ -13,9 +13,7 @@ public class QuadTree {
     static final int maxy = (1 << 30);
 
     // insert point (x,y)
-    public void insert(int x, int y) {
-        root = insert(root, 0, 0, maxx - 1, maxy - 1, x, y);
-    }
+    public void insert(int x, int y) { root = insert(root, 0, 0, maxx - 1, maxy - 1, x, y); }
 
     Node insert(Node node, int ax, int ay, int bx, int by, int x, int y) {
         if (ax > x || x > bx || ay > y || y > by)
@@ -38,9 +36,7 @@ public class QuadTree {
     }
 
     // number of points in [x1,x2] x [y1,y2]
-    public int count(int x1, int y1, int x2, int y2) {
-        return count(root, 0, 0, maxx - 1, maxy - 1, x1, y1, x2, y2);
-    }
+    public int count(int x1, int y1, int x2, int y2) { return count(root, 0, 0, maxx - 1, maxy - 1, x1, y1, x2, y2); }
 
     int count(Node node, int ax, int ay, int bx, int by, int x1, int y1, int x2, int y2) {
         if (node == null || ax > x2 || x1 > bx || ay > y2 || y1 > by)

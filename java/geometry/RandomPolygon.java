@@ -121,7 +121,5 @@ public class RandomPolygon extends JFrame {
         }.start();
     }
 
-    public static void main(String[] args) {
-        new RandomPolygon();
-    }
+    public static void main(String[] args) { new RandomPolygon(); }
 }

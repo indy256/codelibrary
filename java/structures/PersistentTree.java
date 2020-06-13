@@ -6,9 +6,7 @@ public class PersistentTree {
         Node left, right;
         int sum;
 
-        Node(int value) {
-            sum = value;
-        }
+        Node(int value) { sum = value; }
 
         Node(Node left, Node right) {
             this.left = left;

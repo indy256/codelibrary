@@ -20,13 +20,9 @@ public class CombinatorialEnumerations {
         // by contract only the last element of prefix can be invalid and in this case 0 must be returned
         protected abstract long count(int[] prefix);
 
-        public int[] next(int[] sequence) {
-            return fromNumber(toNumber(sequence) + 1);
-        }
+        public int[] next(int[] sequence) { return fromNumber(toNumber(sequence) + 1); }
 
-        public long totalCount() {
-            return count(new int[0]);
-        }
+        public long totalCount() { return count(new int[0]); }
 
         public long toNumber(int[] sequence) {
             long res = 0;
@@ -69,9 +65,7 @@ public class CombinatorialEnumerations {
     }
 
     public static class Arrangements extends AbstractEnumeration {
-        public Arrangements(int n, int k) {
-            super(n, k);
-        }
+        public Arrangements(int n, int k) { super(n, k); }
 
         @Override
         protected long count(int[] prefix) {
@@ -90,9 +84,7 @@ public class CombinatorialEnumerations {
     }
 
     public static class Permutations extends Arrangements {
-        public Permutations(int n) {
-            super(n, n);
-        }
+        public Permutations(int n) { super(n, n); }
     }
 
     public static class Combinations extends AbstractEnumeration {

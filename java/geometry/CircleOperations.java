@@ -5,9 +5,7 @@ import java.util.*;
 public class CircleOperations {
     static final double EPS = 1e-10;
 
-    public static double fastHypot(double x, double y) {
-        return Math.sqrt(x * x + y * y);
-    }
+    public static double fastHypot(double x, double y) { return Math.sqrt(x * x + y * y); }
 
     public static class Point {
         double x, y;
@@ -27,9 +25,7 @@ public class CircleOperations {
             this.r = r;
         }
 
-        public boolean contains(Point p) {
-            return fastHypot(p.x - x, p.y - y) < r + EPS;
-        }
+        public boolean contains(Point p) { return fastHypot(p.x - x, p.y - y) < r + EPS; }
     }
 
     public static class Line {
@@ -223,7 +219,5 @@ public class CircleOperations {
         }
     }
 
-    static boolean eq(Point p1, Point p2) {
-        return !(fastHypot(p1.x - p2.x, p1.y - p2.y) > 1e-9);
-    }
+    static boolean eq(Point p1, Point p2) { return !(fastHypot(p1.x - p2.x, p1.y - p2.y) > 1e-9); }
 }

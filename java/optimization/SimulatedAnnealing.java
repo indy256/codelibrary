@@ -102,7 +102,5 @@ public class SimulatedAnnealing extends JFrame {
         new Thread(this::anneal).start();
     }
 
-    public static void main(String[] args) {
-        new SimulatedAnnealing();
-    }
+    public static void main(String[] args) { new SimulatedAnnealing(); }
 }

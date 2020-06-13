@@ -68,9 +68,7 @@ public class HeavyLight {
         return res[0];
     }
 
-    public void modify(int u, int v, long delta) {
-        processPath(u, v, (a, b) -> segmentTree.modify(a, b, delta));
-    }
+    public void modify(int u, int v, long delta) { processPath(u, v, (a, b) -> segmentTree.modify(a, b, delta)); }
 
     void processPath(int u, int v, BiConsumer<Integer, Integer> op) {
         for (; pathRoot[u] != pathRoot[v]; v = parent[pathRoot[v]]) {

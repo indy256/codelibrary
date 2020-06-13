@@ -19,7 +19,5 @@ public class SimpsonIntegration {
     }
 
     // Usage example
-    public static void main(String[] args) {
-        System.out.println(integrate(x -> Math.sin(x), 0, Math.PI / 2));
-    }
+    public static void main(String[] args) { System.out.println(integrate(x -> Math.sin(x), 0, Math.PI / 2)); }
 }

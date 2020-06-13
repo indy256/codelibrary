@@ -8,9 +8,7 @@ public class BinaryHeap {
     int[] heap;
     int size;
 
-    public BinaryHeap(int n) {
-        heap = new int[n];
-    }
+    public BinaryHeap(int n) { heap = new int[n]; }
 
     // build heap in O(n)
     public BinaryHeap(int[] values) {

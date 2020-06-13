@@ -166,7 +166,5 @@ public class LinKernighan extends JFrame {
         new Thread(this::linKernighan).start();
     }
 
-    public static void main(String[] args) {
-        new LinKernighan();
-    }
+    public static void main(String[] args) { new LinKernighan(); }
 }

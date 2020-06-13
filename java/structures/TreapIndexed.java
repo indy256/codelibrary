@@ -50,17 +50,11 @@ public class TreapIndexed {
             size = 1 + getSize(left) + getSize(right);
         }
 
-        static long getMx(Node root) {
-            return root == null ? Long.MIN_VALUE : root.mx;
-        }
+        static long getMx(Node root) { return root == null ? Long.MIN_VALUE : root.mx; }
 
-        static long getSum(Node root) {
-            return root == null ? 0 : root.sum;
-        }
+        static long getSum(Node root) { return root == null ? 0 : root.sum; }
 
-        static int getSize(Node root) {
-            return root == null ? 0 : root.size;
-        }
+        static int getSize(Node root) { return root == null ? 0 : root.size; }
     }
 
     public static class TreapPair {

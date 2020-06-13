@@ -56,7 +56,5 @@ public class NewtonInterpolation {
         }
     }
 
-    static int f(int x) {
-        return x * x * x + 5 * x * x + x + 3;
-    }
+    static int f(int x) { return x * x * x + 5 * x * x + x + 3; }
 }

@@ -96,9 +96,7 @@ public class KdTreeRectQuery {
     }
 
     // number of points in [x1,x2] x [y1,y2]
-    public int count(int x1, int y1, int x2, int y2) {
-        return count(0, tx.length, x1, y1, x2, y2);
-    }
+    public int count(int x1, int y1, int x2, int y2) { return count(0, tx.length, x1, y1, x2, y2); }
 
     int count(int low, int high, int x1, int y1, int x2, int y2) {
         if (low >= high)

@@ -11,9 +11,7 @@ public class LinkCutTreeConnectivity {
         boolean revert;
 
         // tests whether x is a root of a splay tree
-        boolean isRoot() {
-            return parent == null || (parent.left != this && parent.right != this);
-        }
+        boolean isRoot() { return parent == null || (parent.left != this && parent.right != this); }
 
         void push() {
             if (revert) {

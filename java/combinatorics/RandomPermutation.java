@@ -58,7 +58,5 @@ public class RandomPermutation {
     }
 
     // Usage example
-    public static void main(String[] args) {
-        System.out.println(Arrays.toString(getRandomPermutation(5)));
-    }
+    public static void main(String[] args) { System.out.println(Arrays.toString(getRandomPermutation(5))); }
 }

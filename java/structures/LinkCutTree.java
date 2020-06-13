@@ -24,9 +24,7 @@ public class LinkCutTree {
         }
 
         // tests whether x is a root of a splay tree
-        boolean isRoot() {
-            return parent == null || (parent.left != this && parent.right != this);
-        }
+        boolean isRoot() { return parent == null || (parent.left != this && parent.right != this); }
 
         void apply(long v) {
             nodeValue += v;
@@ -59,13 +57,9 @@ public class LinkCutTree {
             size = 1 + getSize(left) + getSize(right);
         }
 
-        static long getSubTreeSum(Node root) {
-            return root == null ? 0 : root.subTreeSum;
-        }
+        static long getSubTreeSum(Node root) { return root == null ? 0 : root.subTreeSum; }
 
-        static int getSize(Node root) {
-            return root == null ? 0 : root.size;
-        }
+        static int getSize(Node root) { return root == null ? 0 : root.size; }
     }
 
     static void connect(Node ch, Node p, Boolean isLeftChild) {

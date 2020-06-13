@@ -18,9 +18,7 @@ public class Rational implements Comparable<Rational> {
         this.den = den.divide(g);
     }
 
-    public Rational(long num, long den) {
-        this(BigInteger.valueOf(num), BigInteger.valueOf(den));
-    }
+    public Rational(long num, long den) { this(BigInteger.valueOf(num), BigInteger.valueOf(den)); }
 
     public Rational(long num) {
         this.num = BigInteger.valueOf(num);
@@ -35,53 +33,29 @@ public class Rational implements Comparable<Rational> {
         return new Rational(num.multiply(r.den).subtract(r.num.multiply(den)), den.multiply(r.den));
     }
 
-    public Rational mul(Rational r) {
-        return new Rational(num.multiply(r.num), den.multiply(r.den));
-    }
+    public Rational mul(Rational r) { return new Rational(num.multiply(r.num), den.multiply(r.den)); }
 
-    public Rational div(Rational r) {
-        return new Rational(num.multiply(r.den), den.multiply(r.num));
-    }
+    public Rational div(Rational r) { return new Rational(num.multiply(r.den), den.multiply(r.num)); }
 
-    public Rational negate() {
-        return new Rational(num.negate(), den);
-    }
+    public Rational negate() { return new Rational(num.negate(), den); }
 
-    public Rational inverse() {
-        return new Rational(den, num);
-    }
+    public Rational inverse() { return new Rational(den, num); }
 
-    public Rational abs() {
-        return new Rational(num.abs(), den);
-    }
+    public Rational abs() { return new Rational(num.abs(), den); }
 
-    public int signum() {
-        return num.signum();
-    }
+    public int signum() { return num.signum(); }
 
-    public double doubleValue() {
-        return num.doubleValue() / den.doubleValue();
-    }
+    public double doubleValue() { return num.doubleValue() / den.doubleValue(); }
 
-    public long longValue() {
-        return num.longValue() / den.longValue();
-    }
+    public long longValue() { return num.longValue() / den.longValue(); }
 
-    public int compareTo(Rational other) {
-        return (num.multiply(other.den).compareTo(other.num.multiply(den)));
-    }
+    public int compareTo(Rational other) { return (num.multiply(other.den).compareTo(other.num.multiply(den))); }
 
-    public boolean equals(Object obj) {
-        return num.equals(((Rational) obj).num) && den.equals(((Rational) obj).den);
-    }
+    public boolean equals(Object obj) { return num.equals(((Rational) obj).num) && den.equals(((Rational) obj).den); }
 
-    public int hashCode() {
-        return num.hashCode() * 31 + den.hashCode();
-    }
+    public int hashCode() { return num.hashCode() * 31 + den.hashCode(); }
 
-    public String toString() {
-        return num + "/" + den;
-    }
+    public String toString() { return num + "/" + den; }
 
     // Usage example
     public static void main(String[] args) {

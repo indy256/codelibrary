@@ -21,13 +21,9 @@ public class FenwickTree2D {
         return sum(t, r2, c2) - sum(t, r1 - 1, c2) - sum(t, r2, c1 - 1) + sum(t, r1 - 1, c1 - 1);
     }
 
-    public static int get(int[][] t, int r, int c) {
-        return sum(t, r, c, r, c);
-    }
+    public static int get(int[][] t, int r, int c) { return sum(t, r, c, r, c); }
 
-    public static void set(int[][] t, int r, int c, int value) {
-        add(t, r, c, -get(t, r, c) + value);
-    }
+    public static void set(int[][] t, int r, int c, int value) { add(t, r, c, -get(t, r, c) + value); }
 
     // Usage example
     public static void main(String[] args) {

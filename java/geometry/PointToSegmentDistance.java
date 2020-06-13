@@ -19,9 +19,7 @@ public class PointToSegmentDistance {
         return fastHypot(px - q * dx, py - q * dy);
     }
 
-    static double fastHypot(double x, double y) {
-        return Math.sqrt(x * x + y * y);
-    }
+    static double fastHypot(double x, double y) { return Math.sqrt(x * x + y * y); }
 
     // Line2D.ptLineDist
     public static double pointToLineDistance(long x, long y, long a, long b, long c) {

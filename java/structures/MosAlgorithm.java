@@ -16,13 +16,9 @@ public class MosAlgorithm {
         }
     }
 
-    static int add(int[] a, int[] cnt, int i) {
-        return ++cnt[a[i]] == 1 ? 1 : 0;
-    }
+    static int add(int[] a, int[] cnt, int i) { return ++cnt[a[i]] == 1 ? 1 : 0; }
 
-    static int remove(int[] a, int[] cnt, int i) {
-        return --cnt[a[i]] == 0 ? -1 : 0;
-    }
+    static int remove(int[] a, int[] cnt, int i) { return --cnt[a[i]] == 0 ? -1 : 0; }
 
     public static int[] processQueries(int[] a, Query[] queries) {
         for (int i = 0; i < queries.length; i++)
