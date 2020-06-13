@@ -6,8 +6,7 @@ public class ShortestHamiltonianCycle {
     public static int getShortestHamiltonianCycle(int[][] dist) {
         int n = dist.length;
         int[][] dp = new int[1 << n][n];
-        for (int[] d : dp)
-            Arrays.fill(d, Integer.MAX_VALUE / 2);
+        for (int[] d : dp) Arrays.fill(d, Integer.MAX_VALUE / 2);
         dp[1][0] = 0;
         for (int mask = 1; mask < 1 << n; mask += 2) {
             for (int i = 1; i < n; i++) {

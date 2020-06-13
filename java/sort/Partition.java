@@ -11,10 +11,8 @@ public class Partition {
         int separator = a[separatorIndex];
         swap(a, i++, separatorIndex);
         while (i <= j) {
-            while (i <= j && a[i] < separator)
-                ++i;
-            while (i <= j && a[j] > separator)
-                --j;
+            while (i <= j && a[i] < separator) ++i;
+            while (i <= j && a[j] > separator) --j;
             if (i >= j)
                 break;
             swap(a, i++, j--);

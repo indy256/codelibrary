@@ -22,13 +22,11 @@ public class HeavyLightTest {
                 if (rnd.nextBoolean()) {
                     long delta = rnd.nextInt(50) - 100;
                     hl.modify(a, b, delta);
-                    for (int u : path)
-                        x[u] = x[u] + delta;
+                    for (int u : path) x[u] = x[u] + delta;
                 } else {
                     long res1 = hl.get(a, b).sum;
                     long res2 = 0;
-                    for (int u : path)
-                        res2 = res2 + x[u];
+                    for (int u : path) res2 = res2 + x[u];
                     if (res1 != res2)
                         throw new RuntimeException();
                 }
@@ -41,8 +39,7 @@ public class HeavyLightTest {
             HeavyLight hl = new HeavyLight(tree, false);
             Map<Long, Integer> x = new HashMap<>();
             for (int u = 0; u < tree.length; u++)
-                for (int v : tree[u])
-                    x.put(edge(u, v), 0);
+                for (int v : tree[u]) x.put(edge(u, v), 0);
             for (int i = 0; i < 1000; i++) {
                 int a = rnd.nextInt(n);
                 int b = rnd.nextInt(n);
@@ -70,7 +67,9 @@ public class HeavyLightTest {
         System.out.println("Test passed");
     }
 
-    static long edge(int u, int v) { return ((long) Math.min(u, v) << 16) + Math.max(u, v); }
+    static long edge(int u, int v) {
+        return ((long) Math.min(u, v) << 16) + Math.max(u, v);
+    }
 
     static boolean getPathFromAtoB(List<Integer>[] tree, int a, int b, int p, List<Integer> path) {
         path.add(a);

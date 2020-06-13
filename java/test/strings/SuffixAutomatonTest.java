@@ -14,8 +14,7 @@ public class SuffixAutomatonTest {
             String b = getRandomString(len2, rnd);
             int[] occurrences1 = SuffixAutomaton.occurrences(a, b);
             List<Integer> occurrences2 = new ArrayList<>();
-            for (int p = a.indexOf(b); p != -1; p = a.indexOf(b, p + 1))
-                occurrences2.add(p);
+            for (int p = a.indexOf(b); p != -1; p = a.indexOf(b, p + 1)) occurrences2.add(p);
             if (!Arrays.equals(occurrences1, occurrences2.stream().mapToInt(Integer::intValue).toArray()))
                 throw new RuntimeException();
             String res1 = SuffixAutomaton.lcs(a, b);

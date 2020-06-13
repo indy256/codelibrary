@@ -12,11 +12,9 @@ public class ConvexHullTest {
         ConvexHull.Point[] h = new ConvexHull.Point[n * 2];
         int cnt = 0;
         for (int i = 0; i < n; h[cnt++] = p[i++])
-            while (cnt > 1 && cross(h[cnt - 2], h[cnt - 1], p[i]) >= 0)
-                --cnt;
+            while (cnt > 1 && cross(h[cnt - 2], h[cnt - 1], p[i]) >= 0) --cnt;
         for (int i = n - 2, t = cnt; i >= 0; h[cnt++] = p[i--])
-            while (cnt > t && cross(h[cnt - 2], h[cnt - 1], p[i]) >= 0)
-                --cnt;
+            while (cnt > t && cross(h[cnt - 2], h[cnt - 1], p[i]) >= 0) --cnt;
         return Arrays.copyOf(h, cnt - 1 - (h[0].x == h[1].x && h[0].y == h[1].y ? 1 : 0));
     }
 
@@ -50,8 +48,7 @@ public class ConvexHullTest {
                     hull = list.toArray(new ConvexHull.Point[list.size()]);
                 }
                 boolean exterior = false;
-                for (ConvexHull.Point point : points)
-                    exterior |= pointInPolygon(point.x, point.y, hull) == -1;
+                for (ConvexHull.Point point : points) exterior |= pointInPolygon(point.x, point.y, hull) == -1;
                 if (exterior != (i > 0))
                     throw new RuntimeException();
             }

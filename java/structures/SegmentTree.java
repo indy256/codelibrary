@@ -36,21 +36,21 @@ public class SegmentTree {
         }
     }
 
-    void pull(int x, int y) { tree[x] = unite(tree[x + 1], tree[y]); }
+    void pull(int x, int y) {
+        tree[x] = unite(tree[x + 1], tree[y]);
+    }
 
     SegmentTree(int n) {
         this.n = n;
         tree = new Node[2 * n - 1];
-        for (int i = 0; i < tree.length; i++)
-            tree[i] = new Node();
+        for (int i = 0; i < tree.length; i++) tree[i] = new Node();
         build(0, 0, n - 1);
     }
 
     SegmentTree(long[] v) {
         n = v.length;
         tree = new Node[2 * n - 1];
-        for (int i = 0; i < tree.length; i++)
-            tree[i] = new Node();
+        for (int i = 0; i < tree.length; i++) tree[i] = new Node();
         build(0, 0, n - 1, v);
     }
 
@@ -77,7 +77,9 @@ public class SegmentTree {
         pull(x, y);
     }
 
-    public Node get(int ll, int rr) { return get(ll, rr, 0, 0, n - 1); }
+    public Node get(int ll, int rr) {
+        return get(ll, rr, 0, 0, n - 1);
+    }
 
     Node get(int ll, int rr, int x, int l, int r) {
         if (ll <= l && r <= rr) {
@@ -100,7 +102,9 @@ public class SegmentTree {
         return res;
     }
 
-    void modify(int ll, int rr, long v) { modify(ll, rr, v, 0, 0, n - 1); }
+    void modify(int ll, int rr, long v) {
+        modify(ll, rr, v, 0, 0, n - 1);
+    }
 
     void modify(int ll, int rr, long v, int x, int l, int r) {
         if (ll <= l && r <= rr) {
@@ -120,7 +124,9 @@ public class SegmentTree {
     }
 
     // calls all FALSE elements to the left of the sought position exactly once
-    int findFirst(int ll, int rr, Predicate<Node> f) { return findFirst(ll, rr, f, 0, 0, n - 1); }
+    int findFirst(int ll, int rr, Predicate<Node> f) {
+        return findFirst(ll, rr, f, 0, 0, n - 1);
+    }
 
     int findFirst(int ll, int rr, Predicate<Node> f, int x, int l, int r) {
         if (ll <= l && r <= rr && !f.test(tree[x])) {

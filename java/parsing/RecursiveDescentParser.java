@@ -35,11 +35,17 @@ public class RecursiveDescentParser {
         Integer value;
         Lexeme sym;
 
-        Lexer(String s) { this.s = s; }
+        Lexer(String s) {
+            this.s = s;
+        }
 
-        void error(String message) { throw new RuntimeException("Lexer error: " + message); }
+        void error(String message) {
+            throw new RuntimeException("Lexer error: " + message);
+        }
 
-        void readCh() { ch = pos < s.length() ? s.charAt(pos++) : null; }
+        void readCh() {
+            ch = pos < s.length() ? s.charAt(pos++) : null;
+        }
 
         void readNextToken() {
             value = null;
@@ -101,9 +107,13 @@ public class RecursiveDescentParser {
     static class Parser {
         final Lexer lexer;
 
-        Parser(Lexer lexer) { this.lexer = lexer; }
+        Parser(Lexer lexer) {
+            this.lexer = lexer;
+        }
 
-        void error(String message) { throw new RuntimeException("Parser error: " + message); }
+        void error(String message) {
+            throw new RuntimeException("Parser error: " + message);
+        }
 
         Node term() {
             if (lexer.sym == Lexeme.ID) {

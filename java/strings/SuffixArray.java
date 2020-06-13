@@ -79,8 +79,7 @@ public class SuffixArray {
     public static int[] lcp(int[] sa, CharSequence s) {
         int n = sa.length;
         int[] rank = new int[n];
-        for (int i = 0; i < n; i++)
-            rank[sa[i]] = i;
+        for (int i = 0; i < n; i++) rank[sa[i]] = i;
         int[] lcp = new int[n - 1];
         for (int i = 0, h = 0; i < n; i++) {
             if (rank[i] < n - 1) {
@@ -101,8 +100,7 @@ public class SuffixArray {
         int[] sa1 = suffixArray(s1);
 
         // print suffixes in lexicographic order
-        for (int p : sa1)
-            System.out.println(s1.substring(p));
+        for (int p : sa1) System.out.println(s1.substring(p));
 
         System.out.println("lcp = " + Arrays.toString(lcp(sa1, s1)));
 

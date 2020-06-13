@@ -6,12 +6,13 @@ public class DisjointSetsRank {
 
     public DisjointSetsRank(int size) {
         p = new int[size];
-        for (int i = 0; i < size; i++)
-            p[i] = i;
+        for (int i = 0; i < size; i++) p[i] = i;
         rank = new int[size];
     }
 
-    public int root(int x) { return x == p[x] ? x : (p[x] = root(p[x])); }
+    public int root(int x) {
+        return x == p[x] ? x : (p[x] = root(p[x]));
+    }
 
     public void unite(int a, int b) {
         a = root(a);

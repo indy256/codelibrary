@@ -8,14 +8,15 @@ public class BinaryHeap {
     int[] heap;
     int size;
 
-    public BinaryHeap(int n) { heap = new int[n]; }
+    public BinaryHeap(int n) {
+        heap = new int[n];
+    }
 
     // build heap in O(n)
     public BinaryHeap(int[] values) {
         heap = values.clone();
         size = values.length;
-        for (int pos = size / 2 - 1; pos >= 0; pos--)
-            down(pos);
+        for (int pos = size / 2 - 1; pos >= 0; pos--) down(pos);
     }
 
     public int removeMin() {

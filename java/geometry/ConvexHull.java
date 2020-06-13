@@ -10,8 +10,7 @@ public class ConvexHull {
         int cnt = 0;
         for (int i = 0; i < 2 * n - 1; i++) {
             int j = i < n ? i : 2 * n - 2 - i;
-            while (cnt >= 2 && isNotRightTurn(hull[cnt - 2], hull[cnt - 1], points[j]))
-                --cnt;
+            while (cnt >= 2 && isNotRightTurn(hull[cnt - 2], hull[cnt - 1], points[j])) --cnt;
             hull[cnt++] = points[j];
         }
         return Arrays.copyOf(hull, cnt - 1);

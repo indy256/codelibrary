@@ -19,20 +19,17 @@ public class MaximumZeroSubmatrix {
                     d[c] = r;
             int size = 0;
             for (int c = 0; c < C; ++c) {
-                while (size > 0 && d[st[size - 1]] <= d[c])
-                    --size;
+                while (size > 0 && d[st[size - 1]] <= d[c]) --size;
                 d1[c] = size == 0 ? -1 : st[size - 1];
                 st[size++] = c;
             }
             size = 0;
             for (int c = C - 1; c >= 0; --c) {
-                while (size > 0 && d[st[size - 1]] <= d[c])
-                    --size;
+                while (size > 0 && d[st[size - 1]] <= d[c]) --size;
                 d2[c] = size == 0 ? C : st[size - 1];
                 st[size++] = c;
             }
-            for (int j = 0; j < C; ++j)
-                res = Math.max(res, (r - d[j]) * (d2[j] - d1[j] - 1));
+            for (int j = 0; j < C; ++j) res = Math.max(res, (r - d[j]) * (d2[j] - d1[j] - 1));
         }
         return res;
     }
@@ -45,8 +42,7 @@ public class MaximumZeroSubmatrix {
             int C = rnd.nextInt(10) + 1;
             int[][] a = new int[R][C];
             for (int r = 0; r < R; r++)
-                for (int c = 0; c < C; c++)
-                    a[r][c] = rnd.nextInt(2);
+                for (int c = 0; c < C; c++) a[r][c] = rnd.nextInt(2);
             int res1 = maximumZeroSubmatrix(a);
             int res2 = slowMaximumZeroSubmatrix(a);
             if (res1 != res2)

@@ -10,8 +10,7 @@ public class FloydWarshall {
         int n = d.length;
         int[][] pred = new int[n][n];
         for (int i = 0; i < n; i++)
-            for (int j = 0; j < n; j++)
-                pred[i][j] = (i == j || d[i][j] == INF) ? -1 : i;
+            for (int j = 0; j < n; j++) pred[i][j] = (i == j || d[i][j] == INF) ? -1 : i;
         for (int k = 0; k < n; k++) {
             for (int i = 0; i < n; i++) {
                 // if (d[i][k] == INF) continue;

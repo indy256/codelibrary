@@ -48,8 +48,7 @@ public class RandomGraph {
             g[u].add(v);
             g[v].add(u);
         }
-        for (int i = 0; i < V; i++)
-            Collections.sort(g[i]);
+        for (int i = 0; i < V; i++) Collections.sort(g[i]);
         return g;
     }
 
@@ -77,8 +76,7 @@ public class RandomGraph {
             g[u].add(v);
             g[v].add(u);
         }
-        for (int i = 0; i < V; i++)
-            Collections.sort(g[i]);
+        for (int i = 0; i < V; i++) Collections.sort(g[i]);
         return g;
     }
 

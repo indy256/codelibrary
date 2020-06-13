@@ -11,7 +11,9 @@ public class LinkCutTreeConnectivity {
         boolean revert;
 
         // tests whether x is a root of a splay tree
-        boolean isRoot() { return parent == null || (parent.left != this && parent.right != this); }
+        boolean isRoot() {
+            return parent == null || (parent.left != this && parent.right != this);
+        }
 
         void push() {
             if (revert) {
@@ -142,8 +144,7 @@ public class LinkCutTreeConnectivity {
             int n = rnd.nextInt(50) + 1;
             boolean[][] g = new boolean[n][n];
             Node[] nodes = new Node[n];
-            for (int i = 0; i < n; i++)
-                nodes[i] = new Node();
+            for (int i = 0; i < n; i++) nodes[i] = new Node();
             for (int query = 0; query < 2_000; query++) {
                 int cmd = rnd.nextInt(10);
                 int u = rnd.nextInt(n);

@@ -17,15 +17,25 @@ public class Fraction implements Comparable<Fraction> {
         this.b = b;
     }
 
-    static long gcd(long a, long b) { return b == 0 ? a : gcd(b, a % b); }
+    static long gcd(long a, long b) {
+        return b == 0 ? a : gcd(b, a % b);
+    }
 
-    public Fraction plus(Fraction o) { return new Fraction(a * o.b + o.a * b, b * o.b); }
+    public Fraction plus(Fraction o) {
+        return new Fraction(a * o.b + o.a * b, b * o.b);
+    }
 
-    public Fraction minus(Fraction o) { return new Fraction(a * o.b - o.a * b, b * o.b); }
+    public Fraction minus(Fraction o) {
+        return new Fraction(a * o.b - o.a * b, b * o.b);
+    }
 
-    public Fraction mul(Fraction o) { return new Fraction(a * o.a, b * o.b); }
+    public Fraction mul(Fraction o) {
+        return new Fraction(a * o.a, b * o.b);
+    }
 
-    public Fraction div(Fraction o) { return new Fraction(a * o.b, b * o.a); }
+    public Fraction div(Fraction o) {
+        return new Fraction(a * o.b, b * o.a);
+    }
 
     @Override
     public int compareTo(Fraction o) {

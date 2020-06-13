@@ -98,11 +98,9 @@ public class RandomPolygon extends JFrame {
                 int[][] xy = getRandomPolygon(new Random().nextInt(100) + 3, getWidth() - 20, getHeight() - 50);
                 g.setColor(Color.BLUE);
                 int n = xy[0].length;
-                for (int i = 0, j = n - 1; i < n; j = i++)
-                    g.drawLine(xy[0][i], xy[1][i], xy[0][j], xy[1][j]);
+                for (int i = 0, j = n - 1; i < n; j = i++) g.drawLine(xy[0][i], xy[1][i], xy[0][j], xy[1][j]);
                 g.setColor(Color.RED);
-                for (int i = 0; i < n; i++)
-                    g.drawOval(xy[0][i] - 1, xy[1][i] - 1, 3, 3);
+                for (int i = 0; i < n; i++) g.drawOval(xy[0][i] - 1, xy[1][i] - 1, 3, 3);
             }
         });
         setSize(new Dimension(600, 600));
@@ -121,5 +119,7 @@ public class RandomPolygon extends JFrame {
         }.start();
     }
 
-    public static void main(String[] args) { new RandomPolygon(); }
+    public static void main(String[] args) {
+        new RandomPolygon();
+    }
 }

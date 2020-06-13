@@ -3,7 +3,9 @@ package structures;
 public class Tree2d {
     Treap.Node[] t;
 
-    public Tree2d(int n) { t = new Treap.Node[2 * n]; }
+    public Tree2d(int n) {
+        t = new Treap.Node[2 * n];
+    }
 
     public long query(int x1, int x2, int y1, int y2) {
         long res = 0;
@@ -24,8 +26,7 @@ public class Tree2d {
 
     public void insert(int x, int y, int value) {
         x += t.length / 2;
-        for (; x > 0; x >>= 1)
-            t[x] = Treap.insert(t[x], y, value);
+        for (; x > 0; x >>= 1) t[x] = Treap.insert(t[x], y, value);
     }
 
     public void modify(int x1, int x2, int y1, int y2, int delta) {

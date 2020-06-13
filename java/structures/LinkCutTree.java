@@ -24,7 +24,9 @@ public class LinkCutTree {
         }
 
         // tests whether x is a root of a splay tree
-        boolean isRoot() { return parent == null || (parent.left != this && parent.right != this); }
+        boolean isRoot() {
+            return parent == null || (parent.left != this && parent.right != this);
+        }
 
         void apply(long v) {
             nodeValue += v;
@@ -57,9 +59,13 @@ public class LinkCutTree {
             size = 1 + getSize(left) + getSize(right);
         }
 
-        static long getSubTreeSum(Node root) { return root == null ? 0 : root.subTreeSum; }
+        static long getSubTreeSum(Node root) {
+            return root == null ? 0 : root.subTreeSum;
+        }
 
-        static int getSize(Node root) { return root == null ? 0 : root.size; }
+        static int getSize(Node root) {
+            return root == null ? 0 : root.size;
+        }
     }
 
     static void connect(Node ch, Node p, Boolean isLeftChild) {
@@ -192,8 +198,7 @@ public class LinkCutTree {
             boolean[][] g = new boolean[n][n];
             int[] val = new int[n];
             Node[] nodes = new Node[n];
-            for (int i = 0; i < n; i++)
-                nodes[i] = new Node(0);
+            for (int i = 0; i < n; i++) nodes[i] = new Node(0);
             for (int query = 0; query < 2_000; query++) {
                 int cmd = rnd.nextInt(10);
                 int u = rnd.nextInt(n);
@@ -212,8 +217,7 @@ public class LinkCutTree {
                         List<Integer> path = new ArrayList<>();
                         getPathFromAtoB(g, u, v, -1, path);
                         int res = 0;
-                        for (int i : path)
-                            res = res + val[i];
+                        for (int i : path) res = res + val[i];
                         if (query(x, y) != res)
                             throw new RuntimeException();
                     }
@@ -222,8 +226,7 @@ public class LinkCutTree {
                         List<Integer> path = new ArrayList<>();
                         getPathFromAtoB(g, u, v, -1, path);
                         int delta = rnd.nextInt(100) + 1;
-                        for (int i : path)
-                            val[i] += delta;
+                        for (int i : path) val[i] += delta;
                         modify(x, y, delta);
                     }
                 } else {

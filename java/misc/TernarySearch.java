@@ -61,10 +61,8 @@ public class TernarySearch {
             int[] a = new int[n];
             final int range = 10;
             a[p] = rnd.nextInt(range);
-            for (int i = p - 1; i >= 0; i--)
-                a[i] = a[i + 1] - rnd.nextInt(range) - 1;
-            for (int i = p + 1; i < n; i++)
-                a[i] = a[i - 1] - rnd.nextInt(range);
+            for (int i = p - 1; i >= 0; i--) a[i] = a[i + 1] - rnd.nextInt(range) - 1;
+            for (int i = p + 1; i < n; i++) a[i] = a[i - 1] - rnd.nextInt(range);
             int res = ternarySearch(i -> a[i], 0, a.length - 1);
             int res2 = ternarySearch2(i -> a[i], 0, a.length - 1);
             if (p != res || p != res2)

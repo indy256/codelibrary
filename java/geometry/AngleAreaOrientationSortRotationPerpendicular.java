@@ -34,7 +34,9 @@ public class AngleAreaOrientationSortRotationPerpendicular {
         return Long.signum(bx * cy - by * cx);
     }
 
-    public static boolean isMiddle(long a, long m, long b) { return Math.min(a, b) <= m && m <= Math.max(a, b); }
+    public static boolean isMiddle(long a, long m, long b) {
+        return Math.min(a, b) <= m && m <= Math.max(a, b);
+    }
 
     public static boolean isMiddle(long ax, long ay, long mx, long my, long bx, long by) {
         return orientation(ax, ay, mx, my, bx, by) == 0 && isMiddle(ax, mx, bx) && isMiddle(ay, my, by);
@@ -73,7 +75,9 @@ public class AngleAreaOrientationSortRotationPerpendicular {
             p.x * Math.cos(angle) - p.y * Math.sin(angle), p.x * Math.sin(angle) + p.y * Math.cos(angle));
     }
 
-    public Line perpendicular(Line line, long x, long y) { return new Line(-line.b, line.a, line.b * x - line.a * y); }
+    public Line perpendicular(Line line, long x, long y) {
+        return new Line(-line.b, line.a, line.b * x - line.a * y);
+    }
 
     public static class Line {
         long a, b, c;

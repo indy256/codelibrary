@@ -30,8 +30,7 @@ public class Sat2 {
 
         List<Integer>[] reverseGraph = Stream.generate(ArrayList::new).limit(n).toArray(List[] ::new);
         for (int i = 0; i < n; i++)
-            for (int j : graph[i])
-                reverseGraph[j].add(i);
+            for (int j : graph[i]) reverseGraph[j].add(i);
 
         int[] comp = new int[n];
         Arrays.fill(comp, -1);
@@ -46,8 +45,7 @@ public class Sat2 {
                 return null;
 
         boolean[] res = new boolean[n / 2];
-        for (int i = 0; i < n; i += 2)
-            res[i / 2] = comp[i] > comp[i ^ 1];
+        for (int i = 0; i < n; i += 2) res[i / 2] = comp[i] > comp[i ^ 1];
         return res;
     }
 

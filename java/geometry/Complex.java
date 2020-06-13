@@ -14,43 +14,77 @@ public class Complex {
         this.y = y;
     }
 
-    public Complex conj() { return new Complex(x, -y); }
+    public Complex conj() {
+        return new Complex(x, -y);
+    }
 
-    public Complex sub(Complex b) { return new Complex(x - b.x, y - b.y); }
+    public Complex sub(Complex b) {
+        return new Complex(x - b.x, y - b.y);
+    }
 
-    public Complex add(Complex b) { return new Complex(x + b.x, y + b.y); }
+    public Complex add(Complex b) {
+        return new Complex(x + b.x, y + b.y);
+    }
 
-    public Complex mul(Complex b) { return new Complex(x * b.x - y * b.y, x * b.y + y * b.x); }
+    public Complex mul(Complex b) {
+        return new Complex(x * b.x - y * b.y, x * b.y + y * b.x);
+    }
 
-    public Complex div(Complex b) { return this.mul(b.conj()).mul(1 / b.len2()); }
+    public Complex div(Complex b) {
+        return this.mul(b.conj()).mul(1 / b.len2());
+    }
 
-    public Complex mul(double b) { return new Complex(x * b, y * b); }
+    public Complex mul(double b) {
+        return new Complex(x * b, y * b);
+    }
 
-    public double len2() { return x * x + y * y; }
+    public double len2() {
+        return x * x + y * y;
+    }
 
-    public double abs() { return Math.sqrt(x * x + y * y); }
+    public double abs() {
+        return Math.sqrt(x * x + y * y);
+    }
 
-    public Complex norm() { return abs() == 0 ? new Complex(0, 0) : mul(1 / abs()); }
+    public Complex norm() {
+        return abs() == 0 ? new Complex(0, 0) : mul(1 / abs());
+    }
 
-    public double cross(Complex b) { return x * b.y - y * b.x; }
+    public double cross(Complex b) {
+        return x * b.y - y * b.x;
+    }
 
-    double cross2(Complex b) { return this.conj().mul(b).y; }
+    double cross2(Complex b) {
+        return this.conj().mul(b).y;
+    }
 
-    public double dot(Complex b) { return x * b.x + y * b.y; }
+    public double dot(Complex b) {
+        return x * b.x + y * b.y;
+    }
 
-    double dot2(Complex b) { return this.conj().mul(b).x; }
+    double dot2(Complex b) {
+        return this.conj().mul(b).x;
+    }
 
     public static Complex polar(double r, double theta) {
         return new Complex(r * Math.cos(theta), r * Math.sin(theta));
     }
 
-    public static Complex exp(Complex a) { return polar(Math.exp(a.x), a.y); }
+    public static Complex exp(Complex a) {
+        return polar(Math.exp(a.x), a.y);
+    }
 
-    public double arg() { return Math.atan2(y, x); }
+    public double arg() {
+        return Math.atan2(y, x);
+    }
 
-    public Complex rot90() { return new Complex(-y, x); }
+    public Complex rot90() {
+        return new Complex(-y, x);
+    }
 
-    public Complex rotate(Complex p, double angle) { return p.sub(this).mul(exp(new Complex(0, angle))).add(this); }
+    public Complex rotate(Complex p, double angle) {
+        return p.sub(this).mul(exp(new Complex(0, angle))).add(this);
+    }
 
     public Complex rotate2(Complex p, double angle) {
         p = p.sub(this);
@@ -64,7 +98,9 @@ public class Complex {
         return this.sub(p).div(s).conj().mul(s).add(p);
     }
 
-    public double proj(Complex p) { return dot(p) / this.abs(); }
+    public double proj(Complex p) {
+        return dot(p) / this.abs();
+    }
 
     public static double angle(Complex a, Complex p, Complex b) {
         a = a.sub(p);

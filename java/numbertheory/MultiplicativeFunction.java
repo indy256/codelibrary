@@ -54,8 +54,7 @@ public interface MultiplicativeFunction {
         int[] divisors = IntStream.range(0, n + 1).toArray();
         for (int i = 2; i * i <= n; i++)
             if (divisors[i] == i)
-                for (int j = i * i; j <= n; j += i)
-                    divisors[j] = i;
+                for (int j = i * i; j <= n; j += i) divisors[j] = i;
         return divisors;
     }
 

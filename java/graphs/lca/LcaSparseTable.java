@@ -14,8 +14,7 @@ public class LcaSparseTable {
     void dfs(List<Integer>[] tree, int u, int p) {
         tin[u] = time++;
         up[0][u] = p;
-        for (int i = 1; i < len; i++)
-            up[i][u] = up[i - 1][up[i - 1][u]];
+        for (int i = 1; i < len; i++) up[i][u] = up[i - 1][up[i - 1][u]];
         for (int v : tree[u])
             if (v != p)
                 dfs(tree, v, u);
@@ -31,7 +30,9 @@ public class LcaSparseTable {
         dfs(tree, root, root);
     }
 
-    boolean isParent(int parent, int child) { return tin[parent] <= tin[child] && tout[child] <= tout[parent]; }
+    boolean isParent(int parent, int child) {
+        return tin[parent] <= tin[child] && tout[child] <= tout[parent];
+    }
 
     public int lca(int a, int b) {
         if (isParent(a, b))

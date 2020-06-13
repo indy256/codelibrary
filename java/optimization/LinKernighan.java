@@ -32,8 +32,7 @@ public class LinKernighan extends JFrame {
             for (int rev = -1; rev <= 1; rev += 2) {
                 for (int i = 0; i < n; i++) {
                     int[] p = new int[n];
-                    for (int j = 0; j < n; j++)
-                        p[j] = curState[(i + rev * j + n) % n];
+                    for (int j = 0; j < n; j++) p[j] = curState[(i + rev * j + n) % n];
                     boolean[][] added = new boolean[n][n];
                     double cost = eval(p);
                     double delta = -dist(x[p[n - 1]], y[p[n - 1]], x[p[0]], y[p[0]]);
@@ -166,5 +165,7 @@ public class LinKernighan extends JFrame {
         new Thread(this::linKernighan).start();
     }
 
-    public static void main(String[] args) { new LinKernighan(); }
+    public static void main(String[] args) {
+        new LinKernighan();
+    }
 }

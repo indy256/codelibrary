@@ -11,11 +11,9 @@ public class PruferCode {
         List<Integer>[] tree = Stream.generate(ArrayList::new).limit(n).toArray(List[] ::new);
         int[] degree = new int[n];
         Arrays.fill(degree, 1);
-        for (int v : pruferCode)
-            ++degree[v];
+        for (int v : pruferCode) ++degree[v];
         int ptr = 0;
-        while (degree[ptr] != 1)
-            ++ptr;
+        while (degree[ptr] != 1) ++ptr;
         int leaf = ptr;
         for (int v : pruferCode) {
             tree[leaf].add(v);

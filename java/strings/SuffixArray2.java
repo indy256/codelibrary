@@ -13,13 +13,11 @@ public class SuffixArray2 {
 
         for (int len = 1; len < n; len *= 2) {
             long[] rank2 = new long[n];
-            for (int i = 0; i < n; i++)
-                rank2[i] = ((long) rank[i] << 32) + (i + len < n ? rank[i + len] + 1 : 0);
+            for (int i = 0; i < n; i++) rank2[i] = ((long) rank[i] << 32) + (i + len < n ? rank[i + len] + 1 : 0);
 
             Arrays.sort(sa, Comparator.comparingLong(a -> rank2[a]));
 
-            for (int i = 0; i < n; i++)
-                rank[sa[i]] = i > 0 && rank2[sa[i - 1]] == rank2[sa[i]] ? rank[sa[i - 1]] : i;
+            for (int i = 0; i < n; i++) rank[sa[i]] = i > 0 && rank2[sa[i - 1]] == rank2[sa[i]] ? rank[sa[i - 1]] : i;
         }
         return Arrays.stream(sa).mapToInt(Integer::intValue).toArray();
     }

@@ -5,7 +5,9 @@ import java.util.*;
 public class CircleOperations {
     static final double EPS = 1e-10;
 
-    public static double fastHypot(double x, double y) { return Math.sqrt(x * x + y * y); }
+    public static double fastHypot(double x, double y) {
+        return Math.sqrt(x * x + y * y);
+    }
 
     public static class Point {
         double x, y;
@@ -25,7 +27,9 @@ public class CircleOperations {
             this.r = r;
         }
 
-        public boolean contains(Point p) { return fastHypot(p.x - x, p.y - y) < r + EPS; }
+        public boolean contains(Point p) {
+            return fastHypot(p.x - x, p.y - y) < r + EPS;
+        }
     }
 
     public static class Line {
@@ -125,10 +129,8 @@ public class CircleOperations {
     public static Line[] tangents(Circle a, Circle b) {
         List<Line> lines = new ArrayList<>();
         for (int i = -1; i <= 1; i += 2)
-            for (int j = -1; j <= 1; j += 2)
-                tangents(new Point(b.x - a.x, b.y - a.y), a.r * i, b.r * j, lines);
-        for (Line line : lines)
-            line.c -= line.a * a.x + line.b * a.y;
+            for (int j = -1; j <= 1; j += 2) tangents(new Point(b.x - a.x, b.y - a.y), a.r * i, b.r * j, lines);
+        for (Line line : lines) line.c -= line.a * a.x + line.b * a.y;
         return lines.toArray(new Line[lines.size()]);
     }
 
@@ -219,5 +221,7 @@ public class CircleOperations {
         }
     }
 
-    static boolean eq(Point p1, Point p2) { return !(fastHypot(p1.x - p2.x, p1.y - p2.y) > 1e-9); }
+    static boolean eq(Point p1, Point p2) {
+        return !(fastHypot(p1.x - p2.x, p1.y - p2.y) > 1e-9);
+    }
 }

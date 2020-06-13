@@ -11,8 +11,7 @@ public class PrimesAndDivisors {
 
         for (int i = 2; i * i <= n; i++)
             if (prime[i])
-                for (int j = i * i; j <= n; j += i)
-                    prime[j] = false;
+                for (int j = i * i; j <= n; j += i) prime[j] = false;
 
         int[] primes = new int[n + 1];
         int cnt = 0;
@@ -32,8 +31,7 @@ public class PrimesAndDivisors {
                 lp[i] = i;
                 primes[cnt++] = i;
             }
-            for (int j = 0; j < cnt && primes[j] <= lp[i] && i * primes[j] <= n; ++j)
-                lp[i * primes[j]] = primes[j];
+            for (int j = 0; j < cnt && primes[j] <= lp[i] && i * primes[j] <= n; ++j) lp[i * primes[j]] = primes[j];
         }
         return Arrays.copyOf(primes, cnt);
     }
@@ -52,8 +50,7 @@ public class PrimesAndDivisors {
         Arrays.fill(divisors, 2, n + 1, 1);
         for (int i = 2; i * i <= n; ++i)
             if (divisors[i] == 1)
-                for (int j = i; j * i <= n; j++)
-                    divisors[i * j] = divisors[j] + 1;
+                for (int j = i; j * i <= n; j++) divisors[i * j] = divisors[j] + 1;
         return divisors;
     }
 
@@ -68,8 +65,7 @@ public class PrimesAndDivisors {
                 lp[i] = i;
                 primes[cnt++] = i;
             }
-            for (int j = 0; j < cnt && primes[j] <= lp[i] && i * primes[j] <= n; ++j)
-                lp[i * primes[j]] = primes[j];
+            for (int j = 0; j < cnt && primes[j] <= lp[i] && i * primes[j] <= n; ++j) lp[i * primes[j]] = primes[j];
         }
         return lp;
     }
@@ -79,8 +75,7 @@ public class PrimesAndDivisors {
         int[] divisors = IntStream.range(0, n + 1).toArray();
         for (int i = 2; i * i <= n; i++)
             if (divisors[i] == i)
-                for (int j = i * i; j <= n; j += i)
-                    divisors[j] = i;
+                for (int j = i * i; j <= n; j += i) divisors[j] = i;
         return divisors;
     }
 
@@ -89,8 +84,7 @@ public class PrimesAndDivisors {
         int res = n;
         for (int i = 2; i * i <= n; i++)
             if (n % i == 0) {
-                while (n % i == 0)
-                    n /= i;
+                while (n % i == 0) n /= i;
                 res -= res / i;
             }
         if (n > 1)
@@ -102,8 +96,7 @@ public class PrimesAndDivisors {
     public static int[] generatePhi(int n) {
         int[] res = IntStream.range(0, n + 1).toArray();
         for (int i = 1; i <= n; i++)
-            for (int j = i + i; j <= n; j += i)
-                res[j] -= res[i];
+            for (int j = i + i; j <= n; j += i) res[j] -= res[i];
         return res;
     }
 

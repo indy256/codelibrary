@@ -23,8 +23,7 @@ public class GeneticAlgorithm extends JFrame {
 
     public void geneticAlgorithm() {
         bestState = new int[n];
-        for (int i = 0; i < n; i++)
-            bestState[i] = i;
+        for (int i = 0; i < n; i++) bestState[i] = i;
         final int populationLimit = 100;
         final Population population = new Population(populationLimit);
         final int n = x.length;
@@ -97,13 +96,11 @@ public class GeneticAlgorithm extends JFrame {
         int pos2 = 0;
         for (int i = 0; i < n; i++) {
             if (n1[i] == -1) {
-                while (used1[pos1])
-                    ++pos1;
+                while (used1[pos1]) ++pos1;
                 n1[i] = pos1++;
             }
             if (n2[i] == -1) {
-                while (used2[pos2])
-                    ++pos2;
+                while (used2[pos2]) ++pos2;
                 n2[i] = pos2++;
             }
         }
@@ -184,9 +181,13 @@ public class GeneticAlgorithm extends JFrame {
         final int[] p;
         private double cost = Double.NaN;
 
-        public Chromosome(int[] p) { this.p = p; }
+        public Chromosome(int[] p) {
+            this.p = p;
+        }
 
-        public double getCost() { return Double.isNaN(cost) ? cost = eval(p) : cost; }
+        public double getCost() {
+            return Double.isNaN(cost) ? cost = eval(p) : cost;
+        }
 
         @Override
         public int compareTo(Chromosome o) {
@@ -198,7 +199,9 @@ public class GeneticAlgorithm extends JFrame {
         List<Chromosome> chromosomes = new ArrayList<>();
         final int populationLimit;
 
-        public Population(int populationLimit) { this.populationLimit = populationLimit; }
+        public Population(int populationLimit) {
+            this.populationLimit = populationLimit;
+        }
 
         public void nextGeneration() {
             Collections.sort(chromosomes);
@@ -220,8 +223,7 @@ public class GeneticAlgorithm extends JFrame {
                     g.drawLine((int) (x[bestState[i]] * w), (int) ((1 - y[bestState[i]]) * h),
                         (int) (x[bestState[j]] * w), (int) ((1 - y[bestState[j]]) * h));
                 g.setColor(Color.RED);
-                for (int i = 0; i < n; i++)
-                    g.drawOval((int) (x[i] * w) - 1, (int) ((1 - y[i]) * h) - 1, 3, 3);
+                for (int i = 0; i < n; i++) g.drawOval((int) (x[i] * w) - 1, (int) ((1 - y[i]) * h) - 1, 3, 3);
                 g.setColor(Color.BLACK);
                 g.drawString(String.format("length: %.3f", eval(bestState)), 5, h + 20);
                 g.drawString(String.format("generation: %d", generation), 150, h + 20);
@@ -233,5 +235,7 @@ public class GeneticAlgorithm extends JFrame {
         new Thread(this::geneticAlgorithm).start();
     }
 
-    public static void main(String[] args) { new GeneticAlgorithm(); }
+    public static void main(String[] args) {
+        new GeneticAlgorithm();
+    }
 }

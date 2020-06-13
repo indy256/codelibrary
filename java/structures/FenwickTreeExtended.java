@@ -3,15 +3,13 @@ package structures;
 public class FenwickTreeExtended {
     // T[i] += value
     public static void add(int[] t, int i, int value) {
-        for (; i < t.length; i |= i + 1)
-            t[i] += value;
+        for (; i < t.length; i |= i + 1) t[i] += value;
     }
 
     // sum[0..i]
     public static int sum(int[] t, int i) {
         int res = 0;
-        for (; i >= 0; i = (i & (i + 1)) - 1)
-            res += t[i];
+        for (; i >= 0; i = (i & (i + 1)) - 1) res += t[i];
         return res;
     }
 
@@ -26,17 +24,20 @@ public class FenwickTreeExtended {
     }
 
     // sum[a..b]
-    public static int sum(int[] t, int a, int b) { return sum(t, b) - sum(t, a - 1); }
+    public static int sum(int[] t, int a, int b) {
+        return sum(t, b) - sum(t, a - 1);
+    }
 
     public static int get(int[] t, int i) {
         int res = t[i];
         int lca = (i & (i + 1)) - 1;
-        for (--i; i != lca; i = (i & (i + 1)) - 1)
-            res -= t[i];
+        for (--i; i != lca; i = (i & (i + 1)) - 1) res -= t[i];
         return res;
     }
 
-    public static void set(int[] t, int i, int value) { add(t, i, -get(t, i) + value); }
+    public static void set(int[] t, int i, int value) {
+        add(t, i, -get(t, i) + value);
+    }
 
     ///////////////////////////////////////////////////////
     // interval add
@@ -46,7 +47,9 @@ public class FenwickTreeExtended {
     }
 
     // point query
-    public static int get1(int[] t, int i) { return sum(t, i); }
+    public static int get1(int[] t, int i) {
+        return sum(t, i);
+    }
     ///////////////////////////////////////////////////////
 
     ///////////////////////////////////////////////////////
@@ -59,7 +62,9 @@ public class FenwickTreeExtended {
     }
 
     // interval query
-    public static int sum(int[] t1, int[] t2, int i) { return sum(t1, i) * i + sum(t2, i); }
+    public static int sum(int[] t1, int[] t2, int i) {
+        return sum(t1, i) * i + sum(t2, i);
+    }
     ///////////////////////////////////////////////////////
 
     // Returns min(p | sum[0,p] >= sum)
@@ -83,8 +88,7 @@ public class FenwickTreeExtended {
         System.out.println(-1 == sum(t, 0, 9));
 
         t = createFromArray(new int[] {1, 2, 3, 4, 5, 6});
-        for (int i = 0; i < t.length; i++)
-            System.out.print(get(t, i) + " ");
+        for (int i = 0; i < t.length; i++) System.out.print(get(t, i) + " ");
         System.out.println();
         t = createFromArray(new int[] {0, 0, 1, 0, 0, 1, 0, 0});
         System.out.println(5 == lower_bound(t, 2));

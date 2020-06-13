@@ -6,8 +6,7 @@ import java.util.Arrays;
 public class Arrangements {
     public static boolean nextArrangement(int[] a, int n) {
         boolean[] used = new boolean[n];
-        for (int x : a)
-            used[x] = true;
+        for (int x : a) used[x] = true;
         int m = a.length;
         for (int i = m - 1; i >= 0; i--) {
             used[a[i]] = false;

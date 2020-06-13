@@ -26,7 +26,9 @@ public class BinarySearchTree {
             return search(t.r, key);
     }
 
-    public Node search(int key) { return search(root, key); }
+    public Node search(int key) {
+        return search(root, key);
+    }
 
     Node insert(Node t, Node p, int key, int value) {
         if (t == null) {
@@ -40,7 +42,9 @@ public class BinarySearchTree {
         return t;
     }
 
-    public void insert(int key, int value) { root = insert(root, null, key, value); }
+    public void insert(int key, int value) {
+        root = insert(root, null, key, value);
+    }
 
     void replace(Node a, Node b) {
         if (a.p == null)
@@ -62,8 +66,7 @@ public class BinarySearchTree {
             remove(t.r, key);
         else if (t.l != null && t.r != null) {
             Node m = t.r;
-            while (m.l != null)
-                m = m.l;
+            while (m.l != null) m = m.l;
             t.key = m.key;
             t.value = m.value;
             replace(m, m.r);
@@ -76,7 +79,9 @@ public class BinarySearchTree {
         }
     }
 
-    public void remove(int key) { remove(root, key); }
+    public void remove(int key) {
+        remove(root, key);
+    }
 
     void print(Node t) {
         if (t != null) {

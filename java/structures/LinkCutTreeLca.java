@@ -10,7 +10,9 @@ public class LinkCutTreeLca {
         Node parent;
 
         // tests whether x is a root of a splay tree
-        boolean isRoot() { return parent == null || (parent.left != this && parent.right != this); }
+        boolean isRoot() {
+            return parent == null || (parent.left != this && parent.right != this);
+        }
     }
 
     static void connect(Node ch, Node p, Boolean isLeftChild) {
@@ -87,8 +89,7 @@ public class LinkCutTreeLca {
 
     public static Node findRoot(Node x) {
         expose(x);
-        while (x.right != null)
-            x = x.right;
+        while (x.right != null) x = x.right;
         splay(x);
         return x;
     }
@@ -125,8 +126,7 @@ public class LinkCutTreeLca {
             int[] p = new int[n];
             Arrays.fill(p, -1);
             Node[] nodes = new Node[n];
-            for (int i = 0; i < n; i++)
-                nodes[i] = new Node();
+            for (int i = 0; i < n; i++) nodes[i] = new Node();
             for (int query = 0; query < 10_000; query++) {
                 int cmd = rnd.nextInt(10);
                 int u = rnd.nextInt(n);
@@ -148,8 +148,7 @@ public class LinkCutTreeLca {
                         Node lca = lca(x, y);
                         int cur = u;
                         Set<Integer> path = new HashSet<>();
-                        for (; cur != -1; cur = p[cur])
-                            path.add(cur);
+                        for (; cur != -1; cur = p[cur]) path.add(cur);
                         cur = v;
                         for (; cur != -1 && !path.contains(cur); cur = p[cur])
                             ;
@@ -177,8 +176,7 @@ public class LinkCutTreeLca {
 
     static int root(int[] p, int u) {
         int root = u;
-        while (p[root] != -1)
-            root = p[root];
+        while (p[root] != -1) root = p[root];
         return root;
     }
 }

@@ -12,10 +12,8 @@ public class Quicksort {
         int i = low;
         int j = high;
         while (i <= j) {
-            while (a[i] < separator)
-                ++i;
-            while (a[j] > separator)
-                --j;
+            while (a[i] < separator) ++i;
+            while (a[j] > separator) --j;
             if (i <= j) {
                 int t = a[i];
                 a[i] = a[j];

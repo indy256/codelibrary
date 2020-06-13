@@ -58,10 +58,8 @@ public class FFT {
         double[] pReal = new double[n];
         double[] pImag = new double[n];
         // p(x) = a(x) + i*b(x)
-        for (int i = 0; i < a.length; i++)
-            pReal[i] = a[i];
-        for (int i = 0; i < b.length; i++)
-            pImag[i] = b[i];
+        for (int i = 0; i < a.length; i++) pReal[i] = a[i];
+        for (int i = 0; i < b.length; i++) pImag[i] = b[i];
         fft(pReal, pImag, false);
         double[] abReal = new double[n];
         double[] abImag = new double[n];

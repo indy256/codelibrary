@@ -51,8 +51,7 @@ public class FunctionCycleDetection {
         int startPos = 0;
         tortoise = x0;
         hare = x0;
-        for (int i = 0; i < length; i++)
-            hare = f.apply(hare);
+        for (int i = 0; i < length; i++) hare = f.apply(hare);
 
         while (tortoise != hare) {
             tortoise = f.apply(tortoise);

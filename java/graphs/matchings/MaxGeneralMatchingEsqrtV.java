@@ -62,7 +62,9 @@ public class MaxGeneralMatchingEsqrtV {
             clear();
         }
 
-        void clear() { Arrays.fill(head, -1); }
+        void clear() {
+            Arrays.fill(head, -1);
+        }
 
         void push(int h, int u) {
             next[u] = head[h];
@@ -82,17 +84,29 @@ public class MaxGeneralMatchingEsqrtV {
             data = new int[N];
         }
 
-        int get(int i) { return data[i]; }
+        int get(int i) {
+            return data[i];
+        }
 
-        void enqueue(int u) { data[qt++] = u; }
+        void enqueue(int u) {
+            data[qt++] = u;
+        }
 
-        int dequeue() { return data[qh++]; }
+        int dequeue() {
+            return data[qh++];
+        }
 
-        boolean empty() { return qh == qt; }
+        boolean empty() {
+            return qh == qt;
+        }
 
-        void clear() { qh = qt = 0; }
+        void clear() {
+            qh = qt = 0;
+        }
 
-        int size() { return qt; }
+        int size() {
+            return qt;
+        }
     }
 
     static class DisjointSetUnion {
@@ -102,11 +116,12 @@ public class MaxGeneralMatchingEsqrtV {
 
         DisjointSetUnion(int N) {
             par = new int[N];
-            for (int i = 0; i < N; ++i)
-                par[i] = i;
+            for (int i = 0; i < N; ++i) par[i] = i;
         }
 
-        int find(int u) { return par[u] == u ? u : (par[u] = find(par[u])); }
+        int find(int u) {
+            return par[u] == u ? u : (par[u] = find(par[u]));
+        }
 
         void unite(int u, int v) {
             u = find(u);
@@ -146,14 +161,12 @@ public class MaxGeneralMatchingEsqrtV {
             ofs[e.from + 1] += 1;
             ofs[e.to + 1] += 1;
         }
-        for (int i = 1; i <= N + 1; ++i)
-            ofs[i] += ofs[i - 1];
+        for (int i = 1; i <= N + 1; ++i) ofs[i] += ofs[i - 1];
         for (Edge e : in) {
             edges[ofs[e.from]++] = e;
             edges[ofs[e.to]++] = new Edge(e.to, e.from);
         }
-        for (int i = N + 1; i > 0; --i)
-            ofs[i] = ofs[i - 1];
+        for (int i = N + 1; i > 0; --i) ofs[i] = ofs[i - 1];
         ofs[0] = 0;
     }
 
@@ -181,14 +194,10 @@ public class MaxGeneralMatchingEsqrtV {
 
     void clear() {
         que.clear();
-        for (int u = 1; u <= N; ++u)
-            potential[u] = 1;
-        for (int u = 1; u <= N; ++u)
-            dsu.par[u] = u;
-        for (int t = time_current_; t <= N / 2; ++t)
-            list.head[t] = -1;
-        for (int u = 1; u <= N; ++u)
-            blossom.head[u] = -1;
+        for (int u = 1; u <= N; ++u) potential[u] = 1;
+        for (int u = 1; u <= N; ++u) dsu.par[u] = u;
+        for (int t = time_current_; t <= N / 2; ++t) list.head[t] = -1;
+        for (int u = 1; u <= N; ++u) blossom.head[u] = -1;
     }
 
     // first phase
@@ -390,8 +399,7 @@ public class MaxGeneralMatchingEsqrtV {
 
     int find_maximal() {
         // discard blossoms whose potential is 0.
-        for (int u = 1; u <= N; ++u)
-            dsu.par[u] = u;
+        for (int u = 1; u <= N; ++u) dsu.par[u] = u;
         for (int i = 0; i < dsu_changelog_size_; ++i) {
             dsu.par[dsu_changelog[i].v] = dsu_changelog[i].par;
         }
@@ -426,8 +434,7 @@ public class MaxGeneralMatchingEsqrtV {
         label = new int[N + 1];
         Arrays.fill(label, kFree);
         link = new Link[N + 1];
-        for (int i = 0; i < link.length; i++)
-            link[i] = new Link(0, 0);
+        for (int i = 0; i < link.length; i++) link[i] = new Link(0, 0);
 
         dsu_changelog = new Log[N];
 

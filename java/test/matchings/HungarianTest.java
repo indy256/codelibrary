@@ -55,12 +55,10 @@ public class HungarianTest {
         int m = a[0].length - 1;
         int res = Integer.MAX_VALUE;
         int[] p = new int[n];
-        for (int i = 0; i < n; i++)
-            p[i] = i;
+        for (int i = 0; i < n; i++) p[i] = i;
         do {
             int cur = 0;
-            for (int i = 0; i < p.length; i++)
-                cur += a[i + 1][p[i] + 1];
+            for (int i = 0; i < p.length; i++) cur += a[i + 1][p[i] + 1];
             res = Math.min(res, cur);
         } while (nextArrangement(p, m));
         return res;

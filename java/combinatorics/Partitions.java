@@ -55,8 +55,7 @@ public class Partitions {
 
     public static void generateIncreasingPartitions(int[] p, int left, int last, int pos) {
         if (left == 0) {
-            for (int i = 0; i < pos; i++)
-                System.out.print(p[i] + " ");
+            for (int i = 0; i < pos; i++) System.out.print(p[i] + " ");
             System.out.println();
             return;
         }

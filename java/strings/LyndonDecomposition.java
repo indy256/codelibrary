@@ -17,8 +17,7 @@ public class LyndonDecomposition {
                     ++k;
                 ++j;
             }
-            while (i <= k)
-                i += j - k;
+            while (i <= k) i += j - k;
         }
         return new String(s, res, n / 2);
     }

@@ -50,11 +50,17 @@ public class TreapIndexed {
             size = 1 + getSize(left) + getSize(right);
         }
 
-        static long getMx(Node root) { return root == null ? Long.MIN_VALUE : root.mx; }
+        static long getMx(Node root) {
+            return root == null ? Long.MIN_VALUE : root.mx;
+        }
 
-        static long getSum(Node root) { return root == null ? 0 : root.sum; }
+        static long getSum(Node root) {
+            return root == null ? 0 : root.sum;
+        }
 
-        static int getSize(Node root) { return root == null ? 0 : root.size; }
+        static int getSize(Node root) {
+            return root == null ? 0 : root.size;
+        }
     }
 
     public static class TreapPair {
@@ -214,8 +220,7 @@ public class TreapIndexed {
                 int b = rnd.nextInt(list.size());
                 int a = rnd.nextInt(b + 1);
                 int res = list.get(a);
-                for (int i = a + 1; i <= b; i++)
-                    res = Math.max(res, list.get(i));
+                for (int i = a + 1; i <= b; i++) res = Math.max(res, list.get(i));
                 TreapAndResult tr = query(treap, a, b);
                 treap = tr.treap;
                 if (res != tr.mx)
@@ -224,8 +229,7 @@ public class TreapIndexed {
                 int b = rnd.nextInt(list.size());
                 int a = rnd.nextInt(b + 1);
                 int delta = rnd.nextInt(100) - 50;
-                for (int i = a; i <= b; i++)
-                    list.set(i, list.get(i) + delta);
+                for (int i = a; i <= b; i++) list.set(i, list.get(i) + delta);
                 treap = modify(treap, a, b, delta);
             } else {
                 for (int i = 0; i < list.size(); i++) {

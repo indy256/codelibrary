@@ -35,7 +35,9 @@ public class MaxGeneralWeightedMatchingV3 {
 
     Deque<Integer> q = new ArrayDeque<>();
 
-    int e_delta(edge e) { return lab[e.u] + lab[e.v] - g[e.u][e.v].w * 2; }
+    int e_delta(edge e) {
+        return lab[e.u] + lab[e.v] - g[e.u][e.v].w * 2;
+    }
 
     void update_slack(int u, int x) {
         if (slack[x] == 0 || e_delta(g[u][x]) < e_delta(g[slack[x]][x]))
@@ -53,15 +55,13 @@ public class MaxGeneralWeightedMatchingV3 {
         if (x <= n)
             q.addLast(x);
         else
-            for (int i : flower[x])
-                q_push(i);
+            for (int i : flower[x]) q_push(i);
     }
 
     void set_st(int x, int b) {
         st[x] = b;
         if (x > n)
-            for (int i : flower[x])
-                set_st(i, b);
+            for (int i : flower[x]) set_st(i, b);
     }
 
     int get_pr(int b, int xr) {
@@ -81,8 +81,7 @@ public class MaxGeneralWeightedMatchingV3 {
             return;
         edge e = g[u][v];
         int xr = flower_from[u][e.u], pr = get_pr(u, xr);
-        for (int i = 0; i < pr; ++i)
-            set_match(flower[u].get(i), flower[u].get(i ^ 1));
+        for (int i = 0; i < pr; ++i) set_match(flower[u].get(i), flower[u].get(i ^ 1));
         set_match(xr, v);
         rotate(flower[u], 0, pr, flower[u].size());
         //        rotate(flower[u].begin(), flower[u].begin() + pr, flower[u].end());
@@ -95,11 +94,12 @@ public class MaxGeneralWeightedMatchingV3 {
     }
 
     static void reverse(List<Integer> a, int from, int to) {
-        while (from + 1 < to)
-            swap(a, from++, --to);
+        while (from + 1 < to) swap(a, from++, --to);
     }
 
-    static void swap(List<Integer> a, int i, int j) { a.set(i, a.set(j, a.get(i))); }
+    static void swap(List<Integer> a, int i, int j) {
+        a.set(i, a.set(j, a.get(i)));
+    }
 
     void augment(int u, int v) {
         for (;;) {
@@ -138,8 +138,7 @@ public class MaxGeneralWeightedMatchingV3 {
 
     void add_blossom(int u, int lca, int v) {
         int b = n + 1;
-        while (b <= n_x && st[b] != 0)
-            ++b;
+        while (b <= n_x && st[b] != 0) ++b;
         if (b > n_x)
             ++n_x;
         lab[b] = 0;
@@ -160,10 +159,8 @@ public class MaxGeneralWeightedMatchingV3 {
             q_push(y);
         }
         set_st(b, b);
-        for (int x = 1; x <= n_x; ++x)
-            g[b][x].w = g[x][b].w = 0;
-        for (int x = 1; x <= n; ++x)
-            flower_from[b][x] = 0;
+        for (int x = 1; x <= n_x; ++x) g[b][x].w = g[x][b].w = 0;
+        for (int x = 1; x <= n; ++x) flower_from[b][x] = 0;
         for (int i = 0; i < flower[b].size(); ++i) {
             int xs = flower[b].get(i);
             for (int x = 1; x <= n_x; ++x)
@@ -179,8 +176,7 @@ public class MaxGeneralWeightedMatchingV3 {
     }
 
     void expand_blossom(int b) {
-        for (int i : flower[b])
-            set_st(i, i);
+        for (int i : flower[b]) set_st(i, i);
         int xr = flower_from[b][g[b][pa[b]].u];
         int pr = get_pr(b, xr);
         for (int i = 0; i < pr; i += 2) {
@@ -316,23 +312,22 @@ public class MaxGeneralWeightedMatchingV3 {
                 flower_from[u][v] = (u == v ? u : 0);
                 w_max = Math.max(w_max, g[u][v].w);
             }
-        for (int u = 1; u <= n; ++u)
-            lab[u] = w_max;
-        while (matching())
-            ++n_matches;
+        for (int u = 1; u <= n; ++u) lab[u] = w_max;
+        while (matching()) ++n_matches;
         for (int u = 1; u <= n; ++u)
             if (match[u] != 0 && match[u] < u)
                 tot_weight += g[u][match[u]].w;
         return new Result(tot_weight, n_matches);
     }
 
-    void add_edge(int u, int v, int w) { g[u][v].w = g[v][u].w = w; }
+    void add_edge(int u, int v, int w) {
+        g[u][v].w = g[v][u].w = w;
+    }
 
     void init(int _n) {
         n = _n;
         for (int u = 1; u <= n; ++u)
-            for (int v = 1; v <= n; ++v)
-                g[u][v] = new edge(u, v, 0);
+            for (int v = 1; v <= n; ++v) g[u][v] = new edge(u, v, 0);
     }
 
     // usage example

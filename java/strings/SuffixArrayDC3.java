@@ -6,7 +6,9 @@ import java.util.stream.IntStream;
 
 // DC3 linear time suffix array construction algorithm ("Linear Work Suffix Array Construction")
 public class SuffixArrayDC3 {
-    static boolean leq(int a1, int a2, int b1, int b2) { return a1 < b1 || a1 == b1 && a2 <= b2; }
+    static boolean leq(int a1, int a2, int b1, int b2) {
+        return a1 < b1 || a1 == b1 && a2 <= b2;
+    }
 
     static boolean leq(int a1, int a2, int a3, int b1, int b2, int b3) {
         return a1 < b1 || a1 == b1 && leq(a2, a3, b2, b3);
@@ -15,12 +17,9 @@ public class SuffixArrayDC3 {
     // stably sort a[0..n-1] to b[0..n-1] with keys in 0..K from r
     static void radixPass(int[] a, int[] b, int[] r, int offset, int n, int K) {
         int[] cnt = new int[K + 1];
-        for (int i = 0; i < n; i++)
-            ++cnt[r[a[i] + offset]];
-        for (int i = 1; i < cnt.length; i++)
-            cnt[i] += cnt[i - 1];
-        for (int i = n - 1; i >= 0; i--)
-            b[--cnt[r[a[i] + offset]]] = a[i];
+        for (int i = 0; i < n; i++) ++cnt[r[a[i] + offset]];
+        for (int i = 1; i < cnt.length; i++) cnt[i] += cnt[i - 1];
+        for (int i = n - 1; i >= 0; i--) b[--cnt[r[a[i] + offset]]] = a[i];
     }
 
     // find the suffix array SA of T[0..n-1] in {1..K}^n
@@ -61,12 +60,10 @@ public class SuffixArrayDC3 {
             // recurse if names are not yet unique
             suffixArray(R, SA12, n02, name);
             // store unique names in R using the suffix array
-            for (int i = 0; i < n02; i++)
-                R[SA12[i]] = i + 1;
+            for (int i = 0; i < n02; i++) R[SA12[i]] = i + 1;
         } else {
             // generate the suffix array of R directly
-            for (int i = 0; i < n02; i++)
-                SA12[R[i] - 1] = i;
+            for (int i = 0; i < n02; i++) SA12[R[i] - 1] = i;
         }
 
         //******* Step 2: Sort nonsample suffixes ********
@@ -89,13 +86,11 @@ public class SuffixArrayDC3 {
                                  R[j / 3 + n0])) { // suffix from SA12 is smaller
                 SA[k] = i;
                 if (++t == n02) // done --- only SA0 suffixes left
-                    for (k++; p < n0; p++, k++)
-                        SA[k] = SA0[p];
+                    for (k++; p < n0; p++, k++) SA[k] = SA0[p];
             } else { // suffix from SA0 is smaller
                 SA[k] = j;
                 if (++p == n0) // done --- only SA12 suffixes left
-                    for (k++; t < n02; t++, k++)
-                        SA[k] = SA12[t] < n0 ? SA12[t] * 3 + 1 : (SA12[t] - n0) * 3 + 2;
+                    for (k++; t < n02; t++, k++) SA[k] = SA12[t] < n0 ? SA12[t] * 3 + 1 : (SA12[t] - n0) * 3 + 2;
             }
         }
     }
@@ -114,8 +109,7 @@ public class SuffixArrayDC3 {
     public static int[] lcp(int[] sa, CharSequence s) {
         int n = sa.length;
         int[] rank = new int[n];
-        for (int i = 0; i < n; i++)
-            rank[sa[i]] = i;
+        for (int i = 0; i < n; i++) rank[sa[i]] = i;
         int[] lcp = new int[n - 1];
         for (int i = 0, h = 0; i < n; i++) {
             if (rank[i] < n - 1) {
@@ -144,8 +138,7 @@ public class SuffixArrayDC3 {
         int[] sa1 = suffixArray(s1);
 
         // print suffixes in lexicographic order
-        for (int p : sa1)
-            System.out.println(s1.substring(p));
+        for (int p : sa1) System.out.println(s1.substring(p));
 
         System.out.println("lcp = " + Arrays.toString(lcp(sa1, s1)));
 

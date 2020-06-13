@@ -21,8 +21,7 @@ public class ArrayRotate {
     }
 
     static void reverse(int[] a, int from, int to) {
-        while (from + 1 < to)
-            swap(a, from++, --to);
+        while (from + 1 < to) swap(a, from++, --to);
     }
 
     static void swap(int[] a, int i, int j) {

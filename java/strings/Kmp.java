@@ -8,8 +8,7 @@ public class Kmp {
         int[] p = new int[s.length()];
         int k = 0;
         for (int i = 1; i < s.length(); i++) {
-            while (k > 0 && s.charAt(k) != s.charAt(i))
-                k = p[k - 1];
+            while (k > 0 && s.charAt(k) != s.charAt(i)) k = p[k - 1];
             if (s.charAt(k) == s.charAt(i))
                 ++k;
             p[i] = k;
@@ -23,8 +22,7 @@ public class Kmp {
             return 0;
         int[] p = prefixFunction(needle);
         for (int i = 0, k = 0; i < haystack.length(); i++) {
-            while (k > 0 && needle.charAt(k) != haystack.charAt(i))
-                k = p[k - 1];
+            while (k > 0 && needle.charAt(k) != haystack.charAt(i)) k = p[k - 1];
             if (needle.charAt(k) == haystack.charAt(i))
                 ++k;
             if (k == m)
@@ -63,8 +61,7 @@ public class Kmp {
     static String getRandomString(Random rnd, int maxlen) {
         int n = rnd.nextInt(maxlen);
         char[] s = new char[n];
-        for (int i = 0; i < n; i++)
-            s[i] = (char) ('a' + rnd.nextInt(3));
+        for (int i = 0; i < n; i++) s[i] = (char) ('a' + rnd.nextInt(3));
         return new String(s);
     }
 }

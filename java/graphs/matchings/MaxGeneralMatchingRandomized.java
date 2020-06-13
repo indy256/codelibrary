@@ -30,12 +30,10 @@ public class MaxGeneralMatchingRandomized {
             a[k] = t;
 
             int inv = pow(a[r][j], MOD - 2);
-            for (int i = j; i < n; i++)
-                a[r][i] = a[r][i] * inv % MOD;
+            for (int i = j; i < n; i++) a[r][i] = a[r][i] * inv % MOD;
 
             for (int u = r + 1; u < n; u++)
-                for (int v = j + 1; v < n; v++)
-                    a[u][v] = (a[u][v] - a[r][v] * a[u][j] % MOD + MOD) % MOD;
+                for (int v = j + 1; v < n; v++) a[u][v] = (a[u][v] - a[r][v] * a[u][j] % MOD + MOD) % MOD;
             ++r;
         }
         return r;

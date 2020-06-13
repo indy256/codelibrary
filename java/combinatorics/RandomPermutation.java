@@ -27,8 +27,7 @@ public class RandomPermutation {
     public static int[] getRandomArrangement(int n, int m) {
         Random rnd = new Random();
         int[] res = new int[n];
-        for (int i = 0; i < n; i++)
-            res[i] = i;
+        for (int i = 0; i < n; i++) res[i] = i;
         for (int i = 0; i < m; i++) {
             int j = i + rnd.nextInt(n - i);
             int t = res[i];
@@ -58,5 +57,7 @@ public class RandomPermutation {
     }
 
     // Usage example
-    public static void main(String[] args) { System.out.println(Arrays.toString(getRandomPermutation(5))); }
+    public static void main(String[] args) {
+        System.out.println(Arrays.toString(getRandomPermutation(5)));
+    }
 }

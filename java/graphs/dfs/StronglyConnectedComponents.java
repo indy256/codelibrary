@@ -15,8 +15,7 @@ public class StronglyConnectedComponents {
 
         List<Integer>[] reverseGraph = Stream.generate(ArrayList::new).limit(n).toArray(List[] ::new);
         for (int i = 0; i < n; i++)
-            for (int j : graph[i])
-                reverseGraph[j].add(i);
+            for (int j : graph[i]) reverseGraph[j].add(i);
 
         List<List<Integer>> components = new ArrayList<>();
         Arrays.fill(used, false);
@@ -44,8 +43,7 @@ public class StronglyConnectedComponents {
     public static List<Integer>[] sccGraph(List<Integer>[] graph, List<List<Integer>> components) {
         int[] comp = new int[graph.length];
         for (int i = 0; i < components.size(); i++)
-            for (int u : components.get(i))
-                comp[u] = i;
+            for (int u : components.get(i)) comp[u] = i;
         List<Integer>[] g = Stream.generate(ArrayList::new).limit(components.size()).toArray(List[] ::new);
         Set<Long> edges = new HashSet<>();
         for (int u = 0; u < graph.length; u++)

@@ -102,8 +102,7 @@ public class Biconnectivity {
     public static List<Integer>[] ebcTree(List<Integer>[] graph, List<List<Integer>> components) {
         int[] comp = new int[graph.length];
         for (int i = 0; i < components.size(); i++)
-            for (int u : components.get(i))
-                comp[u] = i;
+            for (int u : components.get(i)) comp[u] = i;
         List<Integer>[] g = Stream.generate(ArrayList::new).limit(components.size()).toArray(List[] ::new);
         for (int u = 0; u < graph.length; u++)
             for (int v : graph[u])

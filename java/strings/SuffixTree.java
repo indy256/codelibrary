@@ -24,8 +24,7 @@ public class SuffixTree {
     public static Node buildSuffixTree(CharSequence s) {
         int n = s.length();
         byte[] a = new byte[n];
-        for (int i = 0; i < n; i++)
-            a[i] = (byte) ALPHABET.indexOf(s.charAt(i));
+        for (int i = 0; i < n; i++) a[i] = (byte) ALPHABET.indexOf(s.charAt(i));
         Node root = new Node(0, 0, 0, null);
         Node node = root;
         for (int i = 0, tail = 0; i < n; i++, tail++) {

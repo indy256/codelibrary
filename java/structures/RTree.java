@@ -81,10 +81,8 @@ public class RTree {
             divX ? a[separatorIndex].x1 + a[separatorIndex].x2 : a[separatorIndex].y1 + a[separatorIndex].y2;
         swap(a, i++, separatorIndex);
         while (i <= j) {
-            while (i <= j && (divX ? a[i].x1 + a[i].x2 : a[i].y1 + a[i].y2) < separator)
-                ++i;
-            while (i <= j && (divX ? a[j].x1 + a[j].x2 : a[j].y1 + a[j].y2) > separator)
-                --j;
+            while (i <= j && (divX ? a[i].x1 + a[i].x2 : a[i].y1 + a[i].y2) < separator) ++i;
+            while (i <= j && (divX ? a[j].x1 + a[j].x2 : a[j].y1 + a[j].y2) > separator) --j;
             if (i >= j)
                 break;
             swap(a, i++, j--);

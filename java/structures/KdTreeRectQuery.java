@@ -77,10 +77,8 @@ public class KdTreeRectQuery {
         double separator = divX ? a[separatorIndex].x : a[separatorIndex].y;
         swap(a, i++, separatorIndex);
         while (i <= j) {
-            while (i <= j && (divX ? a[i].x : a[i].y) < separator)
-                ++i;
-            while (i <= j && (divX ? a[j].x : a[j].y) > separator)
-                --j;
+            while (i <= j && (divX ? a[i].x : a[i].y) < separator) ++i;
+            while (i <= j && (divX ? a[j].x : a[j].y) > separator) --j;
             if (i >= j)
                 break;
             swap(a, i++, j--);
@@ -96,7 +94,9 @@ public class KdTreeRectQuery {
     }
 
     // number of points in [x1,x2] x [y1,y2]
-    public int count(int x1, int y1, int x2, int y2) { return count(0, tx.length, x1, y1, x2, y2); }
+    public int count(int x1, int y1, int x2, int y2) {
+        return count(0, tx.length, x1, y1, x2, y2);
+    }
 
     int count(int low, int high, int x1, int y1, int x2, int y2) {
         if (low >= high)
@@ -127,8 +127,7 @@ public class KdTreeRectQuery {
         int[] y = {0, 10, 10, 0};
 
         Point[] points = new Point[x.length];
-        for (int i = 0; i < points.length; i++)
-            points[i] = new Point(x[i], y[i]);
+        for (int i = 0; i < points.length; i++) points[i] = new Point(x[i], y[i]);
 
         KdTreeRectQuery kdTree = new KdTreeRectQuery(points);
         int count = kdTree.count(0, 0, 10, 10);

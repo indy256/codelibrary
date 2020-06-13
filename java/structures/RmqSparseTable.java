@@ -9,8 +9,7 @@ public class RmqSparseTable {
         rmq[0] = a.clone();
         for (int i = 1; i < rmq.length; i++) {
             rmq[i] = new int[n - (1 << i) + 1];
-            for (int j = 0; j < rmq[i].length; j++)
-                rmq[i][j] = Math.min(rmq[i - 1][j], rmq[i - 1][j + (1 << (i - 1))]);
+            for (int j = 0; j < rmq[i].length; j++) rmq[i][j] = Math.min(rmq[i - 1][j], rmq[i - 1][j + (1 << (i - 1))]);
         }
     }
 

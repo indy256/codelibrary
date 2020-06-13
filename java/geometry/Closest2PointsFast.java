@@ -86,8 +86,7 @@ public class Closest2PointsFast {
     static long slowClosestPair(Point[] points) {
         long res = Long.MAX_VALUE;
         for (int i = 0; i < points.length; i++)
-            for (int j = i + 1; j < points.length; j++)
-                res = Math.min(res, dist2(points[i], points[j]));
+            for (int j = i + 1; j < points.length; j++) res = Math.min(res, dist2(points[i], points[j]));
         return res;
     }
 }

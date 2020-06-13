@@ -6,10 +6,8 @@ public class ShortestHamiltonianPath {
     public static int getShortestHamiltonianPath(int[][] dist) {
         int n = dist.length;
         int[][] dp = new int[1 << n][n];
-        for (int[] d : dp)
-            Arrays.fill(d, Integer.MAX_VALUE / 2);
-        for (int i = 0; i < n; i++)
-            dp[1 << i][i] = 0;
+        for (int[] d : dp) Arrays.fill(d, Integer.MAX_VALUE / 2);
+        for (int i = 0; i < n; i++) dp[1 << i][i] = 0;
         for (int mask = 0; mask < 1 << n; mask++) {
             for (int i = 0; i < n; i++) {
                 if ((mask & 1 << i) != 0) {

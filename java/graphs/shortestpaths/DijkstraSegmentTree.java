@@ -45,14 +45,12 @@ public class DijkstraSegmentTree {
         if (t[i] < value && value != Long.MAX_VALUE)
             return;
         t[i] = value;
-        for (; i > 1; i >>= 1)
-            t[i >> 1] = Math.min(t[i], t[i ^ 1]);
+        for (; i > 1; i >>= 1) t[i >> 1] = Math.min(t[i], t[i ^ 1]);
     }
 
     static int minIndex(long[] t) {
         int res = 1;
-        while (res < t.length / 2)
-            res = res * 2 + (t[res * 2] > t[1] ? 1 : 0);
+        while (res < t.length / 2) res = res * 2 + (t[res * 2] > t[1] ? 1 : 0);
         return res - t.length / 2;
     }
 

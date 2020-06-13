@@ -27,16 +27,14 @@ public class MisWeighted {
             int n = rnd.nextInt(16) + 1;
             long[] g = new long[n];
             int[] weights = new int[n];
-            for (int i = 0; i < n; i++)
-                weights[i] = rnd.nextInt(1000);
+            for (int i = 0; i < n; i++) weights[i] = rnd.nextInt(1000);
             for (int i = 0; i < n; i++)
                 for (int j = 0; j < i; j++)
                     if (rnd.nextBoolean()) {
                         g[i] |= 1L << j;
                         g[j] |= 1L << i;
                     }
-            for (int i = 0; i < n; i++)
-                g[i] |= 1 << i;
+            for (int i = 0; i < n; i++) g[i] |= 1 << i;
             int res1 = mis(g, (1L << n) - 1, weights);
             int res2 = misSlow(g, weights);
             if (res1 != res2)

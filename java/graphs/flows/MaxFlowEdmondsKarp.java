@@ -7,7 +7,9 @@ import java.util.stream.Stream;
 public class MaxFlowEdmondsKarp {
     List<Edge>[] graph;
 
-    public MaxFlowEdmondsKarp(int nodes) { graph = Stream.generate(ArrayList::new).limit(nodes).toArray(List[] ::new); }
+    public MaxFlowEdmondsKarp(int nodes) {
+        graph = Stream.generate(ArrayList::new).limit(nodes).toArray(List[] ::new);
+    }
 
     class Edge {
         int s, t, rev, cap, f;
@@ -44,8 +46,7 @@ public class MaxFlowEdmondsKarp {
             if (pred[t] == null)
                 break;
             int df = Integer.MAX_VALUE;
-            for (int u = t; u != s; u = pred[u].s)
-                df = Math.min(df, pred[u].cap - pred[u].f);
+            for (int u = t; u != s; u = pred[u].s) df = Math.min(df, pred[u].cap - pred[u].f);
             for (int u = t; u != s; u = pred[u].s) {
                 pred[u].f += df;
                 graph[pred[u].t].get(pred[u].rev).f -= df;

@@ -10,10 +10,8 @@ public class FFT_slow {
         double[] aImag = new double[n];
         double[] bReal = new double[n];
         double[] bImag = new double[n];
-        for (int i = 0; i < a.length; i++)
-            aReal[i] = a[i];
-        for (int i = 0; i < b.length; i++)
-            bReal[i] = b[i];
+        for (int i = 0; i < a.length; i++) aReal[i] = a[i];
+        for (int i = 0; i < b.length; i++) bReal[i] = b[i];
         FFT.fft(aReal, aImag, false);
         FFT.fft(bReal, bImag, false);
         for (int i = 0; i < n; i++) {

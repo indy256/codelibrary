@@ -57,8 +57,7 @@ public class PolygonsIntersectionTest {
 
     static Polygon getPolygon(PolygonsIntersection.Point[] points) {
         Polygon polygon = new Polygon();
-        for (PolygonsIntersection.Point point : points)
-            polygon.addPoint((int) point.x, (int) point.y);
+        for (PolygonsIntersection.Point point : points) polygon.addPoint((int) point.x, (int) point.y);
         return polygon;
     }
 

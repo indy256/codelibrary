@@ -76,15 +76,13 @@ public class MaxFlowDinic {
     // invoke after maxFlow()
     public boolean[] minCut() {
         boolean[] cut = new boolean[graph.length];
-        for (int i = 0; i < cut.length; ++i)
-            cut[i] = dist[i] != -1;
+        for (int i = 0; i < cut.length; ++i) cut[i] = dist[i] != -1;
         return cut;
     }
 
     void clearFlow() {
         for (List<Edge> edges : graph)
-            for (Edge edge : edges)
-                edge.f = 0;
+            for (Edge edge : edges) edge.f = 0;
     }
 
     // Usage example

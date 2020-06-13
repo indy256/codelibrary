@@ -11,8 +11,7 @@ public class Coloring {
         bestColoring = new int[n];
         int[] id = new int[n + 1];
         int[] deg = new int[n + 1];
-        for (int i = 0; i <= n; i++)
-            id[i] = i;
+        for (int i = 0; i <= n; i++) id[i] = i;
         bestColoring = new int[n];
         int res = 1;
         for (int from = 0, to = 1; to <= n; to++) {
@@ -40,8 +39,7 @@ public class Coloring {
         if (usedColors >= minColors)
             return;
         if (cur == to) {
-            for (int i = from; i < to; i++)
-                bestColoring[id[i]] = coloring[i];
+            for (int i = from; i < to; i++) bestColoring[id[i]] = coloring[i];
             minColors = usedColors;
             return;
         }
@@ -82,8 +80,7 @@ public class Coloring {
         int n = g.length;
         for (int allowedColors = 1;; allowedColors++) {
             long colors = 1;
-            for (int i = 0; i < n; i++)
-                colors *= allowedColors;
+            for (int i = 0; i < n; i++) colors *= allowedColors;
         m1:
             for (long c = 0; c < colors; c++) {
                 int[] col = new int[n];

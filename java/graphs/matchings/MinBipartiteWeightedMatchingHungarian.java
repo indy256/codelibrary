@@ -50,8 +50,7 @@ public class MinBipartiteWeightedMatchingHungarian {
             }
         }
         int[] matching = new int[n];
-        for (int i = 1; i < m; ++i)
-            matching[p[i]] = i;
+        for (int i = 1; i < m; ++i) matching[p[i]] = i;
         return -v[0];
     }
 

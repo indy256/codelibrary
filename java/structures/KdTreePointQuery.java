@@ -45,10 +45,8 @@ public class KdTreePointQuery {
         int separator = divX ? x[separatorIndex] : y[separatorIndex];
         swap(i++, separatorIndex);
         while (i <= j) {
-            while (i <= j && (divX ? x[i] : y[i]) < separator)
-                ++i;
-            while (i <= j && (divX ? x[j] : y[j]) > separator)
-                --j;
+            while (i <= j && (divX ? x[i] : y[i]) < separator) ++i;
+            while (i <= j && (divX ? x[j] : y[j]) > separator) --j;
             if (i >= j)
                 break;
             swap(i++, j--);

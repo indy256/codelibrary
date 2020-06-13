@@ -5,7 +5,9 @@ import java.util.Arrays;
 import java.util.Random;
 
 public class Euclid {
-    public static int gcd(int a, int b) { return b == 0 ? Math.abs(a) : gcd(b, a % b); }
+    public static int gcd(int a, int b) {
+        return b == 0 ? Math.abs(a) : gcd(b, a % b);
+    }
 
     public static int gcd2(int a, int b) {
         while (b != 0) {
@@ -16,7 +18,9 @@ public class Euclid {
         return Math.abs(a);
     }
 
-    public static int lcm(int a, int b) { return Math.abs(a / gcd(a, b) * b); }
+    public static int lcm(int a, int b) {
+        return Math.abs(a / gcd(a, b) * b);
+    }
 
     // returns { gcd(a,b), x, y } such that gcd(a,b) = a*x + b*y
     public static long[] euclid(long a, long b) {
@@ -61,14 +65,15 @@ public class Euclid {
     }
 
     // precondition: m > 0 && gcd(a, m) = 1
-    public static int modInverse2(int a, int m) { return mod((int) euclid(a, m)[1], m); }
+    public static int modInverse2(int a, int m) {
+        return mod((int) euclid(a, m)[1], m);
+    }
 
     // precondition: p is prime
     public static int[] generateInverses(int p) {
         int[] res = new int[p];
         res[1] = 1;
-        for (int i = 2; i < p; ++i)
-            res[i] = (int) ((long) (p - p / i) * res[p % i] % p);
+        for (int i = 2; i < p; ++i) res[i] = (int) ((long) (p - p / i) * res[p % i] % p);
         return res;
     }
 
@@ -92,8 +97,7 @@ public class Euclid {
     public static int simpleRestore(int[] a, int[] p) {
         int res = 0;
         for (int i = 0, m = 1; i < a.length; i++, m *= p[i])
-            while (res % p[i] != a[i])
-                res += m;
+            while (res % p[i] != a[i]) res += m;
         return res;
     }
 

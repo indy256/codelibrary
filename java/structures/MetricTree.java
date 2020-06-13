@@ -48,10 +48,8 @@ public class MetricTree {
         long separator = dist2(x[center], y[center], x[separatorIndex], y[separatorIndex]);
         swap(i++, separatorIndex);
         while (i <= j) {
-            while (i <= j && (dist2(x[center], y[center], x[i], y[i]) < separator))
-                ++i;
-            while (i <= j && (dist2(x[center], y[center], x[j], y[j]) > separator))
-                --j;
+            while (i <= j && (dist2(x[center], y[center], x[i], y[i]) < separator)) ++i;
+            while (i <= j && (dist2(x[center], y[center], x[j], y[j]) > separator)) --j;
             if (i >= j)
                 break;
             swap(i++, j--);
