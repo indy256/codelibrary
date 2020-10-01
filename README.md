@@ -69,6 +69,8 @@
 #### Sorting algorithms
 + [x] Sorting algorithms [**c++**](cpp/sort/sort.cpp) [**java**](java/sort/Sort.java)
 + [x] N-th element [**java**](java/sort/NthElement.java)
++ [x] Quick Sort [**c++**](cpp/QuickSort.cpp)
+
 
 #### Geometry algorithms
 + [x] Segments intersection [**c++**](cpp/geometry/segments_intersection.cpp) [**java**](java/geometry/SegmentsIntersection.java)
