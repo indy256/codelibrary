@@ -2,6 +2,7 @@
 
 using namespace std;
 
+//to merge the sort of the array
 void merge_sort(vector<int> &a, int low, int high) {
     if (high - low < 2)
         return;
@@ -19,6 +20,7 @@ void merge_sort(vector<int> &a, int low, int high) {
     }
 }
 
+//works as a counter for array
 void counting_sort(vector<int> &a) {
     int max = *max_element(a.begin(), a.end());
     vector<int> cnt(max + 1);
