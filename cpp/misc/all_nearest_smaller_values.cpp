@@ -3,7 +3,7 @@
 using namespace std;
 
 // https://en.wikipedia.org/wiki/All_nearest_smaller_values
-vector<int> nsv(vector<int> a) {
+vector<int> nsv(const vector<int> &a) {
     int n = a.size();
     vector<int> p(n);
     for (int i = 0; i < n; i++) {

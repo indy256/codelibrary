@@ -16,7 +16,7 @@ object DisjointSets {
         return ra != rb
     }
 
-    fun createSets(size: Int) = IntArray(size, { it })
+    fun createSets(size: Int) = IntArray(size) { it }
 
     // Usage example
     @JvmStatic

@@ -5,9 +5,9 @@ object Dijkstra {
 
     fun shortestPaths(graph: Array<out List<Edge>>, s: Int): ShortestPaths {
         val n = graph.size
-        val dist = IntArray(n, { Int.MAX_VALUE })
+        val dist = IntArray(n) { Int.MAX_VALUE }
         dist[s] = 0
-        val pred = IntArray(n, { -1 })
+        val pred = IntArray(n) { -1 }
         val visited = BooleanArray(n)
         for (i in 0 until n) {
             var u = -1

@@ -1,5 +1,5 @@
 import java.util.PriorityQueue
-import java.util.Random
+import kotlin.random.Random
 
 class BinaryHeap(val heap: IntArray, var size: Int) {
     constructor(n: Int) : this(IntArray(n), 0)
