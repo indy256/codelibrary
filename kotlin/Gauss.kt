@@ -29,7 +29,7 @@ fun main() {
             val b = (0 until n).map { (rnd.nextInt(10) - 5).toDouble() }.toDoubleArray()
             val x = gauss(a, b)
             for (i in a.indices) {
-                val y = a[i].zip(x).map { it.first * it.second }.sum()
+                val y = a[i].zip(x).sumOf { it.first * it.second }
                 if (abs(b[i] - y) > 1e-9)
                     throw RuntimeException()
             }
