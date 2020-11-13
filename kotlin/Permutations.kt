@@ -8,7 +8,7 @@ fun nextPermutation(p: IntArray): Boolean {
 
 // Usage example
 fun main() {
-    val p = intArrayOf(0, 1, 2)
+    val p = IntArray(3) { it }
     do {
         println(p.contentToString())
     } while (nextPermutation(p))
