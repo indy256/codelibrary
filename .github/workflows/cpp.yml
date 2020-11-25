@@ -71,7 +71,7 @@ jobs:
     - name: compile
       run: |
         cd cpp
-        find . -name *.cpp -print0 | xargs -n1 -0 clang++-11 -Wall -Wextra -std=c++2a
+        find . -name *.cpp -print0 | xargs -n1 -0 clang++-11 -Wall -Wextra -std=c++2b
   
   build-macos-clang:
     runs-on: macos-latest
@@ -82,7 +82,7 @@ jobs:
         cd cpp
         mkdir bits
         echo $'#include <vector>\n#include <set>\n#include <map>\n#include <unordered_set>\n#include <unordered_map>\n#include <queue>\n#include <deque>\n#include <stack>\n#include <iostream>\n#include <iomanip>\n#include <complex>\n#include <cassert>\n#include <random>\n#include <chrono>\n#include <functional>\n#include <array>\n#include <bitset>\n#include <numeric>\n' > bits/stdc++.h
-        find . -name *.cpp -print0 | xargs -n1 -0 clang++ -Wall -Wextra -std=c++2b -isystem .
+        find . -name *.cpp -print0 | xargs -n1 -0 clang++ -Wall -Wextra -std=c++2a -isystem .
 
   build-macos-clang-no-sign:
     runs-on: macos-latest
@@ -93,7 +93,7 @@ jobs:
         cd cpp
         mkdir bits
         echo $'#include <vector>\n#include <set>\n#include <map>\n#include <unordered_set>\n#include <unordered_map>\n#include <queue>\n#include <deque>\n#include <stack>\n#include <iostream>\n#include <iomanip>\n#include <complex>\n#include <cassert>\n#include <random>\n#include <chrono>\n#include <functional>\n#include <array>\n#include <bitset>\n#include <numeric>\n' > bits/stdc++.h
-        find . -name *.cpp -print0 | xargs -n1 -0 clang++ -Wall -Wextra -Wno-sign-compare -std=c++2b -isystem .
+        find . -name *.cpp -print0 | xargs -n1 -0 clang++ -Wall -Wextra -Wno-sign-compare -std=c++2a -isystem .
 
   build-windows-visual-cpp:
     runs-on: windows-latest
