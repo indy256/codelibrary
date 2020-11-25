@@ -66,12 +66,12 @@ jobs:
     - name: install clang
       run: |
         sudo apt-key adv --fetch-keys https://apt.llvm.org/llvm-snapshot.gpg.key
-        sudo add-apt-repository "deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-10 main"
-        sudo apt-get install clang-10
+        sudo add-apt-repository "deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-11 main"
+        sudo apt-get install clang-11
     - name: compile
       run: |
         cd cpp
-        find . -name *.cpp -print0 | xargs -n1 -0 clang++-10 -Wall -Wextra -std=c++20
+        find . -name *.cpp -print0 | xargs -n1 -0 clang++-11 -Wall -Wextra -std=c++2a
   
   build-macos-clang:
     runs-on: macos-latest
