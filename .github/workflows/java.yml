@@ -10,7 +10,7 @@ jobs:
     - name: Set up JDK
       uses: actions/setup-java@v1
       with:
-        java-version: 15-ea
+        java-version: 16-ea
     - name: Build with Ant
       run: |
         cd java
