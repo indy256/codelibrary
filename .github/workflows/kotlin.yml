@@ -1,0 +1,16 @@
+name: Kotlin CI
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: install kotlin
+        run: |
+          sudo snap install --classic kotlin
+      - name: compile
+        run: |
+          cd kotlin
+          find . -name *.java -print0 | xargs -n1 -0 kotlinc
