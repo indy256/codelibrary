@@ -12,9 +12,3 @@ AllowShortFunctionsOnASingleLine: Inline
 
 ---
 Language: Java
-
----
-Language: Python
-
----
-Language: Kotlin
