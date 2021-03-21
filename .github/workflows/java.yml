@@ -4,12 +4,12 @@ on: [push]
 
 jobs:
   build:
-    runs-on: ${{ matrix.config.os }}
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         config:
-          - {java-version: 1.8, os: ubuntu-latest}
-          - {java-version: 16, os: ubuntu-latest}
+          - {java-version: 1.8}
+          - {java-version: 16}
     steps:
       - uses: actions/checkout@v2
       - name: Set up JDK
