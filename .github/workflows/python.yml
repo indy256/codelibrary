@@ -7,9 +7,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-#      - name: install kotlin
-#        run: |
-#          sudo snap install --classic kotlin
+      - name: install pylint
+        run: |
+          sudo apt-get install pylint
       - name: compile
         run: |
           cd python
