@@ -13,4 +13,4 @@ jobs:
       - name: compile
         run: |
           cd kotlin
-          find . -name *.java -print0 | xargs -n1 -0 kotlinc
+          find . -name *.kt -print0 | xargs -n1 -0 kotlinc
