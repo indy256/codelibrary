@@ -3,28 +3,20 @@ name: Java CI
 on: [push]
 
 jobs:
-  build-ubuntu-java-latest:
-    runs-on: ubuntu-latest
+  build:
+    runs-on: ${{ matrix.config.os }}
+    strategy:
+      matrix:
+        config:
+          - {java-version: 1.8, os: ubuntu-latest}
+          - {java-version: 16, os: ubuntu-latest}
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up JDK
-      uses: actions/setup-java@v1
-      with:
-        java-version: 16
-    - name: Build with Ant
-      run: |
-        cd java
-        ant -noinput -buildfile build.xml
-
-  build-ubuntu-java-8:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - name: Set up JDK
-      uses: actions/setup-java@v1
-      with:
-        java-version: 1.8
-    - name: Build with Ant
-      run: |
-        cd java
-        ant -noinput -buildfile build.xml
+      - uses: actions/checkout@v2
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: ${{ matrix.config.java-version }}
+      - name: Build with Ant
+        run: |
+          cd java
+          ant -noinput -buildfile build.xml
