@@ -46,7 +46,7 @@ jobs:
     - name: install clang
       run: |
         sudo apt-key adv --fetch-keys https://apt.llvm.org/llvm-snapshot.gpg.key
-        sudo add-apt-repository "deb http://apt.llvm.org/focal/ llvm-toolchain-focal-11 main"
+        sudo add-apt-repository "deb http://apt.llvm.org/focal/ llvm-toolchain-focal-12 main"
         sudo apt-get install clang-12
     - name: compile
       run: |
