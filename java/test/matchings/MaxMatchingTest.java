@@ -14,7 +14,7 @@ public class MaxMatchingTest {
             List<Integer>[] g = Stream.generate(ArrayList::new).limit(n1).toArray(List[] ::new);
             for (int i = 0; i < n1; i++)
                 for (int j = 0; j < n2; j++) g[i].add(j);
-            int res1 = MaxBipartiteMatchingEV.maxMatching(g);
+            int res1 = MaxBipartiteMatchingEV.maxMatching(g, n2);
             int res2 = slowMinVertexCover(g, n2);
             if (res1 != res2)
                 throw new RuntimeException();

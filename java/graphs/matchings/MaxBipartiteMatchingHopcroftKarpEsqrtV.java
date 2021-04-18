@@ -6,9 +6,8 @@ import java.util.stream.Stream;
 // https://en.wikipedia.org/wiki/Hopcroft–Karp_algorithm
 // time complexity: O(E * sqrt(V))
 public class MaxBipartiteMatchingHopcroftKarpEsqrtV {
-    public static int maxMatching(List<Integer>[] graph) {
+    public static int maxMatching(List<Integer>[] graph, int n2) {
         int n1 = graph.length;
-        int n2 = Arrays.stream(graph).flatMap(Collection::stream).mapToInt(Integer::intValue).max().orElse(-1) + 1;
         int[] dist = new int[n1];
         int[] matching = new int[n2];
         Arrays.fill(matching, -1);
@@ -68,6 +67,6 @@ public class MaxBipartiteMatchingHopcroftKarpEsqrtV {
         graph[0].add(0);
         graph[0].add(1);
         graph[1].add(1);
-        System.out.println(2 == maxMatching(graph));
+        System.out.println(2 == maxMatching(graph, 2));
     }
 }
