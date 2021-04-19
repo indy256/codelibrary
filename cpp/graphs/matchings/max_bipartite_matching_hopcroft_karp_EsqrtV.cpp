@@ -42,11 +42,7 @@ bool dfs(const vector<vector<int>> &graph, vector<bool> &vis, vector<bool> &used
     return false;
 }
 
-tuple<int, vector<int>> max_matching(const vector<vector<int>> &graph) {
-    int n2 = 0;
-    for (auto &u1 : graph)
-        for (int u2 : u1)
-            n2 = max(n2, u2 + 1);
+tuple<int, vector<int>> max_matching(const vector<vector<int>> &graph, int n2) {
     vector<int> mapping(n2, -1);
     size_t n1 = graph.size();
     vector<int> dist(n1);
@@ -72,7 +68,7 @@ int main() {
     g[1].push_back(1);
     g[2].push_back(1);
 
-    auto [max_matching_cardinality, mapping] = max_matching(g);
+    auto [max_matching_cardinality, mapping] = max_matching(g, 2);
 
     cout << (2 == max_matching_cardinality) << endl;
 

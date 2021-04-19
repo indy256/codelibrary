@@ -17,11 +17,7 @@ bool findPath(const vector<vector<int>> &graph, int u1, vector<int> &matching, v
     return false;
 }
 
-tuple<int, vector<int>> max_matching(const vector<vector<int>> &graph) {
-    int n2 = 0;
-    for (auto &u1 : graph)
-        for (int u2 : u1)
-            n2 = max(n2, u2 + 1);
+tuple<int, vector<int>> max_matching(const vector<vector<int>> &graph, int n2) {
     int n1 = graph.size();
     vector<int> matching(n2, -1);
     int matches = 0;
@@ -39,9 +35,8 @@ int main() {
     g[0].push_back(0);
     g[0].push_back(1);
     g[1].push_back(1);
-    g[2].push_back(1);
 
-    auto [max_matching_cardinality, mapping] = max_matching(g);
+    auto [max_matching_cardinality, mapping] = max_matching(g, 2);
 
     cout << (2 == max_matching_cardinality) << endl;
 

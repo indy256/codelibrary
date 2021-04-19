@@ -1,6 +1,5 @@
-def max_matching(graph):
+def max_matching(graph, n2):
     n1 = len(graph)
-    n2 = 0 if n1 == 0 else len(graph[0])
     matching = [-1] * n2
     matches = 0
     for u in range(n1):
@@ -24,7 +23,7 @@ def test():
     graph[0][1] = True
     graph[1][0] = True
     graph[1][1] = True
-    assert 2 == max_matching(graph)
+    assert 2 == max_matching(graph, 2)
 
 
 test()
