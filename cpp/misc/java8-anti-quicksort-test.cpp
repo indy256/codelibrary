@@ -64,7 +64,8 @@ void hackedSort(int left, int right, bool leftmost) {
                 if (left >= right) {
                     return;
                 }
-            } while (a[++left] >= a[left - 1]);
+                ++left;
+            } while (a[left] >= a[left - 1]);
             for (int k = left; ++left <= right; k = ++left) {
                 int a1 = a[k], a2 = a[left];
                 int p1 = p[k], p2 = p[left];

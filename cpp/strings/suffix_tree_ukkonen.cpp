@@ -8,7 +8,7 @@ const int inf = 1e9;
 const int maxn = 1e5;
 char s[maxn];
 unordered_map<char, int> to[maxn];
-int len[maxn], f_pos[maxn], link[maxn];
+int len[maxn], f_pos[maxn], Link[maxn];
 int node, pos;
 int sz = 1, n = 0;
 
@@ -36,10 +36,10 @@ void add_letter(char c) {
         int t = s[f_pos[v] + pos - 1];
         if (v == 0) {
             v = make_node(n - pos, inf);
-            link[last] = node;
+            Link[last] = node;
             last = 0;
         } else if (t == c) {
-            link[last] = node;
+            Link[last] = node;
             return;
         } else {
             int u = make_node(f_pos[v], pos - 1);
@@ -48,13 +48,13 @@ void add_letter(char c) {
             f_pos[v] += pos - 1;
             len[v] -= pos - 1;
             v = u;
-            link[last] = u;
+            Link[last] = u;
             last = u;
         }
         if (node == 0)
             pos--;
         else
-            node = link[node];
+            node = Link[node];
     }
 }
 
