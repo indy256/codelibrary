@@ -16,5 +16,5 @@ jobs:
           sudo apt install rustc
       - name: compile
         run: |
-          cd cpp/src
+          cd rust/src
           find . -name '*.rs' -print0 | xargs -n1 -0 rustc
