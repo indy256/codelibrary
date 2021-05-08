@@ -19,7 +19,7 @@ fun findPath(graph: Array<out List<Int>>, u1: Int, matching: IntArray, vis: Bool
 }
 
 // Usage example
-fun main(args: Array<String>) {
+fun main() {
     val g = (1..2).map { arrayListOf<Int>() }.toTypedArray()
     g[0].add(0)
     g[0].add(1)

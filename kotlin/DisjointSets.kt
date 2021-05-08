@@ -1,11 +1,11 @@
 object DisjointSets {
 
     fun root(p: IntArray, x: Int): Int {
-        if (x == p[x]) {
-            return x
+        return if (x == p[x]) {
+            x
         } else {
             p[x] = root(p, p[x])
-            return p[x]
+            p[x]
         }
     }
 

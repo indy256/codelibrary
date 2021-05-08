@@ -1,4 +1,5 @@
-inline class ModInt(val value: Int) {
+@JvmInline
+value class ModInt(val value: Int) {
     companion object {
         const val mod: Int = 1000_000_007
     }
