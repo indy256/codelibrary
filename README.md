@@ -3,7 +3,7 @@
 [![C++ CI](https://github.com/indy256/codelibrary/workflows/C++%20CI/badge.svg)](https://github.com/indy256/codelibrary/actions?query=workflow%3A%22C%2B%2B+CI%22)
 [![License](https://img.shields.io/badge/license-UNLICENSE-green.svg)](https://github.com/indy256/codelibrary/blob/master/UNLICENSE)
 
-### Collection of algorithms and data structures in C++, Java, Kotlin and Python
+### Collection of algorithms and data structures in C++, Java, Kotlin, Python and Rust
 
 #### Data structures
 + [x] Segment tree [**c++**](cpp/structures/segment_tree.h) [**java**](java/structures/SegmentTree.java) [**kotlin**](kotlin/SegmentTree.kt)
