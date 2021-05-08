@@ -1,0 +1,7 @@
+[package]
+name = "codelibrary"
+version = "0.1.0"
+
+[[bin]]
+name = "test"
+path = "src/euclid.rs"
