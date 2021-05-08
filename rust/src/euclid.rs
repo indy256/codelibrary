@@ -7,7 +7,7 @@ fn euclid(mut a: i64, mut b: i64) -> [i64; 3] {
     let mut x: i64 = 1;
     let mut y: i64 = 0;
     let mut x1: i64 = 0;
-    let mu t y1: i64 = 1;
+    let mut y1: i64 = 1;
     // invariant: a=a_orig*x+b_orig*y, b=a_orig*x1+b_orig*y1
     while b != 0 {
         let q = a / b;
