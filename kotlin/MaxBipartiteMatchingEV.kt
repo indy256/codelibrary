@@ -1,7 +1,6 @@
 // https://en.wikipedia.org/wiki/Matching_(graph_theory)#In_unweighted_bipartite_graphs in O(V * E)
-fun maxMatching(graph: Array<out List<Int>>): Int {
+fun maxMatching(graph: Array<out List<Int>>, n2: Int): Int {
     val n1 = graph.size
-    val n2 = (graph.flatMap { it }.maxOrNull() ?: -1) + 1
     val matching = IntArray(n2) { -1 }
     return (0 until n1).sumOf { findPath(graph, it, matching, BooleanArray(n1)) }
 }
@@ -24,5 +23,5 @@ fun main() {
     g[0].add(0)
     g[0].add(1)
     g[1].add(1)
-    println(2 == maxMatching(g))
+    println(2 == maxMatching(g, 2))
 }
