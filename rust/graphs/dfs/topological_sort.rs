@@ -1,4 +1,4 @@
-fn dfs(graph: &Vec<Vec<usize>>, used: &mut Vec::<bool>, order: &mut Vec::<usize>, u: usize) {
+fn dfs(graph: &Vec<Vec<usize>>, used: &mut Vec<bool>, order: &mut Vec<usize>, u: usize) {
     used[u] = true;
     for v in &graph[u] {
         if !used[*v] {
