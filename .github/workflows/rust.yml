@@ -17,4 +17,4 @@ jobs:
       - name: compile
         run: |
           cd rust
-          find . -name '*.rs' -print0 | xargs -n1 -0 rustc
+          cargo
