@@ -40,18 +40,18 @@ jobs:
         find . -name '*.cpp' -print0 | xargs -n1 -0 g++-7 -Wall -Wextra -std=c++17
 
   build-ubuntu-clang:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     steps:
     - uses: actions/checkout@v2
     - name: install clang
       run: |
         sudo apt-key adv --fetch-keys https://apt.llvm.org/llvm-snapshot.gpg.key
-        sudo add-apt-repository "deb http://apt.llvm.org/focal/ llvm-toolchain-focal-11 main"
-        sudo apt-get install clang-11
+        sudo add-apt-repository "deb http://apt.llvm.org/focal/ llvm-toolchain-focal-12 main"
+        sudo apt-get install clang-12
     - name: compile
       run: |
         cd cpp
-        find . -name '*.cpp' -print0 | xargs -n1 -0 clang++-11 -Wall -Wextra -std=c++2a
+        find . -name '*.cpp' -print0 | xargs -n1 -0 clang++-12 -Wall -Wextra -std=c++2a
 
   build-macos-clang:
     runs-on: macos-latest
