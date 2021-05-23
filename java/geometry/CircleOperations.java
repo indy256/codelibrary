@@ -90,8 +90,8 @@ public class CircleOperations {
         double y2 = (-B - d) / (2 * A);
         double x2 = (-c - b * y2) / a;
         return swap   ? d > EPS ? new Point[] {new Point(y1, x1), new Point(y2, x2)} : new Point[] {new Point(y1, x1)}
-                      : d > EPS ? new Point[] {new Point(x1, y1), new Point(x2, y2)}
-                              : new Point[] {new Point(x1, y1)};
+              : d > EPS ? new Point[] {new Point(x1, y1), new Point(x2, y2)}
+                      : new Point[] {new Point(x1, y1)};
     }
 
     public static Point[] circleCircleIntersection(Circle c1, Circle c2) {

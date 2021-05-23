@@ -32,8 +32,8 @@ public class RectangleUnion {
                     update(Math.max(from, mid + 1), to, delta, 2 * root + 2, mid + 1, right);
             }
             len[root] = count[root] != 0 ? y[right + 1] - y[left]
-                            : right > left           ? len[2 * root + 1] + len[2 * root + 2]
-                                                     : 0;
+                : right > left           ? len[2 * root + 1] + len[2 * root + 2]
+                                         : 0;
         }
     }
 
