@@ -10,7 +10,7 @@ public class MinCostFlowDijkstra {
     List<Edge>[] graph;
 
     public MinCostFlowDijkstra(int nodes) {
-        graph = Stream.generate(ArrayList::new).limit(nodes).toArray(List[]::new);
+        graph = Stream.generate(ArrayList::new).limit(nodes).toArray(List[] ::new);
     }
 
     class Edge {
