@@ -2,6 +2,11 @@
 name = "codelibrary"
 version = "0.1.0"
 
+edition = "2018"
+
 [[bin]]
 name = "test"
-path = "src/euclid.rs"
+path = "graphs/shortestpaths/dijkstra.rs"
+
+[dependencies]
+priority-queue = "1.1.1"
