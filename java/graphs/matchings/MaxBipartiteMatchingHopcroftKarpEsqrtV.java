@@ -66,7 +66,7 @@ public class MaxBipartiteMatchingHopcroftKarpEsqrtV {
         List<Integer>[] graph = Stream.generate(ArrayList::new).limit(2).toArray(List[] ::new);
         graph[0].add(0);
         graph[0].add(1);
-        graph[1].add(1);
+        graph[1].add(0);
         System.out.println(2 == maxMatching(graph, 2));
     }
 }

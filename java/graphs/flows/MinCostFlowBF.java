@@ -10,7 +10,7 @@ public class MinCostFlowBF {
     List<Edge>[] graph;
 
     public MinCostFlowBF(int nodes) {
-        graph = Stream.generate(ArrayList::new).limit(nodes).toArray(List[] ::new);
+        graph = Stream.generate(ArrayList::new).limit(nodes).toArray(List[]::new);
     }
 
     class Edge {

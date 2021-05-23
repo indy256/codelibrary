@@ -34,7 +34,7 @@ public class MaxBipartiteMatchingEV {
         List<Integer>[] g = Stream.generate(ArrayList::new).limit(2).toArray(List[] ::new);
         g[0].add(0);
         g[0].add(1);
-        g[1].add(1);
+        g[1].add(0);
         System.out.println(2 == maxMatching(g, 2));
     }
 }

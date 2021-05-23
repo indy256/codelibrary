@@ -34,7 +34,7 @@ int main() {
     vector<vector<int>> g(2);
     g[0].push_back(0);
     g[0].push_back(1);
-    g[1].push_back(1);
+    g[1].push_back(0);
 
     auto [max_matching_cardinality, mapping] = max_matching(g, 2);
 

@@ -8,7 +8,7 @@ public class MaxFlowEdmondsKarp {
     List<Edge>[] graph;
 
     public MaxFlowEdmondsKarp(int nodes) {
-        graph = Stream.generate(ArrayList::new).limit(nodes).toArray(List[] ::new);
+        graph = Stream.generate(ArrayList::new).limit(nodes).toArray(List[]::new);
     }
 
     class Edge {

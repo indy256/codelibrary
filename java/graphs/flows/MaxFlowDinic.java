@@ -9,7 +9,7 @@ public class MaxFlowDinic {
     int[] dist;
 
     public MaxFlowDinic(int nodes) {
-        graph = Stream.generate(ArrayList::new).limit(nodes).toArray(List[] ::new);
+        graph = Stream.generate(ArrayList::new).limit(nodes).toArray(List[]::new);
         dist = new int[nodes];
     }
 
