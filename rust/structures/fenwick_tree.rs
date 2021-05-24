@@ -1,10 +1,14 @@
-use std::ops::{AddAssign};
+use std::ops::AddAssign;
 
 struct Fenwick<T> {
     t: Vec<T>,
 }
 
-impl<T: AddAssign + Copy> Fenwick<T> {
+impl<T: AddAssign + Copy + From<i32>> Fenwick<T> {
+    fn new(n: usize) -> Self {
+        Fenwick { t: vec![0.into(); n] }
+    }
+
     pub fn add(&mut self, mut i: usize, value: T) {
         while i < self.t.len() {
             self.t[i] += value;
@@ -14,8 +18,7 @@ impl<T: AddAssign + Copy> Fenwick<T> {
 
     // sum[0..i]
     pub fn sum(&self, mut i: i32) -> T {
-        let mut res: T = self.t[i as usize];
-        i = (i & (i + 1)) - 1;
+        let mut res: T = 0.into();
         while i >= 0 {
             res += self.t[i as usize];
             i = (i & (i + 1)) - 1;
@@ -25,7 +28,7 @@ impl<T: AddAssign + Copy> Fenwick<T> {
 }
 
 fn main() {
-    let mut t = Fenwick { t: vec![0; 3] };
+    let mut t = Fenwick::<i32>::new(3);
     t.add(0, 4);
     t.add(1, 5);
     t.add(2, 5);
