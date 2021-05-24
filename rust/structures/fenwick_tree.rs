@@ -1,7 +1,7 @@
 use std::ops::AddAssign;
 
 struct Fenwick<T> {
-    t: Vec<T>,
+    t: Vec<T>
 }
 
 impl<T: AddAssign + Copy + From<i32>> Fenwick<T> {
