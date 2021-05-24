@@ -16,5 +16,13 @@ path = "graphs/shortestpaths/dijkstra.rs"
 name = "max_bipartite_matching_EV"
 path = "graphs/matchings/max_bipartite_matching_EV.rs"
 
+[[bin]]
+name = "euclid"
+path = "numbertheory/euclid.rs"
+
+[[bin]]
+name = "fenwick_tree"
+path = "structures/fenwick_tree.rs"
+
 [dependencies]
 priority-queue = "1.1.1"

@@ -9,18 +9,13 @@ pub fn dijkstra_heap(graph: &Vec<Vec<(usize, i32)>>, s: usize) -> (Vec<i32>, Vec
     let mut q = PriorityQueue::<usize, i32>::new();
     prio[s] = 0;
     q.push(0, 0);
-    loop {
-        match q.pop() {
-            None => break,
-            Some((u, _d)) => {
-                for (v, len) in &graph[u] {
-                    let nprio = prio[u] + len;
-                    if prio[*v] > nprio {
-                        prio[*v] = nprio;
-                        pred[*v] = u;
-                        q.push(*v, nprio);
-                    }
-                }
+    while let Some((u, _d)) = q.pop() {
+        for (v, len) in &graph[u] {
+            let nprio = prio[u] + len;
+            if prio[*v] > nprio {
+                prio[*v] = nprio;
+                pred[*v] = u;
+                q.push(*v, nprio);
             }
         }
     }
