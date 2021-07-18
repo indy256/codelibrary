@@ -225,9 +225,9 @@ struct bigint {
 
     bool operator>=(const bigint &v) const { return !(*this < v); }
 
-    bool operator==(const bigint &v) const { return !(*this < v) && !(v < *this); }
+    bool operator==(const bigint &v) const { return sign == v.sign && z == v.z; }
 
-    bool operator!=(const bigint &v) const { return *this < v || v < *this; }
+    bool operator!=(const bigint &v) const { return !(*this == v); }
 
     void trim() {
         while (!z.empty() && z.back() == 0)
