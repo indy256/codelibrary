@@ -28,7 +28,7 @@ int main() {
     for (int i = 0; i < n; i++)
         for (int j = 0; j < n; j++)
             if (capacity[i][j] != 0)
-                flow.add_bidi_edge(i, j, capacity[i][j]);
+                flow.add_edge(i, j, capacity[i][j]);
 
     vector<vector<pair<int, int>>> t = gomory_hu_tree(flow);
     for (int u = 0; u < n; ++u)

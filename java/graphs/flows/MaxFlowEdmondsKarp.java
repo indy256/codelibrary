@@ -22,7 +22,7 @@ public class MaxFlowEdmondsKarp {
         }
     }
 
-    public void addBidiEdge(int s, int t, int cap) {
+    public void addEdge(int s, int t, int cap) {
         graph[s].add(new Edge(s, t, graph[t].size(), cap));
         graph[t].add(new Edge(t, s, graph[s].size() - 1, 0));
     }
@@ -59,9 +59,9 @@ public class MaxFlowEdmondsKarp {
     // Usage example
     public static void main(String[] args) {
         MaxFlowEdmondsKarp flow = new MaxFlowEdmondsKarp(3);
-        flow.addBidiEdge(0, 1, 3);
-        flow.addBidiEdge(0, 2, 2);
-        flow.addBidiEdge(1, 2, 2);
+        flow.addEdge(0, 1, 3);
+        flow.addEdge(0, 2, 2);
+        flow.addEdge(1, 2, 2);
         System.out.println(4 == flow.maxFlow(0, 2));
     }
 }

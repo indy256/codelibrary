@@ -23,7 +23,7 @@ public class MaxFlowDinic {
         }
     }
 
-    public void addBidiEdge(int s, int t, int cap) {
+    public void addEdge(int s, int t, int cap) {
         graph[s].add(new Edge(t, graph[t].size(), cap));
         graph[t].add(new Edge(s, graph[s].size() - 1, 0));
     }
@@ -88,9 +88,9 @@ public class MaxFlowDinic {
     // Usage example
     public static void main(String[] args) {
         MaxFlowDinic flow = new MaxFlowDinic(3);
-        flow.addBidiEdge(0, 1, 3);
-        flow.addBidiEdge(0, 2, 2);
-        flow.addBidiEdge(1, 2, 2);
+        flow.addEdge(0, 1, 3);
+        flow.addEdge(0, 2, 2);
+        flow.addEdge(1, 2, 2);
         System.out.println(4 == flow.maxFlow(0, 2));
     }
 }

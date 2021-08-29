@@ -15,7 +15,7 @@ struct min_cost_flow {
 
     min_cost_flow(int nodes) : graph(nodes) {}
 
-    void add_bidi_edge(int s, int t, int cap, int cost) {
+    void add_edge(int s, int t, int cap, int cost) {
         Edge a = {t, (int)graph[t].size(), cap, 0, cost};
         Edge b = {s, (int)graph[s].size(), 0, 0, -cost};
         graph[s].emplace_back(a);
@@ -111,7 +111,7 @@ int main() {
     for (int i = 0; i < nodes; i++)
         for (int j = 0; j < nodes; j++)
             if (capacity[i][j] != 0)
-                mcf.add_bidi_edge(i, j, capacity[i][j], 1);
+                mcf.add_edge(i, j, capacity[i][j], 1);
 
     int s = 0;
     int t = 2;
