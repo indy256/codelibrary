@@ -191,6 +191,17 @@ public class Sort {
         }
     }
 
+    // https://habr.com/ru/company/sportmaster_lab/blog/650585
+    public static void strangeSort(int[] a) {
+        for (int i = 0; i < a.length; i++) {
+            for (int j = 0; j < a.length; j++) {
+                if (a[i] < a[j]) {
+                    swap(a, i, j);
+                }
+            }
+        }
+    }
+
     public static void countingSort(int[] a) {
         int max = 0;
         for (int x : a) {
@@ -247,6 +258,11 @@ public class Sort {
 
             b = a.clone();
             insertionSort(b);
+            if (!Arrays.equals(s, b))
+                throw new RuntimeException();
+
+            b = a.clone();
+            strangeSort(b);
             if (!Arrays.equals(s, b))
                 throw new RuntimeException();
 
