@@ -11,7 +11,7 @@ class MaxFlowDinic(nodes: Int) {
         graph[t].add(Edge(s, graph[s].size - 1, 0))
     }
 
-    fun dinicBfs(graph: Array<out List<Edge>>, src: Int, dest: Int, dist: IntArray): Boolean {
+    fun dinicBfs(src: Int, dest: Int, dist: IntArray): Boolean {
         dist.fill(-1)
         dist[src] = 0
         val q = IntArray(graph.size)
@@ -50,7 +50,7 @@ class MaxFlowDinic(nodes: Int) {
 
     fun maxFlow(src: Int, dest: Int): Int {
         var flow = 0
-        while (dinicBfs(graph, src, dest, dist)) {
+        while (dinicBfs(src, dest, dist)) {
             val ptr = IntArray(graph.size)
             while (true) {
                 val df = dinicDfs(ptr, dest, src, Int.MAX_VALUE)
