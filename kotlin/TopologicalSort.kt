@@ -4,10 +4,10 @@ fun topologicalSort(graph: Array<out List<Int>>): List<Int> {
     val used = BooleanArray(n)
     val order = arrayListOf<Int>()
 
-    val dfs = DeepRecursiveFunction<Int, Unit> { u ->
+    val dfs = DeepRecursiveFunction { u ->
         used[u] = true
         graph[u].forEach { if (!used[it]) callRecursive(it) }
-        order += u
+        order.add(u)
     }
 
     (0 until n).forEach { if (!used[it]) dfs(it) }
