@@ -6,7 +6,7 @@ import java.util.stream.Stream;
 // https://en.wikipedia.org/wiki/Dijkstra's_algorithm
 public class DijkstraHeap {
     // calculate shortest paths in O(E*log(V)) time and O(E) memory
-    public static void shortestPaths(List<Edge>[] edges, int s, int[] prio, int[] pred) {
+    public static void shortestPaths(List<Edge>[] graph, int s, int[] prio, int[] pred) {
         Arrays.fill(pred, -1);
         Arrays.fill(prio, Integer.MAX_VALUE);
         prio[s] = 0;
@@ -17,7 +17,7 @@ public class DijkstraHeap {
             int curu = (int) cur;
             if (cur >>> 32 != prio[curu])
                 continue;
-            for (Edge e : edges[curu]) {
+            for (Edge e : graph[curu]) {
                 int v = e.t;
                 int nprio = prio[curu] + e.cost;
                 if (prio[v] > nprio) {

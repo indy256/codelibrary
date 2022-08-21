@@ -6,11 +6,11 @@ import java.util.stream.Stream;
 // https://en.wikipedia.org/wiki/Dijkstra's_algorithm
 public class DijkstraSegmentTree {
     // calculate shortest paths in O(E*log(V)) time and O(V) memory
-    public static void shortestPaths(List<Edge>[] edges, int s, long[] prio, int[] pred) {
+    public static void shortestPaths(List<Edge>[] graph, int s, long[] prio, int[] pred) {
         Arrays.fill(pred, -1);
         Arrays.fill(prio, Long.MAX_VALUE);
         prio[s] = 0;
-        long[] t = new long[edges.length * 2];
+        long[] t = new long[graph.length * 2];
         Arrays.fill(t, Long.MAX_VALUE);
         set(t, s, 0);
         while (true) {
@@ -18,7 +18,7 @@ public class DijkstraSegmentTree {
             if (t[cur + t.length / 2] == Long.MAX_VALUE)
                 break;
             set(t, cur, Long.MAX_VALUE);
-            for (Edge e : edges[cur]) {
+            for (Edge e : graph[cur]) {
                 int v = e.t;
                 long nprio = prio[cur] + e.cost;
                 if (prio[v] > nprio) {

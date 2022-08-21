@@ -2,13 +2,13 @@ package structures;
 
 // https://en.wikipedia.org/wiki/Binary_heap
 // invariant: heap[parent] <= heap[child]
-public class BinaryHeapExtended {
+public class BinaryHeapIndexed {
     long[] heap;
     int[] pos2Id;
     int[] id2Pos;
     int size;
 
-    public BinaryHeapExtended(int n) {
+    public BinaryHeapIndexed(int n) {
         heap = new long[n];
         pos2Id = new int[n];
         id2Pos = new int[n];
@@ -85,7 +85,7 @@ public class BinaryHeapExtended {
 
     // Usage example
     public static void main(String[] args) {
-        BinaryHeapExtended heap = new BinaryHeapExtended(10);
+        BinaryHeapIndexed heap = new BinaryHeapIndexed(10);
         heap.add(0, 4);
         heap.add(1, 5);
         heap.add(2, 2);

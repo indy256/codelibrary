@@ -6,15 +6,15 @@ import java.util.stream.Stream;
 // https://en.wikipedia.org/wiki/Dijkstra's_algorithm
 public class DijkstraCustomHeap {
     // calculate shortest paths in O(E*log(V)) time and O(V) memory
-    public static void shortestPaths(List<Edge>[] edges, int s, long[] prio, int[] pred) {
+    public static void shortestPaths(List<Edge>[] graph, int s, long[] prio, int[] pred) {
         Arrays.fill(pred, -1);
         Arrays.fill(prio, Long.MAX_VALUE);
         prio[s] = 0;
-        BinaryHeap h = new BinaryHeap(edges.length);
+        BinaryHeap h = new BinaryHeap(graph.length);
         h.add(s, 0);
         while (h.size != 0) {
             int u = h.remove();
-            for (Edge e : edges[u]) {
+            for (Edge e : graph[u]) {
                 int v = e.t;
                 long nprio = prio[u] + e.cost;
                 if (prio[v] > nprio) {
