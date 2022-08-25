@@ -1,5 +1,7 @@
 #include <bits/stdc++.h>
 
+#include "../../structures/binary_heap_indexed.h"
+
 using namespace std;
 
 // https://cp-algorithms.com/graph/min_cost_flow.html in O(E * V + E * logV * FLOW)
@@ -49,27 +51,30 @@ struct min_cost_flow {
         }
     }
 
-    void dijkstra(int s, vector<int> &pot, vector<int> &dist, vector<int> &curflow, vector<int> &prevnode,
-                  vector<int> &prevedge) {
-        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<>> q;
-        q.emplace(0, s);
+    void dijkstra(int s, int t, vector<int> &pot, vector<int> &dist, vector<bool> &finished, vector<int> &curflow,
+                  vector<int> &prevnode, vector<int> &prevedge) {
+        binary_heap_indexed<int> h(graph.size());
+        h.add(s, 0);
         fill(dist.begin(), dist.end(), numeric_limits<int>::max());
         dist[s] = 0;
         curflow[s] = numeric_limits<int>::max();
-        while (!q.empty()) {
-            auto [d, u] = q.top();
-            q.pop();
-            if (d != dist[u])
-                continue;
+        fill(finished.begin(), finished.end(), false);
+        while (!finished[t] && h.size != 0) {
+            int u = h.remove_min();
+            finished[u] = true;
             for (size_t i = 0; i < graph[u].size(); i++) {
                 Edge &e = graph[u][i];
-                int v = e.to;
-                if (e.cap <= e.f)
+                if (e.f >= e.cap)
                     continue;
+                int v = e.to;
                 int nprio = dist[u] + e.cost + pot[u] - pot[v];
+
                 if (dist[v] > nprio) {
+                    if (dist[v] == numeric_limits<int>::max())
+                        h.add(v, nprio);
+                    else
+                        h.changePriority(v, nprio);
                     dist[v] = nprio;
-                    q.emplace(nprio, v);
                     prevnode[v] = u;
                     prevedge[v] = i;
                     curflow[v] = min(curflow[u], e.cap - e.f);
@@ -81,15 +86,17 @@ struct min_cost_flow {
     tuple<int, int> cal_min_cost_flow(int s, int t, int maxf) {
         size_t n = graph.size();
         vector<int> pot(n), curflow(n), dist(n), prevnode(n), prevedge(n);
+        vector<bool> finished(n);
         bellman_ford(s, pot);  // this can be commented out if edges costs are non-negative
         int flow = 0;
         int flow_cost = 0;
         while (flow < maxf) {
-            dijkstra(s, pot, dist, curflow, prevnode, prevedge);
+            dijkstra(s, t, pot, dist, finished, curflow, prevnode, prevedge);
             if (dist[t] == numeric_limits<int>::max())
                 break;
             for (size_t i = 0; i < n; i++)
-                pot[i] += dist[i];
+                if (finished[i])
+                    pot[i] += dist[i] - dist[t];
             int df = min(curflow[t], maxf - flow);
             flow += df;
             for (int v = t; v != s; v = prevnode[v]) {

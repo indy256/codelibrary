@@ -3,15 +3,15 @@
 using namespace std;
 
 template <class T>
-struct binary_heap {
+struct binary_heap_indexed {
     vector<T> heap;
     vector<int> pos2Id;
     vector<int> id2Pos;
     int size;
 
-    binary_heap() : size(0) {}
+    binary_heap_indexed() : size(0) {}
 
-    binary_heap(int n) : heap(n), pos2Id(n), id2Pos(n), size(0) {}
+    binary_heap_indexed(int n) : heap(n), pos2Id(n), id2Pos(n), size(0) {}
 
     void add(int id, T value) {
         heap[size] = value;
@@ -78,16 +78,3 @@ struct binary_heap {
         id2Pos[pos2Id[j]] = j;
     }
 };
-
-// usage example
-int main() {
-    binary_heap<int> h(5);
-    h.add(0, 50);
-    h.add(1, 30);
-    h.add(2, 40);
-    h.changePriority(0, 20);
-    h.remove(1);
-    while (h.size) {
-        cout << h.remove_min() << endl;
-    }
-}

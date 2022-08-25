@@ -3,18 +3,18 @@ package structures;
 // https://en.wikipedia.org/wiki/Binary_heap
 // invariant: heap[parent] <= heap[child]
 public class BinaryHeapIndexed {
-    long[] heap;
+    int[] heap;
     int[] pos2Id;
     int[] id2Pos;
-    int size;
+    public int size;
 
     public BinaryHeapIndexed(int n) {
-        heap = new long[n];
+        heap = new int[n];
         pos2Id = new int[n];
         id2Pos = new int[n];
     }
 
-    public void add(int id, long value) {
+    public void add(int id, int value) {
         heap[size] = value;
         pos2Id[size] = id;
         id2Pos[id] = size;
@@ -30,14 +30,14 @@ public class BinaryHeapIndexed {
         return removedId;
     }
 
-    public void removeMin(int id) {
+    public void remove(int id) {
         int pos = id2Pos[id];
         pos2Id[pos] = pos2Id[--size];
         id2Pos[pos2Id[pos]] = pos;
         changePriority(pos2Id[pos], heap[size]);
     }
 
-    public void changePriority(int id, long value) {
+    public void changePriority(int id, int value) {
         int pos = id2Pos[id];
         if (heap[pos] < value) {
             heap[pos] = value;
@@ -73,12 +73,12 @@ public class BinaryHeapIndexed {
     }
 
     void swap(int i, int j) {
-        long tt = heap[i];
+        int t = heap[i];
         heap[i] = heap[j];
-        heap[j] = tt;
-        int t = pos2Id[i];
+        heap[j] = t;
+        int tt = pos2Id[i];
         pos2Id[i] = pos2Id[j];
-        pos2Id[j] = t;
+        pos2Id[j] = tt;
         id2Pos[pos2Id[i]] = i;
         id2Pos[pos2Id[j]] = j;
     }
@@ -92,7 +92,7 @@ public class BinaryHeapIndexed {
 
         heap.changePriority(1, 3);
         heap.changePriority(2, 6);
-        heap.removeMin(0);
+        heap.remove(0);
 
         // print elements in sorted order
         while (heap.size != 0) {

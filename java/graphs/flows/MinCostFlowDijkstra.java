@@ -2,6 +2,7 @@ package graphs.flows;
 
 import java.util.*;
 import java.util.stream.Stream;
+import structures.BinaryHeapIndexed;
 
 // https://cp-algorithms.com/graph/min_cost_flow.html in O(E * V + min(E * logV * FLOW, V^2 * FLOW))
 // negative-cost edges are allowed
@@ -13,7 +14,7 @@ public class MinCostFlowDijkstra {
         graph = Stream.generate(ArrayList::new).limit(nodes).toArray(List[] ::new);
     }
 
-    class Edge {
+    static class Edge {
         int to, rev, cap, f, cost;
 
         Edge(int to, int rev, int cap, int cost) {
@@ -57,20 +58,16 @@ public class MinCostFlowDijkstra {
         }
     }
 
-    void dijkstra(
+    void dijkstraSparse(
         int s, int t, int[] pot, int[] dist, boolean[] finished, int[] curflow, int[] prevnode, int[] prevedge) {
-        PriorityQueue<Long> q = new PriorityQueue<>();
-        q.add((long) s);
+        BinaryHeapIndexed h = new BinaryHeapIndexed(graph.length);
+        h.add(s, 0);
         Arrays.fill(dist, Integer.MAX_VALUE);
         dist[s] = 0;
         Arrays.fill(finished, false);
         curflow[s] = Integer.MAX_VALUE;
-        while (!finished[t] && !q.isEmpty()) {
-            long cur = q.remove();
-            int u = (int) (cur & 0xFFFF_FFFFL);
-            int priou = (int) (cur >>> 32);
-            if (priou != dist[u])
-                continue;
+        while (!finished[t] && h.size != 0) {
+            int u = h.removeMin();
             finished[u] = true;
             for (int i = 0; i < graph[u].size(); i++) {
                 Edge e = graph[u].get(i);
@@ -79,8 +76,11 @@ public class MinCostFlowDijkstra {
                 int v = e.to;
                 int nprio = dist[u] + e.cost + pot[u] - pot[v];
                 if (dist[v] > nprio) {
+                    if (dist[v] == Integer.MAX_VALUE)
+                        h.add(v, nprio);
+                    else
+                        h.changePriority(v, nprio);
                     dist[v] = nprio;
-                    q.add(((long) nprio << 32) + v);
                     prevnode[v] = u;
                     prevedge[v] = i;
                     curflow[v] = Math.min(curflow[u], e.cap - e.f);
@@ -89,7 +89,7 @@ public class MinCostFlowDijkstra {
         }
     }
 
-    void dijkstra2(
+    void dijkstraDense(
         int s, int t, int[] pot, int[] dist, boolean[] finished, int[] curflow, int[] prevnode, int[] prevedge) {
         Arrays.fill(dist, Integer.MAX_VALUE);
         dist[s] = 0;
@@ -133,8 +133,8 @@ public class MinCostFlowDijkstra {
         int flow = 0;
         int flowCost = 0;
         while (flow < maxf) {
-            dijkstra(s, t, pot, dist, finished, curflow, prevnode, prevedge); // E*logV
-            // dijkstra2(s, t, pot, dist, finished, curflow, prevnode, prevedge); // V^2
+            dijkstraSparse(s, t, pot, dist, finished, curflow, prevnode, prevedge); // O(E*logV)
+            // dijkstraDense(s, t, pot, dist, finished, curflow, prevnode, prevedge); // O(V^2)
             if (dist[t] == Integer.MAX_VALUE)
                 break;
             for (int i = 0; i < n; i++)
