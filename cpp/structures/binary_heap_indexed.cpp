@@ -10,7 +10,7 @@ int main() {
     h.add(0, 50);
     h.add(1, 30);
     h.add(2, 40);
-    h.changePriority(0, 20);
+    h.change_value(0, 20);
     h.remove(1);
     while (h.size) {
         cout << h.remove_min() << endl;

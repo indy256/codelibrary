@@ -33,10 +33,10 @@ struct binary_heap_indexed {
         int pos = id2Pos[id];
         pos2Id[pos] = pos2Id[--size];
         id2Pos[pos2Id[pos]] = pos;
-        changePriority(pos2Id[pos], heap[size]);
+        change_value(pos2Id[pos], heap[size]);
     }
 
-    void changePriority(int id, T value) {
+    void change_value(int id, T value) {
         int pos = id2Pos[id];
         if (heap[pos] < value) {
             heap[pos] = value;

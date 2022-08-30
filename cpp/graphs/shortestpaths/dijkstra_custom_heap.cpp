@@ -52,7 +52,7 @@ void add(int id, int prio) {
     move_up(hsize++);
 }
 
-void increase_priority(int id, int prio) {
+void decrease_value(int id, int prio) {
     int pos = id2Pos[id];
     h[pos] = prio;
     move_up(pos);
@@ -101,7 +101,7 @@ void dijkstra(int s) {
                 if (prio[v] == numeric_limits<int>::max())
                     add(v, nprio);
                 else
-                    increase_priority(v, nprio);
+                    decrease_value(v, nprio);
                 prio[v] = nprio;
                 pred[v] = u;
             }

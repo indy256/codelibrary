@@ -34,10 +34,10 @@ public class BinaryHeapIndexed {
         int pos = id2Pos[id];
         pos2Id[pos] = pos2Id[--size];
         id2Pos[pos2Id[pos]] = pos;
-        changePriority(pos2Id[pos], heap[size]);
+        changeValue(pos2Id[pos], heap[size]);
     }
 
-    public void changePriority(int id, int value) {
+    public void changeValue(int id, int value) {
         int pos = id2Pos[id];
         if (heap[pos] < value) {
             heap[pos] = value;
@@ -90,8 +90,8 @@ public class BinaryHeapIndexed {
         heap.add(1, 5);
         heap.add(2, 2);
 
-        heap.changePriority(1, 3);
-        heap.changePriority(2, 6);
+        heap.changeValue(1, 3);
+        heap.changeValue(2, 6);
         heap.remove(0);
 
         // print elements in sorted order

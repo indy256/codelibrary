@@ -73,7 +73,7 @@ struct min_cost_flow {
                     if (dist[v] == numeric_limits<int>::max())
                         h.add(v, nprio);
                     else
-                        h.changePriority(v, nprio);
+                        h.change_value(v, nprio);
                     dist[v] = nprio;
                     prevnode[v] = u;
                     prevedge[v] = i;

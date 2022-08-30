@@ -3,6 +3,7 @@ package graphs.flows;
 import java.util.*;
 import java.util.stream.Stream;
 import structures.BinaryHeapIndexed;
+import structures.RadixHeapIndexed;
 
 // https://cp-algorithms.com/graph/min_cost_flow.html in O(E * V + min(E * logV * FLOW, V^2 * FLOW))
 // negative-cost edges are allowed
@@ -61,6 +62,7 @@ public class MinCostFlowDijkstra {
     void dijkstraSparse(
         int s, int t, int[] pot, int[] dist, boolean[] finished, int[] curflow, int[] prevnode, int[] prevedge) {
         BinaryHeapIndexed h = new BinaryHeapIndexed(graph.length);
+        // RadixHeapIndexed h = new RadixHeapIndexed(graph.length);
         h.add(s, 0);
         Arrays.fill(dist, Integer.MAX_VALUE);
         dist[s] = 0;
@@ -79,7 +81,7 @@ public class MinCostFlowDijkstra {
                     if (dist[v] == Integer.MAX_VALUE)
                         h.add(v, nprio);
                     else
-                        h.changePriority(v, nprio);
+                        h.changeValue(v, nprio);
                     dist[v] = nprio;
                     prevnode[v] = u;
                     prevedge[v] = i;
