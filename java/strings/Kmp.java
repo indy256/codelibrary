@@ -39,7 +39,7 @@ public class Kmp {
         int minPeriod = n - maxBorder;
 
         // check periodicity
-        // if (n % minPeriod != 0) return -1;
+        // if (minPeriod < n && n % minPeriod != 0) return -1;
 
         return minPeriod;
     }
