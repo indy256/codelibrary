@@ -11,7 +11,7 @@ vector<int> odd_palindromes(const string &s) {
     int l = 0;
     int r = -1;
     for (int i = 0; i < n; ++i) {
-        int k = (i > r ? 0 : min(d1[l + r - i], r - i)) + 1;
+        int k = i > r ? 1 : min(d1[l + r - i], r - i);
         while (i + k < n && i - k >= 0 && s[i + k] == s[i - k])
             ++k;
         d1[i] = k--;
