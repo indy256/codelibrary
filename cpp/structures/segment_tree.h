@@ -9,6 +9,10 @@ struct segtree {
         long long sum = 0;
         long long add = 0;
 
+        // set initial value for a leave
+        void initialize(long long v) { mx = v; }
+
+        // apply aggregate operation to the node
         void apply(int l, int r, long long v) {
             mx += v;
             sum += (r - l + 1) * v;
@@ -16,6 +20,7 @@ struct segtree {
         }
     };
 
+    // construct a node from its children
     static node unite(const node &a, const node &b) {
         node res;
         res.mx = max(a.mx, b.mx);
@@ -52,7 +57,7 @@ struct segtree {
     template <class T>
     void build(int x, int l, int r, const vector<T> &v) {
         if (l == r) {
-            tree[x].apply(l, r, v[l]);
+            tree[x].initialize(v[l]);
             return;
         }
         int m = (l + r) >> 1;
