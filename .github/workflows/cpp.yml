@@ -38,7 +38,7 @@ jobs:
     - name: compile
       run: |
         cd cpp
-        find . -name '*.cpp' -print0 | xargs -n1 -0 clang++-16 -Wall -Wextra -std=c++2b
+        find . -name '*.cpp' -print0 | xargs -n1 -0 clang++-17 -Wall -Wextra -std=c++2b
 
   build-macos-clang:
     runs-on: macos-latest
