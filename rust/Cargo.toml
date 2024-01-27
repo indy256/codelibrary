@@ -1,0 +1,29 @@
+[package]
+name = "codelibrary"
+version = "0.1.0"
+
+edition = "2018"
+
+[[bin]]
+name = "topological_sort"
+path = "graphs/dfs/topological_sort.rs"
+
+[[bin]]
+name = "dijkstra"
+path = "graphs/shortestpaths/dijkstra.rs"
+
+[[bin]]
+name = "max_bipartite_matching_EV"
+path = "graphs/matchings/max_bipartite_matching_EV.rs"
+
+[[bin]]
+name = "euclid"
+path = "numbertheory/euclid.rs"
+
+[[bin]]
+name = "disjoint_sets"
+path = "structures/disjoint_sets.rs"
+
+[[bin]]
+name = "fenwick_tree"
+path = "structures/fenwick_tree.rs"

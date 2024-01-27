@@ -1,0 +1,20 @@
+name: Rust CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build-ubuntu-rustc:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: install rustc
+        run: |
+          sudo apt install rustc
+      - name: compile
+        run: |
+          cd rust
+          cargo
