@@ -36,6 +36,30 @@ public class PrimesAndDivisors {
         return Arrays.copyOf(primes, cnt);
     }
 
+    // Generates prime numbers in the range n to m in O(n*log(log(n))) time
+    public static int[] generatePrimesRange(int n, int m) {
+        int[] primes = generatePrimes((int)Math.sqrt(m));
+        boolean[] sieve = new boolean[(m - n + 1)];
+        Arrays.fill(sieve, true);
+
+        for (int i = 0; i < primes.length; i++) {
+            int d = n / primes[i];
+            d *= primes[i];
+            while (d <= m) {
+                if(d >= n && primes[i] != d)
+                    sieve[d - n] = false;
+                d += primes[i];
+            }
+        }
+
+        primes = new int[sieve.length];
+        int cnt = 0;
+        for (int i = 0; i < sieve.length; i++)
+            if (sieve[i] && (i + n) != 1)
+                primes[cnt++] = (i + n);
+        return Arrays.copyOf(primes, cnt);
+    }
+
     public static boolean isPrime(long n) {
         if (n <= 1)
             return false;
@@ -106,10 +130,12 @@ public class PrimesAndDivisors {
 
         int[] primes1 = generatePrimes(n);
         int[] primes2 = generatePrimesLinearTime(n);
+        int[] primes3 = generatePrimesRange(1999999900, 2000000000);
 
         System.out.println(Arrays.toString(primes1));
         System.out.println(Arrays.toString(primes2));
         System.out.println(Arrays.equals(primes1, primes2));
+        System.out.println(Arrays.equals(primes3, new int[]{1999999913, 1999999927, 1999999943, 1999999973}));
 
         System.out.println(Arrays.toString(numberOfPrimeDivisors(n)));
         System.out.println(Arrays.toString(generateMinDivisors(n)));
