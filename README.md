@@ -2,7 +2,7 @@
 [![Java CI](https://github.com/indy256/codelibrary/actions/workflows/java.yml/badge.svg)](https://github.com/indy256/codelibrary/actions/workflows/java.yml)
 [![C++ CI](https://github.com/indy256/codelibrary/actions/workflows/cpp.yml/badge.svg)](https://github.com/indy256/codelibrary/actions/workflows/cpp.yml)
 [![Rust CI](https://github.com/indy256/codelibrary/actions/workflows/rust.yml/badge.svg)](https://github.com/indy256/codelibrary/actions/workflows/rust.yml)
-[![License](https://img.shields.io/badge/license-UNLICENSE-green.svg)](https://github.com/indy256/codelibrary/blob/master/UNLICENSE)
+[![License](https://img.shields.io/badge/license-UNLICENSE-green.svg)](https://github.com/indy256/codelibrary/blob/main/UNLICENSE)
 
 ### Collection of algorithms and data structures in C++, Java, Kotlin, Python and Rust
 
