@@ -12,7 +12,7 @@ int pow_mod(int x, int n, int mod) {
     return res;
 }
 
-int generator(int m) {
+int calc_generator(int m) {
     if (m == 2)
         return 1;
     vector<int> factors;
@@ -43,7 +43,7 @@ int generator(int m) {
 int discrete_root(int a, int b, int m) {
     if (a == 0)
         return -1;
-    int g = generator(m);
+    int g = calc_generator(m);
     int sq = (int)sqrt(m) + 1;
     vector<pair<int, int>> dec(sq);
     for (int i = 1; i <= sq; ++i)
