@@ -1,10 +1,6 @@
 name: C++ CI
 
-on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+on: [push]
 
 jobs:
   build-ubuntu-gcc-13:
