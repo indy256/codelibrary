@@ -28,7 +28,7 @@ int totient_function(int n) {
 // returns g such that g^i runs through all numbers from 1 to m-1 modulo m
 // g exists for m = 2,4,p^a,2*p^a, where p > 2 is a prime number
 // O(m^0.5) complexity
-int generator(int m) {
+int calc_generator(int m) {
     if (m == 2)
         return 1;
     vector<int> factors;
@@ -57,7 +57,7 @@ int generator(int m) {
 // usage example
 int main() {
     for (int i = 0; i < 15; ++i) {
-        cout << "generator(" << i << ") = " << generator(i) << endl;
+        cout << "generator(" << i << ") = " << calc_generator(i) << endl;
     }
-    cout << "generator(" << 998244353 << ") = " << generator(998244353) << endl;
+    cout << "generator(" << 998244353 << ") = " << calc_generator(998244353) << endl;
 }
