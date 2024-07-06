@@ -21,10 +21,16 @@ impl DisjointSets {
     }
 }
 
-fn main() {
-    let mut ds = DisjointSets::new(3);
-    ds.unite(0, 2);
-    assert_eq!(ds.root(0), 0);
-    assert_eq!(ds.root(1), 1);
-    assert_eq!(ds.root(2), 0);
+#[cfg(test)]
+mod tests {
+    use crate::DisjointSets;
+
+    #[test]
+    fn basic_test() {
+        let mut ds = DisjointSets::new(3);
+        ds.unite(0, 2);
+        assert_eq!(ds.root(0), 0);
+        assert_eq!(ds.root(1), 1);
+        assert_eq!(ds.root(2), 0);
+    }
 }
