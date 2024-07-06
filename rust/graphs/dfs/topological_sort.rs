@@ -1,4 +1,4 @@
-fn dfs(graph: &Vec<Vec<usize>>, used: &mut Vec<bool>, order: &mut Vec<usize>, u: usize) {
+fn dfs(graph: &[Vec<usize>], used: &mut [bool], order: &mut Vec<usize>, u: usize) {
     used[u] = true;
     for v in &graph[u] {
         if !used[*v] {
@@ -8,7 +8,7 @@ fn dfs(graph: &Vec<Vec<usize>>, used: &mut Vec<bool>, order: &mut Vec<usize>, u:
     order.push(u);
 }
 
-pub fn topological_sort(graph: &Vec<Vec<usize>>) -> Vec<usize> {
+pub fn topological_sort(graph: &[Vec<usize>]) -> Vec<usize> {
     let n = graph.len();
     let mut used = vec![false; n];
     let mut order = Vec::<usize>::new();
@@ -21,8 +21,14 @@ pub fn topological_sort(graph: &Vec<Vec<usize>>) -> Vec<usize> {
     return order;
 }
 
-fn main() {
-    let g = vec![vec![0], vec![], vec![0, 1]];
-    let order = topological_sort(&g);
-    assert_eq!(order, vec![2, 1, 0]);
+#[cfg(test)]
+mod tests {
+    use crate::topological_sort;
+
+    #[test]
+    fn basic_test() {
+        let g = vec![vec![0], vec![], vec![0, 1]];
+        let order = topological_sort(&g);
+        assert_eq!(order, [2, 1, 0]);
+    }
 }

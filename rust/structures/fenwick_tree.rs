@@ -27,12 +27,18 @@ impl<T: AddAssign + Copy + From<i32>> Fenwick<T> {
     }
 }
 
-fn main() {
-    let mut t = Fenwick::<i32>::new(3);
-    t.add(0, 4);
-    t.add(1, 5);
-    t.add(2, 5);
-    t.add(2, 5);
-    assert_eq!(t.sum(0), 4);
-    assert_eq!(t.sum(2), 19);
+#[cfg(test)]
+mod tests {
+    use crate::Fenwick;
+
+    #[test]
+    fn basic_test() {
+        let mut t = Fenwick::<i32>::new(3);
+        t.add(0, 4);
+        t.add(1, 5);
+        t.add(2, 5);
+        t.add(2, 5);
+        assert_eq!(t.sum(0), 4);
+        assert_eq!(t.sum(2), 19);
+    }
 }

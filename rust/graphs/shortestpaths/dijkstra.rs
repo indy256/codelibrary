@@ -2,7 +2,7 @@ use std::collections::BinaryHeap;
 
 // https://cp-algorithms.com/graph/dijkstra_sparse.html
 // O(E*log(V)) time and O(E) memory
-pub fn dijkstra_heap(graph: &Vec<Vec<(usize, i32)>>, s: usize) -> (Vec<i32>, Vec<usize>) {
+pub fn dijkstra_heap(graph: &[Vec<(usize, i32)>], s: usize) -> (Vec<i32>, Vec<usize>) {
     let n = graph.len();
     let mut prio = vec![i32::MAX; n];
     let mut pred = vec![usize::MAX; n];
@@ -23,9 +23,15 @@ pub fn dijkstra_heap(graph: &Vec<Vec<(usize, i32)>>, s: usize) -> (Vec<i32>, Vec
     return (prio, pred);
 }
 
-fn main() {
-    let g = vec![vec![(1, 10), (2, 8)], vec![(2, -5)], vec![]];
-    let (prio, pred) = dijkstra_heap(&g, 0);
-    assert_eq!(prio, vec![0, 10, 5]);
-    assert_eq!(pred, vec![usize::MAX, 0, 1]);
+#[cfg(test)]
+mod tests {
+    use crate::dijkstra_heap;
+
+    #[test]
+    fn basic_test() {
+        let g = vec![vec![(1, 10), (2, 8)], vec![(2, -5)], vec![]];
+        let (prio, pred) = dijkstra_heap(&g, 0);
+        assert_eq!(prio, [0, 10, 5]);
+        assert_eq!(pred, [usize::MAX, 0, 1]);
+    }
 }

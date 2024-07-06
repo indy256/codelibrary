@@ -13,4 +13,4 @@ jobs:
       - name: compile
         run: |
           cd rust
-          cargo build
+          cargo test

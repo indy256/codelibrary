@@ -24,7 +24,13 @@ fn euclid(mut a: i64, mut b: i64) -> [i64; 3] {
     return if a > 0 { [a, x, y] } else { [-a, -x, -y] };
 }
 
-fn main() {
-    assert_eq!(gcd(15, 20), 5);
-    assert_eq!(euclid(6, 9), [3, -1, 1]);
+#[cfg(test)]
+mod tests {
+    use crate::{euclid, gcd};
+
+    #[test]
+    fn basic_test() {
+        assert_eq!(gcd(15, 20), 5);
+        assert_eq!(euclid(6, 9), [3, -1, 1]);
+    }
 }
