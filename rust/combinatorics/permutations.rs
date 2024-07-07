@@ -8,13 +8,21 @@ pub fn next_permutation(p: &mut [usize]) -> Option<()> {
 
 #[cfg(test)]
 mod tests {
+    use rstest::rstest;
     use crate::next_permutation;
 
-    #[test]
-    fn basic_test() {
-        let mut p: [usize; 4] = [0, 3, 2, 1];
-        let res = next_permutation(&mut p);
-        assert_eq!(p, [1, 0, 2, 3]);
-        assert_eq!(res, Some(()));
+    #[rstest]
+    #[case(vec![0], vec![0], None)]
+    #[case(vec![0, 1, 2], vec![0, 2, 1], Some(()))]
+    #[case(vec![0, 3, 2, 1], vec![1, 0, 2, 3], Some(()))]
+    #[case(vec![2, 1, 0], vec![2, 1, 0], None)]
+    fn basic_test(
+        #[case] mut permutation: Vec<usize>,
+        #[case] expected_next_permutation: Vec<usize>,
+        #[case] expected_result: Option<()>,
+    ) {
+        let result = next_permutation(&mut permutation);
+        assert_eq!(permutation, expected_next_permutation);
+        assert_eq!(result, expected_result);
     }
 }
