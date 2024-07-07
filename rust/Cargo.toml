@@ -38,3 +38,7 @@ path = "structures/fenwick_tree.rs"
 [[bin]]
 name = "persistent_tree"
 path = "structures/persistent_tree.rs"
+
+[[bin]]
+name = "binary_search"
+path = "misc/binary_search.rs"
