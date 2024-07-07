@@ -13,10 +13,7 @@ public class PersistentTree {
         Node(Node left, Node right) {
             this.left = left;
             this.right = right;
-            if (left != null)
-                sum += left.sum;
-            if (right != null)
-                sum += right.sum;
+            sum = left.sum + right.sum;
         }
     }
 
