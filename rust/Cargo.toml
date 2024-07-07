@@ -34,3 +34,7 @@ path = "structures/disjoint_sets.rs"
 [[bin]]
 name = "fenwick_tree"
 path = "structures/fenwick_tree.rs"
+
+[[bin]]
+name = "persistent_tree"
+path = "structures/persistent_tree.rs"
