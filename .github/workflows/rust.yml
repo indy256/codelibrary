@@ -14,6 +14,8 @@ jobs:
         run: |
           cd rust
           cargo fmt -- --check
+          RUSTFLAGS="-A unused" cargo clippy
+          cargo clippy --tests
       - name: compile
         run: |
           cd rust

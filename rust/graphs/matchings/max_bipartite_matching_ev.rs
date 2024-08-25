@@ -1,6 +1,3 @@
-#![feature(test)]
-extern crate test;
-
 fn find_path(graph: &[Vec<usize>], u1: usize, matching: &mut [usize], vis: &mut [bool]) -> bool {
     vis[u1] = true;
     for v in &graph[u1] {
@@ -10,7 +7,7 @@ fn find_path(graph: &[Vec<usize>], u1: usize, matching: &mut [usize], vis: &mut 
             return true;
         }
     }
-    return false;
+    false
 }
 
 pub fn max_matching(graph: &[Vec<usize>], n2: usize) -> (usize, Vec<usize>) {
@@ -23,12 +20,12 @@ pub fn max_matching(graph: &[Vec<usize>], n2: usize) -> (usize, Vec<usize>) {
             matches += 1;
         }
     }
-    return (matches, matching);
+    (matches, matching)
 }
 
 #[cfg(test)]
 mod tests {
-    use crate::max_matching;
+    use crate::graphs::matchings::max_bipartite_matching_ev::max_matching;
     use test::Bencher;
 
     #[test]

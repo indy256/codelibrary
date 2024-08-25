@@ -25,7 +25,7 @@ impl DisjointSets {
 
 #[cfg(test)]
 mod tests {
-    use crate::DisjointSets;
+    use crate::structures::disjoint_sets::DisjointSets;
 
     #[test]
     fn basic_test() {
