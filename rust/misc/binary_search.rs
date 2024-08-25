@@ -18,18 +18,15 @@ where
 
 #[cfg(test)]
 mod tests {
-    use rstest::rstest;
     use crate::binary_search_first_true;
+    use rstest::rstest;
 
     #[rstest]
     #[case(100, 0)]
     #[case(100, 1)]
     #[case(100, 50)]
     #[case(100, 100)]
-    fn basic_test(
-        #[case] n: i32,
-        #[case] pos: i32,
-    ) {
+    fn basic_test(#[case] n: i32, #[case] pos: i32) {
         assert_eq!(binary_search_first_true(|i| { i >= pos }, 0, n), pos);
     }
 }
