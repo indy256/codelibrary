@@ -22,12 +22,12 @@ pub fn dijkstra_heap(graph: &[Vec<(usize, i32)>], s: usize) -> (Vec<i32>, Vec<us
             }
         }
     }
-    return (prio, pred);
+    (prio, pred)
 }
 
 #[cfg(test)]
 mod tests {
-    use crate::dijkstra_heap;
+    use crate::graphs::shortestpaths::dijkstra::dijkstra_heap;
 
     #[test]
     fn basic_test() {

@@ -25,13 +25,13 @@ impl<T: AddAssign + Copy + From<i32>> Fenwick<T> {
             res += self.t[i as usize];
             i = (i & (i + 1)) - 1;
         }
-        return res;
+        res
     }
 }
 
 #[cfg(test)]
 mod tests {
-    use crate::Fenwick;
+    use crate::structures::fenwick_tree::Fenwick;
 
     #[test]
     fn basic_test() {

@@ -18,12 +18,12 @@ pub fn topological_sort(graph: &[Vec<usize>]) -> Vec<usize> {
         }
     }
     order.reverse();
-    return order;
+    order
 }
 
 #[cfg(test)]
 mod tests {
-    use crate::topological_sort;
+    use crate::graphs::dfs::topological_sort::topological_sort;
 
     #[test]
     fn basic_test() {

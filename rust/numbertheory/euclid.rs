@@ -1,5 +1,9 @@
 fn gcd(a: i32, b: i32) -> i32 {
-    return if b == 0 { a.abs() } else { gcd(b, a % b) };
+    if b == 0 {
+        a.abs()
+    } else {
+        gcd(b, a % b)
+    }
 }
 
 // returns { gcd(a,b), x, y } such that gcd(a,b) = a*x + b*y
@@ -21,12 +25,16 @@ fn euclid(mut a: i64, mut b: i64) -> [i64; 3] {
         y = _y1;
         a = _b;
     }
-    return if a > 0 { [a, x, y] } else { [-a, -x, -y] };
+    if a > 0 {
+        [a, x, y]
+    } else {
+        [-a, -x, -y]
+    }
 }
 
 #[cfg(test)]
 mod tests {
-    use crate::{euclid, gcd};
+    use crate::numbertheory::euclid::{euclid, gcd};
 
     #[test]
     fn basic_test() {

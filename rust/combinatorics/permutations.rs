@@ -8,7 +8,7 @@ pub fn next_permutation(p: &mut [usize]) -> Option<()> {
 
 #[cfg(test)]
 mod tests {
-    use crate::next_permutation;
+    use crate::combinatorics::permutations::next_permutation;
     use rstest::rstest;
 
     #[rstest]

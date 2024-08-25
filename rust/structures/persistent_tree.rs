@@ -71,7 +71,7 @@ impl PersistentTree {
 
 #[cfg(test)]
 mod tests {
-    use crate::PersistentTree;
+    use crate::structures::persistent_tree::PersistentTree;
 
     #[test]
     fn basic_test() {

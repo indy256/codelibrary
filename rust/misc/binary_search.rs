@@ -18,7 +18,7 @@ where
 
 #[cfg(test)]
 mod tests {
-    use crate::binary_search_first_true;
+    use crate::misc::binary_search::binary_search_first_true;
     use rstest::rstest;
 
     #[rstest]
