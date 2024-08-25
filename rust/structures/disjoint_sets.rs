@@ -1,10 +1,12 @@
 struct DisjointSets {
-    p: Vec<usize>
+    p: Vec<usize>,
 }
 
 impl DisjointSets {
     pub fn new(n: usize) -> Self {
-        DisjointSets { p: (0..n).collect() }
+        DisjointSets {
+            p: (0..n).collect(),
+        }
     }
 
     pub fn root(&mut self, x: usize) -> usize {

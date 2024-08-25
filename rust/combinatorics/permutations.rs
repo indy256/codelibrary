@@ -8,8 +8,8 @@ pub fn next_permutation(p: &mut [usize]) -> Option<()> {
 
 #[cfg(test)]
 mod tests {
-    use rstest::rstest;
     use crate::next_permutation;
+    use rstest::rstest;
 
     #[rstest]
     #[case(vec![0], vec![0], None)]

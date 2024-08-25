@@ -1,12 +1,14 @@
 use std::ops::AddAssign;
 
 struct Fenwick<T> {
-    t: Vec<T>
+    t: Vec<T>,
 }
 
 impl<T: AddAssign + Copy + From<i32>> Fenwick<T> {
     fn new(n: usize) -> Self {
-        Fenwick { t: vec![0.into(); n] }
+        Fenwick {
+            t: vec![0.into(); n],
+        }
     }
 
     pub fn add(&mut self, mut i: usize, value: T) {

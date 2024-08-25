@@ -10,7 +10,9 @@ pub fn dijkstra_heap(graph: &[Vec<(usize, i32)>], s: usize) -> (Vec<i32>, Vec<us
     prio[s] = 0;
     q.push((0, s));
     while let Some((d, u)) = q.pop() {
-        if -d != prio[u] { continue; }
+        if -d != prio[u] {
+            continue;
+        }
         for (v, len) in &graph[u] {
             let nprio = prio[u] + len;
             if prio[*v] > nprio {

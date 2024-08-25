@@ -10,6 +10,10 @@ jobs:
       - name: install rustc
         run: |
           sudo apt install rustc
+      - name: format
+        run: |
+          cd rust
+          cargo fmt -- --check
       - name: compile
         run: |
           cd rust

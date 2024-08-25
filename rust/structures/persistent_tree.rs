@@ -54,9 +54,15 @@ impl PersistentTree {
         } else {
             let mid = (left + right) >> 1;
             if pos <= mid {
-                Node::new_parent(&Self::set(pos, value, root.left.as_ref().unwrap(), left, mid), root.right.as_ref().unwrap())
+                Node::new_parent(
+                    &Self::set(pos, value, root.left.as_ref().unwrap(), left, mid),
+                    root.right.as_ref().unwrap(),
+                )
             } else {
-                Node::new_parent(root.left.as_ref().unwrap(), &Self::set(pos, value, root.right.as_ref().unwrap(), mid + 1, right))
+                Node::new_parent(
+                    root.left.as_ref().unwrap(),
+                    &Self::set(pos, value, root.right.as_ref().unwrap(), mid + 1, right),
+                )
             }
         };
         Rc::new(node)
