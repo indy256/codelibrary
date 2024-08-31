@@ -1,55 +1,52 @@
-use std::mem::swap;
+use std::cell::RefCell;
+use std::mem::{replace, swap, take};
 use std::rc::Rc;
 
 struct Heap<V> {
     value: V,
-    left: Option<Rc<Heap<V>>>,
-    right: Option<Rc<Heap<V>>>,
+    left: Option<Rc<RefCell<Heap<V>>>>,
+    right: Option<Rc<RefCell<Heap<V>>>>,
 }
 
 impl<V: PartialOrd + Clone> Heap<V> {
-    fn new(value: V) -> Option<Rc<Heap<V>>> {
-        Some(Rc::new(Self {
+    fn new(value: V) -> Option<Rc<RefCell<Heap<V>>>> {
+        Some(Rc::new(RefCell::new(Self {
             value,
             left: None,
             right: None,
-        }))
+        })))
     }
-    fn merge(a: &Option<Rc<Heap<V>>>, b: &Option<Rc<Heap<V>>>) -> Option<Rc<Heap<V>>> {
+    fn merge<'a>(
+        mut a: &'a Option<Rc<RefCell<Heap<V>>>>,
+        mut b: &'a Option<Rc<RefCell<Heap<V>>>>,
+    ) -> Option<Rc<RefCell<Heap<V>>>> {
         if a.is_none() {
             return b.clone();
         }
         if b.is_none() {
             return a.clone();
         }
-        let mut ra = a.clone()?;
-        let mut rb = b.clone()?;
-        if ra.value > rb.value {
-            swap(&mut ra, &mut rb);
+        if a.as_ref()?.borrow().value > b.as_ref()?.borrow().value {
+            swap(&mut a, &mut b);
         }
         if rand::random() {
-            ra = Rc::new(Heap {
-                value: ra.value.clone(),
-                left: ra.right.clone(),
-                right: ra.left.clone(),
-            });
+            let mut ra = a.as_ref()?.borrow_mut();
+            let l = take(&mut ra.left);
+            let r = take(&mut ra.right);
+            ra.left = r;
+            ra.right = l;
         }
-        Some(Rc::new(Heap {
-            value: ra.value.clone(),
-            left: Self::merge(&ra.left.clone(), &Some(rb)),
-            right: ra.right.clone(),
-        }))
+        let m = Self::merge(replace(&mut &a.as_ref()?.borrow_mut().left, &None), b);
+        a.as_ref()?.borrow_mut().left = m;
+        a.clone()
     }
 
-    fn remove_min(heap: &Option<Rc<Heap<V>>>) -> (Option<Rc<Heap<V>>>, V) {
-        let h = heap.as_ref().unwrap();
-        (
-            Self::merge(&h.as_ref().left, &h.as_ref().right),
-            h.as_ref().value.clone(),
-        )
+    fn remove_min(heap: &Option<Rc<RefCell<Heap<V>>>>) -> (Option<Rc<RefCell<Heap<V>>>>, V) {
+        let h = heap.as_ref().unwrap().borrow();
+        (Self::merge(&h.left, &h.right), h.value.clone())
     }
 
-    fn add(heap: &Option<Rc<Heap<V>>>, value: V) -> Option<Rc<Heap<V>>> {
+    fn add(heap: &Option<Rc<RefCell<Heap<V>>>>, value: V) -> Option<Rc<RefCell<Heap<V>>>> {
         Self::merge(heap, &Heap::new(value))
     }
 }
