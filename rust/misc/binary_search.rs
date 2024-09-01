@@ -1,8 +1,9 @@
 // invariant: f[lo] == false, f[hi] == true
-pub fn binary_search_first_true<F>(f: F, from_inclusive: i32, to_inclusive: i32) -> i32
-where
-    F: Fn(i32) -> bool,
-{
+pub fn binary_search_first_true<F: Fn(i32) -> bool>(
+    f: F,
+    from_inclusive: i32,
+    to_inclusive: i32,
+) -> i32 {
     let mut lo = from_inclusive - 1;
     let mut hi = to_inclusive + 1;
     while hi - lo > 1 {

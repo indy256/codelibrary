@@ -15,7 +15,7 @@ impl<V: PartialOrd> Heap<V> {
         }))
     }
 
-    fn merge(a: Option<Box<Heap<V>>>, b: Option<Box<Heap<V>>>) -> Option<Box<Heap<V>>> {
+    pub fn merge(a: Option<Box<Heap<V>>>, b: Option<Box<Heap<V>>>) -> Option<Box<Heap<V>>> {
         if a.is_none() {
             return b;
         }
@@ -34,13 +34,13 @@ impl<V: PartialOrd> Heap<V> {
         Some(ha)
     }
 
-    fn remove_min(heap: Option<Box<Heap<V>>>) -> (Option<Box<Heap<V>>>, V) {
-        let h = heap.unwrap();
-        (Self::merge(h.left, h.right), h.value)
+    pub fn insert(heap: Option<Box<Heap<V>>>, value: V) -> Option<Box<Heap<V>>> {
+        Self::merge(heap, Heap::new(value))
     }
 
-    fn add(heap: Option<Box<Heap<V>>>, value: V) -> Option<Box<Heap<V>>> {
-        Self::merge(heap, Heap::new(value))
+    pub fn remove_min(heap: Option<Box<Heap<V>>>) -> (Option<Box<Heap<V>>>, V) {
+        let h = heap.unwrap();
+        (Self::merge(h.left, h.right), h.value)
     }
 }
 
@@ -92,7 +92,7 @@ mod tests {
     }
 
     fn sort_with_heap(seq: &[u32]) -> Vec<u32> {
-        let mut heap = seq.iter().fold(None, |h, v| Heap::add(h, v));
+        let mut heap = seq.iter().fold(None, |h, v| Heap::insert(h, v));
         let mut heap_sorted_values = Vec::new();
         while heap.is_some() {
             let (updated_heap, min_value) = Heap::remove_min(heap);
