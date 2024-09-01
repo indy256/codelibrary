@@ -174,8 +174,15 @@ public class Treap {
         treap = insert(treap, 3, 2);
         treap = insert(treap, 6, 1);
         System.out.println(kth(treap, 1).key);
-        System.out.println(query(treap, 1, 10).mx);
+
+        TreapAndResult treapAndResult1 = query(treap, 1, 10);
+        treap = treapAndResult1.treap;
+        System.out.println(treapAndResult1.mx);
+
         treap = remove(treap, 5);
-        System.out.println(query(treap, 1, 10).mx);
+
+        TreapAndResult treapAndResult2 = query(treap, 1, 10);
+        treap = treapAndResult2.treap;
+        System.out.println(treapAndResult2.mx);
     }
 }
