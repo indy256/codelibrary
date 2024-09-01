@@ -7,16 +7,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: install rustc
+      - name: print rustc version
         run: |
-          sudo apt install rustc
-      - name: format
+          rustc --version
+      - name: check code formatting
         run: |
           cd rust
           cargo fmt -- --check
           RUSTFLAGS="-A unused" cargo clippy
           cargo clippy --tests
-      - name: compile
+      - name: compile and test
         run: |
           cd rust
           cargo test
