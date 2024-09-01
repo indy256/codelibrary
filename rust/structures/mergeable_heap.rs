@@ -15,23 +15,22 @@ impl<V: PartialOrd> Heap<V> {
         }))
     }
 
-    fn merge(a: Option<Box<Heap<V>>>, b: Option<Box<Heap<V>>>) -> Option<Box<Heap<V>>> {
+    fn merge(mut a: Option<Box<Heap<V>>>, mut b: Option<Box<Heap<V>>>) -> Option<Box<Heap<V>>> {
         if a.is_none() {
             return b;
         }
         if b.is_none() {
             return a;
         }
-        let mut ra = a.unwrap();
-        let mut rb = b.unwrap();
-        if ra.value > rb.value {
-            swap(&mut ra, &mut rb);
+        if a.as_ref()?.value > b.as_ref()?.value {
+            swap(&mut a, &mut b);
         }
+        let mut ha = a?;
         if rand::random() {
-            swap(&mut ra.left, &mut ra.right);
+            swap(&mut ha.left, &mut ha.right);
         }
-        ra.left = Self::merge(ra.left, Some(rb));
-        Some(ra)
+        ha.left = Self::merge(ha.left, b);
+        Some(ha)
     }
 
     fn remove_min(heap: Option<Box<Heap<V>>>) -> (Option<Box<Heap<V>>>, V) {
