@@ -20,8 +20,7 @@ public class MaxGeneralMatchingRandomized {
         int n = a.length;
         for (int j = 0; j < n; j++) {
             int k;
-            for (k = r; k < n && a[k][j] == 0; k++)
-                ;
+            for (k = r; k < n && a[k][j] == 0; k++);
             if (k == n)
                 continue;
 

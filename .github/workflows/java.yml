@@ -9,7 +9,7 @@ jobs:
       matrix:
         config:
           - {java-version: 1.8}
-          - {java-version: 22}
+          - {java-version: 23}
     steps:
       - uses: actions/checkout@v2
       - name: Set up JDK
