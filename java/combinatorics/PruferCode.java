@@ -23,8 +23,7 @@ public class PruferCode {
             if (degree[v] == 1 && v < ptr) {
                 leaf = v;
             } else {
-                while (degree[++ptr] != 1)
-                    ;
+                while (degree[++ptr] != 1);
                 leaf = ptr;
             }
         }
@@ -59,8 +58,7 @@ public class PruferCode {
             if (degree[next] == 1 && next < ptr) {
                 leaf = next;
             } else {
-                while (degree[++ptr] != 1)
-                    ;
+                while (degree[++ptr] != 1);
                 leaf = ptr;
             }
         }

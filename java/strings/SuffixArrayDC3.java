@@ -83,7 +83,7 @@ public class SuffixArrayDC3 {
             if (SA12[t] < n0 ? // different compares for mod 1 and mod 2 suffixes
                     leq(T[i], R[SA12[t] + n0], T[j], R[j / 3])
                              : leq(T[i], T[i + 1], R[SA12[t] - n0 + 1], T[j], T[j + 1],
-                                 R[j / 3 + n0])) { // suffix from SA12 is smaller
+                                   R[j / 3 + n0])) { // suffix from SA12 is smaller
                 SA[k] = i;
                 if (++t == n02) // done --- only SA0 suffixes left
                     for (k++; p < n0; p++, k++) SA[k] = SA0[p];
@@ -114,8 +114,7 @@ public class SuffixArrayDC3 {
         for (int i = 0, h = 0; i < n; i++) {
             if (rank[i] < n - 1) {
                 for (int j = sa[rank[i] + 1]; Math.max(i, j) + h < s.length() && s.charAt(i + h) == s.charAt(j + h);
-                     ++h)
-                    ;
+                     ++h);
                 lcp[rank[i]] = h;
                 if (h > 0)
                     --h;

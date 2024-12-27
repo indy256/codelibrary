@@ -84,8 +84,7 @@ public class SuffixArray {
         for (int i = 0, h = 0; i < n; i++) {
             if (rank[i] < n - 1) {
                 for (int j = sa[rank[i] + 1]; Math.max(i, j) + h < s.length() && s.charAt(i + h) == s.charAt(j + h);
-                     ++h)
-                    ;
+                     ++h);
                 lcp[rank[i]] = h;
                 if (h > 0)
                     --h;

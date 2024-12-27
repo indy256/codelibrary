@@ -150,8 +150,7 @@ public class LinkCutTreeLca {
                         Set<Integer> path = new HashSet<>();
                         for (; cur != -1; cur = p[cur]) path.add(cur);
                         cur = v;
-                        for (; cur != -1 && !path.contains(cur); cur = p[cur])
-                            ;
+                        for (; cur != -1 && !path.contains(cur); cur = p[cur]);
                         if (lca != nodes[cur])
                             throw new RuntimeException();
                     }

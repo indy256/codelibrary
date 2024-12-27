@@ -67,8 +67,7 @@ public class MaxFlowDinic {
         int flow = 0;
         while (dinicBfs(src, dest)) {
             int[] ptr = new int[graph.length];
-            for (int df; (df = dinicDfs(ptr, dest, src, Integer.MAX_VALUE)) != 0; flow += df)
-                ;
+            for (int df; (df = dinicDfs(ptr, dest, src, Integer.MAX_VALUE)) != 0; flow += df);
         }
         return flow;
     }
