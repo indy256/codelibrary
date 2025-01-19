@@ -21,7 +21,7 @@ impl<K: Copy + PartialOrd, V: Copy + PartialEq + AddAssign + Ord + Default> Trea
             value,
             mx: value,
             add: V::default(),
-            prio: rand::thread_rng().gen_range(0..1000_000_000),
+            prio: rand::thread_rng().gen_range(0..1_000_000_000),
             size: 1,
             left: None,
             right: None,
@@ -59,6 +59,7 @@ impl<K: Copy + PartialOrd, V: Copy + PartialEq + AddAssign + Ord + Default> Trea
         node.as_ref().map_or(value, |t| max(t.mx, value))
     }
 
+    #[allow(clippy::type_complexity)]
     pub fn split(
         root: Option<Box<Treap<K, V>>>,
         min_right: K,
@@ -66,6 +67,7 @@ impl<K: Copy + PartialOrd, V: Copy + PartialEq + AddAssign + Ord + Default> Trea
         Self::inner_split(root, min_right, |a, b| a >= b)
     }
 
+    #[allow(clippy::type_complexity)]
     pub fn strict_split(
         root: Option<Box<Treap<K, V>>>,
         min_right: K,
@@ -73,6 +75,7 @@ impl<K: Copy + PartialOrd, V: Copy + PartialEq + AddAssign + Ord + Default> Trea
         Self::inner_split(root, min_right, |a, b| a > b)
     }
 
+    #[allow(clippy::type_complexity)]
     fn inner_split<F: Fn(K, K) -> bool>(
         root: Option<Box<Treap<K, V>>>,
         min_right: K,
@@ -139,6 +142,7 @@ impl<K: Copy + PartialOrd, V: Copy + PartialEq + AddAssign + Ord + Default> Trea
     ) -> Option<Box<Treap<K, V>>> {
         let (l1, r1) = Self::strict_split(root, rr);
         let (l2, mut r2) = Self::split(l1, ll);
+        #[allow(clippy::option_map_unit_fn)]
         r2.as_mut().map(|t| t.apply(delta));
         Self::merge(Self::merge(l2, r2), r1)
     }
@@ -169,5 +173,10 @@ mod tests {
         let (t, q2) = Treap::query(treap, 1, 2);
         treap = t;
         assert_eq!(q2, 120);
+
+        treap = Treap::remove(treap, 2);
+
+        let (_t, q3) = Treap::query(treap, 1, 2);
+        assert_eq!(q3, 110);
     }
 }
