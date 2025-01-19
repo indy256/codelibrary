@@ -59,7 +59,7 @@ mod tests {
     #[case(&mut [1, 1])]
     #[case(&mut [3, 1, 2])]
     fn basic_test(#[case] seq: &mut [u32]) {
-        let heap_sorted_values = sort_with_heap(&seq);
+        let heap_sorted_values = sort_with_heap(seq);
         seq.sort();
         assert_eq!(heap_sorted_values, seq);
     }
@@ -92,7 +92,7 @@ mod tests {
     }
 
     fn sort_with_heap(seq: &[u32]) -> Vec<u32> {
-        let mut heap = seq.iter().fold(None, |h, v| Heap::insert(h, v));
+        let mut heap = seq.iter().fold(None, Heap::insert);
         let mut heap_sorted_values = Vec::new();
         while heap.is_some() {
             let (updated_heap, min_value) = Heap::remove_min(heap);
