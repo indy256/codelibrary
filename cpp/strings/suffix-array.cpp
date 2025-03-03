@@ -53,6 +53,9 @@ vector<int> suffix_array(const string &S) {
 // https://en.wikipedia.org/wiki/LCP_array
 vector<int> lcp_array(const string &s) {
     int n = s.size();
+    if (n <= 0)
+        return {};
+
     vector<int> sa = suffix_array(s);
     vector<int> rank(n);
     for (int i = 0; i < n; i++)
