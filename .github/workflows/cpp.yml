@@ -13,11 +13,11 @@ jobs:
           - {compiler-options: "-fanalyzer -Wno-analyzer-null-dereference -std=c++23"}
     steps:
       - uses: actions/checkout@v2
-      - name: install g++
-        run: |
-          sudo add-apt-repository ppa:ubuntu-toolchain-r/test
-          sudo apt update
-          sudo apt-get install g++-14
+      # - name: install g++
+      #   run: |
+      #     sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+      #     sudo apt update
+      #     sudo apt-get install g++-14
       - name: compile
         run: |
           cd cpp
@@ -29,8 +29,8 @@ jobs:
     - uses: actions/checkout@v2
     - name: install clang
       run: |
-        #wget http://mirrors.kernel.org/ubuntu/pool/main/libf/libffi/libffi7_3.3-4_amd64.deb
-        #sudo dpkg -i libffi7_3.3-4_amd64.deb
+        wget http://mirrors.kernel.org/ubuntu/pool/main/libf/libffi/libffi7_3.3-4_amd64.deb
+        sudo dpkg -i libffi7_3.3-4_amd64.deb
         sudo apt-key adv --fetch-keys https://apt.llvm.org/llvm-snapshot.gpg.key
         sudo add-apt-repository "deb http://apt.llvm.org/focal/ llvm-toolchain-focal-20 main"
         sudo apt-get install clang-20
