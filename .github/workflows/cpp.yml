@@ -16,11 +16,11 @@ jobs:
       - name: install g++
         run: |
           sudo add-apt-repository ppa:ubuntu-toolchain-r/test
-          sudo apt-get install gcc-15
+          sudo apt-get install g++-15
       - name: compile
         run: |
           cd cpp
-          find . -name '*.cpp' -print0 | xargs -n1 -0 g++-15 ${{ matrix.config.compiler-options }}
+          find . -name '*.cpp' -print0 | xargs -n1 -0 /usr/bin/g++-15 ${{ matrix.config.compiler-options }}
 
   build-ubuntu-clang:
     runs-on: ubuntu-latest
