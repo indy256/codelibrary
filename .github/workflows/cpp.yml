@@ -16,7 +16,7 @@ jobs:
       - name: install g++
         run: |
           sudo add-apt-repository ppa:ubuntu-toolchain-r/test
-          sudo apt-get install g++-15
+          sudo apt-get install gcc-15
       - name: compile
         run: |
           cd cpp
