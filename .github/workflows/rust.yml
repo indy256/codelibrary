@@ -10,7 +10,7 @@ jobs:
       - name: print rustc version
         run: |
           rustc --version
-      - name: check code formatting
+      - name: check  code formatting
         run: |
           cd rust
           cargo fmt -- --check
