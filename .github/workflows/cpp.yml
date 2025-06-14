@@ -13,10 +13,10 @@ jobs:
           - {compiler-options: "-fanalyzer -Wno-analyzer-null-dereference -std=c++23"}
     steps:
       - uses: actions/checkout@v2
-#      - name: install g++
-#        run: |
-#          sudo add-apt-repository ppa:ubuntu-toolchain-r/test
-#          sudo apt-get install g++-14
+      - name: install g++
+        run: |
+          sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+          sudo apt-get install g++-15
       - name: compile
         run: |
           cd cpp
