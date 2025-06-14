@@ -65,7 +65,7 @@ jobs:
           - {compiler-options: "//std:c++20"}
           - {compiler-options: "//std:c++23preview"}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: compile
         shell: cmd
         run: |
