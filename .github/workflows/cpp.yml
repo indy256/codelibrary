@@ -33,12 +33,12 @@ jobs:
         wget http://mirrors.kernel.org/ubuntu/pool/main/libf/libffi/libffi7_3.3-4_amd64.deb
         sudo dpkg -i libffi7_3.3-4_amd64.deb
         sudo apt-key adv --fetch-keys https://apt.llvm.org/llvm-snapshot.gpg.key
-        sudo add-apt-repository "deb http://apt.llvm.org/focal/ llvm-toolchain-focal-20 main"
-        sudo apt-get install clang-20
+        sudo add-apt-repository "deb http://apt.llvm.org/noble/ llvm-toolchain-noble main"
+        sudo apt-get install clang-21
     - name: compile
       run: |
         cd cpp
-        find . -name '*.cpp' -print0 | xargs -n1 -0 clang++-20 -Wall -Wextra -std=c++26
+        find . -name '*.cpp' -print0 | xargs -n1 -0 clang++-21 -Wall -Wextra -std=c++26
 
   build-macos-clang:
     runs-on: macos-latest
