@@ -9,7 +9,8 @@ jobs:
       matrix:
         config:
           - {compiler-options: "-Wall -Wextra -std=c++20"}
-          - {compiler-options: "-Wall -Wextra -Wno-sign-compare -std=c++2c"}
+          - {compiler-options: "-Wall -Wextra -std=c++23"}
+          - {compiler-options: "-Wall -Wextra -Wno-sign-compare -std=c++26"}
           - {compiler-options: "-fanalyzer -Wno-analyzer-null-dereference -std=c++26"}
     steps:
       - uses: actions/checkout@v2
@@ -44,8 +45,8 @@ jobs:
     strategy:
       matrix:
         config:
-          - {compiler-options: "-Wall -Wextra -std=c++2c -isystem"}
-          - {compiler-options: "-Wall -Wextra -Wno-sign-compare -std=c++2c -isystem"}
+          - {compiler-options: "-Wall -Wextra -std=c++2b -isystem"}
+          - {compiler-options: "-Wall -Wextra -Wno-sign-compare -std=c++2b -isystem"}
     steps:
       - uses: actions/checkout@v2
       - name: compile
