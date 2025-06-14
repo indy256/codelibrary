@@ -10,8 +10,9 @@ jobs:
       - name: print rustc version
         run: |
           rustc --version
-      - name: check  code formatting
+      - name: check code formatting
         run: |
+          rustup component add --toolchain nightly-x86_64-unknown-linux-gnu rustfmt
           cd rust
           cargo fmt -- --check
           RUSTFLAGS="-A unused" cargo clippy -- -Dwarnings
