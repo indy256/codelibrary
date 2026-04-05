@@ -4,13 +4,13 @@
 [![Rust CI](https://github.com/indy256/codelibrary/actions/workflows/rust.yml/badge.svg)](https://github.com/indy256/codelibrary/actions/workflows/rust.yml)
 [![License](https://img.shields.io/badge/license-UNLICENSE-green.svg)](https://github.com/indy256/codelibrary/blob/main/UNLICENSE)
 
-### Collection of algorithms and data structures in C++, Java, Kotlin, Python and Rust
+### Collection of algorithms and data structures in C++, Java, Kotlin, Python, Rust, Go and Shell
 
 #### Data structures
-+ [x] Segment tree [**c++**](cpp/structures/segment_tree.h) [**java**](java/structures/SegmentTree.java) [**kotlin**](kotlin/SegmentTree.kt)
++ [x] Segment tree [**c++**](cpp/structures/segment_tree.h) [**java**](java/structures/SegmentTree.java) [**kotlin**](kotlin/SegmentTree.kt) [**go**](golang/structures/segment_tree.go)
 + [x] Segment tree without recursion [**c++**](cpp/structures/segment_tree_without_recursion.cpp) [**java**](java/structures/SegmentTreeWithoutRecursion.java)
 + [x] 2d tree [**c++**](cpp/structures/tree_2d.cpp) [**java**](java/structures/Tree2d.java)
-+ [x] Fenwick tree [**c++**](cpp/structures/fenwick_tree.cpp) [**java**](java/structures/FenwickTree.java) [**kotlin**](kotlin/FenwickTree.kt) [**rust**](rust/structures/fenwick_tree.rs)
++ [x] Fenwick tree [**c++**](cpp/structures/fenwick_tree.cpp) [**java**](java/structures/FenwickTree.java) [**kotlin**](kotlin/FenwickTree.kt) [**rust**](rust/structures/fenwick_tree.rs) [**go**](golang/structures/fenwick_tree.go)
 + [x] Fenwick tree with extended operations [**c++**](cpp/structures/fenwick_tree_interval.cpp) [**java**](java/structures/FenwickTreeExtended.java)
 + [x] Persistent tree [**java**](java/structures/PersistentTree.java) [**kotlin**](kotlin/PersistentTree.kt) [**rust**](rust/structures/persistent_tree.rs)
 + [x] Centroid decomposition [**c++**](cpp/structures/centroid_decomposition.cpp) [**java**](java/structures/CentroidDecomposition.java)
@@ -20,7 +20,7 @@
 + [x] Link/cut tree for LCA query [**java**](java/structures/LinkCutTreeLca.java)
 + [x] Binary heap [**java**](java/structures/BinaryHeap.java)
 + [x] Binary heap with change priority [**c++**](cpp/structures/binary_heap.cpp) [**java**](java/structures/BinaryHeapExtended.java)
-+ [x] Disjoint sets [**c++**](cpp/structures/disjoint_sets.cpp) [**java**](java/structures/DisjointSets.java) [**rust**](rust/structures/disjoint_sets.rs)
++ [x] Disjoint sets [**c++**](cpp/structures/disjoint_sets.cpp) [**java**](java/structures/DisjointSets.java) [**rust**](rust/structures/disjoint_sets.rs) [**go**](golang/structures/disjoint_sets.go)
 + [x] Treap [**c++**](cpp/structures/treap.h) [**java**](java/structures/Treap.java) [**kotlin**](kotlin/Treap.kt) [**rust**](rust/structures/treap.rs)
 + [x] Treap with indexed key [**c++**](cpp/structures/treap_indexed.cpp) [**java**](java/structures/TreapIndexed.java)
 + [x] k-d tree for point query [**c++**](cpp/structures/kd_tree.cpp) [**java**](java/structures/KdTreePointQuery.java)
@@ -37,10 +37,10 @@
 + [x] Mo's algorithm with point updates [**c++**](cpp/structures/mos_with_updates.cpp)
 
 #### Graph algorithms
-+ [x] Shortest paths [**c++**](cpp/graphs/shortestpaths) [**java**](java/graphs/shortestpaths)
-+ [x] Maximum flow [**c++**](cpp/graphs/flows) [**java**](java/graphs/flows)
-+ [x] Maximum matching [**c++**](cpp/graphs/matchings) [**java**](java/graphs/matchings)
-+ [x] Spanning tree [**c++**](cpp/graphs/spanningtree) [**java**](java/graphs/spanningtree)
++ [x] Shortest paths [**c++**](cpp/graphs/shortestpaths) [**java**](java/graphs/shortestpaths) [**go**](golang/graphs)
++ [x] Maximum flow [**c++**](cpp/graphs/flows) [**java**](java/graphs/flows) [**go**](golang/graphs/flows)
++ [x] Maximum matching [**c++**](cpp/graphs/matchings) [**java**](java/graphs/matchings) [**go**](golang/graphs/matchings)
++ [x] Spanning tree [**c++**](cpp/graphs/spanningtree) [**java**](java/graphs/spanningtree) [**go**](golang/graphs/spanningtree)
 + [x] Connectivity [**c++**](cpp/graphs/dfs) [**java**](java/graphs/dfs)
 + [x] Biconnectivity [**java**](java/graphs/dfs/Biconnectivity.java)
 + [x] LCA Schieber-Vishkin algorithm [**c++**](cpp/graphs/lca/lca_rmq_schieber_vishkin.cpp) [**java**](java/graphs/lca/LcaSchieberVishkin.java)
@@ -52,7 +52,7 @@
 + [ ] Minimum augmentation to biconnectivity ([contribute a link or implementation](https://github.com/indy256/codelibrary/issues/33))
 
 #### String algorithms
-+ [x] Knuth-Morris-Pratt algorithm [**c++**](cpp/strings/kmp.cpp) [**java**](java/strings/Kmp.java)
++ [x] Knuth-Morris-Pratt algorithm [**c++**](cpp/strings/kmp.cpp) [**java**](java/strings/Kmp.java) [**go**](golang/strings/kmp.go)
 + [x] Aho-Corasick algorithm [**c++**](cpp/strings/aho-corasick.cpp) [**java**](java/strings/AhoCorasick.java)
 + [x] Suffix array and lcp array. Radix sort algorithm in O(n*log(n)) [**c++**](cpp/strings/suffix-array.cpp) [**java**](java/strings/SuffixArray.java)
 + [x] Suffix array. Algorithm DC3 in O(n) [**c++**](cpp/strings/suffix-array-dc3.cpp) [**java**](java/strings/SuffixArrayDC3.java)
@@ -61,21 +61,21 @@
 + [x] Suffix tree Ukkonen's algorithm [**c++**](cpp/strings/suffix_tree_ukkonen.cpp) [**java**](java/strings/SuffixTree.java)
 + [x] Suffix tree Breslauer-Italiano algorithm [**c++**](cpp/strings/suffix_tree_breslauer_italiano.cpp)
 + [x] Trie [**java**](java/strings/Trie.java)
-+ [x] Z-function [**c++**](cpp/strings/z-function.cpp) [**java**](java/strings/ZFunction.java)
++ [x] Z-function [**c++**](cpp/strings/z-function.cpp) [**java**](java/strings/ZFunction.java) [**go**](golang/strings/z_function.go)
 + [x] Hashing [**c++**](cpp/strings/hashing.cpp) [**java**](java/strings/Hashing.java)
 + [x] Parsing [**java**](java/parsing) [**c++**](cpp/parsing)
 + [ ] Palindrome tree ([contribute a link or implementation](https://github.com/indy256/codelibrary/issues/34))
 + [ ] Sorting strings in linear time ([contribute a link or implementation](https://github.com/indy256/codelibrary/issues/31))
 
 #### Sorting algorithms
-+ [x] Sorting algorithms [**c++**](cpp/sort/sort.cpp) [**java**](java/sort/Sort.java)
++ [x] Sorting algorithms [**c++**](cpp/sort/sort.cpp) [**java**](java/sort/Sort.java) [**go**](golang/sort) [**shell**](shell/sort)
 + [x] N-th element [**java**](java/sort/NthElement.java)
 
 #### Geometry algorithms
 + [x] Segments intersection [**c++**](cpp/geometry/segments_intersection.cpp) [**java**](java/geometry/SegmentsIntersection.java)
 + [x] Line operations [**java**](java/geometry/LineGeometry.java)
 + [x] Circle operations [**java**](java/geometry/CircleOperations.java)
-+ [x] Convex hull [**c++**](cpp/geometry/convex_hull.cpp) [**java**](java/geometry/ConvexHull.java)
++ [x] Convex hull [**c++**](cpp/geometry/convex_hull.cpp) [**java**](java/geometry/ConvexHull.java) [**go**](golang/geometry/convex_hull.go)
 + [x] Point in polygon query [**c++**](cpp/geometry/point_in_polygon.cpp) [**java**](java/geometry/PointInPolygon.java)
 + [x] Closest pair of points [**java**](java/geometry/Closest2Points.java)
 + [x] Furthest pair of points [**c++**](cpp/geometry/diameter.cpp)
@@ -85,7 +85,7 @@
 + [x] Simplex algorithm [**java**](java/optimization/Simplex.java)
 
 #### Numerical algorithms
-+ [x] Fast Fourier transform (FFT) [**c++**](cpp/numeric/fft.h) [**java**](java/numeric/FFT.java)
++ [x] Fast Fourier transform (FFT) [**c++**](cpp/numeric/fft.h) [**java**](java/numeric/FFT.java) [**go**](golang/numeric/fft.go)
 + [x] Long arithmetics [**c++**](cpp/numeric/bigint.cpp)
 + [x] Fast subset convolution [**java**](java/numeric/SubsetConvolution.java)
 + [x] Fast Walsh-Hadamar transform [**java**](java/numeric/WalshHadamarTransform.java)
@@ -94,9 +94,9 @@
 + [x] Laguerre's root-finding algorithm [**c++**](cpp/numeric/polynom-roots.cpp)
 
 #### Number theory
-+ [x] Primes and divisors [**java**](java/numbertheory/PrimesAndDivisors.java) [**c++**](cpp/numbertheory/primes_and_divisors.cpp)
++ [x] Primes and divisors [**java**](java/numbertheory/PrimesAndDivisors.java) [**c++**](cpp/numbertheory/primes_and_divisors.cpp) [**go**](golang/numbertheory/primes.go) [**shell**](shell/numbertheory/primes.sh)
 + [x] Factorization [**java**](java/numbertheory/Factorization.java) [**c++**](cpp/numbertheory/factorization.cpp)
-+ [x] Euclidean algorithm [**java**](java/numbertheory/Euclid.java) [**c++**](cpp/numbertheory/euclid.cpp)
++ [x] Euclidean algorithm [**java**](java/numbertheory/Euclid.java) [**c++**](cpp/numbertheory/euclid.cpp) [**go**](golang/misc/gcd.go)
 + [x] Primitive root [**c++**](cpp/numbertheory/primitive_root.cpp)
 + [x] Discrete logarithm [**c++**](cpp/numbertheory/discrete_log.cpp)
 + [x] Discrete root [**c++**](cpp/numbertheory/discrete_root.cpp)
@@ -108,7 +108,7 @@
 
 #### Combinatorics
 + [x] Permutations [**java**](java/combinatorics/Permutations.java)
-+ [x] Combinations [**java**](java/combinatorics/Combinations.java)
++ [x] Combinations [**java**](java/combinatorics/Combinations.java) [**go**](golang/combinatorics/combinations.go)
 + [x] Arrangements [**java**](java/combinatorics/Arrangements.java)
 + [x] Partitions [**java**](java/combinatorics/Partitions.java)
 + [x] Set Partitions [**java**](java/combinatorics/SetPartitions.java)
@@ -117,6 +117,6 @@
 + [x] Prufer code [**java**](java/combinatorics/PruferCode.java)
 
 #### Linear algebra
-+ [x] Gaussian elimination [**c++**](cpp/linearalgebra/gauss.cpp) [**java**](java/linearalgebra/Gauss.java) [**kotlin**](kotlin/Gauss.kt)
++ [x] Gaussian elimination [**c++**](cpp/linearalgebra/gauss.cpp) [**java**](java/linearalgebra/Gauss.java) [**kotlin**](kotlin/Gauss.kt) [**go**](golang/linearalgebra/gauss.go)
 + [x] Determinant calculation [**java**](java/linearalgebra/Determinant.java)
 + [x] Matrix operations [**c++**](cpp/linearalgebra/matrix.h) [**java**](java/linearalgebra/Matrix.java)
