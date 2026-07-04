@@ -36,11 +36,11 @@ impl<K: Copy + PartialOrd, V: Copy + PartialEq + AddAssign + Ord + Default> Trea
 
     fn push(&mut self) {
         if self.add != V::default() {
-            if self.left.is_some() {
-                self.left.as_mut().unwrap().apply(self.add);
+            if let Some(l) = &mut self.left {
+                l.apply(self.add);
             }
-            if self.right.is_some() {
-                self.right.as_mut().unwrap().apply(self.add);
+            if let Some(r) = &mut self.right {
+                r.apply(self.add);
             }
             self.add = V::default();
         }
