@@ -5,7 +5,7 @@ public class PointClassification {
 
     // Classifies position of point p against vector a
     public static Position classify(long px, long py, long ax, long ay) {
-        long cross = px * ay - py * ay;
+        long cross = px * ay - py * ax;
         if (cross > 0) {
             return Position.LEFT;
         }
