@@ -44,7 +44,7 @@ cdouble find_one_root(const poly &p0, cdouble x) {
         if (cmp(y0, 0) == 0)
             break;
         cdouble G = eval(p1, x) / y0;
-        cdouble H = G * G - eval(p2, x) - y0;
+        cdouble H = G * G - eval(p2, x) / y0;
         cdouble R = sqrt(cdouble(n - 1) * (H * cdouble(n) - G * G));
         cdouble D1 = G + R;
         cdouble D2 = G - R;
