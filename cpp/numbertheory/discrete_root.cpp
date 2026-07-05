@@ -47,14 +47,14 @@ int discrete_root(int a, int b, int m) {
     int sq = (int)sqrt(m) + 1;
     vector<pair<int, int>> dec(sq);
     for (int i = 1; i <= sq; ++i)
-        dec[i - 1] = {pow_mod(g, (long long)i * sq * b % (m - 1), m), i};
+        dec[i - 1] = {pow_mod(g, (long long)i * sq * a % (m - 1), m), i};
     sort(dec.begin(), dec.end());
     for (int i = 0; i < sq; ++i) {
-        int my = pow_mod(g, (long long)i * b % (m - 1), m) * (long long)a % m;
+        int my = pow_mod(g, (long long)i * a % (m - 1), m) * (long long)b % m;
         auto it = lower_bound(dec.begin(), dec.end(), make_pair(my, 0));
         if (it != dec.end() && it->first == my) {
             int x = it->second * sq - i;
-            int delta = (m - 1) / gcd(b, m - 1);
+            int delta = (m - 1) / gcd(a, m - 1);
             return pow_mod(g, x % delta, m);
         }
     }
