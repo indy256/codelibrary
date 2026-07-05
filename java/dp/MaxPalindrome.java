@@ -41,7 +41,7 @@ public class MaxPalindrome {
         String res = "";
 
         while (x > 0 && y > 0) {
-            if (s[x - 1] == s[n - y] && dp[x - 1][y - 1] == dp[x][y]) {
+            if (s[x - 1] == s[n - y]) {
                 res += s[x - 1];
                 --x;
                 --y;
