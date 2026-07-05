@@ -8,7 +8,7 @@ enum class Position { Left, Right, Behind, Beyond, Origin, Destionation, Between
 
 // Classifies position of point p against vector a
 Position classify(ll px, ll py, ll ax, ll ay) {
-    ll cross = px * ay - py * ay;
+    ll cross = px * ay - py * ax;
     if (cross > 0) {
         return Position::Left;
     }
