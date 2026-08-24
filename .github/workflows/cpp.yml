@@ -3,7 +3,7 @@ name: C++ CI
 on: [push]
 
 jobs:
-  build-ubuntu-gcc-14:
+  build-ubuntu-gcc:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -14,15 +14,15 @@ jobs:
           - {compiler-options: "-fanalyzer -Wno-analyzer-null-dereference -std=c++26"}
     steps:
       - uses: actions/checkout@v4
-      # - name: install g++
-      #   run: |
-      #     sudo add-apt-repository ppa:ubuntu-toolchain-r/test
-      #     sudo apt update
-      #     sudo apt-get install g++-14
+      - name: install g++
+        run: |
+          sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+          sudo apt update
+          sudo apt-get install g++-15
       - name: compile
         run: |
           cd cpp
-          find . -name '*.cpp' -print0 | xargs -n1 -0 g++-14 ${{ matrix.config.compiler-options }}
+          find . -name '*.cpp' -print0 | xargs -n1 -0 g++-15 ${{ matrix.config.compiler-options }}
 
   build-ubuntu-clang:
     runs-on: ubuntu-latest
@@ -30,23 +30,21 @@ jobs:
     - uses: actions/checkout@v4
     - name: install clang
       run: |
-        #wget http://mirrors.kernel.org/ubuntu/pool/main/libf/libffi/libffi7_3.3-4_amd64.deb
-        #sudo dpkg -i libffi7_3.3-4_amd64.deb
-        sudo apt-key adv --fetch-keys https://apt.llvm.org/llvm-snapshot.gpg.key
-        sudo add-apt-repository "deb http://apt.llvm.org/noble/ llvm-toolchain-noble main"
-        sudo apt-get install clang-21
+        wget https://apt.llvm.org/llvm.sh
+        chmod u+x llvm.sh
+        sudo ./llvm.sh 22
     - name: compile
       run: |
         cd cpp
-        find . -name '*.cpp' -print0 | xargs -n1 -0 clang++-21 -Wall -Wextra -std=c++26
+        find . -name '*.cpp' -print0 | xargs -n1 -0 clang++-22 -Wall -Wextra -std=c++26
 
   build-macos-clang:
     runs-on: macos-latest
     strategy:
       matrix:
         config:
-          - {compiler-options: "-Wall -Wextra -std=c++2b -isystem"}
-          - {compiler-options: "-Wall -Wextra -Wno-sign-compare -std=c++2b -isystem"}
+          - {compiler-options: "-Wall -Wextra -std=c++2c -isystem"}
+          - {compiler-options: "-Wall -Wextra -Wno-sign-compare -std=c++2c -isystem"}
     steps:
       - uses: actions/checkout@v4
       - name: compile
@@ -69,7 +67,7 @@ jobs:
       - name: compile
         shell: cmd
         run: |
-          call "%ProgramFiles%\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars32.bat"
+          call "%ProgramFiles%\Microsoft Visual Studio\18\Enterprise\VC\Auxiliary\Build\vcvars32.bat"
           cd cpp
           mkdir bits
           C:\msys64\usr\bin\echo.exe -e '#include \74vector\76\n#include \74set\76\n#include \74map\76\n#include \74unordered_set\76\n#include \74unordered_map\76\n#include \74queue\76\n#include \74deque\76\n#include \74stack\76\n#include \74iostream\76\n#include \74iomanip\76\n#include \74complex\76\n#include \74cassert\76\n#include \74random\76\n#include \74chrono\76\n#include \74functional\76\n#include \74array\76\n#include \74bitset\76\n#include \74numeric\76\n' > bits\stdc++.h

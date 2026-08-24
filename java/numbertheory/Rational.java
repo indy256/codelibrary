@@ -68,7 +68,16 @@ public class Rational implements Comparable<Rational> {
     }
 
     public int compareTo(Rational other) {
-        return (num.multiply(other.den).compareTo(other.num.multiply(den)));
+        if (den.signum() == 0 && other.den.signum() == 0) {
+            return num.compareTo(other.num);
+        }
+        if (den.signum() == 0) {
+            return num.signum();
+        }
+        if (other.den.signum() == 0) {
+            return -other.num.signum();
+        }
+        return num.multiply(other.den).compareTo(other.num.multiply(den));
     }
 
     public boolean equals(Object obj) {

@@ -41,15 +41,11 @@ public class MaxPalindrome {
         String res = "";
 
         while (x > 0 && y > 0) {
-            int a = dp[x - 1][y - 1];
-            int b = dp[x - 1][y];
-            int c = dp[x][y - 1];
-            int m = Math.min(a, Math.min(b, c));
-            if (a == m) {
+            if (s[x - 1] == s[n - y]) {
                 res += s[x - 1];
                 --x;
                 --y;
-            } else if (b == m) {
+            } else if (dp[x - 1][y] + 1 == dp[x][y]) {
                 --x;
             } else {
                 --y;

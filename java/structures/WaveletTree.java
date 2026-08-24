@@ -84,7 +84,7 @@ public class WaveletTree {
         }
         System.arraycopy(b1, 0, a, from, cnt1);
         System.arraycopy(b2, 0, a, from + cnt1, cnt2);
-        return cnt1;
+        return from + cnt1;
     }
 
     // Usage example

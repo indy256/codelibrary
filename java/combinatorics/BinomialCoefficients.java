@@ -33,7 +33,7 @@ public class BinomialCoefficients {
         return (int) (res % mod);
     }
 
-    // n! mod p, p - prime, O(p*log(n)) complexity
+    // n! mod p, not counting p multipliers in n!, p - prime, O(p*logₚ(n)) complexity
     public static int factorial2(int n, int p) {
         int res = 1;
         while (n > 1) {

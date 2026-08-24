@@ -86,7 +86,7 @@ int main() {
     p.resize(unique(p.begin(), p.end()) - p.begin());
 
     int n = p.size();
-    build_tree(0, n - 1, &p[0]);
+    build_tree(0, n, &p[0]);
     int res = find_nearest_neighbour(n, 0, 0);
 
     cout << p[res].first << " " << p[res].second << endl;

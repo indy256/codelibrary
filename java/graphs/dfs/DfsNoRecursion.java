@@ -7,6 +7,8 @@ public class DfsNoRecursion {
     public static void dfs(List<Integer>[] graph, int root) {
         int n = graph.length;
         int[] curEdge = new int[n];
+        boolean[] visited = new boolean[n];
+        visited[root] = true;
         int[] stack = new int[n];
         stack[0] = root;
         for (int top = 0; top >= 0;) {
@@ -16,7 +18,8 @@ public class DfsNoRecursion {
             }
             if (curEdge[u] < graph[u].size()) {
                 int v = graph[u].get(curEdge[u]++);
-                if (curEdge[v] == 0) {
+                if (!visited[v]) {
+                    visited[v] = true;
                     stack[++top] = v;
                 }
             } else {
