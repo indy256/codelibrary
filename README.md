@@ -120,3 +120,5 @@
 + [x] Gaussian elimination [**c++**](cpp/linearalgebra/gauss.cpp) [**java**](java/linearalgebra/Gauss.java) [**kotlin**](kotlin/Gauss.kt)
 + [x] Determinant calculation [**java**](java/linearalgebra/Determinant.java)
 + [x] Matrix operations [**c++**](cpp/linearalgebra/matrix.h) [**java**](java/linearalgebra/Matrix.java)
+
+https://indy256.com
